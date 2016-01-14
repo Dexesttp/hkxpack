@@ -1,0 +1,63 @@
+Values seems to be ordered by 3 :
+<val1> 2 <val2>
+
+Tests on 2 first vals and 2 last ones
+
+<20> 2 <60> => 40 (d64)
+<120> 2 <230> => 110 (d272)
+...
+<3308> 2 <3D40> => A38 (d2616)
+<3388> 2 <3E90> => B08 (d2824)
+
+=> Inference :
+val1 => source
+val3 => destination
+
+=== Beginning of part 2 === @7AC0+4D0 @7F90
+
+20 00 00 00	@20+4D0		@4F0	8-block ?
+02 00 00 00	2
+60 00 00 00	@60+of2		@
+20 01 00 00	@120+4D0	@5F0	8-block
+
+02 00 00 00	2
+30 02 00 00	@230+of2		@
+28 01 00 00	@128+4D0	@5F8	8-block  (or +)
+02 00 00 00	2
+
+20 33 00 00	@3320+of2	@
+90 03 00 00	@390+4D0	@860	8-bloc
+02 00 00 00	2
+A0 03 00 00	@3A0+of2		@
+
+98 03 00 00	@398+4D0	@868	8-bloc (or +)
+02 00 00 00	2
+A0 29 00 00	@29A0+of2	@
+E8 03 00 00	@38E+4D0	@85E	8-bloc
+
+02 00 00 00	2
+30 04 00 00	@430+of2		@
+F8 03 00 00	@3F8+4D0	@8C8	8-bloc => /!\ Possibly overlapping a <data1> value.
+02 00 00 00	2
+
+60 04 00 00	@460+of2
+D0 05 00 00	@5D0+4D0	@AA0	8-bloc too.
+02 00 00 00	2
+E0 05 00 00	@5E0+of2
+
+D8 05 00 00
+02 00 00 00
+E0 1D 00 00
+40 05 00 00
+
+02 00 00 00
+20 29 00 00
+38 06 00 00
+02 00 00 00
+
+Remark : the value 3 seems similar to data3's value 1.
+=> After testing, all data2's value3 are in data3's value1 AND BACK despite the size differential
+
+
+
+

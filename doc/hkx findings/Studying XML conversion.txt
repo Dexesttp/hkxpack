@@ -1,0 +1,129 @@
+based on chaurusbehavior.hkx
+hkbBehaviorGraphStringData
+eventNames => E648
+=> Indicated string by string
+	>from @E648 [@1065C]
+	>to @E97C [@10AA4]
+=> Each string preceded by 1 value, probably 4-byte one jusging on last value format.
+[1096 bytes => 137 elements => 89]
+	> BFB4 = @BA44+570
+
+attributeNames => EF00~F03B
+=> Probably indicated @10AAC
+[0 elems]
+
+variableNames => F03C
+-> Found at @EAC8+570 [@10D20]
+=> Indicated string by string.
+	> From @EACC [@10AB4]
+	> to @EF6A [@10D24]
+=> Same remark as eventNames.
+
+
+based on bloatflyrootbehavior.hkx
+hkbBehaviorGraphStringData
+			4A38 to 5F40
+eventNames =>4F08 to 6410
+6638 
+6AAE
+=> from @7138 to @7C8C
+	> B54 bytes => 2900 bytes => 362 entries
+	> 362 = 016A
+=> from @7138 to @7EA0
+	> D68 bytes => 3432 bytes => 429 entries
+	> 429 = 01AD [AD01]
+
+@6940+4D0 / @6E10 => Calc'd offset for Data1
+#460 entries
+@7AC0+4D0 / @7F90 => Offset data2
+380 -> #E0 entries
+@7E40+4D0 / @8310 => Offset data3
+350 => #D4 entries
+@8660 EOF
+max for data1 offset is 1180 (d4480)
+max for potential offset is 1850 (d6224)
+== Beginning of part 1 (@7110 ~744F)
+50 33 00 00
+30 35 00 00
+60 33 00 00
+E0 35 00 00
+
+70 33 00 00
+90 3B 00 00
+50 3D 00 00
+80 3D 00 00
+
+A0 3E 00 00	assumed 10-block (value : 00 00 16B 16B) => 363 = 362-1 BOOM BBY
+E0 3E 00 00	Assumed address of beginning of array.
+E0 3E 00 00	Value (0s) assumed 8-block (@43B0)
+38 4A 00 00	text (frst entry)
+
+E8 3E 00 00	Value (0s) assumed 8-block
+42 4A 00 00	text
+F0 3E 00 00
+4C 4A 00 00	text
+
+== End of part 1 & beginnign of part 2 (@7C80 ~ @7CCF)
+28 4A 00 00
+38 5F 00 00	(text)
+30 4A 00 00
+40 5F 00 00	(text) (last entry)
+
+C0 3E 00 00	@3EC0+4D0 10-block (contains : 0 - 0 - 43 - 43) => 66 entries
+50 5F 00 00	address of array beginning
+50 5F 00 00	value 1
+68 61 00 00	text 1
+
+58 5F 00 00
+70 61 00 00
+60 5F 00 00
+80 61 00 00
+
+68 5F 00 00
+8E 61 00 00
+70 5F 00 00
+A0 61 00 00
+
+78 5F 00 00
+B0 61 00 00
+80 5F 00 00
+BC 61 00 00
+
+=> Beginning of array definition (@7C90)
+	=> Position #3A0 in data1 ( [address - data1offset] / 4 [bytes par value])
+		> #3A0 found @7FBC (data2) and @8334 (data3)
+	@7FBC
+		90 03 - 02 - A0 03 - 98 03 - 02 - A0 29
+		#390 is probably the ID of the linked element.
+		#390 => @E40+6E10 => @7C50
+		=> 7C50 is a random value in the array
+			=> Studying @7C50
+			F8 49 00 00	value (assumed 8-block)
+			08 5F 00 00	text (stage14)
+			00 4A 00 00	value (assumed 8-block)
+			10 5F 00 00	text (stage15)
+			=> Probably not this
+		=> Other possibility : #3A0 - #390 => #10
+			#10 => @40+6E10 => @6E50
+			=> Studying @6E50
+			98 04 00 00	@968	40-block ?
+			B0 05 00 00	@A80	text (RagdollAndGetupSM)
+			=> Probably nothing to do with it.
+		=> Other possibility : #390 in data2.
+			=> Not 390 values in data2 (max. E0)
+		=> Probably a coincidence.
+	@8334
+		7B 00 - A0 03 - 00 - 90 00
+		#90 is PROBABLY the ID of the linked element in data1
+		#90 => @240+6E10 => @7050
+		=> @7050
+			98 25 00 00	@2A68	30-block
+			D0 25 00 00	@2AA0	text (MatchAndSendGetup_ML)
+		#7B is MOST DEFINITELY the ID of the the linked element in data1
+		#7B => @1EC+6E10 => @6FFC
+		=> @6FFC
+			C0 0F 00 00	@1490	value ? 00*8 FF*8
+			C0 0F 00 00	@1490	^
+			D8 0F 00 00	@14A8	iCombatState = 0
+			28 10 00 00	@14F8	40-block
+	=> #7B is probably the parent object and has a 2-entry size.

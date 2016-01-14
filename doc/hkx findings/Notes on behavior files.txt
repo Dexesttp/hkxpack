@@ -1,0 +1,25 @@
+BloatflyRootBehavior
+Tests :
+ - Duplicated 850 - 8EF
+ > Crash
+ - Duplicated 18F0-1B4F
+ > Crash
+ - Changed header value 7A8 (03 to 06)
+	- 06
+	- 00
+	- 04
+	- F3
+ > Animation : rotation stopped ?!?
+ > No location change (stuck in place)
+  - Changed header value 7A5 (00 to 03)
+ > Crash
+ - Changed header value 7A9 to 03 from 00
+ > Same as 7A8
+ - Checked ~36E0 in file (there is data for targeting).
+ - Changed "enable" to "disable" @3690
+ > No notable change
+ - Changed "2" to "3" @36AE
+ > No effect
+ - Changed 20 to 21 @7C5
+ > No notable change
+ - 

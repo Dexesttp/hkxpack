@@ -1,0 +1,64 @@
+Value also seems to be ordered by 3
+00 00 00 00	00
+00 00 00 00	(standard 00 ?)
+4B 00 00 00	#4B => @1730		text (pelvisIndex)
+			@4B+4D0 @51B	middle of text
+			@4B+100	@14B	text (hkRootLevelContainer)
+60 00 00 00	#60 => @1DB8		18-block w/ FF
+			@60+4D0	@530	28-block w/ 80
+			@60+100	@160	Class UUID (hkbBehaviorGraph)
+00 00 00 00	(standard 00 ?)
+65 00 00 00	#65 => @1610		30-block
+			@65+100	@165	text (hkbBehaviorGraph)
+30 02 00 00	@230+4D0		28-bloc w/ 80
+00 00 00 00	(standard)
+
+7B 00 00 00	@7B+100	@17B	hkbStateMachine
+A0 03 00 00	@3A0+4D0		28-bloc w/ 80
+00 00 00 00
+90 00 00 00	@190
+
+30 04 00 00
+00 00 00 00
+AE 00 00 00	@1AE
+60 04 00 00
+
+00 00 00 00
+7B 00 00 00	@17B
+E0 05 00 00
+00 00 00 00
+
+90 00 00 00	@190
+80 06 00 00
+00 00 00 00
+D5 00 00 00	@1D5
+
+30 07 00 00	@730+4D0		28-block w/ 80
+00 00 00 00
+EF 00 00 00	@1EF
+D0 07 00 00	@7D0+4D0		28-block w/ 80
+
+00 00 00 00
+04 01 00 00	@204			hkbGetUpModifier
+70 08 00 00	@870+1D0		28-block w/ 80
+00 00 00 00
+
+...
+81 03 00 00	@481			hkbBehaviorGraphData
+
+40 3D 00 00	@3D40+4D0		20-block w/ 80 AND DATA
+00 00 00 00
+9B 03 00 00	@49B			hkbVariableValueSet
+
+90 3E 00 00	@3E90+4D0		20-block w/ 80 AND DATA
+00 00 00 00
+B4 03 00 00	@4B4			hkbBehaviorGraphStringData
+
+Offsets in file ?
+>0 - 0 - 4B
+>60 - 0 - 65
+>3D40 - 0 - 039B
+	=> @3D40+4D0 @4210
+		Only 0's (not illogical given there is no AttNames, believed to be second to last values in file)
+	=> @039B+4210 @
+>3E90 - 0 - 03B4

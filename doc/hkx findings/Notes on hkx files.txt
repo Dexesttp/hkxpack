@@ -1,0 +1,235 @@
+== Notes on ascii ==
+00 -> NULL
+09 -> Tab
+FF -> No significance
+
+
+Hkx files :
+
+Fallout 4 info :
+Format : hk_2014.1.0-r1
+
+
+Skyrim info :
+Format : hk_2010.2.0-r1
+
+==== Studied files : ====
+
+-> Bloatfly [FO4]
+\Animations\Meshes\Actors\Bloatfly\
+Findings :
+-> An architecture (several subfolders)
+-> No header diff between Skeleton and anim file.
+
+
+-> Chaurus [Skyrim]
+\Animations\meshes\actors\chaurus\
+
+===========================================================
+First file : <name>project.hkx
+==== Findings ==== 
+
+== Offset 00 00 -> 69 FF
+Same header beginning as 2014 version
+57 E0 E0 57 10 C0 C0 10
+
+16 octets w/ different values
+00 00 00 00 0B 00 00 00 08 01 00 01 03 00 00 00	Bloatfly
+00 00 00 00 08 00 00 00 04 01 00 01 03 00 00 00	Chaurus
+		  ___		     __
+=> Note : class version is "8" (maybe related to 08 ?)
+
+Same 16 octets for both  :
+02 00 00 00 00 00 00 00 00 00 00 00 4B 00 00 00
+
+Next 16 octets : version name + 00 FF at the end
+
+Format seems to change now :
+00 00 00 00 15 00 00 00 __classnames__ 00 00	Bloatfly
+00 00 00 00 FF FF FF FF __classnames__ 00 00	Chaurus
+
+Seems to be the same structure but different values :
+00 00 00 FF 00 01 00 00	Bloatfly => 00 01
+00 00 00 FF D0 00 00 00	Chaurus => D0 00
+
+Same again :
+(90 00 00 00) * 6
+
+== Offset 70 00
+hk_2014 -> added 16 octets filled by 1s
+
+== Offset 80 00 (70 00)
+16 octets in common
+__types__ 00 00 00 00 00 00
+
+Value change (8 octets)
+00 00 00 FF 90 01 00 00 (Bloatfly)
+00 00 00 FF 60 01 00 00 (Chaurus)
+
+next 24 all 00s
+
+== Offset B0 00 (A0 00)
+hk_2014 -> added 16 octets filled by 1s
+
+== Offset C0 00 (A0 00)
+16 octets in common
+__data__ 00 00 00 00 00 00 00 00
+
+Value changes on next 32 octets :
+00 00 00 FF 90 01 00 00 (Bloatfly)
+00 00 00 FF 60 01 00 00 (Chaurus)
+
+80 01 00 00 D0 01 00 00 (Bloatfly)
+20 01 00 00 70 01 00 00 (Chaurus)
+
+F0 01 00 00 20 02 00 00 (Bloatfly)
+90 01 00 00 C0 01 00 00 (Chaurus)
+
+20 02 00 00 20 02 00 00 (Bloatfly)
+C0 01 00 00 C0 01 00 00 (Bloatfly)
+
+== Offset F0 00 (D0 00)
+hk_2014 -> Added 16 octets of 1s
+
+== Offset 100 00 (D0 00)
+
+Note : this seems to contain the following data
+hkClass		F6 5E 58 75
+hkClassMember	C2 A4 7E 5C
+hkClassEnum	CF 09 36 81
+
+each line is in format :
+Value 09 Name 00
+Lines seems concatened to each other
+Padding 1 are added at the end to fill to the next 00-offset byte
+
+-> Analysis
+Value, 5 bytes w/ diff :
+83 23 D4 33 09	(Bloatfly) => 
+F6 5E 58 75 09	(Chaurus) => 
+
+Name common (8 bytes) :
+hkClass 00
+
+
+Value, 5 bytes diff :
+19 A7 EF B0 09	(Bloatfly)
+C2 A4 7E 5C 09	(Chaurus)
+
+Name common (14 bytes) :
+hkClassMember 00
+
+
+Value, common (5 bytes) :
+CF 09 36 8A 09
+
+Name common (12 bytes) :
+hkClassEnum 00
+
+
+Value, common (5 bytes) :
+6C 8A 6F CE 09
+
+Name, common (16 bytes) :
+hkClassEnumItem 00
+
+
+Value, common (5 bytes) :
+1E C1 72 27 09
+
+Name, common (21 bytes) :
+hkRootLevelContainer 00
+
+
+Value, diff (5 bytes) :
+59 11 3C 36 09	(Bloatfly)
+A7 9B A3 13 09	(Chaurus)
+
+Name, common (15 bytes) :
+hkbProjectData 00
+
+
+Value, diff (5 bytes) :
+BA C2 08 CA 09
+0A D6 6A 07 09
+
+Name, comon (21 bytes) :
+hkbProjectStringData 00
+
+
+2 bytes of padding 1s, common.
+
+
+== Offset 190 00 (160 00)
+Seems to be some data (L. : 40 / 28)
+Bloatfly		Chaurus
+00 00 00 00	00 00 00 00
+00 00 00 00	01 00 00 00
+01 00 00 00	01 00 00 80
+01 00 00 80	00 00 00 00
+0s * 24 oc		0s * 12 oc
+
+Maybe related to the hkObject 0010 /WorldUpWS (in chaurus)
+
+
+Common : 
+hkbProjectData 00
+
+Value (?) (9/5 bytes) :
+8*0s 00	4*0s 00
+-> padding for next Offset ?
+
+== Offset 1D0 00 (190 00)
+
+Common :
+hkbProjectData 00
+
+Common (29 bytes) :
+27 bytes of 0, 80 3F
+
+Some data. Seems to be put in 64x mode in the hk_2014 format
+
+-> Data analysis will wait until more SK files are analyzed (value regroupment)
+-> File names (such as general character file) are stored there.
+
+===============================================================
+Second file : <Character/*> (one file)
+
+==== Findings ====
+
+== Offset 00 00 -> 1D FF (1B FF)
+Same header as 00->180 (00->150)
+
+Diferent values and fields in the header, tho :
+-> after __classname __
+same w/ D0 00 / 00 01
+90 00 00 00 replaced by
+E0 00 00 00 (Bloatfly)
+F0 00 00 00 (Chaurus)
+
+-> after __types__
+90 changed to E0 (Bloatfly)
+60 changed to C0 (Chaurus)
+
+-> after __data__
+after 00 00 00 FF
+Bloatfly changed to :
+E0 01 00 00 40 11 00 00 60 14 00 00 A0 14 00 00 (F0 14 00 00) * 3
+Chaurus changed to :
+C0 01 00 00 B0 09 00 00 50 0B 00 00 90 0B 00 00 (E0 0B 00 00) * 3
+
+-> hk part
+Name				Bloatfly		Chaurus
+hkClass				83 23 D4 33	F6 5E 76 75
+hkClassMember			19 A7 EF B0	C2 A4 7E 5C
+hkClassEnum			CF 09 36 8A	idem
+hkClassEnumItem		6C 8A 6F CE	idem
+hkRootLevelContainer		1E C1 72 27	idem
+hkbCharacterData		1F 6C C4 FE	08 68 0D 30
+hkbVariableValueSet		25 7E 27 EB	8D 2D 81 27
+hkbFootIkDriverInfo		nonexistent	BC 42 5B 65
+hkbBoneWeightArray		51 57 9B 2C	nonexistent
+hkbCharacterStringData	52 8A 9D 0B	BC 42 5B 65
+hkbMirroredSkeletonInfo	2E 05 13 9F	4F DA C2 C6
+
+

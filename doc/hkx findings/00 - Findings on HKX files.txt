@@ -1,0 +1,76 @@
+=== HKX File format ===
+
+The HKX file format (Havok Packed File) is defined by its header.
+
+The header contains :
+ - 64 bytes of pure header data
+ - three sections
+	classname
+	types
+	data
+
+=== HKX pure header ==
+Constant value		57E0 E057
+				10C0 C010
+				0000 0000
+Version number		<4 bytes>
+A 4-byte value
+	version	8		04 01 00 00
+	version	11		08 01 00 00
+Constant values		0300 0000
+				0200 0000
+				0000 0000
+				0000 0000
+				4B00 0000
+the version name	<16 bytes>
+4 empty bytes		0000 0000
+				<4 bytes>
+	An offset (v. 11) or FF's (v. 8) over 4 bytes
+
+=== HKX Header Sections ===
+You have to move <offset> bytes if v. 11
+
+The section name	<16 bytes>
+Constant value		00 00 00 FF
+general offset		<4 bytes>
+part 1 offset		<4 bytes>
+part 2 offset		<4 bytes>
+part 3 offset		<4 bytes>
+part 4 offset		<4 bytes>
+part 5 offset		<4 bytes>
+part 6 offset		<4 bytes>
+
+You have to skip 16 bytes if v. 11 (FF bytes)
+
+=== HKX Content : how to read it ===
+
+Build a VLookup of class names using the following format :
+~	FSeek(data.offset + data.part3offset)
+~	UUID			<4 bytes>
+~	empty		0000 0000
+~	class address	<4 bytes>
+~	goto l.2 until pos + 12 >= (data.offset + data.part4offset)
+
+You might want to resolve the class address into name and ID by :
+~	FSeek(class address);
+~	readString();
+~	FSeek(class address - 5);
+~	readClassID (4 bytes)
+
+Read the following values :
+data2 value :
+~	mystery	<4 bytes>
+~	const		0200 0000
+~	UUID		<4 bytes>
+~	readData(UUID);
+~	goto l.2 until pos + 12 > (data.offset + data.part4offset)
+
+with readData as such :
+~	For each data needed for the UUID class
+~		read data1
+~		Store data1 as data
+~		Solve data1 from data type needed in class
+
+and Data1 with the format
+~	source	<4 bytes>
+~	value		<depends on the class>
