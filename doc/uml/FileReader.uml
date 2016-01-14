@@ -1,0 +1,88 @@
+@startuml
+package commons {
+	package parser {
+		interface Reader<T> {
+			+connect(RandomAccessFile, position)
+			+T read()
+		}
+		abstract class ConstantReader<T>
+		abstract class FixedReader<T>
+		abstract class RandomReader<E, T>
+		Reader <|-- ConstantReader
+		Reader <|-- FixedReader
+		Reader <|-- RandomReader
+	}
+	package resolver {
+		interface Definer<E, T> {
+			+setNext(Resolver<E, ? extends T>)
+		}
+		interface Resolver<E, ?>
+		Definer <|-- RandomReader
+		Resolver o-- Definer : uses
+	}
+}
+
+package hkxpack {
+	package hkx {
+		package reader {
+			abstract class TripleLinkReader
+			ConstantReader <|-- HeaderReader #green
+			FixedReader <|-- InternalLinkReader #green
+			RandomReader <|-- TypeReader #green
+			FixedReader <|-- TripleLinkReader #green
+			TripleLinkReader <|-- ExternalLinkReader
+			TripleLinkReader <|-- VirtualLinkReader
+			InternalLinkReader o-- HeaderReader : creates
+			ExternalLinkReader o-- HeaderReader : creates
+			VirtualLinkReader o-- HeaderReader : creates
+			TypeReader o-- HeaderReader : creates 
+		}
+		package flags {
+			interface FlagHandler
+			class FlagsRef {
+				+resolve()
+			}
+			FlagHandler <|-- FlagsRef
+			class FlagsData {
+				~byte Content
+			}
+			FlagsData o-- FlagsRef : resolves into
+			FlagHandler <|-- FlagsData
+			ExternalLinkReader *-- FlagHandler : T
+			VirtualLinkReader *-- FlagHandler : T
+		}
+		package classes {
+			interface ClassHandler
+			class ClassRef {
+				+resolve()
+			}
+			ClassHandler <|-- ClassRef
+			class ResolvedClass
+			ClassHandler <|-- ResolvedClass
+			ResolvedClass o-- ClassRef : resolved into
+			TypeReader *-- ResolvedClass : T
+			InternalLinkReader *-- ClassRef : T
+		}
+	}
+	package xml {
+		package classxml {
+			class ClassXMLList << (S, #FF7700) >> {
+				+ClassXMLDescriptor getClass(String)
+			}
+			class ClassXMLDescriptor
+			class ClassXMLResolver
+			Resolver <|-- ClassXMLResolver
+			ClassXMLDescriptor o-u- ClassXMLResolver : uses
+			ClassXMLList o-u- ClassXMLResolver : uses
+		}
+	}
+	package main {
+		class Main {
+		}
+		HeaderReader o-- Main #blue
+		ClassHandler o-- Main #blue
+		FlagHandler o-- Main #blue
+		ClassXMLList o-- Main #blue
+	}
+}
+@enduml
