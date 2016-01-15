@@ -5,7 +5,7 @@ import java.io.IOException;
 import com.dexesttp.hkxpack.commons.parser.ConstantReader;
 import com.dexesttp.hkxpack.hkx.definition.Header;
 import com.dexesttp.hkxpack.hkx.definition.HeaderComponent;
-import com.dexesttp.hkxunpack.resources.ByteUtils;
+import com.dexesttp.hkxpack.resources.ByteUtils;
 
 public class HeaderReader extends ConstantReader<Header> {
 	@Override

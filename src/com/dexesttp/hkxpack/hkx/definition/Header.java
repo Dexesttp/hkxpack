@@ -11,4 +11,8 @@ public class Header {
 	public byte[] padding_new = new byte[2];
 	
 	public HeaderComponent[] components = new HeaderComponent[3];
+	{
+		for(int i = 0; i < components.length; i++)
+			components[i] = new HeaderComponent();
+	}
 }
