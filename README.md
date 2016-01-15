@@ -22,4 +22,6 @@ You might find out that some of the data required to run the tool is missing. Th
 
 Thanks to Figment for his help to obtain information about the hkx classes. Without him, none of this would be possible.  
 Thanks to CPU for his overall help with making this project.  
+Thanks to Orvid for his advices about how to make both working and clean code.  
+Thanks to Fore for his FNIS tool that allowed slight modifications of old files, and for sharing his knowledge of behaviors with me.  
 Thanks to the people from the NifTools IRC for helping with part of the project.
