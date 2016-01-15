@@ -16,7 +16,7 @@ import com.dexesttp.hkxpack.xml.classxml.definition.members.ImportedMember;
 import com.sun.org.apache.xerces.internal.parsers.DOMParser;
 
 public class ClassXMLReader {
-	public static void getClassFromFile(String classname, int classID) throws IOException {
+	public static ImportedClass getClassFromFile(String classname, int classID) throws IOException {
 		DOMParser parser = new DOMParser();
 		try {
 			parser.parse(FileUtils.getFileName(classname));
@@ -29,6 +29,7 @@ public class ClassXMLReader {
 		}
 		// Java DOM parsing is kind of ugly.
 		Document document = parser.getDocument();
+		// TODO handle enums.
 		NodeList enums = document.getElementsByTagName("enum");
 		for(int i = 0; i < enums.getLength(); i++) {
 			Node enumNode = enums.item(i);
@@ -55,5 +56,6 @@ public class ClassXMLReader {
 					DOMUtils.getNodeAttr("ctype", memberNode));
 			classObj.addContent(memberObj);
 		}
+		return classObj;
 	}
 }

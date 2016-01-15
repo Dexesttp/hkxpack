@@ -3,22 +3,21 @@ package com.dexesttp.hkxpack.xml.classxml.definition.members.resolver;
 import java.util.function.Function;
 
 import com.dexesttp.hkxpack.xml.classxml.definition.members.ResolvedMember;
-import com.dexesttp.hkxpack.xml.classxml.definition.members.resolved.ArrayMember;
 
-public enum ArrayMemberResolver {
-	TYPE_ARRAY(8, (value) -> {return null;}),
-	TYPE_SIMPLEARRAY(8, (value) -> {return null;});
+public enum StructMemberResolver {
+	TYPE_STRUCT(8, (value) -> {return null;});
 	
 	private final int size;
 	private final Function<byte[], String> action;
 
-	private ArrayMemberResolver(int size, Function<byte[], String> action) {
+	private StructMemberResolver(int size, Function<byte[], String> action) {
 		this.size = size;
 		this.action = action;
 	}
 	
-	public ResolvedMember resolve(ResolvedMember resolvedMember, String name) {
-		return new ArrayMember<ResolvedMember> (name){
+	// TODO fix plz
+	public ResolvedMember resolve(String className, String name) {
+		return new ResolvedMember(name) {
 			@Override
 			public long getSize() {
 				return size;

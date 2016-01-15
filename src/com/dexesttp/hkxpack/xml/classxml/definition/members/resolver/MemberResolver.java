@@ -9,22 +9,26 @@ public class MemberResolver {
 		DirectMemberResolver resolver1 = getEnumVal(DirectMemberResolver.class, vtype);
 		ArrayMemberResolver resolver2 = getEnumVal(ArrayMemberResolver.class, vtype);
 		PtrMemberResolver resolver3 = getEnumVal(PtrMemberResolver.class, vtype);
+		StructMemberResolver resolver4 = getEnumVal(StructMemberResolver.class, vtype);
 		if(resolver1 != null) {
 			return resolver1.resolve(name);
 		} else if(resolver2 != null){
 			resolver1 = getEnumVal(DirectMemberResolver.class, vsubtype);
-			resolver3 = getEnumVal(PtrMemberResolver.class, vsubtype);
+			resolver4 = getEnumVal(StructMemberResolver.class, vsubtype);
 			if(resolver1 != null) {
 				return resolver2.resolve(resolver1.resolve(name), name);
-			} else if(resolver3 != null) {
-				resolver1 = getEnumVal(DirectMemberResolver.class, ctype);
-				if(resolver1 != null)
-					return resolver2.resolve(resolver3.resolve(resolver1.resolve(name),  name), name);
+			} else if(resolver4 != null) {
+				return resolver2.resolve(resolver4.resolve(ctype,  name), name);
 			}
 		} else if(resolver3 != null) {
-			resolver1 = getEnumVal(DirectMemberResolver.class, ctype);
+			resolver1 = getEnumVal(DirectMemberResolver.class, vsubtype);
+			resolver4 = getEnumVal(StructMemberResolver.class, vsubtype);
 			if(resolver1 != null)
 				return resolver3.resolve(resolver1.resolve(name),  name);
+			else if(resolver4 != null)
+				return resolver3.resolve(resolver4.resolve(ctype, name),  name);
+		} else if(resolver4 != null) {
+			return resolver4.resolve(ctype, name);
 		}
 		throw new IllegalArgumentException(name + " : " + vtype + "//" + ctype + "//" + vsubtype);
 	}
@@ -37,7 +41,7 @@ public class MemberResolver {
 		try {
 			return Enum.valueOf(_enumClass, name);
 		}
-		catch(IllegalArgumentException e) {
+		catch(Exception e) {
 			return null;
 		}
 	}

@@ -8,6 +8,7 @@ import com.dexesttp.hkxpack.xml.classxml.definition.members.resolved.PtrMember;
 public enum PtrMemberResolver {
 	TYPE_POINTER(8, (value) -> {return null;}),
 	TYPE_FUNCTIONPOINTER(8, (value) -> {return null;}),
+	TYPE_CSTRING(8, (value) -> {return null;}),
 	TYPE_STRINGPTR(8, (value) -> {return null;});
 	
 	private final int size;
