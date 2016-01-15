@@ -19,6 +19,7 @@ public enum DirectMemberResolver {
 	TYPE_UINT64(64, (value) -> {return null;}),
 	TYPE_REAL(32, (value) -> {return null;}),
 	TYPE_VECTOR4(128, (value) -> {return null;}),
+	TYPE_MATRIX4(128, (value) -> {return null;}),
 	TYPE_QUATERNION(128, (value) -> {return null;}),
 	TYPE_ROTATION(96, (value) -> {return null;}),
 	TYPE_TRANSFORM(96, (value) -> {return null;});
