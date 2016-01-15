@@ -13,8 +13,7 @@ public class ImportedMember extends ClassXMLMember {
 	}
 
 	public ResolvedMember resolve() {
-		ResolvedMember res = new ResolvedMember(name);
-		
-		return null;
+		ResolvedMember res = null;
+		return res;
 	}
 }
