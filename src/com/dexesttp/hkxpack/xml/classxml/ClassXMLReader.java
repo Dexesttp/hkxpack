@@ -53,7 +53,8 @@ public class ClassXMLReader {
 					DOMUtils.getNodeAttr("name", memberNode),
 					DOMUtils.getNodeAttr("vtype", memberNode),
 					DOMUtils.getNodeAttr("vsubtype", memberNode),
-					DOMUtils.getNodeAttr("ctype", memberNode));
+					DOMUtils.getNodeAttr("ctype", memberNode),
+					DOMUtils.getNodeAttr("etype", memberNode));
 			classObj.addContent(memberObj);
 		}
 		return classObj;

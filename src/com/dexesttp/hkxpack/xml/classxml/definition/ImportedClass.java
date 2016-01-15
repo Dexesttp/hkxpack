@@ -14,9 +14,13 @@ public class ImportedClass extends ClassXML {
 
 	public ResolvedClass resolve() {
 		ResolvedClass res = new ResolvedClass(classname, classID);
-		for(ClassXMLMember member : members)
-			if(member instanceof ImportedMember)
-				res.addContent(((ImportedMember) member).resolve());
+		try {
+			for(ClassXMLMember member : members)
+				if(member instanceof ImportedMember)
+					res.addContent(((ImportedMember) member).resolve());
+		} catch(IllegalArgumentException e) {
+			throw new IllegalArgumentException(classname + " ----- " + e.getMessage());
+		}
 		return res;
 	}
 	

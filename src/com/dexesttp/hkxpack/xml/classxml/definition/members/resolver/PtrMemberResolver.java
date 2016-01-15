@@ -9,7 +9,8 @@ public enum PtrMemberResolver {
 	TYPE_POINTER(8, (value) -> {return null;}),
 	TYPE_FUNCTIONPOINTER(8, (value) -> {return null;}),
 	TYPE_CSTRING(8, (value) -> {return null;}),
-	TYPE_STRINGPTR(8, (value) -> {return null;});
+	TYPE_STRINGPTR(8, (value) -> {return null;}),
+	TYPE_QSTRANSFORM(96, (value) -> {return null;});
 	
 	private final int size;
 	private final Function<byte[], String> action;
