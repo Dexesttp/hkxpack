@@ -19,7 +19,7 @@ public class DOMUtils {
 	    }
 	    return null;
 	}
-	 
+	
 	public static String getNodeValue( Node node ) {
 	    NodeList childNodes = node.getChildNodes();
 	    for (int x = 0; x < childNodes.getLength(); x++ ) {

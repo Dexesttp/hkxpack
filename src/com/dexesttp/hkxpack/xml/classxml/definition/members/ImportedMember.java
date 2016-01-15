@@ -1,5 +1,7 @@
 package com.dexesttp.hkxpack.xml.classxml.definition.members;
 
+import com.dexesttp.hkxpack.xml.classxml.definition.members.resolver.MemberResolver;
+
 public class ImportedMember extends ClassXMLMember {
 	private final String vtype;
 	private final String vsubtype;
@@ -13,7 +15,6 @@ public class ImportedMember extends ClassXMLMember {
 	}
 
 	public ResolvedMember resolve() {
-		ResolvedMember res = null;
-		return res;
+		return MemberResolver.resolve(name, vtype, ctype, vsubtype);
 	}
 }
