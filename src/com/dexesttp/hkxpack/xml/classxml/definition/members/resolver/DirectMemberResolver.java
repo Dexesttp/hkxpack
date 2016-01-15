@@ -2,8 +2,6 @@ package com.dexesttp.hkxpack.xml.classxml.definition.members.resolver;
 
 import java.util.function.Function;
 
-import org.w3c.dom.Node;
-
 import com.dexesttp.hkxpack.xml.classxml.definition.members.ResolvedMember;
 import com.dexesttp.hkxpack.xml.classxml.definition.members.resolved.DirectMember;
 
