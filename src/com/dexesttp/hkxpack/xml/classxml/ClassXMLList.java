@@ -1,9 +1,9 @@
 package com.dexesttp.hkxpack.xml.classxml;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Stack;
 
 import com.dexesttp.hkxpack.hkx.definition.ClassName;
 import com.dexesttp.hkxpack.resources.ByteUtils;
@@ -14,8 +14,8 @@ import com.dexesttp.hkxpack.xml.classxml.definition.ResolvedClass;
 public class ClassXMLList {
 	private static ClassXMLList instance;
 
-	private ArrayList<ClassName> toRead = new ArrayList<>();
-	private ArrayList<ImportedClass> toResolve = new ArrayList<>();
+	private Stack<ClassName> toRead = new Stack<>();
+	private Stack<ImportedClass> toResolve = new Stack<>();
 	private Map<String, ResolvedClass> classMap = new HashMap<>();
 	
 	private ClassXMLList() {
@@ -28,17 +28,19 @@ public class ClassXMLList {
 	}
 	
 	public void addClass(ClassName classname) {
-		toRead.add(classname);
+		toRead.push(classname);
 	}
 	
 	public void import_classes() throws IOException {
-		for(ClassName cname : toRead) {
-			toResolve.add(ClassXMLReader.getClassFromFile(cname.className, ByteUtils.getInt(cname.classCode)));
+		while(!toRead.isEmpty()) {
+			ClassName cname = toRead.pop();
+			toResolve.push(ClassXMLReader.getClassFromFile(cname.className, ByteUtils.getInt(cname.classCode)));
 		}
 	}
 	
 	public void resolve() {
-		for(ImportedClass classObject : toResolve) {
+		while(!toResolve.isEmpty()) {
+			ImportedClass classObject = toResolve.pop();
 			classMap.put(classObject.getName(), classObject.resolve());
 		}
 	}
