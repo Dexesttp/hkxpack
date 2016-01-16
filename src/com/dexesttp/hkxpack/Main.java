@@ -6,18 +6,9 @@ import java.io.IOException;
 
 import com.dexesttp.hkxpack.hkx.handler.HKXHandler;
 import com.dexesttp.hkxpack.hkx.handler.HKXHandlerImpl;
-import com.dexesttp.hkxpack.resources.FileUtils;
 import com.dexesttp.hkxpack.resources.exceptions.UninitializedHKXException;
 
 public class Main {
-	// Temporary main, will be encapsuled in a view later.
-	public static void main(String[] args) {
-		Main main = new Main();
-		String fileName = "D:\\Documents\\SANDBOX\\FO4\\BloatflyRootBehavior.hkx";
-		FileUtils.initFolder();
-		main.exec(fileName);
-	}
-	
 	/**
 	 * Main entry point.
 	 */

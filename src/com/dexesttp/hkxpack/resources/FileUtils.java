@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FileUtils {
-	private static String folder = "D:\\Documents\\SANDBOX\\FO4\\classDefs";
+	private static String folder = "";
 	public static Map<String, String> filenameConverter = new HashMap<String, String>();
 	
 	public static void setFolder(String newFolder) {
