@@ -23,7 +23,7 @@ public class ClassNameLogic {
 		ClassName[] cNameList = reader.read();
 		// Retrieve class data.
 		for(ClassName inst : cNameList) {
-			// TODO remove debuyg code
+			// TODO remove debug code
 			System.out.println(inst.className);
 			classXMLList.addClass(inst);
 			mapper.add(inst.position, inst);

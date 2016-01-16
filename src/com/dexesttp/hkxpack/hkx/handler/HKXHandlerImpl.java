@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import com.dexesttp.hkxpack.hkx.classes.ClassFlagAssociator;
 import com.dexesttp.hkxpack.hkx.classes.ClassMapper;
 import com.dexesttp.hkxpack.hkx.definition.Header;
 import com.dexesttp.hkxpack.hkx.logic.ClassNameLogic;
@@ -21,7 +22,8 @@ public class HKXHandlerImpl implements HKXHandler{
 	// Reader
 	protected HeaderReader headerReader = null;
 	protected ClassNamesReader cnameReader = null;
-	protected TripleLinkReader data3reader = null;;
+	protected TripleLinkReader data3reader = null;
+	private ClassFlagAssociator associator = null;
 
 	public HKXHandlerImpl() {
 		this.headerReader = new HeaderReader();
@@ -75,8 +77,14 @@ public class HKXHandlerImpl implements HKXHandler{
 	public void resolveData() throws IOException, UninitializedHKXException {
 		final long begin = getHeader().getRegionOffset(2) + getHeader().getRegionDataOffset(2, 3);
 		final long length = getHeader().getRegionOffset(2) + getHeader().getRegionDataOffset(2, 4);
-		System.out.println("Offsets : " + begin + "//" + length);
 		data3reader.connect(file, begin, length - begin);
-		new Data3Logic(data3reader).resolve(this);
+		associator = new Data3Logic(data3reader).resolve(this);
+	}
+	
+	@Override
+	public ClassFlagAssociator getAssociator() throws IOException, UninitializedHKXException {
+		if(associator == null)
+			resolveData();
+		return associator;
 	}
 }
