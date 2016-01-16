@@ -16,4 +16,6 @@ public interface HKXHandler {
 
 	public void close() throws IOException;
 
+	public void readClassNames() throws FileNotFoundException, UninitializedHKXException, IOException;
+
 }

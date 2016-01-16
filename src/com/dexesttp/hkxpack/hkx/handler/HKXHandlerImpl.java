@@ -5,17 +5,20 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import com.dexesttp.hkxpack.hkx.definition.Header;
+import com.dexesttp.hkxpack.hkx.logic.ClassNameLogic;
+import com.dexesttp.hkxpack.hkx.reader.ClassNamesReader;
 import com.dexesttp.hkxpack.hkx.reader.HeaderReader;
 import com.dexesttp.hkxpack.resources.exceptions.UninitializedHKXException;
 
 public class HKXHandlerImpl implements HKXHandler{
 	protected File file = null;
-	private HeaderReader headerReader = null;
+	protected HeaderReader headerReader = null;
+	protected ClassNamesReader cnameReader = null;
 	protected Header header = null;
 
 	public HKXHandlerImpl() {
 		this.headerReader = new HeaderReader();
-		// TODO : create handler when invoked
+		this.cnameReader = new ClassNamesReader();
 	}
 	
 	@Override
@@ -38,6 +41,12 @@ public class HKXHandlerImpl implements HKXHandler{
 			header = headerReader.read();
 		}
 		return header;
+	}
+	
+	@Override
+	public void readClassNames() throws FileNotFoundException, UninitializedHKXException, IOException {
+		cnameReader.connect(file, getHeader().getRegionOffset(0), getHeader().getRegionDataOffset(0, 1));
+		new ClassNameLogic(cnameReader).resolve();
 	}
 	
 	@Override
