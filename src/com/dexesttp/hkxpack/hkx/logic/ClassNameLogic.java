@@ -2,6 +2,7 @@ package com.dexesttp.hkxpack.hkx.logic;
 
 import java.io.IOException;
 
+import com.dexesttp.hkxpack.hkx.classes.ClassMapper;
 import com.dexesttp.hkxpack.hkx.definition.ClassName;
 import com.dexesttp.hkxpack.hkx.reader.ClassNamesReader;
 import com.dexesttp.hkxpack.resources.exceptions.UninitializedHKXException;
@@ -16,7 +17,8 @@ public class ClassNameLogic {
 		this.reader = reader;
 	}
 	
-	public void resolve() throws IOException {
+	public ClassMapper resolve() throws IOException {
+		ClassMapper mapper = new ClassMapper();
 		ClassXMLList classXMLList = ClassXMLList.getInstance();
 		ClassName[] cNameList = reader.read();
 		// Retrieve class data.
@@ -24,8 +26,10 @@ public class ClassNameLogic {
 			// TODO remove debuyg code
 			System.out.println(inst.className);
 			classXMLList.addClass(inst);
+			mapper.add(inst.position, inst);
 		}
 		classXMLList.import_classes();
 		classXMLList.resolve();
+		return mapper;
 	}
 }

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import com.dexesttp.hkxpack.hkx.classes.ClassMapper;
 import com.dexesttp.hkxpack.resources.exceptions.UninitializedHKXException;
 
 public interface HKXHandler {
@@ -17,5 +18,9 @@ public interface HKXHandler {
 	public void close() throws IOException;
 
 	public void readClassNames() throws FileNotFoundException, UninitializedHKXException, IOException;
+
+	public void resolveData() throws IOException, UninitializedHKXException;
+
+	public ClassMapper getMapper() throws FileNotFoundException, UninitializedHKXException, IOException;
 
 }

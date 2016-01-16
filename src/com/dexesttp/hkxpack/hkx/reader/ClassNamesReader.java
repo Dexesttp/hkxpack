@@ -20,6 +20,7 @@ public class ClassNamesReader extends ConstantReader<ClassName[]> {
 				break;
 			if(file.readByte() == -1)
 				break;
+			cname.position = file.getFilePointer();
 			cname.className = ByteUtils.readString(file);
 			cnameList.add(cname);
 		}

@@ -9,11 +9,14 @@ import java.io.IOException;
  * @author DexesTTP
  */
 public abstract class FixedReader<T> extends AbstractReader<T> {
-	long arrayPos = 0;
+	protected long arrayPos = 0;
 
 	@Override
 	public T read() throws IOException {
-		long resolvedPos = position + (arrayPos++) * getEntitySize();
+		long resolvedPos = position + arrayPos * getEntitySize();
+		if(resolvedPos > position + size - getEntitySize())
+			return null;
+		arrayPos++;
 		file.seek(resolvedPos);
 		return readData();
 	}

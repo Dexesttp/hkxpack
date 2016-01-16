@@ -11,7 +11,7 @@ public abstract class AbstractReader<T> implements Reader<T> {
 	 */
 	protected RandomAccessFile file = null;
 	/**
-	 * The position where the data begns at.
+	 * The position where the data begins at.
 	 */
 	protected long position = 0;
 	/**

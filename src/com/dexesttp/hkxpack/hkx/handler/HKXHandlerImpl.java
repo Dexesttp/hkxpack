@@ -4,21 +4,29 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import com.dexesttp.hkxpack.hkx.classes.ClassMapper;
 import com.dexesttp.hkxpack.hkx.definition.Header;
 import com.dexesttp.hkxpack.hkx.logic.ClassNameLogic;
+import com.dexesttp.hkxpack.hkx.logic.Data3Logic;
 import com.dexesttp.hkxpack.hkx.reader.ClassNamesReader;
 import com.dexesttp.hkxpack.hkx.reader.HeaderReader;
+import com.dexesttp.hkxpack.hkx.reader.TripleLinkReader;
 import com.dexesttp.hkxpack.resources.exceptions.UninitializedHKXException;
 
 public class HKXHandlerImpl implements HKXHandler{
+	// Data containers
 	protected File file = null;
+	protected Header header = null;
+	protected ClassMapper classMapper = null;
+	// Reader
 	protected HeaderReader headerReader = null;
 	protected ClassNamesReader cnameReader = null;
-	protected Header header = null;
+	protected TripleLinkReader data3reader = null;;
 
 	public HKXHandlerImpl() {
 		this.headerReader = new HeaderReader();
 		this.cnameReader = new ClassNamesReader();
+		this.data3reader = new TripleLinkReader();
 	}
 	
 	@Override
@@ -46,7 +54,14 @@ public class HKXHandlerImpl implements HKXHandler{
 	@Override
 	public void readClassNames() throws FileNotFoundException, UninitializedHKXException, IOException {
 		cnameReader.connect(file, getHeader().getRegionOffset(0), getHeader().getRegionDataOffset(0, 1));
-		new ClassNameLogic(cnameReader).resolve();
+		classMapper = new ClassNameLogic(cnameReader).resolve();
+	}
+	
+	@Override
+	public ClassMapper getMapper() throws FileNotFoundException, UninitializedHKXException, IOException {
+		if(classMapper == null)
+			readClassNames();
+		return classMapper;
 	}
 	
 	@Override
@@ -54,5 +69,14 @@ public class HKXHandlerImpl implements HKXHandler{
 		headerReader.close();
 		file = null;
 		header = null;
+	}
+
+	@Override
+	public void resolveData() throws IOException, UninitializedHKXException {
+		final long begin = getHeader().getRegionOffset(2) + getHeader().getRegionDataOffset(2, 3);
+		final long length = getHeader().getRegionOffset(2) + getHeader().getRegionDataOffset(2, 4);
+		System.out.println("Offsets : " + begin + "//" + length);
+		data3reader.connect(file, begin, length - begin);
+		new Data3Logic(data3reader).resolve(this);
 	}
 }

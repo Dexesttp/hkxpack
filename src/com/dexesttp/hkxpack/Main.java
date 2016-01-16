@@ -24,6 +24,8 @@ public class Main {
 			handler.init();
 			handler.readClassNames();
 			// WTF resoltion worked ?!?!?
+			handler.resolveData();
+			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (UninitializedHKXException e) {
