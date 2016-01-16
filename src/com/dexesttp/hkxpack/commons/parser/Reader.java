@@ -25,4 +25,10 @@ public interface Reader<T> {
 	 * @throws IOException 
 	 */
 	public T read() throws IOException;
+
+	/**
+	 * Returns the connected state of the reader.
+	 * @return true if the reader is connected
+	 */
+	public boolean isConnected();
 }

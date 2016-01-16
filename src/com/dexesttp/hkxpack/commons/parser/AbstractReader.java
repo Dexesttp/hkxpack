@@ -25,6 +25,11 @@ public abstract class AbstractReader<T> implements Reader<T> {
 		this.size = size;
 		this.file = new RandomAccessFile(file, "r");
 	}
+	
+	@Override
+	public boolean isConnected() {
+		return file != null;
+	}
 
 	@Override
 	public void close() throws IOException {
