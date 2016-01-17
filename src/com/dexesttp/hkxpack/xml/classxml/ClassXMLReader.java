@@ -8,7 +8,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import com.dexesttp.hkxpack.resources.DOMUtils;
-import com.dexesttp.hkxpack.resources.FileUtils;
+import com.dexesttp.hkxpack.resources.ClassFilesUtils;
 import com.dexesttp.hkxpack.xml.classxml.definition.EnumObj;
 import com.dexesttp.hkxpack.xml.classxml.definition.ImportedClass;
 import com.dexesttp.hkxpack.xml.classxml.definition.members.ClassXMLMember;
@@ -19,7 +19,7 @@ public class ClassXMLReader {
 	public static ImportedClass getClassFromFile(String classname, int classID) throws IOException {
 		DOMParser parser = new DOMParser();
 		try {
-			parser.parse(FileUtils.getFileName(classname));
+			parser.parse(ClassFilesUtils.getFileName(classname));
 		} catch (SAXException e) {
 			e.printStackTrace();
 			throw new IOException("Couldn't parse file for " + classname + " : invalid DOM.");

@@ -41,9 +41,7 @@ public enum ArrayMemberResolver {
 				long arraySize = ByteUtils.getInt(arrayValue);
 				Node root = handler.getDocument().createElement(name);
 				for(int i = 0; i < size; i++) {
-					// TODO rework logic to change how that works into a thing that actually works.
-					Node member = resolvedMember.getResolver(handler).solve(null);
-					root.appendChild(member);
+					//TODO do something !
 				}
 				return null;
 			}

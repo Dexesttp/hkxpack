@@ -12,16 +12,14 @@ public class RandomReader<T> extends AbstractReader<T> implements Definer<T> {
 	public T read() throws IOException {
 		try {
 			long newPos = position + resolver.getPos();
-			byte[] b = new byte[(int) resolver.getLen()];
 			file.seek(newPos);
-			file.read(b);
-			return resolver.solve(b);
+			return resolver.solve(file);
 		}
 		catch(IOException e) {
 			throw e;
 		}
 		catch(Exception e) {
-			throw new IOException(e.getMessage());
+			throw new IOException(e);
 		}
 	}
 

@@ -8,8 +8,8 @@ public class Header implements IHeader {
 	public byte[] version = new byte[4];
 	public byte[] extras = new byte[4];
 	public byte[] constants = new byte[20];
-	public byte[] verName = new byte[16];
-	public byte[] padding = new byte[4];
+	public byte[] verName = new byte[14];
+	public byte[] padding = new byte[6];
 	public byte[] extras_new = new byte[2];
 	public byte[] padding_new = new byte[2];
 	

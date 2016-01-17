@@ -11,7 +11,7 @@ import com.dexesttp.hkxpack.hkx.classes.ClassFlagAssociator;
 import com.dexesttp.hkxpack.hkx.classes.ClassMapper;
 import com.dexesttp.hkxpack.hkx.definition.Header;
 import com.dexesttp.hkxpack.hkx.logic.ClassNameLogic;
-import com.dexesttp.hkxpack.hkx.logic.Data1Logic;
+import com.dexesttp.hkxpack.hkx.logic.DataLogic;
 import com.dexesttp.hkxpack.hkx.logic.Data2Logic;
 import com.dexesttp.hkxpack.hkx.logic.Data3Logic;
 import com.dexesttp.hkxpack.hkx.reader.ClassNamesReader;
@@ -23,6 +23,7 @@ import com.dexesttp.hkxpack.resources.exceptions.UnconnectedHKXException;
 import com.dexesttp.hkxpack.resources.exceptions.UninitializedHKXException;
 import com.dexesttp.hkxpack.resources.exceptions.UnresolvedMemberException;
 import com.dexesttp.hkxpack.xml.classxml.definition.ClassXML;
+import com.dexesttp.hkxpack.xml.tagxml.TagXMLInitializer;
 
 public class HKXHandlerImpl implements HKXHandler{
 	// Data containers
@@ -38,6 +39,7 @@ public class HKXHandlerImpl implements HKXHandler{
 	protected InternalLinkReader data1reader = null;
 	protected TripleLinkReader data2reader = null;
 	protected TripleLinkReader data3reader = null;
+	protected Document document = null;
 
 	public HKXHandlerImpl() {
 		this.headerReader = new HeaderReader();
@@ -124,7 +126,9 @@ public class HKXHandlerImpl implements HKXHandler{
 	
 	@Override
 	public void resolveData() throws UninitializedHKXException, IOException, UnresolvedMemberException {
-		new Data1Logic(getInternalLinkReader()).resolve(this);
+		// TODO remove that.
+		getInternalLinkReader();
+		new DataLogic().resolve(this);
 	}
 	
 	@Override
@@ -140,8 +144,9 @@ public class HKXHandlerImpl implements HKXHandler{
 	}
 
 	@Override
-	public Document getDocument() {
-		// TODO Create document before and handle document acquisition.
-		return null;
+	public Document getDocument() throws IOException, UninitializedHKXException {
+		if(document == null)
+			document = new TagXMLInitializer().initialize(getHeader().getVersion(), getHeader().getVersionName());
+		return document;
 	}
 }

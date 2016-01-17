@@ -24,7 +24,13 @@ public class ImportedClass extends ClassXML {
 		return res;
 	}
 	
-	public String getName() {
+	@Override
+	public String getClassName() {
 		return classname;
+	}
+	
+	@Override
+	public int getClassID() {
+		return classID;
 	}
 }

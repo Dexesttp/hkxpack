@@ -41,7 +41,7 @@ public class ClassXMLList {
 	public void resolve() {
 		while(!toResolve.isEmpty()) {
 			ImportedClass classObject = toResolve.pop();
-			classMap.put(classObject.getName(), classObject.resolve());
+			classMap.put(classObject.getClassName(), classObject.resolve());
 		}
 	}
 	

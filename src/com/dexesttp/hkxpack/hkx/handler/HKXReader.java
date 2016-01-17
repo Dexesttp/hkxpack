@@ -19,7 +19,7 @@ public interface HKXReader {
 
 	public void resolveData() throws UninitializedHKXException, IOException, UnresolvedMemberException;
 
-	public Document getDocument();
+	public Document getDocument() throws IOException, UninitializedHKXException;
 
 	public void close() throws IOException;
 

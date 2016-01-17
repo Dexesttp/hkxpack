@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FileUtils {
+public class ClassFilesUtils {
 	private static String folder = "";
 	public static Map<String, String> filenameConverter = new HashMap<String, String>();
 	

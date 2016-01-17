@@ -9,4 +9,13 @@ public class ResolvedClass extends ClassXML {
 		this.classID = classID;
 	}
 
+	@Override
+	public String getClassName() {
+		return classname;
+	}
+
+	@Override
+	public int getClassID() {
+		return classID;
+	}
 }

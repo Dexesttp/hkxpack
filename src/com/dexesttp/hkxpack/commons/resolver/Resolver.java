@@ -1,9 +1,10 @@
 package com.dexesttp.hkxpack.commons.resolver;
 
+import java.io.IOException;
+import java.io.RandomAccessFile;
+
 public interface Resolver<T> {
-	long getPos();
+	public long getPos();
 
-	long getLen();
-
-	T solve(byte[] b);
+	public T solve(RandomAccessFile file) throws IOException;
 }

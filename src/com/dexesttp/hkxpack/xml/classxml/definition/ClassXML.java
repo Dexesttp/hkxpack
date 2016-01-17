@@ -16,4 +16,8 @@ public abstract class ClassXML {
 	public List<ClassXMLMember> getMembers() {
 		return members;
 	}
+
+	public abstract String getClassName();
+
+	public abstract int getClassID();
 }

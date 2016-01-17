@@ -15,6 +15,17 @@ public class ByteUtils {
 		return res;
 	}
 
+	public static long getLong(byte[] list) {
+		final int len = list.length;
+		long accu = 1;
+		long res = 0;
+		for(int i = 0; i < len; i++) {
+			res += ((int) (list[i] & 0xFF)) * accu;
+			accu *= 256;
+		}
+		return res;
+	}
+
 	public static String readString(RandomAccessFile in) throws IOException {
 		String s = "";
 		byte b;

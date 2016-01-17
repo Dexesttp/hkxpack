@@ -7,7 +7,6 @@ import org.w3c.dom.Node;
 
 import com.dexesttp.hkxpack.commons.resolver.Resolver;
 import com.dexesttp.hkxpack.hkx.handler.HKXHandler;
-import com.dexesttp.hkxpack.hkx.reader.InternalLinkReader;
 import com.dexesttp.hkxpack.resources.exceptions.UninitializedHKXException;
 import com.dexesttp.hkxpack.resources.exceptions.UnresolvedMemberException;
 import com.dexesttp.hkxpack.xml.classxml.definition.members.ResolvedMember;
@@ -37,21 +36,8 @@ public enum PtrMemberResolver {
 
 			@Override
 			public Resolver<Node> getResolver(HKXHandler handler) throws IOException, UnresolvedMemberException, UninitializedHKXException {
-				InternalLinkReader data1reader = handler.getInternalLinkReader();
-				return new Resolver<Node>() {
-					@Override
-					public long getPos() {
-						return 0;
-					}
-					@Override
-					public long getLen() {
-						return 0;
-					}
-					@Override
-					public Node solve(byte[] b) {
-						return null;
-					}
-				};
+				// TODO return not null
+				return null;
 			}
 		};
 	}

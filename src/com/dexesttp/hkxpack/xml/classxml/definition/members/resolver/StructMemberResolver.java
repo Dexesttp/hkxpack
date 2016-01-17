@@ -7,8 +7,10 @@ import org.w3c.dom.Node;
 
 import com.dexesttp.hkxpack.commons.resolver.Resolver;
 import com.dexesttp.hkxpack.hkx.handler.HKXHandler;
+import com.dexesttp.hkxpack.resources.exceptions.UninitializedHKXException;
 import com.dexesttp.hkxpack.resources.exceptions.UnresolvedMemberException;
 import com.dexesttp.hkxpack.xml.classxml.definition.members.ResolvedMember;
+import com.dexesttp.hkxpack.xml.classxml.definition.members.resolved.StructMember;
 
 public enum StructMemberResolver {
 	TYPE_STRUCT(8, (value) -> {return null;});
@@ -23,15 +25,15 @@ public enum StructMemberResolver {
 	
 	// TODO fix plz
 	public ResolvedMember resolve(String className, String name) {
-		return new ResolvedMember(name) {
+		return new StructMember(name) {
 			@Override
 			public long getSize() {
 				return size;
 			}
 
 			@Override
-			public Resolver<Node> getResolver(HKXHandler handler) throws IOException, UnresolvedMemberException {
-				// TODO Auto-generated method stub
+			public Resolver<Node> getResolver(HKXHandler handler) throws IOException, UnresolvedMemberException, UninitializedHKXException {
+				// TODO return not null
 				return null;
 			}
 		};
