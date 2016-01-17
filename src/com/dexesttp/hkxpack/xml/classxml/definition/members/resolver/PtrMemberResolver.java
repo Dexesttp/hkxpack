@@ -61,9 +61,10 @@ public enum PtrMemberResolver {
 				if(link == null)
 					return null;
 				long position = ByteUtils.getLong(link.to);
-				String name = resolver.get(position);
+				String refName = resolver.get(position);
 				Element fixedNode = handler.getDocument().createElement("hkparam");
-				Node textNode = handler.getDocument().createTextNode(name);
+				Node textNode = handler.getDocument().createTextNode(refName);
+				fixedNode.setAttribute("name", name);
 				fixedNode.appendChild(textNode);
 				return new Resolver<Node>() {
 					private final Node intNode = fixedNode;
