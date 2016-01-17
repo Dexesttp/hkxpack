@@ -95,7 +95,7 @@ public class HKXHandlerImpl implements HKXHandler{
 	public void resolveData2() throws IOException, UninitializedHKXException {
 		final long begin = getHeader().getRegionOffset(2) + getHeader().getRegionDataOffset(2, 2);
 		final long length = getHeader().getRegionOffset(2) + getHeader().getRegionDataOffset(2, 3);
-		data3reader.connect(file, begin, length - begin);
+		data2reader.connect(file, begin, length - begin);
 		new Data2Logic(data2reader).resolve(this);
 	}
 }

@@ -28,14 +28,15 @@ public class Data2Logic {
 		long flag, externalData, classPos;
 		String name;
 		while((link = reader.read()) != null) {
-			flag = ByteUtils.getInt(link.from);
-			externalData = ByteUtils.getInt(link.to) + dataOffset;
+			externalData = ByteUtils.getInt(link.from);
+			flag = ByteUtils.getInt(link.to);
+			// TODO remove debug
+			System.out.println("Flag : " + flag);
+			// TODO find something to do with this... thing ?
+			System.out.println("External data : " + externalData);
 			classPos = associator.getClass(flag);
 			name = mapper.getName(classPos);
 			ClassXML classInstance = ClassXMLList.getInstance().get(name);
-			// TODO remove debug
-			// TODO find womething to do with this... thing ?
-			System.out.println("External data : " + externalData);
 		}
 	}
 }
