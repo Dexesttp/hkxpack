@@ -21,6 +21,7 @@ public class Data2Logic {
 		this.reader = data2reader;
 	}
 
+	// TODO see 01 for mods to do.
 	public LinkedList<ClassXML> resolve(HKXHandler handler) throws IOException, UninitializedHKXException {
 		final ClassMapper mapper = handler.getMapper();
 		final ClassFlagAssociator associator = handler.getAssociator();

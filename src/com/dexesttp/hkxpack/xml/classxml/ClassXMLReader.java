@@ -27,6 +27,8 @@ public class ClassXMLReader {
 			e.printStackTrace();
 			throw new IOException("Error reading file for " + classname + " : " + e.getMessage());
 		}
+		// Get Class List to store enums in.
+		ClassXMLList classList = ClassXMLList.getInstance();
 		// Java DOM parsing is kind of ugly.
 		Document document = parser.getDocument();
 		// TODO handle enums.
@@ -44,6 +46,7 @@ public class ClassXMLReader {
 							DOMUtils.getNodeAttr("name", entry),
 							Integer.parseInt(DOMUtils.getNodeAttr("value", entry)));
 			}
+			classList.addEnum(classname, enumObj.getName(), enumObj);
 		}
 		ImportedClass classObj = new ImportedClass(classname, classID);
 		NodeList members = document.getElementsByTagName("member");

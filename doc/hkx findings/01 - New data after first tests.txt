@@ -1,0 +1,6 @@
+Apaprently, the data is organized differently from what I thought :
+
+ - Members have a flage value, that can be either NONE or SERIALIZED
+ - Serialized memebrs must not be included in data mining, but <could ?> be included as comment in the output XML.
+ - Data3 seems to contain the actual class architecture, while data2 and data1 contains respectvely enums (?) and actual data.
+ 

@@ -41,6 +41,8 @@ public enum EnumMemberResolver {
 			public Resolver<Node> getResolver(HKXHandler handler) throws IOException, UnresolvedMemberException, UninitializedHKXException {
 				InternalLinkReader links = handler.getInternalLinkReader();
 				DoubleLink link = links.read();
+				if(link == null)
+					return null;
 				return new Resolver<Node>() {
 					final Document document = handler.getDocument();
 					final long pos = ByteUtils.getLong(link.from);
@@ -56,6 +58,7 @@ public enum EnumMemberResolver {
 						String value = action.apply(bytes);
 						Element node = document.createElement("hkparam");
 						node.setAttribute("name", name);
+						node.setAttribute("type", "enum");
 						node.appendChild(document.createTextNode(value));
 						return node;
 					}

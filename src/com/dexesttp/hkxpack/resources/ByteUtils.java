@@ -33,4 +33,16 @@ public class ByteUtils {
 			s += (char) b;
 		return s;
 	}
+
+	// TODO output actually signed int please.
+	public static int getSInt(byte[] list) {
+		final int len = list.length;
+		int accu = 1;
+		int res = 0;
+		for(int i = 0; i < len; i++) {
+			res += ((int) (list[i] & 0xFF)) * accu;
+			accu *= 256;
+		}
+		return res;
+	}
 }
