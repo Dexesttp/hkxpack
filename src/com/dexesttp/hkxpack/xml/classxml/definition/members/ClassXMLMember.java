@@ -11,9 +11,11 @@ import com.dexesttp.hkxpack.resources.exceptions.UnresolvedMemberException;
 
 public abstract class ClassXMLMember {
 	protected final String name; 
+	protected final String classname;
 	
-	public ClassXMLMember(String name) {
+	public ClassXMLMember(String name, String classname) {
 		this.name = name;
+		this.classname = classname;
 	}
 
 	public abstract Resolver<Node> getResolver(HKXHandler handler) throws IOException, UnresolvedMemberException, UninitializedHKXException;

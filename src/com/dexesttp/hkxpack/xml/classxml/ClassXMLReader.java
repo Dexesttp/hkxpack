@@ -46,7 +46,7 @@ public class ClassXMLReader {
 							DOMUtils.getNodeAttr("name", entry),
 							Integer.parseInt(DOMUtils.getNodeAttr("value", entry)));
 			}
-			classList.addEnum(enumObj.getName(), enumObj);
+			classList.addEnum(classname, enumObj.getName(), enumObj);
 		}
 		ImportedClass classObj = new ImportedClass(classname, classID);
 		NodeList members = document.getElementsByTagName("member");
@@ -54,10 +54,12 @@ public class ClassXMLReader {
 			Node memberNode = members.item(i);
 			ClassXMLMember memberObj = new ImportedMember(
 					DOMUtils.getNodeAttr("name", memberNode),
+					classname,
 					DOMUtils.getNodeAttr("vtype", memberNode),
 					DOMUtils.getNodeAttr("vsubtype", memberNode),
 					DOMUtils.getNodeAttr("ctype", memberNode),
-					DOMUtils.getNodeAttr("etype", memberNode));
+					DOMUtils.getNodeAttr("etype", memberNode),
+					DOMUtils.getNodeAttr("flags", memberNode));
 			classObj.addContent(memberObj);
 		}
 		return classObj;

@@ -51,11 +51,11 @@ public class ClassXMLList {
 		return classMap.get(classname);
 	}
 	
-	public void addEnum(String enumName, EnumObj enumObj) {
-		enumMap.put(enumName, enumObj);
+	public void addEnum(String className, String enumName, EnumObj enumObj) {
+		enumMap.put(className + "." + enumName, enumObj);
 	}
 	
-	public EnumObj getEnum(String enumName) {
-		return enumMap.get(enumName);
+	public EnumObj getEnum(String className, String enumName) {
+		return enumMap.get(className + "." + enumName);
 	}
 }

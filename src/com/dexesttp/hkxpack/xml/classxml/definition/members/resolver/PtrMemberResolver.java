@@ -46,8 +46,8 @@ public enum PtrMemberResolver {
 		this.action = action;
 	}
 	
-	public ResolvedMember resolve(ResolvedMember resolvedMember, String name) {
-		return new PtrMember<ResolvedMember>(name) {
+	public ResolvedMember resolve(ResolvedMember resolvedMember, String name, String classname) {
+		return new PtrMember<ResolvedMember>(name, classname) {
 			@Override
 			public long getSize() {
 				return size;
@@ -58,6 +58,8 @@ public enum PtrMemberResolver {
 				InternalLinkReader reader = handler.getInternalLinkReader();
 				PointerResolver resolver = handler.getPtrResolver();
 				DoubleLink link = reader.read();
+				if(link == null)
+					return null;
 				long position = ByteUtils.getLong(link.to);
 				String name = resolver.get(position);
 				Element fixedNode = handler.getDocument().createElement("hkparam");

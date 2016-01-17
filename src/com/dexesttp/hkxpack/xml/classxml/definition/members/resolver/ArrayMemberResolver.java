@@ -26,8 +26,8 @@ public enum ArrayMemberResolver {
 		this.action = action;
 	}
 	
-	public ResolvedMember resolve(ResolvedMember resolvedMember, String name) {
-		return new ArrayMember<ResolvedMember> (name){
+	public ResolvedMember resolve(ResolvedMember resolvedMember, String name, String classname) {
+		return new ArrayMember<ResolvedMember> (name, classname){
 			@Override
 			public long getSize() {
 				return size;

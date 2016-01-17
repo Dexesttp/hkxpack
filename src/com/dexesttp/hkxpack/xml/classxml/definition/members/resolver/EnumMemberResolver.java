@@ -32,8 +32,8 @@ public enum EnumMemberResolver {
 		this.action = action;
 	}
 	
-	public ResolvedMember resolve(ResolvedMember resolved, String ename, String name) {
-		return new EnumMember(name) {
+	public ResolvedMember resolve(ResolvedMember resolved, String ename, String name, String classname) {
+		return new EnumMember(name, classname) {
 			@Override
 			public long getSize() {
 				return size;
@@ -48,6 +48,7 @@ public enum EnumMemberResolver {
 				return new Resolver<Node>() {
 					final Document document = handler.getDocument();
 					final long pos = ByteUtils.getLong(link.from);
+					final String className = classname;
 					@Override
 					public long getPos() {
 						return pos;
@@ -56,11 +57,16 @@ public enum EnumMemberResolver {
 					@Override
 					public Node solve(RandomAccessFile file) throws IOException {
 						ClassXMLList classList = ClassXMLList.getInstance();
-						EnumObj enumObj = classList.getEnum(ename);
+						EnumObj enumObj = classList.getEnum(className, ename);
 						final byte[] bytes = new byte[size];
 						file.read(bytes);
 						int value = action.apply(bytes);
-						String enumName = enumObj.getFromValue(value);
+						// If we can't get the enum, just output the number :/
+						String enumName = "";
+						if(enumObj != null)
+							enumName = enumObj.getFromValue(value);
+						else
+							enumName = ""+value;
 						Element node = document.createElement("hkparam");
 						node.setAttribute("name", name);
 						node.setAttribute("type", "enum");

@@ -4,7 +4,7 @@ import com.dexesttp.hkxpack.xml.classxml.definition.members.ResolvedMember;
 
 public abstract class EnumMember extends ResolvedMember {
 
-	public EnumMember(String name) {
-		super(name);
+	public EnumMember(String name, String classname) {
+		super(name, classname);
 	}
 }

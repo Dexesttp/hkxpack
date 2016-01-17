@@ -68,8 +68,8 @@ public enum DirectMemberResolver {
 		this.action = action;
 	}
 	
-	public ResolvedMember resolve(String name) {
-		return new DirectMember(name) {
+	public ResolvedMember resolve(String name, String classname) {
+		return new DirectMember(name, classname) {
 			@Override
 			public long getSize() {
 				return size;

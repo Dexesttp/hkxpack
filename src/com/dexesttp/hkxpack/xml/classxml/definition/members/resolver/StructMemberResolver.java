@@ -24,8 +24,8 @@ public enum StructMemberResolver {
 	}
 	
 	// TODO fix plz
-	public ResolvedMember resolve(String className, String name) {
-		return new StructMember(name) {
+	public ResolvedMember resolve(String className, String name, String baseClassName) {
+		return new StructMember(name, baseClassName) {
 			@Override
 			public long getSize() {
 				return size;
