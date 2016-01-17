@@ -18,8 +18,6 @@ import com.dexesttp.hkxpack.xml.classxml.definition.ClassXML;
 import com.dexesttp.hkxpack.xml.classxml.definition.members.ClassXMLMember;
 
 public class DataLogic {
-
-	private int value = 3;
 	
 	public DataLogic() {
 	}
@@ -38,7 +36,7 @@ public class DataLogic {
 			Element classElement = document.createElement("hkobject");
 			classElement.setAttribute("name", ptrResolver.get(intReader.getCurrentPosition()));
 			classElement.setAttribute("class", instance.getClassName());
-			classElement.setAttribute("signature", ""+instance.getClassID());
+			classElement.setAttribute("signature", "0x"+Integer.toHexString(instance.getClassID()));
 			for(ClassXMLMember member : instance.getMembers()) {
 				Resolver<Node> resolver = member.getResolver(handler);
 				if(resolver != null) {

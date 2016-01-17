@@ -36,6 +36,7 @@ public enum DirectMemberResolver {
 	TYPE_QUATERNION(128, (value) -> {return ""+ByteUtils.getInt(value);}),
 	TYPE_ROTATION(96, (value) -> {return ""+ByteUtils.getInt(value);}),
 	TYPE_TRANSFORM(96, (value) -> {return ""+ByteUtils.getInt(value);}),
+	TYPE_QSTRANSFORM(128, (value) -> {return ""+ByteUtils.getInt(value);}),
 	TYPE_CSTRING((file) -> {
 		try {
 			return ByteUtils.readString(file);
@@ -81,8 +82,7 @@ public enum DirectMemberResolver {
 				DoubleLink link = links.read();
 				if(link == null)
 					return null;
-				System.out.println("Link 1 : " +  ByteUtils.getLong(link.from));
-				System.out.println("Link 2 : " +  ByteUtils.getLong(link.to));
+				System.out.println(link.dump());
 				return new Resolver<Node>() {
 					private final Document document = handler.getDocument();
 					private final long pos = ByteUtils.getLong(link.from);

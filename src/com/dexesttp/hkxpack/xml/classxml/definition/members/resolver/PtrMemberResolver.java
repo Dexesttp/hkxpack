@@ -27,10 +27,6 @@ public enum PtrMemberResolver {
 		}),
 	TYPE_STRINGPTR(8, (file) -> {
 			return null;
-		}),
-	// TODO check that <everyday i'm shuffling>
-	TYPE_QSTRANSFORM(96, (file) -> {
-			return null;
 		});
 	
 	private final int size;

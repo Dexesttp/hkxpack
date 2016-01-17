@@ -31,7 +31,6 @@ public class ClassXMLReader {
 		ClassXMLList classList = ClassXMLList.getInstance();
 		// Java DOM parsing is kind of ugly.
 		Document document = parser.getDocument();
-		// TODO handle enums.
 		NodeList enums = document.getElementsByTagName("enum");
 		for(int i = 0; i < enums.getLength(); i++) {
 			Node enumNode = enums.item(i);

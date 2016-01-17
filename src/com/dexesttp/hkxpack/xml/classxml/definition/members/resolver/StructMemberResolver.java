@@ -23,7 +23,6 @@ public enum StructMemberResolver {
 		this.action = action;
 	}
 	
-	// TODO fix plz
 	public ResolvedMember resolve(String className, String name, String baseClassName) {
 		return new StructMember(name, baseClassName) {
 			@Override
@@ -34,6 +33,7 @@ public enum StructMemberResolver {
 			@Override
 			public Resolver<Node> getResolver(HKXHandler handler) throws IOException, UnresolvedMemberException, UninitializedHKXException {
 				// TODO return not null
+				System.out.println("Denied.");
 				return null;
 			}
 		};
