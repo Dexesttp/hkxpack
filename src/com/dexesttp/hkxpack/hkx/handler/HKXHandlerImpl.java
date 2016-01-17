@@ -30,13 +30,13 @@ public class HKXHandlerImpl implements HKXHandler{
 	protected ClassMapper classMapper = null;
 	protected ClassFlagAssociator associator = null;
 	protected LinkedList<ClassXML> instanceList = null;
-	// Reader
+	// Readers
 	protected HeaderReader headerReader = null;
 	protected ClassNamesReader cnameReader = null;
-	protected TripleLinkReader data3reader = null;
-	protected TripleLinkReader data2reader = null;
-	protected InternalLinkReader data1reader = null;
 	protected DataReader datareader = null;
+	protected InternalLinkReader data1reader = null;
+	protected TripleLinkReader data2reader = null;
+	protected TripleLinkReader data3reader = null;
 
 	public HKXHandlerImpl() {
 		this.headerReader = new HeaderReader();
@@ -51,7 +51,8 @@ public class HKXHandlerImpl implements HKXHandler{
 	public void connect(File file) {
 		this.file = file;
 	}
-	
+
+	// TODO see if I can't remove this.
 	@Override
 	public void init() throws UninitializedHKXException, FileNotFoundException {
 		if(file == null)

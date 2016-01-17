@@ -16,14 +16,7 @@ import com.dexesttp.hkxpack.resources.exceptions.UnresolvedMemberException;
 import com.dexesttp.hkxpack.xml.classxml.definition.ClassXML;
 
 public interface HKXHandler {
-
-	public void connect(File file);
-
-	public void init() throws UninitializedHKXException, FileNotFoundException;
-
 	public IHeader getHeader() throws UninitializedHKXException, IOException;
-
-	public void close() throws IOException;
 
 	public ClassMapper getMapper() throws FileNotFoundException, UninitializedHKXException, IOException;
 
@@ -31,12 +24,19 @@ public interface HKXHandler {
 
 	public LinkedList<ClassXML> getInstanceList() throws IOException, UninitializedHKXException;
 
-	public void resolveData() throws UninitializedHKXException, IOException, UnresolvedMemberException;
-
 	public DataReader getDataReader() throws UninitializedHKXException, IOException;
+
+	public InternalLinkReader getInternalLinkReader() throws UninitializedHKXException, IOException;
+
+	// TODO create superinterface for these five guys.
+	public void connect(File file);
+	
+	public void init() throws UninitializedHKXException, FileNotFoundException;
+
+	public void resolveData() throws UninitializedHKXException, IOException, UnresolvedMemberException;
 
 	public Document getDocument();
 
-	public InternalLinkReader getInternalLinkReader() throws UninitializedHKXException, IOException;
+	public void close() throws IOException;
 
 }
