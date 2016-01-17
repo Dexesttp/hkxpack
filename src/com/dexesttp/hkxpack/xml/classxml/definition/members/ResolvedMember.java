@@ -7,6 +7,4 @@ public abstract class ResolvedMember extends ClassXMLMember {
 	}
 
 	public abstract long getSize();
-	
-	public abstract String apply(byte[] value);
 }

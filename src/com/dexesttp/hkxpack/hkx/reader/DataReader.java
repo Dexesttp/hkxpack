@@ -1,8 +1,9 @@
 package com.dexesttp.hkxpack.hkx.reader;
 
-import com.dexesttp.hkxpack.commons.parser.RandomReader;
-import com.dexesttp.hkxpack.hkx.classes.ClassHandler;
+import org.w3c.dom.Node;
 
-public class DataReader extends RandomReader<ClassHandler>{
+import com.dexesttp.hkxpack.commons.parser.RandomReader;
+
+public class DataReader extends RandomReader<Node>{
 
 }

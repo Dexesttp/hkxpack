@@ -5,10 +5,13 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
+import org.w3c.dom.Document;
+
 import com.dexesttp.hkxpack.hkx.classes.ClassFlagAssociator;
 import com.dexesttp.hkxpack.hkx.classes.ClassMapper;
 import com.dexesttp.hkxpack.hkx.reader.DataReader;
 import com.dexesttp.hkxpack.resources.exceptions.UninitializedHKXException;
+import com.dexesttp.hkxpack.resources.exceptions.UnresolvedMemberException;
 import com.dexesttp.hkxpack.xml.classxml.definition.ClassXML;
 
 public interface HKXHandler {
@@ -33,8 +36,10 @@ public interface HKXHandler {
 
 	public List<ClassXML> getInstanceList() throws IOException, UninitializedHKXException;
 
-	public void resolveData() throws UninitializedHKXException, IOException;
+	public void resolveData() throws UninitializedHKXException, IOException, UnresolvedMemberException;
 
 	public DataReader getDataReader() throws UninitializedHKXException, IOException;
+
+	public Document getDocument();
 
 }

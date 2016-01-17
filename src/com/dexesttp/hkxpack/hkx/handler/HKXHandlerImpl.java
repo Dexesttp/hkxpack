@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
+import org.w3c.dom.Document;
+
 import com.dexesttp.hkxpack.hkx.classes.ClassFlagAssociator;
 import com.dexesttp.hkxpack.hkx.classes.ClassMapper;
 import com.dexesttp.hkxpack.hkx.definition.Header;
@@ -18,6 +20,7 @@ import com.dexesttp.hkxpack.hkx.reader.HeaderReader;
 import com.dexesttp.hkxpack.hkx.reader.InternalLinkReader;
 import com.dexesttp.hkxpack.hkx.reader.TripleLinkReader;
 import com.dexesttp.hkxpack.resources.exceptions.UninitializedHKXException;
+import com.dexesttp.hkxpack.resources.exceptions.UnresolvedMemberException;
 import com.dexesttp.hkxpack.xml.classxml.definition.ClassXML;
 
 public class HKXHandlerImpl implements HKXHandler{
@@ -117,7 +120,7 @@ public class HKXHandlerImpl implements HKXHandler{
 	}
 	
 	@Override
-	public void resolveData() throws UninitializedHKXException, IOException {
+	public void resolveData() throws UninitializedHKXException, IOException, UnresolvedMemberException {
 		final long begin = getHeader().getRegionOffset(2) + getHeader().getRegionDataOffset(2, 1);
 		final long end = getHeader().getRegionOffset(2) + getHeader().getRegionDataOffset(2, 2);
 		data1reader.connect(file, begin, end - begin);
@@ -132,5 +135,11 @@ public class HKXHandlerImpl implements HKXHandler{
 			datareader.connect(file, begin, length);
 		}
 		return datareader;
+	}
+
+	@Override
+	public Document getDocument() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

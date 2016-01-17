@@ -1,7 +1,13 @@
 package com.dexesttp.hkxpack.xml.classxml.definition.members.resolver;
 
+import java.io.IOException;
 import java.util.function.Function;
 
+import org.w3c.dom.Node;
+
+import com.dexesttp.hkxpack.commons.resolver.Resolver;
+import com.dexesttp.hkxpack.hkx.handler.HKXHandler;
+import com.dexesttp.hkxpack.resources.exceptions.UnresolvedMemberException;
 import com.dexesttp.hkxpack.xml.classxml.definition.members.ResolvedMember;
 import com.dexesttp.hkxpack.xml.classxml.definition.members.resolved.EnumMember;
 
@@ -23,10 +29,13 @@ public enum EnumMemberResolver {
 			public long getSize() {
 				return size;
 			}
+			
 			@Override
-			public String apply(byte[] value) {
-				return action.apply(value);
+			public Resolver<Node> getResolver(HKXHandler handler) throws IOException, UnresolvedMemberException {
+				// TODO Auto-generated method stub
+				return null;
 			}
+
 		};
 	}
 }

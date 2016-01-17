@@ -1,7 +1,17 @@
 package com.dexesttp.hkxpack.xml.classxml.definition.members.resolver;
 
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.Text;
+
+import com.dexesttp.hkxpack.commons.resolver.Resolver;
+import com.dexesttp.hkxpack.hkx.handler.HKXHandler;
+import com.dexesttp.hkxpack.resources.exceptions.UnresolvedMemberException;
 import com.dexesttp.hkxpack.xml.classxml.definition.members.ResolvedMember;
 import com.dexesttp.hkxpack.xml.classxml.definition.members.resolved.DirectMember;
 
@@ -27,11 +37,19 @@ public enum DirectMemberResolver {
 
 	
 	private final int size;
-	private final Function<byte[], String> action;
+	private final BiFunction<RandomAccessFile, Node, String> action;
 	
 	private DirectMemberResolver(int size, Function<byte[], String> action) {
 		this.size = size;
-		this.action = action;
+		this.action = (file, node) -> {
+			byte[] byteArray = new byte[size];
+			try {
+				file.read(byteArray);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return action.apply(byteArray);
+		}; 
 	}
 	
 	public ResolvedMember resolve(String name) {
@@ -40,9 +58,19 @@ public enum DirectMemberResolver {
 			public long getSize() {
 				return size;
 			}
+			
+			public Node apply(RandomAccessFile file, long position, Document document) throws IOException {
+				Node node = document.createElement(name);
+				file.seek(position);
+				Text text = document.createTextNode(action.apply(file, node));
+				node.appendChild(text);
+				return node;
+			}
+
 			@Override
-			public String apply(byte[] value) {
-				return action.apply(value);
+			public Resolver<Node> getResolver(HKXHandler handler) throws IOException, UnresolvedMemberException {
+				// TODO Auto-generated method stub
+				return null;
 			}
 		};
 	}

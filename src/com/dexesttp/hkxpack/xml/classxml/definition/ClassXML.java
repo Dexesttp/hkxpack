@@ -12,4 +12,8 @@ public abstract class ClassXML {
 	public void addContent(ClassXMLMember memberObj) {
 		members.add(memberObj);
 	}
+
+	public List<ClassXMLMember> getMembers() {
+		return members;
+	}
 }

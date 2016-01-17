@@ -7,6 +7,7 @@ import java.io.IOException;
 import com.dexesttp.hkxpack.hkx.handler.HKXHandler;
 import com.dexesttp.hkxpack.hkx.handler.HKXHandlerImpl;
 import com.dexesttp.hkxpack.resources.exceptions.UninitializedHKXException;
+import com.dexesttp.hkxpack.resources.exceptions.UnresolvedMemberException;
 
 public class Main {
 	/**
@@ -29,6 +30,8 @@ public class Main {
 		} catch (UninitializedHKXException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (UnresolvedMemberException e) {
 			e.printStackTrace();
 		}
 	}
