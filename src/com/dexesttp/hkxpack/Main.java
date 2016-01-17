@@ -26,6 +26,9 @@ public class Main {
 			reader.init();
 			// WTF resoltion worked ?!?!?
 			reader.resolveData();
+			
+			// Close the reader.
+			reader.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (UnconnectedHKXException e) {

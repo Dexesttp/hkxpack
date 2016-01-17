@@ -130,6 +130,11 @@ public class HKXHandlerImpl implements HKXHandler{
 	@Override
 	public void close() throws IOException {
 		headerReader.close();
+		cnameReader.close();
+		datareader.close();
+		data1reader.close();
+		data2reader.close();
+		data3reader.close();
 		file = null;
 		header = null;
 	}
