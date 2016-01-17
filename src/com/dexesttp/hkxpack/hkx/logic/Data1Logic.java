@@ -1,10 +1,12 @@
 package com.dexesttp.hkxpack.hkx.logic;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.LinkedList;
 
+import org.w3c.dom.Node;
+
+import com.dexesttp.hkxpack.commons.resolver.Resolver;
 import com.dexesttp.hkxpack.hkx.handler.HKXHandler;
-import com.dexesttp.hkxpack.hkx.reader.DataReader;
 import com.dexesttp.hkxpack.hkx.reader.InternalLinkReader;
 import com.dexesttp.hkxpack.resources.exceptions.UninitializedHKXException;
 import com.dexesttp.hkxpack.resources.exceptions.UnresolvedMemberException;
@@ -20,13 +22,11 @@ public class Data1Logic {
 	}
 
 	public void resolve(HKXHandler handler) throws UninitializedHKXException, IOException, UnresolvedMemberException {
-		final DataReader reader = handler.getDataReader();
-		final List<ClassXML> instances = handler.getInstanceList();
+		final LinkedList<ClassXML> instances = handler.getInstanceList();
 		ClassXML instance;
-		while(!instances.isEmpty()) {
-			instance = instances.remove(0);
+		while((instance = instances.poll()) != null) {
 			for(ClassXMLMember member : instance.getMembers()) {
-				// TODO uncomment this.
+				Resolver<Node> resolver = member.getResolver(handler);
 				//reader.setNext(member.getResolver(handler));
 				//reader.read();
 			}

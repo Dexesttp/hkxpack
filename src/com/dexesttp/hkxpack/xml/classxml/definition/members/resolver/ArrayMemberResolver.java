@@ -8,6 +8,7 @@ import org.w3c.dom.Node;
 import com.dexesttp.hkxpack.commons.resolver.Resolver;
 import com.dexesttp.hkxpack.hkx.handler.HKXHandler;
 import com.dexesttp.hkxpack.resources.ByteUtils;
+import com.dexesttp.hkxpack.resources.exceptions.UninitializedHKXException;
 import com.dexesttp.hkxpack.resources.exceptions.UnresolvedMemberException;
 import com.dexesttp.hkxpack.xml.classxml.definition.members.ResolvedMember;
 import com.dexesttp.hkxpack.xml.classxml.definition.members.resolved.ArrayMember;
@@ -33,7 +34,7 @@ public enum ArrayMemberResolver {
 			}
 
 			@Override
-			public Resolver<Node> getResolver(HKXHandler handler) throws IOException, UnresolvedMemberException {
+			public Resolver<Node> getResolver(HKXHandler handler) throws IOException, UnresolvedMemberException, UninitializedHKXException {
 				byte[] arrayValue = new byte[size];
 				//file.seek(position);
 				//file.read(arrayValue);

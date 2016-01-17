@@ -2,7 +2,6 @@ package com.dexesttp.hkxpack.hkx.logic;
 
 import java.io.IOException;
 import java.util.LinkedList;
-import java.util.List;
 
 import com.dexesttp.hkxpack.hkx.classes.ClassFlagAssociator;
 import com.dexesttp.hkxpack.hkx.classes.ClassMapper;
@@ -22,11 +21,11 @@ public class Data2Logic {
 		this.reader = data2reader;
 	}
 
-	public List<ClassXML> resolve(HKXHandler handler) throws IOException, UninitializedHKXException {
+	public LinkedList<ClassXML> resolve(HKXHandler handler) throws IOException, UninitializedHKXException {
 		final ClassMapper mapper = handler.getMapper();
 		final ClassFlagAssociator associator = handler.getAssociator();
 		final long dataOffset = handler.getHeader().getRegionOffset(2);
-		final List<ClassXML> instanceList = new LinkedList<>();
+		final LinkedList<ClassXML> instanceList = new LinkedList<>();
 		TripleLink link;
 		long flag, externalData, classPos;
 		String name;

@@ -3,7 +3,7 @@ package com.dexesttp.hkxpack.hkx.handler;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.List;
+import java.util.LinkedList;
 
 import org.w3c.dom.Document;
 
@@ -29,7 +29,7 @@ public class HKXHandlerImpl implements HKXHandler{
 	protected Header header = null;
 	protected ClassMapper classMapper = null;
 	protected ClassFlagAssociator associator = null;
-	protected List<ClassXML> instanceList = null;
+	protected LinkedList<ClassXML> instanceList = null;
 	// Reader
 	protected HeaderReader headerReader = null;
 	protected ClassNamesReader cnameReader = null;
@@ -70,61 +70,44 @@ public class HKXHandlerImpl implements HKXHandler{
 	}
 	
 	@Override
-	public void readClassNames() throws FileNotFoundException, UninitializedHKXException, IOException {
-		cnameReader.connect(file, getHeader().getRegionOffset(0), getHeader().getRegionDataOffset(0, 1));
-		classMapper = new ClassNameLogic(cnameReader).resolve();
-	}
-	
-	@Override
 	public ClassMapper getMapper() throws FileNotFoundException, UninitializedHKXException, IOException {
-		if(classMapper == null)
-			readClassNames();
+		if(classMapper == null) {
+			cnameReader.connect(file, getHeader().getRegionOffset(0), getHeader().getRegionDataOffset(0, 1));
+			classMapper = new ClassNameLogic(cnameReader).resolve();
+		}
 		return classMapper;
 	}
 	
 	@Override
-	public void close() throws IOException {
-		headerReader.close();
-		file = null;
-		header = null;
-	}
-
-	@Override
-	public void resolveData3() throws IOException, UninitializedHKXException {
-		final long begin = getHeader().getRegionOffset(2) + getHeader().getRegionDataOffset(2, 3);
-		final long end = getHeader().getRegionOffset(2) + getHeader().getRegionDataOffset(2, 4);
-		data3reader.connect(file, begin, end - begin);
-		associator = new Data3Logic(data3reader).resolve(this);
-	}
-	
-	@Override
 	public ClassFlagAssociator getAssociator() throws IOException, UninitializedHKXException {
-		if(associator == null)
-			resolveData3();
+		if(associator == null) {
+			final long begin = getHeader().getRegionOffset(2) + getHeader().getRegionDataOffset(2, 3);
+			final long end = getHeader().getRegionOffset(2) + getHeader().getRegionDataOffset(2, 4);
+			data3reader.connect(file, begin, end - begin);
+			associator = new Data3Logic(data3reader).resolve(this);
+		}
 		return associator;
 	}
 	
 	@Override
-	public void resolveData2() throws IOException, UninitializedHKXException {
-		final long begin = getHeader().getRegionOffset(2) + getHeader().getRegionDataOffset(2, 2);
-		final long end = getHeader().getRegionOffset(2) + getHeader().getRegionDataOffset(2, 3);
-		data2reader.connect(file, begin, end - begin);
-		instanceList = new Data2Logic(data2reader).resolve(this);
-	}
-	
-	@Override
-	public List<ClassXML> getInstanceList() throws IOException, UninitializedHKXException {
-		if(instanceList == null)
-			resolveData2();
+	public LinkedList<ClassXML> getInstanceList() throws IOException, UninitializedHKXException {
+		if(instanceList == null) {
+			final long begin = getHeader().getRegionOffset(2) + getHeader().getRegionDataOffset(2, 2);
+			final long end = getHeader().getRegionOffset(2) + getHeader().getRegionDataOffset(2, 3);
+			data2reader.connect(file, begin, end - begin);
+			instanceList = new Data2Logic(data2reader).resolve(this);
+		}
 		return instanceList;
 	}
-	
+
 	@Override
-	public void resolveData() throws UninitializedHKXException, IOException, UnresolvedMemberException {
-		final long begin = getHeader().getRegionOffset(2) + getHeader().getRegionDataOffset(2, 1);
-		final long end = getHeader().getRegionOffset(2) + getHeader().getRegionDataOffset(2, 2);
-		data1reader.connect(file, begin, end - begin);
-		new Data1Logic(data1reader).resolve(this);
+	public InternalLinkReader getInternalLinkReader() throws UninitializedHKXException, IOException {
+		if(!data1reader.isConnected()) {
+			final long begin = getHeader().getRegionOffset(2) + getHeader().getRegionDataOffset(2, 1);
+			final long end = getHeader().getRegionOffset(2) + getHeader().getRegionDataOffset(2, 2);
+			data1reader.connect(file, begin, end - begin);
+		}
+		return data1reader;
 	}
 	
 	@Override
@@ -136,10 +119,22 @@ public class HKXHandlerImpl implements HKXHandler{
 		}
 		return datareader;
 	}
+	
+	@Override
+	public void resolveData() throws UninitializedHKXException, IOException, UnresolvedMemberException {
+		new Data1Logic(getInternalLinkReader()).resolve(this);
+	}
+	
+	@Override
+	public void close() throws IOException {
+		headerReader.close();
+		file = null;
+		header = null;
+	}
 
 	@Override
 	public Document getDocument() {
-		// TODO Auto-generated method stub
+		// TODO Create document before and handle document acquisition.
 		return null;
 	}
 }
