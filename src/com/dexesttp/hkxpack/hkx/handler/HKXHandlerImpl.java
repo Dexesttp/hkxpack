@@ -8,6 +8,7 @@ import com.dexesttp.hkxpack.hkx.classes.ClassFlagAssociator;
 import com.dexesttp.hkxpack.hkx.classes.ClassMapper;
 import com.dexesttp.hkxpack.hkx.definition.Header;
 import com.dexesttp.hkxpack.hkx.logic.ClassNameLogic;
+import com.dexesttp.hkxpack.hkx.logic.Data2Logic;
 import com.dexesttp.hkxpack.hkx.logic.Data3Logic;
 import com.dexesttp.hkxpack.hkx.reader.ClassNamesReader;
 import com.dexesttp.hkxpack.hkx.reader.HeaderReader;
@@ -19,16 +20,18 @@ public class HKXHandlerImpl implements HKXHandler{
 	protected File file = null;
 	protected Header header = null;
 	protected ClassMapper classMapper = null;
+	protected ClassFlagAssociator associator = null;
 	// Reader
 	protected HeaderReader headerReader = null;
 	protected ClassNamesReader cnameReader = null;
 	protected TripleLinkReader data3reader = null;
-	private ClassFlagAssociator associator = null;
+	protected TripleLinkReader data2reader = null;
 
 	public HKXHandlerImpl() {
 		this.headerReader = new HeaderReader();
 		this.cnameReader = new ClassNamesReader();
 		this.data3reader = new TripleLinkReader();
+		this.data2reader = new TripleLinkReader();
 	}
 	
 	@Override
@@ -74,7 +77,7 @@ public class HKXHandlerImpl implements HKXHandler{
 	}
 
 	@Override
-	public void resolveData() throws IOException, UninitializedHKXException {
+	public void resolveData3() throws IOException, UninitializedHKXException {
 		final long begin = getHeader().getRegionOffset(2) + getHeader().getRegionDataOffset(2, 3);
 		final long length = getHeader().getRegionOffset(2) + getHeader().getRegionDataOffset(2, 4);
 		data3reader.connect(file, begin, length - begin);
@@ -84,7 +87,15 @@ public class HKXHandlerImpl implements HKXHandler{
 	@Override
 	public ClassFlagAssociator getAssociator() throws IOException, UninitializedHKXException {
 		if(associator == null)
-			resolveData();
+			resolveData3();
 		return associator;
+	}
+	
+	@Override
+	public void resolveData2() throws IOException, UninitializedHKXException {
+		final long begin = getHeader().getRegionOffset(2) + getHeader().getRegionDataOffset(2, 2);
+		final long length = getHeader().getRegionOffset(2) + getHeader().getRegionDataOffset(2, 3);
+		data3reader.connect(file, begin, length - begin);
+		new Data2Logic(data2reader).resolve(this);
 	}
 }

@@ -9,8 +9,6 @@ import com.dexesttp.hkxpack.hkx.handler.HKXHandler;
 import com.dexesttp.hkxpack.hkx.reader.TripleLinkReader;
 import com.dexesttp.hkxpack.resources.ByteUtils;
 import com.dexesttp.hkxpack.resources.exceptions.UninitializedHKXException;
-import com.dexesttp.hkxpack.xml.classxml.ClassXMLList;
-import com.dexesttp.hkxpack.xml.classxml.definition.ClassXML;
 
 public class Data3Logic {
 
@@ -35,8 +33,6 @@ public class Data3Logic {
 			// TODO remove debug
 			System.out.println("Val 1 : " + flag);
 			System.out.println("Val 3 [Conv] : " + name);
-			ClassXML classInstance = ClassXMLList.getInstance().get(name);
-			classInstance.toString();
 		}
 		return associator;
 	}

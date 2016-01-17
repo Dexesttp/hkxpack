@@ -20,10 +20,12 @@ public interface HKXHandler {
 
 	public void readClassNames() throws FileNotFoundException, UninitializedHKXException, IOException;
 
-	public void resolveData() throws IOException, UninitializedHKXException;
+	public void resolveData3() throws IOException, UninitializedHKXException;
 
 	public ClassMapper getMapper() throws FileNotFoundException, UninitializedHKXException, IOException;
 
 	public ClassFlagAssociator getAssociator() throws IOException, UninitializedHKXException;
+
+	public void resolveData2() throws IOException, UninitializedHKXException;
 
 }
