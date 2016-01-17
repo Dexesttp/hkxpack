@@ -4,8 +4,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import com.dexesttp.hkxpack.hkx.handler.HKXHandler;
-import com.dexesttp.hkxpack.hkx.handler.HKXHandlerImpl;
+import com.dexesttp.hkxpack.hkx.handler.HKXReader;
+import com.dexesttp.hkxpack.hkx.handler.HKXReaderFactory;
+import com.dexesttp.hkxpack.resources.exceptions.UnconnectedHKXException;
 import com.dexesttp.hkxpack.resources.exceptions.UninitializedHKXException;
 import com.dexesttp.hkxpack.resources.exceptions.UnresolvedMemberException;
 
@@ -18,14 +19,16 @@ public class Main {
 			// Check if requested file exists.
 			File file = new File(fileName);
 			// Create HKX Handler
-			HKXHandler handler = new HKXHandlerImpl();
+			HKXReader reader = new HKXReaderFactory().build();
 			// Connect the handler to the file.
-			handler.connect(file);
+			reader.connect(file);
 			// Initialize the handler.
-			handler.init();
+			reader.init();
 			// WTF resoltion worked ?!?!?
-			handler.resolveData();
+			reader.resolveData();
 		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (UnconnectedHKXException e) {
 			e.printStackTrace();
 		} catch (UninitializedHKXException e) {
 			e.printStackTrace();

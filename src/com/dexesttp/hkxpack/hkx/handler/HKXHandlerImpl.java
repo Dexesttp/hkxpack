@@ -19,6 +19,7 @@ import com.dexesttp.hkxpack.hkx.reader.DataReader;
 import com.dexesttp.hkxpack.hkx.reader.HeaderReader;
 import com.dexesttp.hkxpack.hkx.reader.InternalLinkReader;
 import com.dexesttp.hkxpack.hkx.reader.TripleLinkReader;
+import com.dexesttp.hkxpack.resources.exceptions.UnconnectedHKXException;
 import com.dexesttp.hkxpack.resources.exceptions.UninitializedHKXException;
 import com.dexesttp.hkxpack.resources.exceptions.UnresolvedMemberException;
 import com.dexesttp.hkxpack.xml.classxml.definition.ClassXML;
@@ -54,9 +55,9 @@ public class HKXHandlerImpl implements HKXHandler{
 
 	// TODO see if I can't remove this.
 	@Override
-	public void init() throws UninitializedHKXException, FileNotFoundException {
+	public void init() throws FileNotFoundException, UnconnectedHKXException {
 		if(file == null)
-			throw new UninitializedHKXException();
+			throw new UnconnectedHKXException();
 		headerReader.connect(file, 0, 0);
 	}
 	
