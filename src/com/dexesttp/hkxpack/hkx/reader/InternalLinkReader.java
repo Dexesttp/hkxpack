@@ -19,5 +19,9 @@ public class InternalLinkReader extends FixedReader<DoubleLink> {
 	protected long getEntitySize() {
 		return 8;
 	}
+	
+	public long getCurrentPosition() {
+		return this.position + this.arrayPos * getEntitySize();
+	}
 
 }

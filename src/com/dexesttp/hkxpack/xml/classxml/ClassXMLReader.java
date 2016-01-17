@@ -46,7 +46,7 @@ public class ClassXMLReader {
 							DOMUtils.getNodeAttr("name", entry),
 							Integer.parseInt(DOMUtils.getNodeAttr("value", entry)));
 			}
-			classList.addEnum(classname, enumObj.getName(), enumObj);
+			classList.addEnum(enumObj.getName(), enumObj);
 		}
 		ImportedClass classObj = new ImportedClass(classname, classID);
 		NodeList members = document.getElementsByTagName("member");

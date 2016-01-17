@@ -9,11 +9,12 @@ import org.w3c.dom.Document;
 
 import com.dexesttp.hkxpack.hkx.classes.ClassFlagAssociator;
 import com.dexesttp.hkxpack.hkx.classes.ClassMapper;
+import com.dexesttp.hkxpack.hkx.classes.PointerResolver;
 import com.dexesttp.hkxpack.hkx.definition.Header;
 import com.dexesttp.hkxpack.hkx.logic.ClassNameLogic;
-import com.dexesttp.hkxpack.hkx.logic.DataLogic;
-import com.dexesttp.hkxpack.hkx.logic.Data2Logic;
 import com.dexesttp.hkxpack.hkx.logic.Data3Logic;
+import com.dexesttp.hkxpack.hkx.logic.DataLogic;
+import com.dexesttp.hkxpack.hkx.logic.InstanceListLogic;
 import com.dexesttp.hkxpack.hkx.reader.ClassNamesReader;
 import com.dexesttp.hkxpack.hkx.reader.DataReader;
 import com.dexesttp.hkxpack.hkx.reader.HeaderReader;
@@ -32,6 +33,9 @@ public class HKXHandlerImpl implements HKXHandler{
 	protected ClassMapper classMapper = null;
 	protected ClassFlagAssociator associator = null;
 	protected LinkedList<ClassXML> instanceList = null;
+	protected PointerResolver resolver = null;
+	// Output document
+	protected Document document = null;
 	// Readers
 	protected HeaderReader headerReader = null;
 	protected ClassNamesReader cnameReader = null;
@@ -39,7 +43,6 @@ public class HKXHandlerImpl implements HKXHandler{
 	protected InternalLinkReader data1reader = null;
 	protected TripleLinkReader data2reader = null;
 	protected TripleLinkReader data3reader = null;
-	protected Document document = null;
 
 	public HKXHandlerImpl() {
 		this.headerReader = new HeaderReader();
@@ -48,16 +51,12 @@ public class HKXHandlerImpl implements HKXHandler{
 		this.data2reader = new TripleLinkReader();
 		this.data1reader = new InternalLinkReader();
 		this.datareader  = new DataReader();
+		this.resolver = new PointerResolver();
 	}
 	
 	@Override
-	public void connect(File file) {
+	public void connect(File file) throws FileNotFoundException, UnconnectedHKXException {
 		this.file = file;
-	}
-
-	// TODO see if I can't remove this.
-	@Override
-	public void init() throws FileNotFoundException, UnconnectedHKXException {
 		if(file == null)
 			throw new UnconnectedHKXException();
 		headerReader.connect(file, 0, 0);
@@ -96,12 +95,14 @@ public class HKXHandlerImpl implements HKXHandler{
 	@Override
 	public LinkedList<ClassXML> getInstanceList() throws IOException, UninitializedHKXException {
 		if(instanceList == null) {
-			final long begin = getHeader().getRegionOffset(2) + getHeader().getRegionDataOffset(2, 2);
-			final long end = getHeader().getRegionOffset(2) + getHeader().getRegionDataOffset(2, 3);
-			data2reader.connect(file, begin, end - begin);
-			instanceList = new Data2Logic(data2reader).resolve(this);
+			instanceList = new InstanceListLogic().resolve(this);
 		}
 		return instanceList;
+	}
+
+	@Override
+	public PointerResolver getPtrResolver() {
+		return resolver;
 	}
 
 	@Override
@@ -112,6 +113,16 @@ public class HKXHandlerImpl implements HKXHandler{
 			data1reader.connect(file, begin, end - begin);
 		}
 		return data1reader;
+	}
+
+	@Override
+	public TripleLinkReader getExternalLinkReader() throws UninitializedHKXException, IOException {
+		if(!data2reader.isConnected()) {
+			final long begin = getHeader().getRegionOffset(2) + getHeader().getRegionDataOffset(2, 2);
+			final long end = getHeader().getRegionOffset(2) + getHeader().getRegionDataOffset(2, 3);
+			data2reader.connect(file, begin, end - begin);
+		}
+		return data2reader;
 	}
 	
 	@Override
@@ -126,8 +137,6 @@ public class HKXHandlerImpl implements HKXHandler{
 	
 	@Override
 	public void resolveData() throws UninitializedHKXException, IOException, UnresolvedMemberException {
-		// TODO remove that.
-		getInternalLinkReader();
 		new DataLogic().resolve(this);
 	}
 	

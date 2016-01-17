@@ -2,6 +2,7 @@ package com.dexesttp.hkxpack.xml.classxml.definition;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 public class EnumObj {
 	private String name;
@@ -23,5 +24,13 @@ public class EnumObj {
 
 	public String getFlags() {
 		return flags;
+	}
+
+	public String getFromValue(int value) {
+		for(Entry<String, Integer> key : content.entrySet()) {
+			if(key.getValue() == value)
+				return key.getKey();
+		}
+		return "ERROR_ENUM_VALUE_NOT_FOUND";
 	}
 }

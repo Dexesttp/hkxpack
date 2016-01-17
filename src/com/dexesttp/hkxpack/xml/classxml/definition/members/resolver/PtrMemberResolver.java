@@ -4,10 +4,15 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.function.Function;
 
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import com.dexesttp.hkxpack.commons.resolver.Resolver;
+import com.dexesttp.hkxpack.hkx.classes.PointerResolver;
+import com.dexesttp.hkxpack.hkx.definition.DoubleLink;
 import com.dexesttp.hkxpack.hkx.handler.HKXHandler;
+import com.dexesttp.hkxpack.hkx.reader.InternalLinkReader;
+import com.dexesttp.hkxpack.resources.ByteUtils;
 import com.dexesttp.hkxpack.resources.exceptions.UninitializedHKXException;
 import com.dexesttp.hkxpack.resources.exceptions.UnresolvedMemberException;
 import com.dexesttp.hkxpack.xml.classxml.definition.members.ResolvedMember;
@@ -18,7 +23,7 @@ public enum PtrMemberResolver {
 			return null;
 		}),
 	TYPE_FUNCTIONPOINTER(8, (file) -> {
-			return "This have never happened. Contact the dev please.";
+			return "This object have never been encountered before. Contact the dev please with the file used to attain that.";
 		}),
 	TYPE_STRINGPTR(8, (file) -> {
 			return null;
@@ -50,7 +55,28 @@ public enum PtrMemberResolver {
 
 			@Override
 			public Resolver<Node> getResolver(HKXHandler handler) throws IOException, UnresolvedMemberException, UninitializedHKXException {
-				return null;
+				InternalLinkReader reader = handler.getInternalLinkReader();
+				PointerResolver resolver = handler.getPtrResolver();
+				DoubleLink link = reader.read();
+				long position = ByteUtils.getLong(link.to);
+				String name = resolver.get(position);
+				Element fixedNode = handler.getDocument().createElement("hkparam");
+				Node textNode = handler.getDocument().createTextNode(name);
+				fixedNode.appendChild(textNode);
+				return new Resolver<Node>() {
+					private final Node intNode = fixedNode;
+
+					@Override
+					public long getPos() {
+						return 0;
+					}
+
+					@Override
+					public Node solve(RandomAccessFile file) throws IOException {
+						// NO OP
+						return intNode;
+					}
+				};
 			}
 		};
 	}

@@ -31,8 +31,7 @@ public class Main {
 			HKXReader reader = new HKXReaderFactory().build();
 			// Connect the handler to the file.
 			reader.connect(file);
-			// Initialize the handler.
-			reader.init();
+			
 			// WTF resoltion worked ?!?!?
 			reader.resolveData();
 			

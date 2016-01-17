@@ -13,9 +13,7 @@ import com.dexesttp.hkxpack.resources.exceptions.UnresolvedMemberException;
 public interface HKXReader {
 
 	// TODO create superinterface for these five guys.
-	public void connect(File file);
-	
-	public void init() throws FileNotFoundException, UnconnectedHKXException;
+	public void connect(File file) throws FileNotFoundException, UnconnectedHKXException;
 
 	public void resolveData() throws UninitializedHKXException, IOException, UnresolvedMemberException;
 

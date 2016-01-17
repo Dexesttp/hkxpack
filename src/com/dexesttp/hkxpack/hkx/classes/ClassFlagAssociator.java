@@ -1,5 +1,6 @@
 package com.dexesttp.hkxpack.hkx.classes;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -21,6 +22,10 @@ public class ClassFlagAssociator {
 	
 	public long getClass(long flagPos) {
 		return content.get(flagPos);
+	}
+
+	public Collection<Long> getNamesIterator() {
+		return content.values();
 	}
 
 }

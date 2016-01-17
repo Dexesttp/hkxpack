@@ -33,6 +33,7 @@ public abstract class AbstractReader<T> implements Reader<T> {
 
 	@Override
 	public void close() throws IOException {
-		file.close();
+		if(file != null)
+			file.close();
 	}
 }
