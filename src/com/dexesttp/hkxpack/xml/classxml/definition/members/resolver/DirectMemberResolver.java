@@ -25,6 +25,8 @@ public enum DirectMemberResolver {
 	TYPE_UINT8(8, (value) -> {return ""+ByteUtils.getInt(value);}),
 	TYPE_INT16(16, (value) -> {return ""+ByteUtils.getSInt(value);}),
 	TYPE_UINT16(16, (value) -> {return ""+ByteUtils.getInt(value);}),
+	TYPE_ULONG(16, (value) -> {return ""+ByteUtils.getLong(value);}),
+	TYPE_HALF(16, (value) -> {return ""+ByteUtils.getLong(value);}),
 	TYPE_INT32(32, (value) -> {return ""+ByteUtils.getSInt(value);}),
 	TYPE_UINT32(32, (value) -> {return ""+ByteUtils.getInt(value);}),
 	TYPE_INT64(64, (value) -> {return ""+ByteUtils.getSInt(value);}),
@@ -34,10 +36,18 @@ public enum DirectMemberResolver {
 	TYPE_VECTOR4(128, (value) -> {return ""+ByteUtils.getInt(value);}),
 	TYPE_MATRIX4(128, (value) -> {return ""+ByteUtils.getInt(value);}),
 	TYPE_QUATERNION(128, (value) -> {return ""+ByteUtils.getInt(value);}),
+	TYPE_MATRIX3(96, (value) -> {return ""+ByteUtils.getInt(value);}),
 	TYPE_ROTATION(96, (value) -> {return ""+ByteUtils.getInt(value);}),
 	TYPE_TRANSFORM(96, (value) -> {return ""+ByteUtils.getInt(value);}),
 	TYPE_QSTRANSFORM(128, (value) -> {return ""+ByteUtils.getInt(value);}),
 	TYPE_CSTRING((file) -> {
+		try {
+			return ByteUtils.readString(file);
+		} catch(Exception e) {
+			return "";
+		}
+	}),
+	TYPE_STRINGPTR((file) -> {
 		try {
 			return ByteUtils.readString(file);
 		} catch(Exception e) {
@@ -70,6 +80,7 @@ public enum DirectMemberResolver {
 	}
 	
 	public ResolvedMember resolve(String name, String classname) {
+		final String extType = this.toString();
 		return new DirectMember(name, classname) {
 			@Override
 			public long getSize() {
@@ -82,10 +93,10 @@ public enum DirectMemberResolver {
 				DoubleLink link = links.read();
 				if(link == null)
 					return null;
-				System.out.println(link.dump());
 				return new Resolver<Node>() {
 					private final Document document = handler.getDocument();
-					private final long pos = ByteUtils.getLong(link.from);
+					private final String type = extType;
+					private final long pos = ByteUtils.getLong(link.to);
 					@Override
 					public long getPos() {
 						return pos;
@@ -96,6 +107,7 @@ public enum DirectMemberResolver {
 						String value = action.apply(file);
 						Element node = document.createElement("hkparam");
 						node.setAttribute("name", name);
+						node.setAttribute("type", type);
 						node.appendChild(document.createTextNode(value));
 						return node;
 					}

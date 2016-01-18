@@ -9,6 +9,7 @@ import org.xml.sax.SAXException;
 
 import com.dexesttp.hkxpack.resources.DOMUtils;
 import com.dexesttp.hkxpack.resources.ClassFilesUtils;
+import com.dexesttp.hkxpack.xml.classxml.definition.ClassXML;
 import com.dexesttp.hkxpack.xml.classxml.definition.EnumObj;
 import com.dexesttp.hkxpack.xml.classxml.definition.ImportedClass;
 import com.dexesttp.hkxpack.xml.classxml.definition.members.ClassXMLMember;
@@ -48,6 +49,20 @@ public class ClassXMLReader {
 			classList.addEnum(classname, enumObj.getName(), enumObj);
 		}
 		ImportedClass classObj = new ImportedClass(classname, classID);
+		// Handle parent members.
+		Node classNode = document.getFirstChild();
+		String parentName = DOMUtils.getNodeAttr("parent", classNode);
+		if(parentName != "") {
+			ClassXML parent = classList.get(parentName);
+			if(parent == null) {
+				ImportedClass impParent = getClassFromFile(parentName, 0);
+				classList.addClass(impParent);
+				parent = impParent;
+			}
+			for(ClassXMLMember parentMember : parent.getMembers())
+				classObj.addContent(parentMember);
+		}
+		// Handle direct members.
 		NodeList members = document.getElementsByTagName("member");
 		for(int i = 0; i < members.getLength(); i++) {
 			Node memberNode = members.item(i);

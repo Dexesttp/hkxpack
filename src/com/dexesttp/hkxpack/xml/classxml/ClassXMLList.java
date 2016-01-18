@@ -28,9 +28,13 @@ public class ClassXMLList {
 			instance = new ClassXMLList();
 		return instance;
 	}
+
+	public void addClass(ClassName inst) {
+		toRead.push(inst);
+	}
 	
-	public void addClass(ClassName classname) {
-		toRead.push(classname);
+	public void addClass(ImportedClass inst) {
+		toResolve.push(inst);
 	}
 	
 	public void import_classes() throws IOException {
@@ -40,7 +44,7 @@ public class ClassXMLList {
 		}
 	}
 	
-	public void resolve() {
+	public void resolve() throws IOException {
 		while(!toResolve.isEmpty()) {
 			ImportedClass classObject = toResolve.pop();
 			classMap.put(classObject.getClassName(), classObject.resolve());

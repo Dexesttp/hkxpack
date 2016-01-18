@@ -21,7 +21,8 @@ import com.dexesttp.hkxpack.xml.classxml.definition.members.resolved.ArrayMember
 public enum ArrayMemberResolver {
 	TYPE_ARRAY(4),
 	TYPE_SIMPLEARRAY(4),
-	TYPE_INPLACEARRAY(4);
+	TYPE_INPLACEARRAY(4),
+	TYPE_RELARRAY(4);
 	
 	private final int size;
 
@@ -66,6 +67,8 @@ public enum ArrayMemberResolver {
 						file.read(arraySizeDataWithWeird80AtTheEnd);
 						long arraySize = ByteUtils.getInt(arraySizeData);
 						arrayRoot.setAttribute("numelements", ""+arraySize);
+						if(arraySize > 1000)
+							return arrayRoot;
 						for(int i= 0; i < arraySize; i++) {
 							Resolver<Node> nodeResolver = resolver.getResolver(handler);
 							if(nodeResolver != null) {

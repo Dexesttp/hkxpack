@@ -26,7 +26,7 @@ public class ImportedMember extends ClassXMLMember {
 		this.flag = flag;
 	}
 
-	public ResolvedMember resolve() {
+	public ResolvedMember resolve() throws IOException {
 		if(flag.equals("SERIALIZE_IGNORED"))
 			return new SerializedMember(name, classname);
 		return MemberResolver.resolve(name, classname, vtype, vsubtype, ctype, etype);

@@ -12,7 +12,7 @@ public class InternalLinkReader extends FixedReader<DoubleLink> {
 		DoubleLink res = new DoubleLink();
 		file.read(res.from);
 		file.read(res.to);
-		System.out.println(res.dump());
+		//System.out.println(res.dump());
 		return res;
 	}
 

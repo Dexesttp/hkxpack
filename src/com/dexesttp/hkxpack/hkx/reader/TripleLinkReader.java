@@ -13,6 +13,7 @@ public class TripleLinkReader extends FixedReader<TripleLink> {
 		file.read(res.from);
 		file.read(res.value);
 		file.read(res.to);
+		//System.out.println(res.dump());
 		return res;
 	}
 

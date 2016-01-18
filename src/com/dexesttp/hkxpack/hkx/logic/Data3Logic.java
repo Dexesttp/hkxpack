@@ -25,7 +25,8 @@ public class Data3Logic {
 		while((link = reader.read()) != null) {
 			flag = ByteUtils.getInt(link.from);
 			position = ByteUtils.getInt(link.to) + classOffset;
-			associator.add(flag, position);
+			if(flag != -1)
+				associator.add(flag, position);
 		}
 		return associator;
 	}

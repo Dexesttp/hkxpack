@@ -1,11 +1,13 @@
 package com.dexesttp.hkxpack.xml.classxml.definition.members.resolver;
 
+import java.io.IOException;
+
 import com.dexesttp.hkxpack.xml.classxml.definition.members.ResolvedMember;
 
 public class MemberResolver {
 	
 	// TODO fix this ugly mess.
-	public static ResolvedMember resolve(String name, String classname, String vtype, String vsubtype, String ctype, String etype) {
+	public static ResolvedMember resolve(String name, String classname, String vtype, String vsubtype, String ctype, String etype) throws IOException {
 		DirectMemberResolver resolver1 = getEnumVal(DirectMemberResolver.class, vtype);
 		ArrayMemberResolver resolver2 = getEnumVal(ArrayMemberResolver.class, vtype);
 		PtrMemberResolver resolver3 = getEnumVal(PtrMemberResolver.class, vtype);
