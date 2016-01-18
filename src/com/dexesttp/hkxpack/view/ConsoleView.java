@@ -11,10 +11,19 @@ public class ConsoleView {
 
 	public static void main(String[] args) {
 		Main main = new Main();
-		if(args.length < 0 || args[0] == "-h")
+		if(args.length < 1)
+			showHelp();
+		if(args[0].equals("-h"))
 			showHelp();
 		String fileName = args[0];
-		String outName = RandomUtils.makeFromFileName(fileName);
+		String outName = "";
+		try {
+			outName = RandomUtils.makeFromFileName(fileName);
+		}
+		catch(Exception e) {
+			System.err.println("Invalid filename !");
+			System.exit(1);
+		}
 		try {
 			ClassFilesUtils.initFolder();
 		} catch (IOException e) {
@@ -29,5 +38,6 @@ public class ConsoleView {
 		System.out.println("hkxpack version " + version_number );
 		System.out.println("Use : java -jar hkpack.jar <filename>.hkx");
 		System.out.println("Report bugs or findings at github.com/dexesttp/hkxpack");
+		System.exit(0);
 	}
 }
