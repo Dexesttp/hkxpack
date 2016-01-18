@@ -25,8 +25,8 @@ public class MemberResolver {
 				// Basic array joe
 				return resolver2.resolve(resolver1.resolve(name, classname), name, classname);
 			} else if(resolver3 != null) {
-				// Ptr array joe - some extra code fro void* compatibility.
-				return resolver2.resolve(resolver3.resolve(DirectMemberResolver.TYPE_VOID.resolve(name, classname),  name, classname), name, classname);
+				// Ptr array joe - some extra code for void* compatibility.
+				return resolver2.resolve(resolver3.resolve(DirectMemberResolver.TYPE_VOID.resolve(name, classname),  "PTR_IN_ARRAY", classname), name, classname);
 			} else if(resolver4 != null) {
 				// Struct array joe
 				return resolver2.resolve(resolver4.resolve(ctype,  name, classname), name, classname);

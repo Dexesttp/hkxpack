@@ -31,7 +31,9 @@ public enum ArrayMemberResolver {
 	}
 	
 	public ResolvedMember resolve(ResolvedMember resolvedMember, String name, String classname) {
+		final String enumName = this.toString();
 		return new ArrayMember<ResolvedMember> (name, classname){
+			final String type = enumName;
 			@Override
 			public long getSize() {
 				return size;
@@ -46,6 +48,7 @@ public enum ArrayMemberResolver {
 				long outerArraySizePtr = ByteUtils.getLong(link.from);
 				Element outerArrayRoot = hkxHandler.getDocument().createElement("hkparam");
 				outerArrayRoot.setAttribute("name", name);
+				outerArrayRoot.setAttribute("type", type);
 				return new Resolver<Node>() {
 					private final HKXHandler handler = hkxHandler;
 					private final ResolvedMember resolver = resolvedMember;

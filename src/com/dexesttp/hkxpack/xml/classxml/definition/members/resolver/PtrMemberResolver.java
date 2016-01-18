@@ -28,6 +28,7 @@ public enum PtrMemberResolver {
 	}
 	
 	public ResolvedMember resolve(ResolvedMember resolvedMember, String name, String classname) {
+		final String ptrType = this.toString();
 		return new PtrMember<ResolvedMember>(name, classname) {
 			@Override
 			public long getSize() {
@@ -39,16 +40,26 @@ public enum PtrMemberResolver {
 				TripleLinkReader reader = handler.getExternalLinkReader();
 				PointerResolver resolver = handler.getPtrResolver();
 				TripleLink link = reader.read();
-				if(link == null)
+				//System.out.println("Type : " + ptrType);
+				if(link == null) {
+					//System.out.println("Bump - PtrMember");
 					return null;
+				}
 				long position = ByteUtils.getLong(link.to);
 				String refName = resolver.get(position);
 				Element fixedNode = handler.getDocument().createElement("hkparam");
 				Node textNode = handler.getDocument().createTextNode(refName);
 				fixedNode.setAttribute("name", name);
 				fixedNode.appendChild(textNode);
+				Node toIntegrateNode;
+				if(name.equals("PTR_IN_ARRAY")) {
+					textNode.setNodeValue(textNode.getNodeValue() + " ");
+					toIntegrateNode = textNode;
+				}
+				else
+					toIntegrateNode = fixedNode;
 				return new Resolver<Node>() {
-					private final Node intNode = fixedNode;
+					private final Node intNode = toIntegrateNode;
 
 					@Override
 					public long getPos() {
@@ -57,7 +68,6 @@ public enum PtrMemberResolver {
 
 					@Override
 					public Node solve(RandomAccessFile file) throws IOException {
-						// NO OP
 						return intNode;
 					}
 				};
