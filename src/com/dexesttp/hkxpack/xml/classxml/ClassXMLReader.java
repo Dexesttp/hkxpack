@@ -1,26 +1,32 @@
 package com.dexesttp.hkxpack.xml.classxml;
 
 import java.io.IOException;
+import java.net.URL;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import com.dexesttp.hkxpack.resources.DOMUtils;
 import com.dexesttp.hkxpack.resources.ClassFilesUtils;
+import com.dexesttp.hkxpack.resources.DOMUtils;
 import com.dexesttp.hkxpack.xml.classxml.definition.ClassXML;
 import com.dexesttp.hkxpack.xml.classxml.definition.EnumObj;
 import com.dexesttp.hkxpack.xml.classxml.definition.ImportedClass;
 import com.dexesttp.hkxpack.xml.classxml.definition.members.ClassXMLMember;
 import com.dexesttp.hkxpack.xml.classxml.definition.members.ImportedMember;
-import com.sun.org.apache.xerces.internal.parsers.DOMParser;
 
 public class ClassXMLReader {
 	public static ImportedClass getClassFromFile(String classname, int classID) throws IOException {
-		DOMParser parser = new DOMParser();
+		Document document;
 		try {
-			parser.parse(ClassFilesUtils.getFileName(classname));
+			String classUri = ClassFilesUtils.getFileName(classname);
+			URL source = ClassXMLReader.class.getResource(classUri);
+			DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+			document = builder.parse(source.openStream());
 		} catch (SAXException e) {
 			e.printStackTrace();
 			throw new IOException("Couldn't parse file for " + classname + " : invalid DOM.");
@@ -31,7 +37,6 @@ public class ClassXMLReader {
 		// Get Class List to store enums in.
 		ClassXMLList classList = ClassXMLList.getInstance();
 		// Java DOM parsing is kind of ugly.
-		Document document = parser.getDocument();
 		NodeList enums = document.getElementsByTagName("enum");
 		for(int i = 0; i < enums.getLength(); i++) {
 			Node enumNode = enums.item(i);
