@@ -14,7 +14,7 @@ To use this tool, you will need the Java Runtime Environement (jre) at least ver
 Use the command `java -jar hkxpack.jar <filename>.hkx` to extract the file into <filename>.xml
 
 
-# Informations
+# Information
 
 The tool was written for Java 8 (jdk1.8.0_66), and was intended to be a proof of concept.
 

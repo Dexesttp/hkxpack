@@ -7,7 +7,8 @@
   </parent>
   
   <groupId>com.dexesttp.hkxpack</groupId>
-  <artifactId>hkxpack-cli</artifactId>
+  <artifactId>cli</artifactId>
+  
   <name>HKXPack Cli</name>
   <description>Command Line interface for HKX Pack</description>
   
@@ -15,7 +16,7 @@
   	<dependency>
   		<groupId>com.dexesttp.hkxpack</groupId>
   		<artifactId>core</artifactId>
-  		<version>0.0.1</version>
+  		<version>${project.version}</version>
   	</dependency>
   </dependencies>
   
