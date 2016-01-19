@@ -1,4 +1,4 @@
-package com.dexesttp.hkxpack.view;
+package com.dexesttp.hkxpack.cli;
 
 import java.io.IOException;
 
