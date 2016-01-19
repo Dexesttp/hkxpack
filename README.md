@@ -11,6 +11,7 @@ The output format is intended to be TagXML, output by hkxcmd (https://github.com
 To use this tool, you will need the Java Runtime Environement (jre) at least version 1.8.0_66.
 
 ##### Unpack the files  
+Last updated for version 0.0.1-alpha  
 Use the command `java -jar hkxpack-cli.jar <filename>.hkx` to extract the file into <filename>.xml
 
 
@@ -24,10 +25,11 @@ You might find out that some of the data required to run the tool is missing. Th
 
 # Contributions
 
-Thanks to Figment for his help to obtain information about the hkx classes. Without him, none of this would be possible.  
 Thanks to CPU for his overall help with making this project.  
-Thanks to Orvid for his advice about how to make both working and clean code.  
+Thanks to Figment for his help to obtain information about the hkx classes. Without him, none of this would be possible.  
 Thanks to Fore for his FNIS tool that allowed slight modifications of old files, and for sharing his knowledge of behaviours with me.  
+Thanks to Neomonkeus for making the Maven integration.  
+Thanks to Orvid for his advice about how to make both working and clean code.  
 Thanks to the people from the NifTools IRC for helping with making this project and their overall support.
 
 # Compilation

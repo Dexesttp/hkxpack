@@ -1,1 +1,3 @@
 /target/
+/src/main/resources/classxml/
+/src/main/resources/properties/classxmllist.txt
