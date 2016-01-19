@@ -72,6 +72,7 @@ public class ClassXMLReader {
 		for(int i = 0; i < members.getLength(); i++) {
 			Node memberNode = members.item(i);
 			ClassXMLMember memberObj = new ImportedMember(
+					"",
 					DOMUtils.getNodeAttr("name", memberNode),
 					classname,
 					DOMUtils.getNodeAttr("vtype", memberNode),

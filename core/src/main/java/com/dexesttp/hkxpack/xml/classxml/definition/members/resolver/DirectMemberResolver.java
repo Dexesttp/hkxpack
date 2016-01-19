@@ -1,21 +1,9 @@
 package com.dexesttp.hkxpack.xml.classxml.definition.members.resolver;
 
-import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.function.Function;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-
-import com.dexesttp.hkxpack.commons.resolver.Resolver;
-import com.dexesttp.hkxpack.hkx.definition.DoubleLink;
-import com.dexesttp.hkxpack.hkx.handler.HKXHandler;
-import com.dexesttp.hkxpack.hkx.reader.InternalLinkReader;
 import com.dexesttp.hkxpack.resources.ByteUtils;
-import com.dexesttp.hkxpack.resources.exceptions.UninitializedHKXException;
-import com.dexesttp.hkxpack.xml.classxml.definition.members.ResolvedMember;
-import com.dexesttp.hkxpack.xml.classxml.definition.members.resolved.DirectMember;
 
 public enum DirectMemberResolver {
 	TYPE_VOID(0, (value) -> {return "";}),
@@ -55,64 +43,12 @@ public enum DirectMemberResolver {
 		}
 	});
 	
-
-	
-	private final int size;
-	private final Function<RandomAccessFile, String> action;
-	
 	private DirectMemberResolver(int size, Function<byte[], String> action) {
-		this.size = size;
-		this.action = (file) ->  {
-			final Function<byte[], String> byteAction = action;
-			final byte[] bytes = new byte[size];
-			try {
-				file.read(bytes);
-			} catch (Exception e) {
-				return "";
-			}
-			return byteAction.apply(bytes);
-		};
 	}
 	
 	private DirectMemberResolver(Function<RandomAccessFile, String> action) {
-		this.size = 0;
-		this.action = action;
 	}
 	
-	public ResolvedMember resolve(String name, String classname) {
-		final String extType = this.toString();
-		return new DirectMember(name, classname) {
-			@Override
-			public long getSize() {
-				return size;
-			}
-
-			@Override
-			public Resolver<Node> getResolver(HKXHandler handler) throws IOException, UninitializedHKXException {
-				InternalLinkReader links = handler.getInternalLinkReader();
-				DoubleLink link = links.read();
-				if(link == null)
-					return null;
-				return new Resolver<Node>() {
-					private final Document document = handler.getDocument();
-					private final String type = extType;
-					private final long pos = ByteUtils.getLong(link.to);
-					@Override
-					public long getPos() {
-						return pos;
-					}
-
-					@Override
-					public Node solve(RandomAccessFile file) throws IOException {
-						String value = action.apply(file);
-						Element node = document.createElement("hkparam");
-						node.setAttribute("name", name);
-						node.setAttribute("type", type);
-						node.appendChild(document.createTextNode(value));
-						return node;
-					}
-				};
-			}
-		};
+	public void resolve(String name, String classname) {
 	}
 }
