@@ -5,7 +5,7 @@
     <artifactId>hkxpack</artifactId>
     <version>0.0.1</version>
   </parent>
-  <groupId>com.dexesttp.hkxpacker</groupId>
+  <groupId>com.dexesttp.hkxpack</groupId>
   <artifactId>core</artifactId>
   <name>core</name>
   <description>core modules</description>

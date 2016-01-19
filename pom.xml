@@ -8,7 +8,8 @@
   <description>HKXPack is a tool to 'pack' and 'unpack' to and from hkx files, which is the Havok compressed file format.</description>
   
   <modules>
-  	<module>packer</module>
+  	<module>core</module>
+  	<module>hkxpack-cli</module>
   </modules>
   
   <build>
