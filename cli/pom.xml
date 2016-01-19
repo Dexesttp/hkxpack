@@ -3,13 +3,13 @@
   <parent>
     <groupId>com.dexesttp</groupId>
     <artifactId>hkxpack</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
   </parent>
   
   <groupId>com.dexesttp.hkxpack</groupId>
   <artifactId>cli</artifactId>
   
-  <name>HKXPack Cli</name>
+  <name>HKXPack Command Line Interface</name>
   <description>Command Line interface for HKX Pack</description>
   
   <dependencies>

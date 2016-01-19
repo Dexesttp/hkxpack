@@ -3,12 +3,12 @@
   <parent>
     <groupId>com.dexesttp</groupId>
     <artifactId>hkxpack</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
   </parent>
   
   <groupId>com.dexesttp.hkxpack</groupId>
   <artifactId>core</artifactId>
   
-  <name>core</name>
-  <description>core modules</description>
+  <name>HKXPack Core</name>
+  <description>Set of core modules containing the logic to unpack and pack the hkx files</description>
 </project>

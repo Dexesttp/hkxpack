@@ -3,7 +3,7 @@
   
   <groupId>com.dexesttp</groupId>
   <artifactId>hkxpack</artifactId>
-  <version>0.0.1</version>
+  <version>0.0.2</version>
   <packaging>pom</packaging>
   
   <name>HKXPack</name>
@@ -19,7 +19,7 @@
   </properties>
   
   <build>
-  	<finalName>${project.artifactId}</finalName>
+  	<finalName>hkxpack-${project.artifactId}</finalName>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
