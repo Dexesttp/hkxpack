@@ -17,4 +17,9 @@ public class ImportedMember extends ClassXMLMember {
 		this.etype = etype;
 		this.flag = flag;
 	}
+	
+	public ReadableMember resolve() {
+		// TODO handle flag.
+		return MemberResolver.resolve(name, classname, offset, vtype, vsubtype, ctype, etype);
+	}
 }

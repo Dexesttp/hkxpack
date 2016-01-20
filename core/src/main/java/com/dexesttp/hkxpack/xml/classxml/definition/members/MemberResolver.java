@@ -1,9 +1,8 @@
 package com.dexesttp.hkxpack.xml.classxml.definition.members;
 
 public class MemberResolver {
-	
-	// TODO fix this ugly mess.
-	public static ResolvedMember resolve(String name, String classname, String vtype, String vsubtype, String ctype, String etype) {
+	public static ReadableMember resolve(String name, String classname, String offset, String vtype, String vsubtype, String ctype, String etype) {
+		// TODO ReadableMember creation
 		return null;
 	}
 	
