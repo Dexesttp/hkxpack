@@ -5,7 +5,7 @@ import java.util.function.Function;
 
 import com.dexesttp.hkxpack.resources.ByteUtils;
 
-public enum DirectMemberResolver {
+public enum DirectMemberResolver implements BaseMemberResolver {
 	TYPE_VOID(0, (value) -> {return "";}),
 	TYPE_BOOL(1, (value) -> {return ByteUtils.getInt(value) == 0 ? "false" : "true";}),
 	TYPE_CHAR(1, (value) -> {return ""+ByteUtils.getInt(value);}),
@@ -27,21 +27,7 @@ public enum DirectMemberResolver {
 	TYPE_MATRIX3(96, (value) -> {return ""+ByteUtils.getInt(value);}),
 	TYPE_ROTATION(96, (value) -> {return ""+ByteUtils.getInt(value);}),
 	TYPE_TRANSFORM(96, (value) -> {return ""+ByteUtils.getInt(value);}),
-	TYPE_QSTRANSFORM(128, (value) -> {return ""+ByteUtils.getInt(value);}),
-	TYPE_CSTRING((file) -> {
-		try {
-			return ByteUtils.readString(file);
-		} catch(Exception e) {
-			return "";
-		}
-	}),
-	TYPE_STRINGPTR((file) -> {
-		try {
-			return ByteUtils.readString(file);
-		} catch(Exception e) {
-			return "";
-		}
-	});
+	TYPE_QSTRANSFORM(128, (value) -> {return ""+ByteUtils.getInt(value);});
 	
 	private DirectMemberResolver(int size, Function<byte[], String> action) {
 	}

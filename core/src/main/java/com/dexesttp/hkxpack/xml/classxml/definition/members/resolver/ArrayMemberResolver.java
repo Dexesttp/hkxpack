@@ -1,6 +1,6 @@
 package com.dexesttp.hkxpack.xml.classxml.definition.members.resolver;
 
-public enum ArrayMemberResolver {
+public enum ArrayMemberResolver implements BaseMemberResolver {
 	TYPE_ARRAY(4),
 	TYPE_SIMPLEARRAY(4),
 	TYPE_INPLACEARRAY(4),

@@ -15,9 +15,6 @@ public class Main {
 	 */
 	public void exec(String fileName, String outputFile) {
 		try {
-			// Check if requested file exists.
-			File file = new File(fileName);
-			
 			// Output result
 	        TransformerFactory transformerFactory =
 	                 TransformerFactory.newInstance();
@@ -26,11 +23,10 @@ public class Main {
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
         	transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
 			
-			StreamResult outResult;
 			if(outputFile == "")
-				outResult = new StreamResult(System.out);
+				new StreamResult(System.out);
 			else
-				outResult = new StreamResult(new File(outputFile));
+				new StreamResult(new File(outputFile));
 		} catch (TransformerException e) {
 			e.printStackTrace();
 		}

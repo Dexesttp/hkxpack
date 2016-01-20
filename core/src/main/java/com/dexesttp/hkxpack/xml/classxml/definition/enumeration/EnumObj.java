@@ -1,4 +1,4 @@
-package com.dexesttp.hkxpack.xml.classxml.definition;
+package com.dexesttp.hkxpack.xml.classxml.definition.enumeration;
 
 import java.util.HashMap;
 import java.util.Map;

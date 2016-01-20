@@ -4,13 +4,13 @@ import java.util.function.Function;
 
 import com.dexesttp.hkxpack.resources.ByteUtils;
 
-public enum EnumMemberResolver {
-	TYPE_ENUM(8, (value) -> {return ByteUtils.getInt(value);}),
-	TYPE_FLAGS(8, (value) -> {return ByteUtils.getInt(value);});
+public enum EnumMemberResolver implements BaseMemberResolver {
+	TYPE_ENUM((value) -> {return ByteUtils.getInt(value);}),
+	TYPE_FLAGS((value) -> {return ByteUtils.getInt(value);});
 
-	private EnumMemberResolver(int size, Function<byte[], Integer> action) {
-	}
-	
-	public void resolve(String ename, String name, String classname) {
+	private final Function<byte[], Integer> action;
+
+	private EnumMemberResolver(Function<byte[], Integer> action) {
+		this.action = action;
 	}
 }

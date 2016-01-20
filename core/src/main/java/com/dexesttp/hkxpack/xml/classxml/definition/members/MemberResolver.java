@@ -1,6 +1,4 @@
-package com.dexesttp.hkxpack.xml.classxml.definition.members.resolver;
-
-import com.dexesttp.hkxpack.xml.classxml.definition.members.ResolvedMember;
+package com.dexesttp.hkxpack.xml.classxml.definition.members;
 
 public class MemberResolver {
 	

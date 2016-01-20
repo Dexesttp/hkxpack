@@ -2,7 +2,7 @@ package com.dexesttp.hkxpack.xml.classxml.definition.members.resolver;
 
 import java.io.IOException;
 
-public enum StructMemberResolver {
+public enum StructMemberResolver implements BaseMemberResolver {
 	TYPE_STRUCT(8);
 
 	private StructMemberResolver(int size) {
