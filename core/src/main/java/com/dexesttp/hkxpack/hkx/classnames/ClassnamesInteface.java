@@ -20,10 +20,11 @@ public class ClassnamesInteface {
 	
 	public long compress(ClassnamesData data) throws IOException {
 		file.seek(section.offset);
-		for(Entry<Integer, String> classData : data.entrySet()) {
-			file.write(ByteUtils.fromInt(classData.getKey()));
-			file.writeChar(0x90);
-			file.writeChars(classData.getValue());
+		for(Entry<String, Integer> classData : data.entrySet()) {
+			file.write(ByteUtils.fromInt(classData.getValue()));
+			file.writeByte(0x90);
+			file.writeChars(classData.getKey());
+			file.writeByte(0x0);
 		}
 		// Fill the end with FFs and then return the pos.
 		long pos = file.getFilePointer();
@@ -45,7 +46,7 @@ public class ClassnamesInteface {
 				break;
 			String name = ByteUtils.readString(file);
 			if(!name.isEmpty())
-				data.put(id, name);
+				data.put(name, id);
 		}
 		return data;
 	}
