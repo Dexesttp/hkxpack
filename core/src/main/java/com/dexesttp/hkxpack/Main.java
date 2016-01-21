@@ -38,12 +38,14 @@ public class Main {
 			// See documentation to explain why this.
 			SectionData classnamesHead = sectInt.extract(0);
 			SectionData dataHead = sectInt.extract(2);
+			sectInt.close();
 			
 			//Read classnames
 			ClassnamesInteface cnamesInt = new ClassnamesInteface();
 			cnamesInt.connect(file, classnamesHead);
 			ClassnamesData data = cnamesInt.extract();
-
+			cnamesInt.close();
+			
 			System.out.println(classnamesHead.name);
 			
 			// Output result
