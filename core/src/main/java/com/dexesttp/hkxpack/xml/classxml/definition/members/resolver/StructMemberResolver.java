@@ -10,4 +10,8 @@ public enum StructMemberResolver implements BaseMemberResolver {
 	
 	public void resolve(String extClassName, String name, String baseClassName) throws IOException {
 	}
+
+	public void resolve(String name, String classname) {
+		
+	}
 }

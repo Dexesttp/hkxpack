@@ -25,5 +25,9 @@ public enum StringMemberResolver implements BaseMemberResolver {
 	private StringMemberResolver(Function<RandomAccessFile, String> action) {
 		this.action = action;
 	}
+	public void resolve(String name, String classname) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

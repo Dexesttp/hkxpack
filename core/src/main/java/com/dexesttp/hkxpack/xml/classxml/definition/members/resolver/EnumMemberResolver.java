@@ -13,4 +13,6 @@ public enum EnumMemberResolver implements BaseMemberResolver {
 	private EnumMemberResolver(Function<byte[], Integer> action) {
 		this.action = action;
 	}
+	public void resolve(String name, String classname) {
+	}
 }

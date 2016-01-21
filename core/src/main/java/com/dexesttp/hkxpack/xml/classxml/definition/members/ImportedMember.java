@@ -1,5 +1,7 @@
 package com.dexesttp.hkxpack.xml.classxml.definition.members;
 
+import com.dexesttp.hkxpack.xml.classxml.definition.members.resolver.SerializedMemberResolver;
+
 public class ImportedMember extends ClassXMLMember {
 	private final String offset;
 	private final String vtype;
@@ -20,6 +22,8 @@ public class ImportedMember extends ClassXMLMember {
 	
 	public ReadableMember resolve() {
 		// TODO handle flag.
+		if(flag.equals(""))
+			return new ReadableMember(name, classname, new SerializedMemberResolver());
 		return MemberResolver.resolve(name, classname, offset, vtype, vsubtype, ctype, etype);
 	}
 }
