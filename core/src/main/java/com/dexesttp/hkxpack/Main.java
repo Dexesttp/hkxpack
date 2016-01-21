@@ -10,6 +10,8 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 
+import com.dexesttp.hkxpack.hkx.classnames.ClassnamesData;
+import com.dexesttp.hkxpack.hkx.classnames.ClassnamesInteface;
 import com.dexesttp.hkxpack.hkx.header.HeaderData;
 import com.dexesttp.hkxpack.hkx.header.HeaderInterface;
 import com.dexesttp.hkxpack.hkx.header.SectionData;
@@ -37,9 +39,12 @@ public class Main {
 			SectionData classnamesHead = sectInt.extract(0);
 			SectionData dataHead = sectInt.extract(2);
 			
-			System.out.println(classnamesHead.name);
 			//Read classnames
-			
+			ClassnamesInteface cnamesInt = new ClassnamesInteface();
+			cnamesInt.connect(file, classnamesHead);
+			ClassnamesData data = cnamesInt.extract();
+
+			System.out.println(classnamesHead.name);
 			
 			// Output result
 	        TransformerFactory transformerFactory =
