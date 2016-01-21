@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 
 import com.dexesttp.hkxpack.hkx.header.internals.SectionDescriptor;
 import com.dexesttp.hkxpack.resources.ByteUtils;
