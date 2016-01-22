@@ -10,12 +10,10 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 
-import com.dexesttp.hkxpack.hkx.classnames.ClassnamesData;
-import com.dexesttp.hkxpack.hkx.classnames.ClassnamesInteface;
-import com.dexesttp.hkxpack.hkx.header.HeaderData;
-import com.dexesttp.hkxpack.hkx.header.HeaderInterface;
-import com.dexesttp.hkxpack.hkx.header.SectionData;
-import com.dexesttp.hkxpack.hkx.header.SectionInterface;
+import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
+import com.dexesttp.hkxpack.hkx.logic.Reader;
+import com.dexesttp.hkxpack.xml.classxml.exceptions.NonResolvedClassException;
+import com.dexesttp.hkxpack.xml.classxml.exceptions.NotKnownClassException;
 
 public class Main {
 	/**
@@ -26,27 +24,9 @@ public class Main {
 		try {
 			// Read file
 			File file = new File(fileName);
-			// Read header
-			HeaderInterface headInt = new HeaderInterface();
-			headInt.connect(file);
-			HeaderData header = headInt.extract();
-			headInt.close();
 			
-			// Read header sections.
-			SectionInterface sectInt = new SectionInterface();
-			sectInt.connect(file, header);
-			// See documentation to explain why this.
-			SectionData classnamesHead = sectInt.extract(0);
-			SectionData dataHead = sectInt.extract(2);
-			sectInt.close();
-			
-			//Read classnames
-			ClassnamesInteface cnamesInt = new ClassnamesInteface();
-			cnamesInt.connect(file, classnamesHead);
-			ClassnamesData data = cnamesInt.extract();
-			cnamesInt.close();
-			
-			System.out.println(classnamesHead.name);
+			Reader reader = new Reader();
+			reader.read(file);
 			
 			// Output result
 	        TransformerFactory transformerFactory =
@@ -61,12 +41,16 @@ public class Main {
 			else
 				new StreamResult(new File(outputFile));
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (TransformerException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NonResolvedClassException e) {
+			e.printStackTrace();
+		} catch (NotKnownClassException e) {
+			e.printStackTrace();
+		} catch (InvalidPositionException e) {
 			e.printStackTrace();
 		}
 	}
