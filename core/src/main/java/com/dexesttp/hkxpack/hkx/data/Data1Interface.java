@@ -26,6 +26,8 @@ public class Data1Interface {
 		byte[] dataLine = new byte[4];
 		file.read(dataLine);
 		data.from = ByteUtils.getLong(dataLine);
+		if(data.from > header.offset + header.data1)
+			throw new InvalidPositionException("DATA_1", pos );
 		file.read(dataLine);
 		data.to = ByteUtils.getLong(dataLine);
 		return data;
