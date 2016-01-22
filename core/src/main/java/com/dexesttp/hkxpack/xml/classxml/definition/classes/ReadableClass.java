@@ -45,8 +45,10 @@ public class ReadableClass extends ClassXML {
 	}
 
 	public Struct getStruct() {
-		// TODO this thing right here.
-		return null;
+		Struct res = new Struct();
+		for(ReadableMember member : members)
+			res.members.add(member.getStruct());
+		return res;
 	}
 
 	public Node resolve(Struct currentStruct, DataInterface data, Data1Interface data1, Data2Interface data2) {
