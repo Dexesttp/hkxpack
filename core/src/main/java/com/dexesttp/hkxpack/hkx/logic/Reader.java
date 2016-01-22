@@ -3,6 +3,7 @@ package com.dexesttp.hkxpack.hkx.logic;
 import java.io.File;
 import java.io.IOException;
 
+import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 import com.dexesttp.hkxpack.hkx.classnames.ClassnamesData;
@@ -22,16 +23,21 @@ import com.dexesttp.hkxpack.xml.classxml.ClassXMLList;
 import com.dexesttp.hkxpack.xml.classxml.definition.classes.ReadableClass;
 import com.dexesttp.hkxpack.xml.classxml.exceptions.NonResolvedClassException;
 import com.dexesttp.hkxpack.xml.classxml.exceptions.NotKnownClassException;
+import com.dexesttp.hkxpack.xml.tagxml.TagXMLInitializer;
 
 public class Reader {
-	public void read(File file) throws IOException, NonResolvedClassException, NotKnownClassException, InvalidPositionException {
+	public Document read(File file) throws IOException, NonResolvedClassException, NotKnownClassException, InvalidPositionException {
 		// Get the ClassXMLList instance.
 		ClassXMLList classList = ClassXMLList.getInstance();
+		
 		// Read header
 		HeaderInterface headInt = new HeaderInterface();
 		headInt.connect(file);
 		HeaderData header = headInt.extract();
 		headInt.close();
+		
+		// Get the TagXML document
+		Document document = new TagXMLInitializer().initialize(header.version, header.versionName);
 		
 		// Read header sections.
 		SectionInterface sectInt = new SectionInterface();
@@ -73,11 +79,12 @@ public class Reader {
 				Struct currentStruct = actualClass.getStruct();
 				data.read(currentClass.from, currentStruct);
 				// Resolve the struct to a Node using data/data1/data2.
-				Node node = actualClass.resolve(currentStruct, data, data1, data2);
+				Node node = actualClass.resolve(document, currentStruct, data, data1, data2);
 			}
 		} catch (InvalidPositionException e) {
 			if(!e.getSection().equals("DATA_3"))
 				throw e;
 		}
+		return document;
 	}
 }
