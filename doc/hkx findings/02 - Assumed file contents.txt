@@ -31,7 +31,7 @@ Structures found in a HKX file :
 	},
 	'classname': {
 		'classID': "4 bytes Hexcode",
-		'magicvalue1': 0x90,
+		'magicvalue1': 0x09,
 		'name': "Null-terminated string"
 	},
 	'data_struct': {

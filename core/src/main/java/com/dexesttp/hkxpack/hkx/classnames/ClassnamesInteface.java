@@ -18,6 +18,14 @@ public class ClassnamesInteface {
 		this.section = classnameSection;
 	}
 	
+	/**
+	 * Compress the given classnames into the hkx file "__classname__" section.
+	 * Note taht it will fill the data with all required classnames & positions.
+	 * Please use only negative position identifiers to fill the original dataset values. Otherwise, the fi=unction comprtement will be indetermined.
+	 * @param data the data to find the classnames in.
+	 * @return The position of the end of the dataset (absolute position from the beginning of the file).
+	 * @throws IOException
+	 */
 	public long compress(ClassnamesData data) throws IOException {
 		file.seek(section.offset);
 		for(Entry<Long, Classname> classData : data.entrySet()) {
@@ -37,17 +45,20 @@ public class ClassnamesInteface {
 	}
 	
 	public ClassnamesData extract() throws IOException {
+		final long limit = section.offset + section.data1;
 		ClassnamesData data = new ClassnamesData();
 		byte[] idList = new byte[4];
 		file.seek(section.offset);
-		while(file.getFilePointer() < section.data1 + section.offset) {
+		while(file.getFilePointer() < limit) {
 			file.read(idList);
-			if(file.readByte() != 0x90)
+			if(file.readByte() != 0x09)
 				break;
 			long position = file.getFilePointer();
+			if(position > limit)
+				break;
 			String name = ByteUtils.readString(file);
 			if(!name.isEmpty())
-				data.put(position, name, idList);
+				data.put(position - section.offset, name, idList);
 		}
 		return data;
 	}
