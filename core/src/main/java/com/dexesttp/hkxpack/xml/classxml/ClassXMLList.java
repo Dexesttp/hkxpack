@@ -39,7 +39,6 @@ public class ClassXMLList {
 	 */
 	public void resolve() throws IOException, NonResolvedClassException, NotKnownClassException {
 		for(Map.Entry<String, ImportedClass> classObj : importedClasses.entrySet()) {
-			System.out.println("Now resolving : " + classObj.getKey());
 			readableClasses.put(classObj.getKey(), classObj.getValue().resolve());
 		}
 		importedClasses.clear();

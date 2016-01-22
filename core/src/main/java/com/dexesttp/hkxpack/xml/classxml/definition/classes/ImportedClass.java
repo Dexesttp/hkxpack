@@ -43,16 +43,13 @@ public class ImportedClass extends ClassXML {
 	}
 
 	public ReadableClass resolve() throws IOException, NonResolvedClassException, NotKnownClassException {
-		System.out.println("Beginning resolution of : " + classname);
 		ReadableClass classInst = new ReadableClass(classname, classID);
 		if(parent != null) {
-			System.out.println("Found parent : " + parent);
 			ReadableClass parentInst = ClassXMLList.getInstance().getReadableClass(parent);
 			classInst.addMembers(parentInst.getMembers());
 		}
 		for(ImportedMember member : members)
 			classInst.addMember(member.resolve());
-		System.out.println("Ended resolution of : " + classname);
 		return classInst;
 	}
 }
