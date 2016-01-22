@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import com.dexesttp.hkxpack.hkx.classnames.ClassnamesData;
@@ -38,6 +39,9 @@ public class Reader {
 		
 		// Get the TagXML document
 		Document document = new TagXMLInitializer().initialize(header.version, header.versionName);
+		Element root = document.createElement("hksection");
+		root.setAttribute("name", "__data__");
+		document.getChildNodes().item(0).appendChild(root);
 		
 		// Read header sections.
 		SectionInterface sectInt = new SectionInterface();
@@ -80,6 +84,7 @@ public class Reader {
 				data.read(currentClass.from, currentStruct);
 				// Resolve the struct to a Node using data/data1/data2.
 				Node node = actualClass.resolve(document, currentStruct, data, data1, data2);
+				root.appendChild(node);
 			}
 		} catch (InvalidPositionException e) {
 			if(!e.getSection().equals("DATA_3"))
