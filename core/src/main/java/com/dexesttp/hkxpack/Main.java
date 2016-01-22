@@ -8,6 +8,7 @@ import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
@@ -16,7 +17,6 @@ import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
 import com.dexesttp.hkxpack.hkx.logic.Reader;
 import com.dexesttp.hkxpack.xml.classxml.exceptions.NonResolvedClassException;
 import com.dexesttp.hkxpack.xml.classxml.exceptions.NotKnownClassException;
-import com.dexesttp.hkxpack.xml.tagxml.TagXMLInitializer;
 
 public class Main {
 	/**
@@ -39,11 +39,14 @@ public class Main {
 	                 transformerFactory.newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
         	transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+            DOMSource source = new DOMSource(document);
 			
+			StreamResult outResult;
 			if(outputFile == "")
-				new StreamResult(System.out);
+				outResult = new StreamResult(System.out);
 			else
-				new StreamResult(new File(outputFile));
+				outResult = new StreamResult(new File(outputFile));
+	        transformer.transform(source, outResult);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (TransformerException e) {
