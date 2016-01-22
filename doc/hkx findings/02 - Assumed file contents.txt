@@ -82,6 +82,11 @@ hsection			HEADER_SECTION 3		__data__, contains offset, data1, data2 and data3 u
 [externaladdress]	DATA2 : pointers		Pointer linker from DATA (used when the next memebr to read is a pointer)
 [externaladdress]	DATA3 : __classnames__	What is the next data_struct to read in DATA ?
 
+Note on CLASSNAMES, DATA1-3 :
+	If the section ends before a 0x*0 address, all data until the next 00 is filled with 0xFFs. E:G:
+	-----------hkxOb
+	ject(0x00)(fill with FFs)
+
 Note on reading arrays :
 	If the array is non empty, read the first data from data1 as an array content pointer.
 	Then, proceed to read all contents either as data (read size*length bytes), direct data (read from DATA1) or pointers (read from data2).
