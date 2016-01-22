@@ -12,6 +12,7 @@ import com.dexesttp.hkxpack.resources.ByteUtils;
 public class Data1Interface {
 	private RandomAccessFile file;
 	private SectionData header;
+	private int lastPos = -1;
 	public void connect(File file, SectionData data1) throws FileNotFoundException {
 		this.file = new RandomAccessFile(file, "rw");
 		this.header = data1;
@@ -30,10 +31,15 @@ public class Data1Interface {
 			throw new InvalidPositionException("DATA_1", pos );
 		file.read(dataLine);
 		data.to = ByteUtils.getLong(dataLine);
+		this.lastPos  = pos;
 		return data;
 	}
 	
 	public void close() throws IOException {
 		file.close();
+	}
+
+	public DataInternal readNext() throws IOException, InvalidPositionException {
+		return read(++lastPos);
 	}
 }
