@@ -2,6 +2,7 @@ package com.dexesttp.hkxpack.xml.classxml;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.dexesttp.hkxpack.xml.classxml.definition.classes.ImportedClass;
@@ -21,7 +22,7 @@ public class ClassXMLList {
 		return instance;
 	}
 	
-	private Map<String, ImportedClass> importedClasses = new HashMap<>();
+	private Map<String, ImportedClass> importedClasses = new LinkedHashMap<>();
 	private Map<String, ReadableClass> readableClasses = new HashMap<>();
 	
 	public void addClass(String name, ImportedClass importedClass) {
@@ -33,10 +34,14 @@ public class ClassXMLList {
 	/**
 	 * Resolve all current imported classes into readable classes.
 	 * @throws IOException
+	 * @throws NotKnownClassException 
+	 * @throws NonResolvedClassException 
 	 */
-	public void resolve() throws IOException {
-		for(Map.Entry<String, ImportedClass> classObj : importedClasses.entrySet())
+	public void resolve() throws IOException, NonResolvedClassException, NotKnownClassException {
+		for(Map.Entry<String, ImportedClass> classObj : importedClasses.entrySet()) {
+			System.out.println("Now resolving : " + classObj.getKey());
 			readableClasses.put(classObj.getKey(), classObj.getValue().resolve());
+		}
 		importedClasses.clear();
 	}
 	
@@ -48,10 +53,11 @@ public class ClassXMLList {
 	 * @throws NotKnownClassException if the class wasn't even imported yet.
 	 */
 	public ReadableClass getReadableClass(String name) throws NonResolvedClassException, NotKnownClassException {
-		if(importedClasses.containsKey(name))
-			throw new NonResolvedClassException(name);
-		if(!readableClasses.containsKey(name))
+		if(!readableClasses.containsKey(name)) {
+			if(importedClasses.containsKey(name))
+				throw new NonResolvedClassException(name);
 			throw new NotKnownClassException(name);
+		}
 		return readableClasses.get(name);
 	}
 }

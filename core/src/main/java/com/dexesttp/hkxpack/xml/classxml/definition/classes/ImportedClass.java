@@ -4,7 +4,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.dexesttp.hkxpack.xml.classxml.ClassXMLList;
 import com.dexesttp.hkxpack.xml.classxml.definition.members.ImportedMember;
+import com.dexesttp.hkxpack.xml.classxml.exceptions.NonResolvedClassException;
+import com.dexesttp.hkxpack.xml.classxml.exceptions.NotKnownClassException;
 
 public class ImportedClass extends ClassXML {
 	private final String classname;
@@ -39,9 +42,17 @@ public class ImportedClass extends ClassXML {
 		return members;
 	}
 
-	public ReadableClass resolve() throws IOException {
-		// TODO resolve imported class into actual class.
-		System.out.println(parent);
-		return null;
+	public ReadableClass resolve() throws IOException, NonResolvedClassException, NotKnownClassException {
+		System.out.println("Beginning resolution of : " + classname);
+		ReadableClass classInst = new ReadableClass(classname, classID);
+		if(parent != null) {
+			System.out.println("Found parent : " + parent);
+			ReadableClass parentInst = ClassXMLList.getInstance().getReadableClass(parent);
+			classInst.addMembers(parentInst.getMembers());
+		}
+		for(ImportedMember member : members)
+			classInst.addMember(member.resolve());
+		System.out.println("Ended resolution of : " + classname);
+		return classInst;
 	}
 }
