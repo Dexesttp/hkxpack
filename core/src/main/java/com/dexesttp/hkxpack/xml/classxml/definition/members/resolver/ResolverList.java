@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings("rawtypes")
 public class ResolverList {
 	private static ResolverList instance;
 	private ResolverList() {
@@ -15,14 +16,15 @@ public class ResolverList {
 		return instance;
 	}
 	
-	@SuppressWarnings("rawtypes")
 	private Map<String, Class> resolverList = new HashMap<String, Class>();
 	
 	{
 		resolverList.put("Array", ArrayMemberResolver.class);
 		resolverList.put("Direct", DirectMemberResolver.class);
-		resolverList.put("Array", ArrayMemberResolver.class);
-		resolverList.put("Array", ArrayMemberResolver.class);
+		resolverList.put("Enum", EnumMemberResolver.class);
+		resolverList.put("Ptr", PtrMemberResolver.class);
+		resolverList.put("String", StringMemberResolver.class);
+		resolverList.put("Struct", StructMemberResolver.class);
 	}
 	/**
 	 * Base values are :
