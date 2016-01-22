@@ -8,7 +8,7 @@ public class ImportedMember extends ClassXMLMember {
 	private final String etype;
 	private final String flag;
 
-	public ImportedMember(String name, String classname, String offset, String vtype, String vsubtype, String ctype, String etype, String flag) {
+	public ImportedMember(String name, String classname, String offset, String flag, String vtype, String vsubtype, String ctype, String etype) {
 		super(name, classname);
 		this.offset = offset;
 		this.vtype = vtype;
@@ -19,6 +19,6 @@ public class ImportedMember extends ClassXMLMember {
 	}
 	
 	public ReadableMember resolve() {
-		return MemberResolver.resolve(name, classname, flag, offset, vtype, vsubtype, ctype, etype);
+		return MemberResolver.resolve(name, classname, flag, Integer.parseInt(offset), vtype, vsubtype, ctype, etype);
 	}
 }

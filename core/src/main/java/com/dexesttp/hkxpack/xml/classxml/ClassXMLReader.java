@@ -70,14 +70,14 @@ public class ClassXMLReader {
 
 	private static ImportedMember resolveMember(Node memberNode, String className) {
 		ImportedMember memberObj = new ImportedMember(
-			"",
 			DOMUtils.getNodeAttr("name", memberNode),
 			className,
+			DOMUtils.getNodeAttr("offset", memberNode),
+			DOMUtils.getNodeAttr("flags", memberNode),
 			DOMUtils.getNodeAttr("vtype", memberNode),
 			DOMUtils.getNodeAttr("vsubtype", memberNode),
 			DOMUtils.getNodeAttr("ctype", memberNode),
-			DOMUtils.getNodeAttr("etype", memberNode),
-			DOMUtils.getNodeAttr("flags", memberNode));
+			DOMUtils.getNodeAttr("etype", memberNode));
 		return memberObj;
 	}
 

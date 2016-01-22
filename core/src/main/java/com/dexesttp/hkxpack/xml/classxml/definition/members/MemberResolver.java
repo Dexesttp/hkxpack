@@ -4,10 +4,14 @@ import com.dexesttp.hkxpack.xml.classxml.definition.members.resolver.ResolverLis
 
 public class MemberResolver {
 	
-	public static ReadableMember resolve(String name, String classname, String flags, String offset, String vtype, String vsubtype, String ctype, String etype) {
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static ReadableMember resolve(String name, String classname, String flags, long offset, String vtype, String vsubtype, String ctype, String etype) {
 		Enum enumInst = null;
-		for(Class resolverClass : ResolverList.getInstance().getAll())
-			enumInst = getEnumVal(resolverClass, name);
+		for(Class resolverClass : ResolverList.getInstance().getAll()) {
+			enumInst = getEnumVal(resolverClass, vtype);
+			if(enumInst != null)
+				break;
+		}
 		return new ReadableMember(name, classname, flags, offset, enumInst);
 	}
 	
