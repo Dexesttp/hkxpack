@@ -48,7 +48,7 @@ public class ClassXMLReader {
 			Node memberNode = members.item(i);
 			classObj.addContent(resolveMember(memberNode, classname));
 		}
-		// TODO add classObj to class list.
+		ClassXMLList.getInstance().addClass(classname, classObj);
 	}
 
 	private static Document openFile(String classname) throws IOException {
