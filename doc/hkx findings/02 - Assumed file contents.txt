@@ -72,6 +72,7 @@ Structure of a typical HKX file :
 type				given name			refers to
 =======================================================
 Header			HEADER				File header
+>>Eventual padding. The value here is described in size by 'padding_v11'. If there is padding, then the padding begins by 0x14 (then 15 bytes of 0x00).
 hsection			HEADER_SECTION 1		__classname__, only the offset is used (data1-5 empty).
 hsection			HEADER_SECTION 2		__types__, always empty so always ignored.
 hsection			HEADER_SECTION 3		__data__, contains offset, data1, data2 and data3 useful.
