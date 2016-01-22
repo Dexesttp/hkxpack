@@ -9,4 +9,9 @@ public class ReadableMember extends ClassXMLMember {
 		super(name, classname);
 		this.resolver = resolver;
 	}
+
+	public ReadableMember(String name, String classname, String flags, String offset, Enum enumInst) {
+		super(name, classname);
+		resolver = (BaseMemberResolver) enumInst;
+	}
 }

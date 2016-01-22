@@ -1,9 +1,14 @@
 package com.dexesttp.hkxpack.xml.classxml.definition.members;
 
+import com.dexesttp.hkxpack.xml.classxml.definition.members.resolver.ResolverList;
+
 public class MemberResolver {
-	public static ReadableMember resolve(String name, String classname, String offset, String vtype, String vsubtype, String ctype, String etype) {
-		// TODO ReadableMember creation
-		return null;
+	
+	public static ReadableMember resolve(String name, String classname, String flags, String offset, String vtype, String vsubtype, String ctype, String etype) {
+		Enum enumInst = null;
+		for(Class resolverClass : ResolverList.getInstance().getAll())
+			enumInst = getEnumVal(resolverClass, name);
+		return new ReadableMember(name, classname, flags, offset, enumInst);
 	}
 	
 	/*
