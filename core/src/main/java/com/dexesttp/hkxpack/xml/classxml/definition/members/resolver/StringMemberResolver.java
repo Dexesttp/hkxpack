@@ -21,13 +21,17 @@ public enum StringMemberResolver implements BaseMemberResolver {
 		}
 	});
 	
+	@Override
+	public int getSize() {
+		return 0;
+	}
+	
 	private final Function<RandomAccessFile, String> action;
 	private StringMemberResolver(Function<RandomAccessFile, String> action) {
 		this.action = action;
 	}
 	public void resolve(String name, String classname) {
-		// TODO Auto-generated method stub
-		
+		// TODO implement String resolution.
 	}
 
 }

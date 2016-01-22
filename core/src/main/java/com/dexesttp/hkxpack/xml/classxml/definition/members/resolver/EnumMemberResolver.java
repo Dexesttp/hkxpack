@@ -10,6 +10,11 @@ public enum EnumMemberResolver implements BaseMemberResolver {
 
 	private final Function<byte[], Integer> action;
 
+	@Override
+	public int getSize() {
+		return 8;
+	}
+	
 	private EnumMemberResolver(Function<byte[], Integer> action) {
 		this.action = action;
 	}

@@ -15,4 +15,9 @@ public enum ArrayMemberResolver implements BaseMemberResolver {
 	public void resolve(String name, String classname) {
 		System.out.println("Size : " + size);
 	}
+
+	@Override
+	public int getSize() {
+		return 16;
+	}
 }

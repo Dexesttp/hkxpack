@@ -1,6 +1,5 @@
 package com.dexesttp.hkxpack.xml.classxml.definition.members.resolver;
 
-import java.io.RandomAccessFile;
 import java.util.function.Function;
 
 import com.dexesttp.hkxpack.resources.ByteUtils;
@@ -29,12 +28,16 @@ public enum DirectMemberResolver implements BaseMemberResolver {
 	TYPE_TRANSFORM(96, (value) -> {return ""+ByteUtils.getInt(value);}),
 	TYPE_QSTRANSFORM(128, (value) -> {return ""+ByteUtils.getInt(value);});
 	
+	private final int size;
 	private DirectMemberResolver(int size, Function<byte[], String> action) {
-	}
-	
-	private DirectMemberResolver(Function<RandomAccessFile, String> action) {
+		this.size = size;
 	}
 	
 	public void resolve(String name, String classname) {
+	}
+
+	@Override
+	public int getSize() {
+		return size;
 	}
 }
