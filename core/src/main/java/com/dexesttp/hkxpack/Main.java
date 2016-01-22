@@ -10,10 +10,13 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 
+import org.w3c.dom.Document;
+
 import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
 import com.dexesttp.hkxpack.hkx.logic.Reader;
 import com.dexesttp.hkxpack.xml.classxml.exceptions.NonResolvedClassException;
 import com.dexesttp.hkxpack.xml.classxml.exceptions.NotKnownClassException;
+import com.dexesttp.hkxpack.xml.tagxml.TagXMLInitializer;
 
 public class Main {
 	/**
@@ -22,11 +25,12 @@ public class Main {
 	 */
 	public void exec(String fileName, String outputFile) {
 		try {
+			// Get output document
 			// Read file
 			File file = new File(fileName);
 			
 			Reader reader = new Reader();
-			reader.read(file);
+			Document document = reader.read(file);
 			
 			// Output result
 	        TransformerFactory transformerFactory =
