@@ -23,4 +23,11 @@ public class DataInterface {
 		file.seek(header.offset + position);
 		structure.read(file);
 	}
+	
+	public RandomAccessFile setup(long position) throws IOException, InvalidPositionException {
+		if(position < 0 || position > header.data1)
+			throw new InvalidPositionException("DATA", position);
+		file.seek(header.offset + position);
+		return file;
+	}
 }
