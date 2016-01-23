@@ -27,4 +27,12 @@ public class Struct {
 		for(Member member : members)
 			member.read(position, dataInterface);
 	}
+
+	public int getSize() {
+		Member last = members.get(members.size() - 1);
+		if(last != null)
+			return (int) (last.offset + last.toRead.length);
+		else
+			return 0;
+	}
 }

@@ -59,6 +59,10 @@ public class ReadableClass extends ClassXML {
 			res.members.add(member.getStruct());
 		return res;
 	}
+	
+	public int getSize() {
+		return getStruct().getSize();
+	}
 
 	public Node resolve(Document doc, String uUName, Struct currentStruct, DataInterface data, Data1Interface data1, Data2Interface data2) throws IOException, InvalidPositionException, UnsupportedCombinaisonException, UnknownEnumerationException, NonResolvedClassException, UnknownClassException {
 		return resolve(doc, uUName, currentStruct, data, data1, data2, false);
