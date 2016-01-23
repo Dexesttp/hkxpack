@@ -40,6 +40,7 @@ public class Data1Interface {
 	}
 
 	public DataInternal readNext() throws IOException, InvalidPositionException {
+		System.out.println("\t Reading next (1) entry : " + lastPos);
 		return read(++lastPos);
 	}
 }

@@ -14,22 +14,22 @@ import com.dexesttp.hkxpack.hkx.structs.DataInterface;
 import com.dexesttp.hkxpack.hkx.structs.Struct;
 import com.dexesttp.hkxpack.xml.classxml.definition.classes.ReadableClass;
 import com.dexesttp.hkxpack.xml.classxml.exceptions.NonResolvedClassException;
-import com.dexesttp.hkxpack.xml.classxml.exceptions.NotKnownClassException;
+import com.dexesttp.hkxpack.xml.classxml.exceptions.UnknownClassException;
 import com.dexesttp.hkxpack.xml.classxml.exceptions.UnknownEnumerationException;
 import com.dexesttp.hkxpack.xml.classxml.exceptions.UnsupportedCombinaisonException;
 
 public class StructMemberReader extends BaseMemberReader {
-
 	private final ReadableClass classInst;
 
-	public StructMemberReader(String name, long size, ReadableClass classInst) {
+	public StructMemberReader(String name, int size, ReadableClass classInst) {
 		super(name, size);
 		this.classInst = classInst;
 	}
 
 	@Override
 	public Node readDirect(Document document, byte[] toRead, DataInterface data, Data1Interface data1,
-			Data2Interface data2) throws IOException, InvalidPositionException, UnsupportedCombinaisonException, UnknownEnumerationException, NonResolvedClassException, NotKnownClassException {
+			Data2Interface data2) throws IOException, InvalidPositionException, UnsupportedCombinaisonException, UnknownEnumerationException, NonResolvedClassException, UnknownClassException {
+		System.out.println("\tReading struct : " + name);
 		Element root = document.createElement("hkparam");
 		root.setAttribute("name", name);
 		// Get the struct position
@@ -45,14 +45,13 @@ public class StructMemberReader extends BaseMemberReader {
 
 	@Override
 	public Node readIndirect(Document document, long arrPos, DataInterface data, Data1Interface data1,
-			Data2Interface data2) throws UnsupportedCombinaisonException, IOException, InvalidPositionException, UnknownEnumerationException, NonResolvedClassException, NotKnownClassException {
-		DataInternal pos = data1.readNext();
+			Data2Interface data2) throws UnsupportedCombinaisonException, IOException, InvalidPositionException, UnknownEnumerationException, NonResolvedClassException, UnknownClassException {
+		System.out.println("\t\tReading embedded struct : " + name);
 		// Read the struct.
 		Struct currentStruct = classInst.getStruct();
-		data.read(pos.to, currentStruct);
+		data.read(arrPos, currentStruct);
 		// Resolve the struct to a Node using data/data1/data2.
 		Node node = classInst.resolve(document, "", currentStruct, data, data1, data2, true);
 		return node;
 	}
-
 }

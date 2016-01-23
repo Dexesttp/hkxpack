@@ -1,9 +1,10 @@
 package com.dexesttp.hkxpack.hkx.structs;
 
 import java.io.IOException;
-import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
 
 public class Struct {
 	public final List<Member> members;
@@ -22,8 +23,8 @@ public class Struct {
 			members.add(new Member(size[1], size[0]));
 	}
 	
-	public void read(RandomAccessFile file) throws IOException {
+	public void read(long position, DataInterface dataInterface) throws IOException, InvalidPositionException {
 		for(Member member : members)
-			member.read(file);
+			member.read(position, dataInterface);
 	}
 }

@@ -20,14 +20,18 @@ import com.dexesttp.hkxpack.hkx.header.SectionData;
 import com.dexesttp.hkxpack.hkx.header.SectionInterface;
 import com.dexesttp.hkxpack.hkx.structs.DataInterface;
 import com.dexesttp.hkxpack.hkx.structs.Struct;
+import com.dexesttp.hkxpack.resources.PointerNameGiver;
 import com.dexesttp.hkxpack.xml.classxml.ClassXMLList;
 import com.dexesttp.hkxpack.xml.classxml.definition.classes.ReadableClass;
+import com.dexesttp.hkxpack.xml.classxml.exceptions.NonImportedClassException;
 import com.dexesttp.hkxpack.xml.classxml.exceptions.NonResolvedClassException;
-import com.dexesttp.hkxpack.xml.classxml.exceptions.NotKnownClassException;
+import com.dexesttp.hkxpack.xml.classxml.exceptions.UnknownClassException;
+import com.dexesttp.hkxpack.xml.classxml.exceptions.UnknownEnumerationException;
+import com.dexesttp.hkxpack.xml.classxml.exceptions.UnsupportedCombinaisonException;
 import com.dexesttp.hkxpack.xml.tagxml.TagXMLInitializer;
 
 public class Reader {
-	public Document read(File file) throws IOException, NonResolvedClassException, NotKnownClassException, InvalidPositionException {
+	public Document read(File file) throws IOException, NonResolvedClassException, UnknownClassException, InvalidPositionException, UnsupportedCombinaisonException, NumberFormatException, UnknownEnumerationException, NonImportedClassException {
 		// Get the ClassXMLList instance.
 		ClassXMLList classList = ClassXMLList.getInstance();
 		
@@ -58,6 +62,7 @@ public class Reader {
 		cnamesInt.close();
 		
 		// Resolve classnames
+		classList.importClasses();
 		classList.resolve();
 		
 		// Read data.
@@ -79,11 +84,13 @@ public class Reader {
 				// Resolve the class.
 				String className = classConverter.get(currentClass.to).name;
 				ReadableClass actualClass = classList.getReadableClass(className);
+				// Add a name to the class
+				String newName = PointerNameGiver.getInstance().getName(currentClass.from);
 				// Read the struct.
 				Struct currentStruct = actualClass.getStruct();
 				data.read(currentClass.from, currentStruct);
 				// Resolve the struct to a Node using data/data1/data2.
-				Node node = actualClass.resolve(document, currentStruct, data, data1, data2);
+				Node node = actualClass.resolve(document, newName, currentStruct, data, data1, data2);
 				root.appendChild(node);
 			}
 		} catch (InvalidPositionException e) {

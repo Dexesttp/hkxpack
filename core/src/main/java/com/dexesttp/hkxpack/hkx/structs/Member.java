@@ -3,6 +3,8 @@ package com.dexesttp.hkxpack.hkx.structs;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
+import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
+
 public class Member {
 	public final long offset;
 	public final byte[] toRead;
@@ -17,7 +19,8 @@ public class Member {
 		this.offset = offset;
 	}
 	
-	public void read(RandomAccessFile file) throws IOException {
+	public void read(long position, DataInterface dataInterface) throws IOException, InvalidPositionException {
+		RandomAccessFile file = dataInterface.setup(position + offset);
 		file.read(toRead);
 	}
 }

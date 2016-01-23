@@ -6,21 +6,14 @@ import com.dexesttp.hkxpack.xml.classxml.definition.members.resolver.ResolverLis
 public class MemberResolver {
 
 	@SuppressWarnings({"rawtypes", "unchecked"})
-	public static Enum getEnum(String vtype) {
+	public static BaseMemberResolver getEnum(String vtype) {
 		Enum enumInst = null;
 		for(Class resolverClass : ResolverList.getInstance().getAll()) {
 			enumInst = getEnumVal(resolverClass, vtype);
 			if(enumInst != null)
 				break;
 		}
-		return enumInst;
-	}
-
-	@SuppressWarnings({"rawtypes"})
-	public static ReadableMember resolve(String name, String classname, String flags, long offset, String vtype, String vsubtype, String ctype, String etype) {
-		Enum enumInst = getEnum(vtype);
-		((BaseMemberResolver) enumInst).setExtraData(vsubtype, ctype, etype);
-		return new ReadableMember(name, classname, flags, offset, enumInst);
+		return (BaseMemberResolver) enumInst;
 	}
 	
 	/*

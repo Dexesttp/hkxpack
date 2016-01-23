@@ -20,8 +20,7 @@ public class DataInterface {
 	public void read(long position, Struct structure) throws IOException, InvalidPositionException {
 		if(position < 0 || position > header.data1)
 			throw new InvalidPositionException("DATA", position);
-		file.seek(header.offset + position);
-		structure.read(file);
+		structure.read(position, this);
 	}
 	
 	public RandomAccessFile setup(long position) throws IOException, InvalidPositionException {

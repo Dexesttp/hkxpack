@@ -54,4 +54,9 @@ public class ByteUtils {
 		res[0] = (byte) (value % Byte.MAX_VALUE);
 		return res;
 	}
+
+	public static float getFloat(byte[] value) {
+		int val = getInt(value);
+		return Float.intBitsToFloat(val);
+	}
 }

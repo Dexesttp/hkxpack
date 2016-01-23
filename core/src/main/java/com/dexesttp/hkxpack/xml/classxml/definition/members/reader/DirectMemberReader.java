@@ -17,7 +17,7 @@ import com.dexesttp.hkxpack.xml.classxml.exceptions.UnsupportedCombinaisonExcept
 public class DirectMemberReader extends BaseMemberReader {
 	private final Function<byte[], String> action;
 
-	public DirectMemberReader(String name, long size, Function<byte[], String> action) {
+	public DirectMemberReader(String name, int size, Function<byte[], String> action) {
 		super(name, size);
 		this.action = action;
 	}
@@ -25,6 +25,7 @@ public class DirectMemberReader extends BaseMemberReader {
 	@Override
 	public Node readDirect(Document document, byte[] toRead, DataInterface data, Data1Interface data1,
 			Data2Interface data2) throws IOException, InvalidPositionException, UnsupportedCombinaisonException {
+		System.out.println("\tReading value : " + name);
 		Element res = document.createElement("hkparam");
 		res.setAttribute("name", name);
 		Node content = document.createTextNode(action.apply(toRead));
@@ -35,6 +36,7 @@ public class DirectMemberReader extends BaseMemberReader {
 	@Override
 	public Node readIndirect(Document document, long arrPos, DataInterface data, Data1Interface data1,
 			Data2Interface data2) throws UnsupportedCombinaisonException, IOException, InvalidPositionException {
+		System.out.println("\t\tReading embedded value : " + name);
 		byte[] toRead = new byte[(int) size];
 		RandomAccessFile reader = data.setup(arrPos);
 		reader.read(toRead);

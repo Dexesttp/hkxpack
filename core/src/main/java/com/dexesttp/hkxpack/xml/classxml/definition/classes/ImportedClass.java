@@ -5,9 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.dexesttp.hkxpack.xml.classxml.ClassXMLList;
-import com.dexesttp.hkxpack.xml.classxml.definition.members.ImportedMember;
+import com.dexesttp.hkxpack.xml.classxml.definition.members.type.ImportedMember;
+import com.dexesttp.hkxpack.xml.classxml.exceptions.NonImportedClassException;
 import com.dexesttp.hkxpack.xml.classxml.exceptions.NonResolvedClassException;
-import com.dexesttp.hkxpack.xml.classxml.exceptions.NotKnownClassException;
+import com.dexesttp.hkxpack.xml.classxml.exceptions.UnknownClassException;
+import com.dexesttp.hkxpack.xml.classxml.exceptions.UnknownEnumerationException;
+import com.dexesttp.hkxpack.xml.classxml.exceptions.UnsupportedCombinaisonException;
 
 public class ImportedClass extends ClassXML {
 	private final String classname;
@@ -42,10 +45,10 @@ public class ImportedClass extends ClassXML {
 		return members;
 	}
 
-	public ReadableClass resolve() throws IOException, NonResolvedClassException, NotKnownClassException {
+	public ReadableClass resolve() throws IOException, NonResolvedClassException, UnknownClassException, NumberFormatException, UnknownEnumerationException, UnsupportedCombinaisonException, NonImportedClassException {
 		ReadableClass classInst = new ReadableClass(classname, classID);
 		if(parent != null) {
-			ReadableClass parentInst = ClassXMLList.getInstance().getReadableClass(parent);
+			ReadableClass parentInst = ClassXMLList.getInstance().getOrResolveReadableClass(parent);
 			classInst.addMembers(parentInst.getMembers());
 		}
 		for(ImportedMember member : members)

@@ -15,8 +15,11 @@ import org.w3c.dom.Document;
 
 import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
 import com.dexesttp.hkxpack.hkx.logic.Reader;
+import com.dexesttp.hkxpack.xml.classxml.exceptions.NonImportedClassException;
 import com.dexesttp.hkxpack.xml.classxml.exceptions.NonResolvedClassException;
-import com.dexesttp.hkxpack.xml.classxml.exceptions.NotKnownClassException;
+import com.dexesttp.hkxpack.xml.classxml.exceptions.UnknownClassException;
+import com.dexesttp.hkxpack.xml.classxml.exceptions.UnknownEnumerationException;
+import com.dexesttp.hkxpack.xml.classxml.exceptions.UnsupportedCombinaisonException;
 
 public class Main {
 	/**
@@ -38,7 +41,9 @@ public class Main {
             Transformer transformer =
 	                 transformerFactory.newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-        	transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+            transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+            transformer.setOutputProperty(OutputKeys.ENCODING, "ascii");
+        	transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
             DOMSource source = new DOMSource(document);
 			
 			StreamResult outResult;
@@ -55,9 +60,17 @@ public class Main {
 			e.printStackTrace();
 		} catch (NonResolvedClassException e) {
 			e.printStackTrace();
-		} catch (NotKnownClassException e) {
+		} catch (UnknownClassException e) {
 			e.printStackTrace();
 		} catch (InvalidPositionException e) {
+			e.printStackTrace();
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		} catch (UnsupportedCombinaisonException e) {
+			e.printStackTrace();
+		} catch (UnknownEnumerationException e) {
+			e.printStackTrace();
+		} catch (NonImportedClassException e) {
 			e.printStackTrace();
 		}
 	}

@@ -15,12 +15,23 @@ import com.dexesttp.hkxpack.resources.ClassFilesUtils;
 import com.dexesttp.hkxpack.resources.DOMUtils;
 import com.dexesttp.hkxpack.xml.classxml.definition.classes.ImportedClass;
 import com.dexesttp.hkxpack.xml.classxml.definition.enumeration.EnumObj;
-import com.dexesttp.hkxpack.xml.classxml.definition.members.ImportedMember;
+import com.dexesttp.hkxpack.xml.classxml.definition.members.type.ImportedMember;
+import com.dexesttp.hkxpack.xml.classxml.exceptions.UnknownEnumerationException;
 
 public class ClassXMLReader {
+	
+	/**
+	 * Import and stores a new class
+	 * @param classname
+	 * @param classID
+	 * @throws IOException
+	 */
 	public static void getClassFromFile(String classname, int classID) throws IOException {
+		ClassXMLList classList = ClassXMLList.getInstance();
 		// Open the file containing all data about the class.
 		Document document = openFile(classname);
+		if(document == null)
+			return;
 		
 		// Read all enums
 		ClassXMLEnums enumList = ClassXMLEnums.getInstance();
@@ -38,7 +49,9 @@ public class ClassXMLReader {
 		Node classNode = document.getFirstChild();
 		String parentName = DOMUtils.getNodeAttr("parent", classNode);
 		if(parentName != "") {
-			getClassFromFile(parentName, 0);
+			if(!classList.hasClass(parentName)) {
+				classList.addImport(parentName, 0);
+			}
 			classObj.setParent(parentName);
 		}
 		
@@ -46,15 +59,17 @@ public class ClassXMLReader {
 		NodeList members = document.getElementsByTagName("member");
 		for(int i = 0; i < members.getLength(); i++) {
 			Node memberNode = members.item(i);
-			classObj.addContent(resolveMember(memberNode, classname));
+			classObj.addContent(resolveMember(memberNode, classname, classList));
 		}
-		ClassXMLList.getInstance().addClass(classname, classObj);
+		classList.addClass(classname, classObj);
 	}
 
 	private static Document openFile(String classname) throws IOException {
 		Document document;
 		try {
 			String classUri = ClassFilesUtils.getFileName(classname);
+			if(classUri == null)
+				return null;
 			URL source = ClassXMLReader.class.getResource(classUri);
 			DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 			document = builder.parse(source.openStream());
@@ -68,17 +83,38 @@ public class ClassXMLReader {
 		return document;
 	}
 
-	private static ImportedMember resolveMember(Node memberNode, String className) {
-		ImportedMember memberObj = new ImportedMember(
-			DOMUtils.getNodeAttr("name", memberNode),
+	private static ImportedMember resolveMember(Node memberNode, String className, ClassXMLList classList) throws IOException {
+		String name = DOMUtils.getNodeAttr("name", memberNode);
+		String vtype = DOMUtils.getNodeAttr("vtype", memberNode);
+		String vsubtype = DOMUtils.getNodeAttr("vsubtype", memberNode);
+		String ctype = DOMUtils.getNodeAttr("ctype", memberNode);
+		String etype = DOMUtils.getNodeAttr("etype", memberNode);
+		
+		// Differ the other class resolution.
+		if(!ctype.isEmpty() && !ctype.equals(className))
+			if(!classList.hasClass(ctype)) {
+				if(!vtype.equals("TYPE_POINTER") && !vsubtype.equals("TYPE_POINTER"))
+					classList.addImport(ctype, 0);
+			}
+		
+		// If the enum isn't know, show an alert.
+		if(!etype.isEmpty()) {
+			try {
+				ClassXMLEnums.getInstance().getEnum(etype);
+			} catch(UnknownEnumerationException e) {
+				System.err.println("[Warning] Current enum isn't known : " + etype + ". Consider adding the relevant import to " + className +".");
+			}
+		}
+		
+		return new ImportedMember(
+			name,
 			className,
 			DOMUtils.getNodeAttr("offset", memberNode),
 			DOMUtils.getNodeAttr("flags", memberNode),
-			DOMUtils.getNodeAttr("vtype", memberNode),
-			DOMUtils.getNodeAttr("vsubtype", memberNode),
-			DOMUtils.getNodeAttr("ctype", memberNode),
-			DOMUtils.getNodeAttr("etype", memberNode));
-		return memberObj;
+			vtype,
+			vsubtype,
+			ctype,
+			etype);
 	}
 
 	private static EnumObj readEnum(Node enumNode) {

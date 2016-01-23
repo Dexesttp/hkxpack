@@ -1,4 +1,4 @@
-package com.dexesttp.hkxpack.resources;
+package com.dexesttp.hkxpack.cli.utils;
 
 public class RandomUtils {
 	public static String makeFromFileName(String fileName) {

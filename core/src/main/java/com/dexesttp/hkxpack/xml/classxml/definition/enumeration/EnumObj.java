@@ -31,6 +31,6 @@ public class EnumObj {
 			if(key.getValue() == value)
 				return key.getKey();
 		}
-		return "ERROR_ENUM_VALUE_NOT_FOUND";
+		return "" + value;
 	}
 }

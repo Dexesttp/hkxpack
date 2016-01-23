@@ -1,11 +1,9 @@
 package com.dexesttp.hkxpack.xml.classxml.definition.members.resolver;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-
-import com.dexesttp.hkxpack.hkx.data.Data1Interface;
-import com.dexesttp.hkxpack.hkx.data.Data2Interface;
-import com.dexesttp.hkxpack.hkx.structs.DataInterface;
+import com.dexesttp.hkxpack.xml.classxml.definition.members.reader.BaseMemberReader;
+import com.dexesttp.hkxpack.xml.classxml.definition.members.reader.PtrMemberReader;
+import com.dexesttp.hkxpack.xml.classxml.exceptions.UnknownEnumerationException;
+import com.dexesttp.hkxpack.xml.classxml.exceptions.UnsupportedCombinaisonException;
 
 public enum PtrMemberResolver implements BaseMemberResolver {
 	TYPE_POINTER,
@@ -17,15 +15,8 @@ public enum PtrMemberResolver implements BaseMemberResolver {
 	}
 
 	@Override
-	public void setExtraData(String vsubtype, String ctype, String etype) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public Node getData(Document document, byte[] toRead, DataInterface data, Data1Interface data1,
-			Data2Interface data2) {
-		// TODO Auto-generated method stub
-		return null;
+	public BaseMemberReader getReader(String name, String vsubtype, String ctype, String etype)
+			throws UnsupportedCombinaisonException, UnknownEnumerationException {
+		return new PtrMemberReader(name, getSize());
 	}
 }

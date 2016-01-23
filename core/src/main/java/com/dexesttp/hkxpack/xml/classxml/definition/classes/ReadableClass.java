@@ -14,7 +14,11 @@ import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
 import com.dexesttp.hkxpack.hkx.structs.DataInterface;
 import com.dexesttp.hkxpack.hkx.structs.Member;
 import com.dexesttp.hkxpack.hkx.structs.Struct;
-import com.dexesttp.hkxpack.xml.classxml.definition.members.ReadableMember;
+import com.dexesttp.hkxpack.xml.classxml.definition.members.type.ReadableMember;
+import com.dexesttp.hkxpack.xml.classxml.exceptions.NonResolvedClassException;
+import com.dexesttp.hkxpack.xml.classxml.exceptions.UnknownClassException;
+import com.dexesttp.hkxpack.xml.classxml.exceptions.UnknownEnumerationException;
+import com.dexesttp.hkxpack.xml.classxml.exceptions.UnsupportedCombinaisonException;
 
 public class ReadableClass extends ClassXML {
 	protected final String classname;
@@ -56,11 +60,19 @@ public class ReadableClass extends ClassXML {
 		return res;
 	}
 
-	public Node resolve(Document doc, Struct currentStruct, DataInterface data, Data1Interface data1, Data2Interface data2) throws IOException, InvalidPositionException {
+	public Node resolve(Document doc, String uUName, Struct currentStruct, DataInterface data, Data1Interface data1, Data2Interface data2) throws IOException, InvalidPositionException, UnsupportedCombinaisonException, UnknownEnumerationException, NonResolvedClassException, UnknownClassException {
+		return resolve(doc, uUName, currentStruct, data, data1, data2, false);
+	}
+
+	public Node resolve(Document doc, String uUName, Struct currentStruct, DataInterface data,
+			Data1Interface data1, Data2Interface data2, boolean isStruct) throws IOException, InvalidPositionException, UnsupportedCombinaisonException, UnknownEnumerationException, NonResolvedClassException, UnknownClassException {
+		System.out.println("Reading class : " + classname);
 		Element rootNode = doc.createElement("hkobject");
-		rootNode.setAttribute("class", classname);
-		rootNode.setAttribute("name", "NOT_IMPLEMENTED_YET");
-		rootNode.setAttribute("signature", "0x" + Integer.toHexString(classID));
+		if(!isStruct) {
+			rootNode.setAttribute("class", classname);
+			rootNode.setAttribute("name", uUName);
+			rootNode.setAttribute("signature", "0x" + Integer.toHexString(classID));
+		}
 		for(int i = 0; i < members.size(); i++) {
 			Member member = currentStruct.members.get(i);
 			ReadableMember reader = members.get(i);
@@ -68,6 +80,7 @@ public class ReadableClass extends ClassXML {
 			if(internal != null)
 				rootNode.appendChild(internal);
 		}
+		System.out.println("Leaving class : " + classname +"\n");
 		return rootNode;
 	}
 }

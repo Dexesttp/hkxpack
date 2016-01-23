@@ -15,13 +15,14 @@ import com.dexesttp.hkxpack.resources.PointerNameGiver;
 import com.dexesttp.hkxpack.xml.classxml.exceptions.UnsupportedCombinaisonException;
 
 public class PtrMemberReader extends BaseMemberReader {
-	public PtrMemberReader(String name, long size) {
+	public PtrMemberReader(String name, int size) {
 		super(name, size);
 	}
 
 	@Override
 	public Node readDirect(Document document, byte[] toRead, DataInterface data, Data1Interface data1,
 			Data2Interface data2) throws IOException, InvalidPositionException, UnsupportedCombinaisonException {
+		System.out.println("\tReading ptr : " + name);
 		DataExternal ptrAddr = data2.readNext();
 		Element res = document.createElement("hkparam");
 		res.setAttribute("name", name);
@@ -33,6 +34,7 @@ public class PtrMemberReader extends BaseMemberReader {
 	@Override
 	public Node readIndirect(Document document, long arrPos, DataInterface data, Data1Interface data1,
 			Data2Interface data2) throws UnsupportedCombinaisonException, IOException, InvalidPositionException {
+		System.out.println("\t\tReading ptr : " + name);
 		DataExternal ptrAddr = data2.readNext();
 		Node txt = document.createTextNode(PointerNameGiver.getInstance().getName(ptrAddr.to));
 		return txt;

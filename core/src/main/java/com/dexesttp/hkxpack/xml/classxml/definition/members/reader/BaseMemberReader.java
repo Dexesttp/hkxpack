@@ -10,25 +10,25 @@ import com.dexesttp.hkxpack.hkx.data.Data2Interface;
 import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
 import com.dexesttp.hkxpack.hkx.structs.DataInterface;
 import com.dexesttp.hkxpack.xml.classxml.exceptions.NonResolvedClassException;
-import com.dexesttp.hkxpack.xml.classxml.exceptions.NotKnownClassException;
+import com.dexesttp.hkxpack.xml.classxml.exceptions.UnknownClassException;
 import com.dexesttp.hkxpack.xml.classxml.exceptions.UnknownEnumerationException;
 import com.dexesttp.hkxpack.xml.classxml.exceptions.UnsupportedCombinaisonException;
 
 public abstract class BaseMemberReader {
 	protected final String name;
-	protected final long size;
+	protected final int size;
 
-	BaseMemberReader(String name, long size) {
+	BaseMemberReader(String name, int size) {
 		this.name = name;
 		this.size = size;
 	}
 
-	public long getSize() {
+	public int getSize() {
 		return size;
 	}
 
-	public abstract Node readDirect(Document document, byte[] toRead, DataInterface data, Data1Interface data1, Data2Interface data2) throws IOException, InvalidPositionException, UnsupportedCombinaisonException, UnknownEnumerationException, NonResolvedClassException, NotKnownClassException;
+	public abstract Node readDirect(Document document, byte[] toRead, DataInterface data, Data1Interface data1, Data2Interface data2) throws IOException, InvalidPositionException, UnsupportedCombinaisonException, UnknownEnumerationException, NonResolvedClassException, UnknownClassException;
 
 	public abstract Node readIndirect(Document document, long arrPos, DataInterface data, Data1Interface data1,
-			Data2Interface data2) throws UnsupportedCombinaisonException, IOException, InvalidPositionException, UnknownEnumerationException, NonResolvedClassException, NotKnownClassException;
+			Data2Interface data2) throws UnsupportedCombinaisonException, IOException, InvalidPositionException, UnknownEnumerationException, NonResolvedClassException, UnknownClassException;
 }

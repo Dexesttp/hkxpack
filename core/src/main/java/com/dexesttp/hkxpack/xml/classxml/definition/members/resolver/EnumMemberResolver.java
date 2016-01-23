@@ -1,42 +1,30 @@
 package com.dexesttp.hkxpack.xml.classxml.definition.members.resolver;
 
-import java.util.function.Function;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-
-import com.dexesttp.hkxpack.hkx.data.Data1Interface;
-import com.dexesttp.hkxpack.hkx.data.Data2Interface;
-import com.dexesttp.hkxpack.hkx.structs.DataInterface;
-import com.dexesttp.hkxpack.resources.ByteUtils;
+import com.dexesttp.hkxpack.xml.classxml.ClassXMLEnums;
+import com.dexesttp.hkxpack.xml.classxml.definition.enumeration.EnumObj;
+import com.dexesttp.hkxpack.xml.classxml.definition.members.reader.BaseMemberReader;
+import com.dexesttp.hkxpack.xml.classxml.definition.members.reader.EnumMemberReader;
+import com.dexesttp.hkxpack.xml.classxml.exceptions.UnknownEnumerationException;
+import com.dexesttp.hkxpack.xml.classxml.exceptions.UnsupportedCombinaisonException;
 
 public enum EnumMemberResolver implements BaseMemberResolver {
-	TYPE_ENUM((value) -> {return ByteUtils.getInt(value);}),
-	TYPE_FLAGS((value) -> {return ByteUtils.getInt(value);});
-
-	private final Function<byte[], Integer> action;
+	TYPE_ENUM,
+	TYPE_FLAGS;
 
 	@Override
 	public int getSize() {
 		return 8;
 	}
-	
-	private EnumMemberResolver(Function<byte[], Integer> action) {
-		this.action = action;
-	}
-	public void resolve(String name, String classname) {
-	}
 
 	@Override
-	public void setExtraData(String vsubtype, String ctype, String etype) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public Node getData(Document document, byte[] toRead, DataInterface data, Data1Interface data1,
-			Data2Interface data2) {
-		// TODO Auto-generated method stub
-		return null;
+	public BaseMemberReader getReader(String name, String vsubtype, String ctype, String etype)
+			throws UnsupportedCombinaisonException, UnknownEnumerationException {
+		EnumObj enumType = null;
+		try {
+			enumType = ClassXMLEnums.getInstance().getEnum(etype);
+		} catch(UnknownEnumerationException e) {
+			// NO OP
+		}
+		return new EnumMemberReader(name, getSize(), enumType);
 	}
 }
