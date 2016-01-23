@@ -5,7 +5,7 @@ import java.io.IOException;
 import com.dexesttp.hkxpack.Main;
 import com.dexesttp.hkxpack.cli.utils.RandomUtils;
 import com.dexesttp.hkxpack.resources.ClassFilesUtils;
-import com.dexesttp.hkxpack.resources.Properties;
+import com.dexesttp.hkxpack.resources.DisplayProperties;
 
 public class TestView {
 	public static void main(String[] args) {
@@ -13,8 +13,8 @@ public class TestView {
 		String fileName = "D:\\Documents\\SANDBOX\\FO4\\Locomotion.hkx";
 		//String outName = "";
 		String outName =  RandomUtils.makeFromFileName(fileName);
-		Properties.displayDebugInfo = true;
-		Properties.displayFileDebugInfo = true;
+		DisplayProperties.displayDebugInfo = true;
+		DisplayProperties.displayFileDebugInfo = true;
 		try {
 			ClassFilesUtils.initFolder();
 		} catch (IOException e) {

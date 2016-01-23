@@ -12,7 +12,7 @@ import com.dexesttp.hkxpack.hkx.data.DataInternal;
 import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
 import com.dexesttp.hkxpack.hkx.structs.DataInterface;
 import com.dexesttp.hkxpack.resources.ByteUtils;
-import com.dexesttp.hkxpack.resources.Properties;
+import com.dexesttp.hkxpack.resources.DisplayProperties;
 import com.dexesttp.hkxpack.xml.classxml.exceptions.NonResolvedClassException;
 import com.dexesttp.hkxpack.xml.classxml.exceptions.UnknownClassException;
 import com.dexesttp.hkxpack.xml.classxml.exceptions.UnknownEnumerationException;
@@ -37,7 +37,7 @@ public class ArrayMemberReader extends BaseMemberReader {
 		cleanText();
 		if(length > 0) {
 			// DEBUG
-			if(Properties.displayDebugInfo)
+			if(DisplayProperties.displayDebugInfo)
 				System.out.println("[MEM]\t[ARR]\t[LEN]\t" + length);
 			DataInternal dataChunk = data1.readNext();
 			long arrPos = dataChunk.to;
@@ -54,6 +54,8 @@ public class ArrayMemberReader extends BaseMemberReader {
 			if(isTextInternal)
 				res.appendChild(document.createTextNode(getText()));
 		}
+		else if(DisplayProperties.displayDebugInfo)
+				System.out.println("[MEM]\t[ARR]\t\t[EMPTY]");
 		return res;
 	}
 

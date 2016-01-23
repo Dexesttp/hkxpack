@@ -10,7 +10,7 @@ import com.dexesttp.hkxpack.hkx.data.Data2Interface;
 import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
 import com.dexesttp.hkxpack.hkx.structs.DataInterface;
 import com.dexesttp.hkxpack.hkx.structs.Member;
-import com.dexesttp.hkxpack.resources.Properties;
+import com.dexesttp.hkxpack.resources.DisplayProperties;
 import com.dexesttp.hkxpack.xml.classxml.definition.members.ClassXMLMember;
 import com.dexesttp.hkxpack.xml.classxml.definition.members.reader.BaseMemberReader;
 import com.dexesttp.hkxpack.xml.classxml.exceptions.NonResolvedClassException;
@@ -35,13 +35,13 @@ public class ReadableMember extends ClassXMLMember {
 	}
 
 	public Node read(Document document, byte[] toRead, DataInterface data, Data1Interface data1, Data2Interface data2) throws IOException, InvalidPositionException, UnsupportedCombinaisonException, UnknownEnumerationException, NonResolvedClassException, UnknownClassException {
-		if(flag.equals("SERIALIZE_IGNORED") && Properties.ignoreSerialized)
+		if(flag.equals("SERIALIZE_IGNORED") && DisplayProperties.ignoreSerialized)
 			return document.createComment(" " + name + " SERIALIZE_IGNORED ");
 		try {
 			return resolver.readDirect(document, toRead, data, data1, data2);
 		} catch(InvalidPositionException e) {
 			//e.printStackTrace();
-			if(Properties.displayDebugInfo)
+			if(DisplayProperties.displayDebugInfo)
 				System.err.println("[MEM]\t[ERR]\t\t" + e.getMessage());
 			return document.createComment(" failed to read member " + name + " ");
 		}

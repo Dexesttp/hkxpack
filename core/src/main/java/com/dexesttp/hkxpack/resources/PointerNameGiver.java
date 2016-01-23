@@ -23,12 +23,12 @@ public class PointerNameGiver {
 	public String getName(long position) {
 		if(!names.containsKey(position)) {
 			String newName = nextName();
-			if(Properties.displayDebugInfo)
+			if(DisplayProperties.displayDebugInfo)
 				System.out.println("[RES]\t[NAME]\t[CRE]\t{" + position + "}\t[VAL]\t" + newName);
 			names.put(position, newName);
 			return newName;
 		}
-		if(Properties.displayDebugInfo)
+		if(DisplayProperties.displayDebugInfo)
 			System.out.println("[RES]\t[NAME]\t[REQ]\t@{" + position + "}");
 		return names.get(position);
 	}

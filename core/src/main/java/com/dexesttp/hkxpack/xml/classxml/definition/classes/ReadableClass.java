@@ -14,6 +14,7 @@ import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
 import com.dexesttp.hkxpack.hkx.structs.DataInterface;
 import com.dexesttp.hkxpack.hkx.structs.Member;
 import com.dexesttp.hkxpack.hkx.structs.Struct;
+import com.dexesttp.hkxpack.resources.DisplayProperties;
 import com.dexesttp.hkxpack.xml.classxml.definition.members.type.ReadableMember;
 import com.dexesttp.hkxpack.xml.classxml.exceptions.NonResolvedClassException;
 import com.dexesttp.hkxpack.xml.classxml.exceptions.UnknownClassException;
@@ -70,6 +71,8 @@ public class ReadableClass extends ClassXML {
 
 	public Node resolve(Document doc, String uUName, Struct currentStruct, DataInterface data,
 			Data1Interface data1, Data2Interface data2, boolean isStruct) throws IOException, InvalidPositionException, UnsupportedCombinaisonException, UnknownEnumerationException, NonResolvedClassException, UnknownClassException {
+		if(DisplayProperties.displayDebugInfo)
+			System.out.println("[CLA]\t\t[CNAME]\t" + classname);
 		Element rootNode = doc.createElement("hkobject");
 		if(!isStruct) {
 			rootNode.setAttribute("class", classname);
