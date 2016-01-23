@@ -12,6 +12,7 @@ import com.dexesttp.hkxpack.hkx.data.DataInternal;
 import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
 import com.dexesttp.hkxpack.hkx.structs.DataInterface;
 import com.dexesttp.hkxpack.resources.ByteUtils;
+import com.dexesttp.hkxpack.resources.Properties;
 import com.dexesttp.hkxpack.xml.classxml.exceptions.NonResolvedClassException;
 import com.dexesttp.hkxpack.xml.classxml.exceptions.UnknownClassException;
 import com.dexesttp.hkxpack.xml.classxml.exceptions.UnknownEnumerationException;
@@ -33,7 +34,11 @@ public class ArrayMemberReader extends BaseMemberReader {
 		res.setAttribute("name", name);
 		res.setAttribute("numelements", "" + (length));
 		boolean isTextInternal = false;
+		cleanText();
 		if(length > 0) {
+			// DEBUG
+			if(Properties.displayDebugInfo)
+				System.out.println("[MEM]\t[ARR]\t[LEN]\t" + length);
 			DataInternal dataChunk = data1.readNext();
 			long arrPos = dataChunk.to;
 			for(int i = 0; i < length; i++) {
@@ -52,21 +57,32 @@ public class ArrayMemberReader extends BaseMemberReader {
 		return res;
 	}
 
-	// A Hack to not handle text nodes.
+	// A Hack to not handle multiple text nodes.
 	private String textContent = "";
 	private String currentLine = "";
 	private int LINE_SIZE_LIMIT = 64;
+
+	private void cleanText() {
+		textContent = "";
+		currentLine = "";
+	}
+	
 	private void addToText(String text) {
 		if(currentLine.length() > LINE_SIZE_LIMIT) {
 			textContent += "\n" + currentLine;
 			currentLine = "";
 		}
-		currentLine += " " + text;
+		if(!currentLine.isEmpty())
+			currentLine += " ";
+		currentLine += text;
 	}
 
 	private String getText() {
-		if(!currentLine.isEmpty())
+		if(!currentLine.isEmpty()) {
+			if(!textContent.isEmpty())
+				textContent += "\n";
 			textContent += currentLine;
+		}
 		return textContent;
 	}
 

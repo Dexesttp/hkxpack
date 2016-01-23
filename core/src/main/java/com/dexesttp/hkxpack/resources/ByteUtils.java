@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 
 public class ByteUtils {
-	public static int getInt(byte[] list) {
+	public static int getSInt(byte[] list) {
 		final int len = list.length;
 		int accu = 1;
 		int res = 0;
@@ -15,20 +15,9 @@ public class ByteUtils {
 		return res;
 	}
 	
-	public static int getSInt(byte[] list) {
-		final int len = list.length;
-		int accu = 1;
-		int res = 0;
-		for(int i = 0; i < len - 1; i++) {
-			res += ((int) (list[i] & 0xFF)) * accu;
-			accu *= 256;
-		}
-		int signedByte = ((int) (list[len - 1] & 0xFF)) * accu;
-		if(signedByte < 128)
-			res += signedByte * accu;
-		else
-			res = -(res + (signedByte - 128) * accu);
-		return res;
+	public static int getInt(byte[] list) {
+		// TODO remake this
+		return getSInt(list);
 	}
 
 	public static long getLong(byte[] list) {

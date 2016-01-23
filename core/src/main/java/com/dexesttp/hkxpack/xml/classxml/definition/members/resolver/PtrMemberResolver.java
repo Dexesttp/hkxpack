@@ -11,7 +11,7 @@ public enum PtrMemberResolver implements BaseMemberResolver {
 
 	@Override
 	public int getSize() {
-		return 0;
+		return 8;
 	}
 
 	@Override

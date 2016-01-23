@@ -13,7 +13,7 @@ public enum EnumMemberResolver implements BaseMemberResolver {
 
 	@Override
 	public int getSize() {
-		return 8;
+		return 1;
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package com.dexesttp.hkxpack.xml.classxml.definition.members.reader;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -12,6 +13,7 @@ import com.dexesttp.hkxpack.hkx.data.DataInternal;
 import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
 import com.dexesttp.hkxpack.hkx.structs.DataInterface;
 import com.dexesttp.hkxpack.hkx.structs.Struct;
+import com.dexesttp.hkxpack.resources.Properties;
 import com.dexesttp.hkxpack.xml.classxml.definition.classes.ReadableClass;
 import com.dexesttp.hkxpack.xml.classxml.exceptions.NonResolvedClassException;
 import com.dexesttp.hkxpack.xml.classxml.exceptions.UnknownClassException;
@@ -29,6 +31,8 @@ public class StructMemberReader extends BaseMemberReader {
 	@Override
 	public Node readDirect(Document document, byte[] toRead, DataInterface data, Data1Interface data1,
 			Data2Interface data2) throws IOException, InvalidPositionException, UnsupportedCombinaisonException, UnknownEnumerationException, NonResolvedClassException, UnknownClassException {
+		if(Properties.displayDebugInfo)
+			System.out.println("[MEM]\t[STRT]\t[DIR]\t" + Arrays.toString(toRead) + "\t" + name);
 		Element root = document.createElement("hkparam");
 		root.setAttribute("name", name);
 		// Get the struct position
@@ -45,6 +49,8 @@ public class StructMemberReader extends BaseMemberReader {
 	@Override
 	public Node readIndirect(Document document, long arrPos, DataInterface data, Data1Interface data1,
 			Data2Interface data2) throws UnsupportedCombinaisonException, IOException, InvalidPositionException, UnknownEnumerationException, NonResolvedClassException, UnknownClassException {
+		if(Properties.displayDebugInfo)
+			System.out.println("[MEM]\t[STRT]\t[INDIR]\t" + arrPos);
 		// Read the struct.
 		Struct currentStruct = classInst.getStruct();
 		data.read(arrPos, currentStruct);
