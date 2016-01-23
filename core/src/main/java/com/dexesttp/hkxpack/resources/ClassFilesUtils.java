@@ -20,6 +20,10 @@ public class ClassFilesUtils {
 		classResourcesList = newFolder;
 	}
 	
+	/**
+	 * Initialize the ClassFiles data from property file.
+	 * @throws IOException
+	 */
 	public static void initFolder() throws IOException {
 		URL paths = ClassFilesUtils.class.getResource(classResourcesList);
 		BufferedReader reader = new BufferedReader(new InputStreamReader(paths.openStream()));

@@ -30,8 +30,10 @@ public class ClassXMLReader {
 		ClassXMLList classList = ClassXMLList.getInstance();
 		// Open the file containing all data about the class.
 		Document document = openFile(classname);
-		if(document == null)
+		if(document == null) {
+			System.err.println("Couldn't read file for : " + classname);
 			return;
+		}
 		
 		// Read all enums
 		ClassXMLEnums enumList = ClassXMLEnums.getInstance();
