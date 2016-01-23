@@ -22,9 +22,19 @@ public enum DirectMemberResolver implements BaseMemberResolver {
 	TYPE_INT64(16, (value) -> {return ""+ByteUtils.getSIntString(value);}),
 	TYPE_UINT64(16, (value) -> {return ByteUtils.getIntString(value);}),
 	TYPE_REAL(4, (value) -> {return ""+ByteUtils.getFloat(value);}),
+	TYPE_VECTOR4(16, (value) -> {
+		byte[] value1 = new byte[]{value[0], value[1], value[2], value[3]};
+		byte[] value2 = new byte[]{value[4], value[5], value[6], value[7]};
+		byte[] value3 = new byte[]{value[8], value[9], value[10], value[11]};
+		byte[] value4 = new byte[]{value[12], value[13], value[14], value[15]};
+		return "["+
+				ByteUtils.getIntString(value1)+","+
+				ByteUtils.getIntString(value2)+","+
+				ByteUtils.getIntString(value3)+","+
+				ByteUtils.getIntString(value4)+"]";
+		}),
 	// TODO change these ones when you encounter them for the first time.
 	TYPE_VARIANT(32, (value) -> {return ""+ByteUtils.getIntString(value);}),
-	TYPE_VECTOR4(128, (value) -> {return ""+ByteUtils.getIntString(value);}),
 	TYPE_MATRIX4(128, (value) -> {return ""+ByteUtils.getIntString(value);}),
 	TYPE_QUATERNION(128, (value) -> {return ""+ByteUtils.getIntString(value);}),
 	TYPE_MATRIX3(96, (value) -> {return ""+ByteUtils.getIntString(value);}),
