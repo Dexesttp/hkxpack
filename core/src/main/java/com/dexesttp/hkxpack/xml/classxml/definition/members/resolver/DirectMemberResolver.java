@@ -1,118 +1,62 @@
 package com.dexesttp.hkxpack.xml.classxml.definition.members.resolver;
 
-import java.io.IOException;
-import java.io.RandomAccessFile;
 import java.util.function.Function;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-
-import com.dexesttp.hkxpack.commons.resolver.Resolver;
-import com.dexesttp.hkxpack.hkx.definition.DoubleLink;
-import com.dexesttp.hkxpack.hkx.handler.HKXHandler;
-import com.dexesttp.hkxpack.hkx.reader.InternalLinkReader;
 import com.dexesttp.hkxpack.resources.ByteUtils;
-import com.dexesttp.hkxpack.resources.exceptions.UninitializedHKXException;
-import com.dexesttp.hkxpack.xml.classxml.definition.members.ResolvedMember;
-import com.dexesttp.hkxpack.xml.classxml.definition.members.resolved.DirectMember;
+import com.dexesttp.hkxpack.xml.classxml.definition.members.reader.BaseMemberReader;
+import com.dexesttp.hkxpack.xml.classxml.definition.members.reader.DirectMemberReader;
+import com.dexesttp.hkxpack.xml.classxml.exceptions.UnsupportedCombinaisonException;
 
-public enum DirectMemberResolver {
+public enum DirectMemberResolver implements BaseMemberResolver {
 	TYPE_VOID(0, (value) -> {return "";}),
 	TYPE_BOOL(1, (value) -> {return ByteUtils.getInt(value) == 0 ? "false" : "true";}),
-	TYPE_CHAR(1, (value) -> {return ""+ByteUtils.getInt(value);}),
-	TYPE_INT8(8, (value) -> {return ""+ByteUtils.getSInt(value);}),
-	TYPE_UINT8(8, (value) -> {return ""+ByteUtils.getInt(value);}),
-	TYPE_INT16(16, (value) -> {return ""+ByteUtils.getSInt(value);}),
-	TYPE_UINT16(16, (value) -> {return ""+ByteUtils.getInt(value);}),
-	TYPE_ULONG(16, (value) -> {return ""+ByteUtils.getLong(value);}),
-	TYPE_HALF(16, (value) -> {return ""+ByteUtils.getLong(value);}),
-	TYPE_INT32(32, (value) -> {return ""+ByteUtils.getSInt(value);}),
-	TYPE_UINT32(32, (value) -> {return ""+ByteUtils.getInt(value);}),
-	TYPE_INT64(64, (value) -> {return ""+ByteUtils.getSInt(value);}),
-	TYPE_UINT64(64, (value) -> {return ""+ByteUtils.getInt(value);}),
-	// TODO change these ones
-	TYPE_REAL(32, (value) -> {return ""+ByteUtils.getInt(value);}),
-	TYPE_VECTOR4(128, (value) -> {return ""+ByteUtils.getInt(value);}),
-	TYPE_MATRIX4(128, (value) -> {return ""+ByteUtils.getInt(value);}),
-	TYPE_QUATERNION(128, (value) -> {return ""+ByteUtils.getInt(value);}),
-	TYPE_MATRIX3(96, (value) -> {return ""+ByteUtils.getInt(value);}),
-	TYPE_ROTATION(96, (value) -> {return ""+ByteUtils.getInt(value);}),
-	TYPE_TRANSFORM(96, (value) -> {return ""+ByteUtils.getInt(value);}),
-	TYPE_QSTRANSFORM(128, (value) -> {return ""+ByteUtils.getInt(value);}),
-	TYPE_CSTRING((file) -> {
-		try {
-			return ByteUtils.readString(file);
-		} catch(Exception e) {
-			return "";
-		}
-	}),
-	TYPE_STRINGPTR((file) -> {
-		try {
-			return ByteUtils.readString(file);
-		} catch(Exception e) {
-			return "";
-		}
-	});
-	
+	TYPE_CHAR(1, (value) -> {return ByteUtils.getIntString(value);}),
+	TYPE_INT8(1, (value) -> {return ""+ByteUtils.getSIntString(value);}),
+	TYPE_UINT8(1, (value) -> {return ""+ByteUtils.getIntString(value);}),
+	TYPE_INT16(2, (value) -> {return ""+ByteUtils.getSIntString(value);}),
+	TYPE_UINT16(2, (value) -> {return ""+ByteUtils.getIntString(value);}),
+	TYPE_ULONG(8, (value) -> {return ""+ByteUtils.getLongString(value);}),
+	TYPE_HALF(4, (value) -> {return ""+ByteUtils.getLongString(value);}),
+	TYPE_INT32(4, (value) -> {return ""+ByteUtils.getSIntString(value);}),
+	TYPE_UINT32(4, (value) -> {return ""+ByteUtils.getIntString(value);}),
+	TYPE_INT64(16, (value) -> {return ""+ByteUtils.getSIntString(value);}),
+	TYPE_UINT64(16, (value) -> {return ByteUtils.getIntString(value);}),
+	TYPE_REAL(4, (value) -> {return ""+ByteUtils.getFloat(value);}),
+	TYPE_VECTOR4(12, (value) -> {
+		byte[] value1 = new byte[]{value[0], value[1], value[2]};
+		byte[] value2 = new byte[]{value[3], value[4], value[5]};
+		byte[] value3 = new byte[]{value[6], value[7], value[8]};
+		byte[] value4 = new byte[]{value[9], value[10], value[11]};
+		return "["+
+				ByteUtils.getIntString(value1)+","+
+				ByteUtils.getIntString(value2)+","+
+				ByteUtils.getIntString(value3)+","+
+				ByteUtils.getIntString(value4)+"]";
+		}),
+	// TODO change these ones when you encounter them for the first time.
+	TYPE_VARIANT(32, (value) -> {return ""+ByteUtils.getIntString(value);}),
+	TYPE_MATRIX4(128, (value) -> {return ""+ByteUtils.getIntString(value);}),
+	TYPE_QUATERNION(128, (value) -> {return ""+ByteUtils.getIntString(value);}),
+	TYPE_MATRIX3(96, (value) -> {return ""+ByteUtils.getIntString(value);}),
+	TYPE_ROTATION(96, (value) -> {return ""+ByteUtils.getIntString(value);}),
+	TYPE_TRANSFORM(96, (value) -> {return ""+ByteUtils.getIntString(value);}),
+	TYPE_QSTRANSFORM(128, (value) -> {return ""+ByteUtils.getIntString(value);});
 
-	
 	private final int size;
-	private final Function<RandomAccessFile, String> action;
-	
+	private final Function<byte[], String> action;
 	private DirectMemberResolver(int size, Function<byte[], String> action) {
-		this.size = size;
-		this.action = (file) ->  {
-			final Function<byte[], String> byteAction = action;
-			final byte[] bytes = new byte[size];
-			try {
-				file.read(bytes);
-			} catch (Exception e) {
-				return "";
-			}
-			return byteAction.apply(bytes);
-		};
-	}
-	
-	private DirectMemberResolver(Function<RandomAccessFile, String> action) {
-		this.size = 0;
 		this.action = action;
+		this.size = size;
 	}
-	
-	public ResolvedMember resolve(String name, String classname) {
-		final String extType = this.toString();
-		return new DirectMember(name, classname) {
-			@Override
-			public long getSize() {
-				return size;
-			}
 
-			@Override
-			public Resolver<Node> getResolver(HKXHandler handler) throws IOException, UninitializedHKXException {
-				InternalLinkReader links = handler.getInternalLinkReader();
-				DoubleLink link = links.read();
-				if(link == null)
-					return null;
-				return new Resolver<Node>() {
-					private final Document document = handler.getDocument();
-					private final String type = extType;
-					private final long pos = ByteUtils.getLong(link.to);
-					@Override
-					public long getPos() {
-						return pos;
-					}
+	@Override
+	public int getSize() {
+		return size;
+	}
 
-					@Override
-					public Node solve(RandomAccessFile file) throws IOException {
-						String value = action.apply(file);
-						Element node = document.createElement("hkparam");
-						node.setAttribute("name", name);
-						node.setAttribute("type", type);
-						node.appendChild(document.createTextNode(value));
-						return node;
-					}
-				};
-			}
-		};
+	@Override
+	public BaseMemberReader getReader(String name, String vsubtype, String ctype, String etype)
+			throws UnsupportedCombinaisonException {
+		return new DirectMemberReader(name, size, action);
 	}
 }

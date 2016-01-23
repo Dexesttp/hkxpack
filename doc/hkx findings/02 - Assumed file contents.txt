@@ -1,0 +1,99 @@
+Structures found in a HKX file :
+
+'structs' : {
+	'header': {
+		'magicvalue1': 0x57E0E057,
+		'magicvalue2':0x10C0C010,
+		'empty0': 0x00000000,
+		'version': "4 bytes LEInt",
+		'version_extras': "4 bytes LEInt",
+		'magicvalue3': 0x03000000,
+		'magicvalue4': 0x02000000,
+		'empty1': 0x00000000,
+		'empty2': 0x00000000,
+		'magicvlaue5': 0x00000000,
+		'versionName': "14 bytes String",
+		'magicvalue6': 0x00FF,
+		'empty3': 0x00000000,
+		'extra_v11': 0x15,
+		'padding_v11': "2 bytes LEInt"
+	},
+	'hsection': {
+		'sectionName': "16 bytes String",
+		'magicvalue1': 0x000000FF,
+		'offset': "4 bytes LEInt",
+		'data1': "4 bytes LEInt",
+		'data2': "4 bytes LEInt",
+		'data3': "4 bytes LEInt",
+		'data4': "4 bytes LEInt",
+		'data5': "4 bytes LEInt",
+		'end': "4 bytes LEInt"
+	},
+	'classname': {
+		'classID': "4 bytes Hexcode",
+		'magicvalue1': 0x09,
+		'name': "Null-terminated string"
+	},
+	'data_struct': {
+		[data_direct_member | data_array],
+		'empty0': "Padding to make the struct a nice size"
+	},
+	'data_direct_member': {
+		'content': "n-byte value where N is the size of the direct member"
+	},
+	'data_array': {
+		'empty0': 0x0000000000000000,	// Note : only 4 00's on the Skyrim version.
+		'arraysize': "4 byte LEInt",
+		'arraysize2': "3-byte LEInt",
+		'magicvalue1': 0x80
+	},
+	'data_string': {
+		'content': "Null-terminated string",
+		'empty0': "Padding for the next even section"
+	},
+	'directaddress': {
+		'from': "4 bytes LEInt",
+		'to': "4 bytes LEInt"
+	},
+	'externaladdress': {
+		'from': "4 bytes LEInt",
+		'section': "4 bytes LEInt",
+		'to': "4 bytes LEInt"
+	}
+}
+
+Note :
+A classname is "addressed" or "linked" by the position of the String, not of the object itself.
+Padding is absed off typical C padding.
+an externalAddress section refers to the section to resolve the "to" in. The "from" always refer to the current section.
+
+Structure of a typical HKX file :
+
+type				given name			refers to
+=======================================================
+Header			HEADER				File header
+>>Eventual padding. The value here is described in size by 'padding_v11'. If there is padding, then the padding begins by 0x14 (then 15 bytes of 0x00).
+hsection			HEADER_SECTION 1		__classname__, only the offset is used (data1-5 empty).
+hsection			HEADER_SECTION 2		__types__, always empty so always ignored.
+hsection			HEADER_SECTION 3		__data__, contains offset, data1, data2 and data3 useful.
+[classname]		CLASSNAMES			Classname data.
+[data_*]			DATA					Actual file data, in the form of structs.
+[directaddress]		DATA1				Non-empty members linker from DATA (used when the next memebr to read is a direct member)
+[externaladdress]	DATA2 : pointers		Pointer linker from DATA (used when the next memebr to read is a pointer)
+[externaladdress]	DATA3 : __classnames__	What is the next data_struct to read in DATA ?
+
+Note on CLASSNAMES, DATA1-3 :
+	If the section ends before a 0x*0 address, all data until the next 00 is filled with 0xFFs. E:G:
+	-----------hkxOb
+	ject(0x00)(fill with FFs)
+
+Note on reading arrays :
+	If the array is non empty, read the first data from data1 as an array content pointer.
+	Then, proceed to read all contents either as data (read size*length bytes), direct data (read from DATA1) or pointers (read from data2).
+
+Note on data3 :
+	The only thing stored in data3 is the next ROOT struct to read. These structs only refer to each other with pointers.
+	The from is the start of the struct
+	the To is the referenced Classname. As said earlier, it points to the string.
+	Note that any parent of the given object is actually resolved before the current struct, meaning that all the parent memebrs are present before the current member in the struct.
+	

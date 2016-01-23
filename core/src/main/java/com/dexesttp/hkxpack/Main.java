@@ -6,17 +6,20 @@ import java.io.IOException;
 
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import com.dexesttp.hkxpack.hkx.handler.HKXReader;
-import com.dexesttp.hkxpack.hkx.handler.HKXReaderFactory;
-import com.dexesttp.hkxpack.resources.exceptions.UnconnectedHKXException;
-import com.dexesttp.hkxpack.resources.exceptions.UninitializedHKXException;
-import com.dexesttp.hkxpack.resources.exceptions.UnresolvedMemberException;
+import org.w3c.dom.Document;
+
+import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
+import com.dexesttp.hkxpack.hkx.logic.Reader;
+import com.dexesttp.hkxpack.xml.classxml.exceptions.NonImportedClassException;
+import com.dexesttp.hkxpack.xml.classxml.exceptions.NonResolvedClassException;
+import com.dexesttp.hkxpack.xml.classxml.exceptions.UnknownClassException;
+import com.dexesttp.hkxpack.xml.classxml.exceptions.UnknownEnumerationException;
+import com.dexesttp.hkxpack.xml.classxml.exceptions.UnsupportedCombinaisonException;
 
 public class Main {
 	/**
@@ -25,18 +28,12 @@ public class Main {
 	 */
 	public void exec(String fileName, String outputFile) {
 		try {
-			// Check if requested file exists.
+			// Get output document
+			// Read file
 			File file = new File(fileName);
-			// Create HKX Handler
-			HKXReader reader = new HKXReaderFactory().build();
-			// Connect the handler to the file.
-			reader.connect(file);
 			
-			// WTF resoltion worked ?!?!?
-			reader.resolveData();
-			
-			// Close the reader.
-			reader.close();
+			Reader reader = new Reader();
+			Document document = reader.read(file);
 			
 			// Output result
 	        TransformerFactory transformerFactory =
@@ -44,8 +41,10 @@ public class Main {
             Transformer transformer =
 	                 transformerFactory.newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-        	transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
-            DOMSource source = new DOMSource(reader.getDocument());
+            transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+            transformer.setOutputProperty(OutputKeys.ENCODING, "ascii");
+        	transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+            DOMSource source = new DOMSource(document);
 			
 			StreamResult outResult;
 			if(outputFile == "")
@@ -55,17 +54,23 @@ public class Main {
 	        transformer.transform(source, outResult);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-		} catch (UnconnectedHKXException e) {
-			e.printStackTrace();
-		} catch (UninitializedHKXException e) {
+		} catch (TransformerException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		} catch (UnresolvedMemberException e) {
+		} catch (NonResolvedClassException e) {
 			e.printStackTrace();
-		} catch (TransformerConfigurationException e) {
+		} catch (UnknownClassException e) {
 			e.printStackTrace();
-		} catch (TransformerException e) {
+		} catch (InvalidPositionException e) {
+			e.printStackTrace();
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		} catch (UnsupportedCombinaisonException e) {
+			e.printStackTrace();
+		} catch (UnknownEnumerationException e) {
+			e.printStackTrace();
+		} catch (NonImportedClassException e) {
 			e.printStackTrace();
 		}
 	}
