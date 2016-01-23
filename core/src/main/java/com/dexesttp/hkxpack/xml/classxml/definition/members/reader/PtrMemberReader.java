@@ -15,8 +15,7 @@ import com.dexesttp.hkxpack.resources.PointerNameGiver;
 import com.dexesttp.hkxpack.xml.classxml.exceptions.UnsupportedCombinaisonException;
 
 public class PtrMemberReader extends BaseMemberReader {
-
-	PtrMemberReader(String name, long size) {
+	public PtrMemberReader(String name, long size) {
 		super(name, size);
 	}
 

@@ -18,7 +18,7 @@ import com.dexesttp.hkxpack.xml.classxml.exceptions.UnsupportedCombinaisonExcept
 public class EnumMemberReader extends BaseMemberReader {
 	private final EnumObj enumType;
 
-	EnumMemberReader(String name, long size, EnumObj enumType) {
+	public EnumMemberReader(String name, long size, EnumObj enumType) {
 		super(name, size);
 		this.enumType = enumType;
 	}
@@ -47,5 +47,4 @@ public class EnumMemberReader extends BaseMemberReader {
 		file.read(byteVal);
 		return readDirect(document, byteVal, data, data1, data2);
 	}
-
 }

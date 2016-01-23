@@ -16,8 +16,7 @@ import com.dexesttp.hkxpack.resources.ByteUtils;
 import com.dexesttp.hkxpack.xml.classxml.exceptions.UnsupportedCombinaisonException;
 
 public class StringMemberReader extends BaseMemberReader {
-
-	StringMemberReader(String name, long size) {
+	public StringMemberReader(String name, long size) {
 		super(name, size);
 	}
 

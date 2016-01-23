@@ -17,7 +17,7 @@ import com.dexesttp.hkxpack.xml.classxml.exceptions.UnsupportedCombinaisonExcept
 public abstract class BaseMemberReader {
 	protected final String name;
 	protected final long size;
-	
+
 	BaseMemberReader(String name, long size) {
 		this.name = name;
 		this.size = size;
@@ -27,10 +27,8 @@ public abstract class BaseMemberReader {
 		return size;
 	}
 
-	public abstract Node readDirect(Document document, byte[] toRead, DataInterface data, Data1Interface data1,
-			Data2Interface data2) throws IOException, InvalidPositionException, UnsupportedCombinaisonException, UnknownEnumerationException, NonResolvedClassException, NotKnownClassException;
+	public abstract Node readDirect(Document document, byte[] toRead, DataInterface data, Data1Interface data1, Data2Interface data2) throws IOException, InvalidPositionException, UnsupportedCombinaisonException, UnknownEnumerationException, NonResolvedClassException, NotKnownClassException;
 
 	public abstract Node readIndirect(Document document, long arrPos, DataInterface data, Data1Interface data1,
 			Data2Interface data2) throws UnsupportedCombinaisonException, IOException, InvalidPositionException, UnknownEnumerationException, NonResolvedClassException, NotKnownClassException;
-
 }

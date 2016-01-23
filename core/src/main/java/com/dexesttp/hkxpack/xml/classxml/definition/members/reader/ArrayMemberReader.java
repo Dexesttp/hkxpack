@@ -20,12 +20,12 @@ import com.dexesttp.hkxpack.xml.classxml.exceptions.UnsupportedCombinaisonExcept
 
 public class ArrayMemberReader extends BaseMemberReader {
 	protected final BaseMemberReader content;
-	
+
 	public ArrayMemberReader(String name, long size, BaseMemberReader content) {
 		super(name, size);
 		this.content = content;
 	}
-	
+
 	@Override
 	public Node readDirect(Document document, byte[] toRead, DataInterface data, Data1Interface data1, Data2Interface data2) throws IOException, InvalidPositionException, UnsupportedCombinaisonException, UnknownEnumerationException, NonResolvedClassException, NotKnownClassException {
 		byte[] lengthArray = {toRead[8], toRead[9], toRead[10], toRead[11]};

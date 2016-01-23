@@ -22,7 +22,7 @@ public class StructMemberReader extends BaseMemberReader {
 
 	private final ReadableClass classInst;
 
-	StructMemberReader(String name, long size, ReadableClass classInst) {
+	public StructMemberReader(String name, long size, ReadableClass classInst) {
 		super(name, size);
 		this.classInst = classInst;
 	}

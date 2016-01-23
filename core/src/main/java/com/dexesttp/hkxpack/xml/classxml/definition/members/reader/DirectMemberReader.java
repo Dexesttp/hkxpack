@@ -17,7 +17,7 @@ import com.dexesttp.hkxpack.xml.classxml.exceptions.UnsupportedCombinaisonExcept
 public class DirectMemberReader extends BaseMemberReader {
 	private final Function<byte[], String> action;
 
-	DirectMemberReader(String name, long size, Function<byte[], String> action) {
+	public DirectMemberReader(String name, long size, Function<byte[], String> action) {
 		super(name, size);
 		this.action = action;
 	}
