@@ -1,7 +1,6 @@
 package com.dexesttp.hkxpack.xml.classxml.definition.members.reader;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -32,7 +31,7 @@ public class StructMemberReader extends BaseMemberReader {
 	public Node readDirect(Document document, byte[] toRead, DataInterface data, Data1Interface data1,
 			Data2Interface data2) throws IOException, InvalidPositionException, UnsupportedCombinaisonException, UnknownEnumerationException, NonResolvedClassException, UnknownClassException {
 		if(Properties.displayDebugInfo)
-			System.out.println("[MEM]\t[STRT]\t[DIR]\t" + Arrays.toString(toRead) + "\t" + name);
+			System.out.println("[MEM]\t[STRT]\t[DIR]\t" + name);
 		Element root = document.createElement("hkparam");
 		root.setAttribute("name", name);
 		// Get the struct position

@@ -1,6 +1,7 @@
 package com.dexesttp.hkxpack.xml.classxml.definition.members.reader;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -25,6 +26,8 @@ public class PtrMemberReader extends BaseMemberReader {
 			Data2Interface data2) throws IOException, InvalidPositionException, UnsupportedCombinaisonException {
 		if(Properties.displayDebugInfo)
 			System.out.println("[MEM]\t[PTR]\t[DIR]\t" + name);
+		if(Properties.displayFileDebugInfo)
+			System.out.println("[MEM]\t[PTR]\t[VAL]\t" + Arrays.toString(toRead));
 		DataExternal ptrAddr = data2.readNext();
 		Element res = document.createElement("hkparam");
 		res.setAttribute("name", name);

@@ -22,8 +22,14 @@ public class PointerNameGiver {
 	private Map<Long, String> names = new HashMap<>();
 	public String getName(long position) {
 		if(!names.containsKey(position)) {
-			names.put(position, nextName());
+			String newName = nextName();
+			if(Properties.displayDebugInfo)
+				System.out.println("[RES]\t[NAME]\t[CRE]\t{" + position + "}\t[VAL]\t" + newName);
+			names.put(position, newName);
+			return newName;
 		}
+		if(Properties.displayDebugInfo)
+			System.out.println("[RES]\t[NAME]\t[REQ]\t@{" + position + "}");
 		return names.get(position);
 	}
 

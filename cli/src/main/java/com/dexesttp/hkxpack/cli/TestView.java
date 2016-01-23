@@ -14,6 +14,7 @@ public class TestView {
 		//String outName = "";
 		String outName =  RandomUtils.makeFromFileName(fileName);
 		Properties.displayDebugInfo = true;
+		Properties.displayFileDebugInfo = true;
 		try {
 			ClassFilesUtils.initFolder();
 		} catch (IOException e) {

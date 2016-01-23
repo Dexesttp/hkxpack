@@ -20,8 +20,8 @@ public class Data1Interface {
 	}
 	
 	public DataInternal read(int pos) throws IOException, InvalidPositionException {
-		if(Properties.displayDebugInfo)
-			System.out.println("[DATA1]\t\t\t"+pos);
+		if(Properties.displayFileDebugInfo)
+			System.out.println("[FILE]\t[INT]\t[DATA1]\t"+pos);
 		DataInternal data = new DataInternal();
 		long dataPos = header.data1 + pos * 0x08;
 		if(pos < 0 || dataPos > header.data2)

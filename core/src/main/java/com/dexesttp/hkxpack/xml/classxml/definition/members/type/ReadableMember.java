@@ -42,7 +42,7 @@ public class ReadableMember extends ClassXMLMember {
 		} catch(InvalidPositionException e) {
 			//e.printStackTrace();
 			if(Properties.displayDebugInfo)
-				System.err.println("[ERR]\t\t\t" + e.getMessage());
+				System.err.println("[MEM]\t[ERR]\t\t" + e.getMessage());
 			return document.createComment(" failed to read member " + name + " ");
 		}
 	}
