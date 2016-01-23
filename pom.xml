@@ -3,7 +3,7 @@
   
   <groupId>com.dexesttp</groupId>
   <artifactId>hkxpack</artifactId>
-  <version>0.0.2</version>
+  <version>0.0.3-alpha</version>
   <packaging>pom</packaging>
   
   <name>HKXPack</name>
