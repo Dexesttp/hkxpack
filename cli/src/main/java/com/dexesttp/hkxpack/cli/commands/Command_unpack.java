@@ -11,12 +11,12 @@ public class Command_unpack implements Command{
 	public int execute(String... parameters) {
 		Main main = new Main();
 		if(parameters.length < 2) {
-			System.err.println("No filenamme given.");
+			System.err.println("No filename given.");
 			return 1;
 		}
 		String fileName = parameters[1];
 		String outName = "";
-		if(parameters[2].equals("-o")) {
+		if(parameters.length <= 2 || parameters[2].equals("-o")) {
 			try {
 				outName = RandomUtils.makeFromFileName(fileName);
 			}
