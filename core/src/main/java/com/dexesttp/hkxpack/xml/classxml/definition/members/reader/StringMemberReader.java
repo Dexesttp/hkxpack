@@ -23,7 +23,6 @@ public class StringMemberReader extends BaseMemberReader {
 	@Override
 	public Node readDirect(Document document, byte[] toRead, DataInterface data, Data1Interface data1,
 			Data2Interface data2) throws IOException, InvalidPositionException, UnsupportedCombinaisonException {
-		System.out.println("\tReading string : " + name);
 		RandomAccessFile file;
 		DataInternal ptrAddr = data1.readNext();
 		file = data.setup(ptrAddr.to);
@@ -38,7 +37,6 @@ public class StringMemberReader extends BaseMemberReader {
 	@Override
 	public Node readIndirect(Document document, long arrPos, DataInterface data, Data1Interface data1,
 			Data2Interface data2) throws UnsupportedCombinaisonException, IOException, InvalidPositionException {
-		System.out.println("\t\tReading string : " + name);
 		RandomAccessFile file;
 		DataInternal ptrAddr = data1.readNext();
 		file = data.setup(ptrAddr.to);

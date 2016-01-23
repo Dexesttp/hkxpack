@@ -22,7 +22,6 @@ public class PointerNameGiver {
 	private Map<Long, String> names = new HashMap<>();
 	public String getName(long position) {
 		if(!names.containsKey(position)) {
-			System.out.println("\t\t\tNow naming " + position + " : #" + nameID);
 			names.put(position, nextName());
 		}
 		return names.get(position);

@@ -25,7 +25,6 @@ public class DirectMemberReader extends BaseMemberReader {
 	@Override
 	public Node readDirect(Document document, byte[] toRead, DataInterface data, Data1Interface data1,
 			Data2Interface data2) throws IOException, InvalidPositionException, UnsupportedCombinaisonException {
-		System.out.println("\tReading value : " + name);
 		Element res = document.createElement("hkparam");
 		res.setAttribute("name", name);
 		Node content = document.createTextNode(action.apply(toRead));
@@ -36,7 +35,6 @@ public class DirectMemberReader extends BaseMemberReader {
 	@Override
 	public Node readIndirect(Document document, long arrPos, DataInterface data, Data1Interface data1,
 			Data2Interface data2) throws UnsupportedCombinaisonException, IOException, InvalidPositionException {
-		System.out.println("\t\tReading embedded value : " + name);
 		byte[] toRead = new byte[(int) size];
 		RandomAccessFile reader = data.setup(arrPos);
 		reader.read(toRead);

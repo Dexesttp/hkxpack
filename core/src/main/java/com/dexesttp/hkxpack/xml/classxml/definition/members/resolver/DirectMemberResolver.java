@@ -10,27 +10,27 @@ import com.dexesttp.hkxpack.xml.classxml.exceptions.UnsupportedCombinaisonExcept
 public enum DirectMemberResolver implements BaseMemberResolver {
 	TYPE_VOID(0, (value) -> {return "";}),
 	TYPE_BOOL(1, (value) -> {return ByteUtils.getInt(value) == 0 ? "false" : "true";}),
-	TYPE_CHAR(1, (value) -> {return ""+ByteUtils.getInt(value);}),
-	TYPE_INT8(1, (value) -> {return ""+ByteUtils.getSInt(value);}),
-	TYPE_UINT8(1, (value) -> {return ""+ByteUtils.getInt(value);}),
-	TYPE_INT16(2, (value) -> {return ""+ByteUtils.getSInt(value);}),
-	TYPE_UINT16(2, (value) -> {return ""+ByteUtils.getInt(value);}),
-	TYPE_ULONG(8, (value) -> {return ""+ByteUtils.getLong(value);}),
-	TYPE_HALF(4, (value) -> {return ""+ByteUtils.getLong(value);}),
-	TYPE_INT32(4, (value) -> {return ""+ByteUtils.getSInt(value);}),
-	TYPE_UINT32(4, (value) -> {return ""+ByteUtils.getInt(value);}),
-	TYPE_INT64(16, (value) -> {return ""+ByteUtils.getSInt(value);}),
-	TYPE_UINT64(16, (value) -> {return ""+ByteUtils.getInt(value);}),
+	TYPE_CHAR(1, (value) -> {return ByteUtils.getIntString(value);}),
+	TYPE_INT8(1, (value) -> {return ""+ByteUtils.getSIntString(value);}),
+	TYPE_UINT8(1, (value) -> {return ""+ByteUtils.getIntString(value);}),
+	TYPE_INT16(2, (value) -> {return ""+ByteUtils.getSIntString(value);}),
+	TYPE_UINT16(2, (value) -> {return ""+ByteUtils.getIntString(value);}),
+	TYPE_ULONG(8, (value) -> {return ""+ByteUtils.getLongString(value);}),
+	TYPE_HALF(4, (value) -> {return ""+ByteUtils.getLongString(value);}),
+	TYPE_INT32(4, (value) -> {return ""+ByteUtils.getSIntString(value);}),
+	TYPE_UINT32(4, (value) -> {return ""+ByteUtils.getIntString(value);}),
+	TYPE_INT64(16, (value) -> {return ""+ByteUtils.getSIntString(value);}),
+	TYPE_UINT64(16, (value) -> {return ByteUtils.getIntString(value);}),
 	TYPE_REAL(4, (value) -> {return ""+ByteUtils.getFloat(value);}),
-	// TODO change these ones
-	TYPE_VARIANT(32, (value) -> {return ""+ByteUtils.getInt(value);}),
-	TYPE_VECTOR4(128, (value) -> {return ""+ByteUtils.getInt(value);}),
-	TYPE_MATRIX4(128, (value) -> {return ""+ByteUtils.getInt(value);}),
-	TYPE_QUATERNION(128, (value) -> {return ""+ByteUtils.getInt(value);}),
-	TYPE_MATRIX3(96, (value) -> {return ""+ByteUtils.getInt(value);}),
-	TYPE_ROTATION(96, (value) -> {return ""+ByteUtils.getInt(value);}),
-	TYPE_TRANSFORM(96, (value) -> {return ""+ByteUtils.getInt(value);}),
-	TYPE_QSTRANSFORM(128, (value) -> {return ""+ByteUtils.getInt(value);});
+	// TODO change these ones when you encounter them for the first time.
+	TYPE_VARIANT(32, (value) -> {return ""+ByteUtils.getIntString(value);}),
+	TYPE_VECTOR4(128, (value) -> {return ""+ByteUtils.getIntString(value);}),
+	TYPE_MATRIX4(128, (value) -> {return ""+ByteUtils.getIntString(value);}),
+	TYPE_QUATERNION(128, (value) -> {return ""+ByteUtils.getIntString(value);}),
+	TYPE_MATRIX3(96, (value) -> {return ""+ByteUtils.getIntString(value);}),
+	TYPE_ROTATION(96, (value) -> {return ""+ByteUtils.getIntString(value);}),
+	TYPE_TRANSFORM(96, (value) -> {return ""+ByteUtils.getIntString(value);}),
+	TYPE_QSTRANSFORM(128, (value) -> {return ""+ByteUtils.getIntString(value);});
 
 	private final int size;
 	private final Function<byte[], String> action;

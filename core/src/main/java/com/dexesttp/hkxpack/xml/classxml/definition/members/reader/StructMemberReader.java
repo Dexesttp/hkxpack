@@ -29,7 +29,6 @@ public class StructMemberReader extends BaseMemberReader {
 	@Override
 	public Node readDirect(Document document, byte[] toRead, DataInterface data, Data1Interface data1,
 			Data2Interface data2) throws IOException, InvalidPositionException, UnsupportedCombinaisonException, UnknownEnumerationException, NonResolvedClassException, UnknownClassException {
-		System.out.println("\tReading struct : " + name);
 		Element root = document.createElement("hkparam");
 		root.setAttribute("name", name);
 		// Get the struct position
@@ -46,7 +45,6 @@ public class StructMemberReader extends BaseMemberReader {
 	@Override
 	public Node readIndirect(Document document, long arrPos, DataInterface data, Data1Interface data1,
 			Data2Interface data2) throws UnsupportedCombinaisonException, IOException, InvalidPositionException, UnknownEnumerationException, NonResolvedClassException, UnknownClassException {
-		System.out.println("\t\tReading embedded struct : " + name);
 		// Read the struct.
 		Struct currentStruct = classInst.getStruct();
 		data.read(arrPos, currentStruct);

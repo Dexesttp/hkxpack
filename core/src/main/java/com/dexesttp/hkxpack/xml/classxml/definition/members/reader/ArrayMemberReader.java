@@ -27,23 +27,47 @@ public class ArrayMemberReader extends BaseMemberReader {
 
 	@Override
 	public Node readDirect(Document document, byte[] toRead, DataInterface data, Data1Interface data1, Data2Interface data2) throws IOException, InvalidPositionException, UnsupportedCombinaisonException, UnknownEnumerationException, NonResolvedClassException, UnknownClassException {
-		System.out.println("\tReading array : " + name);
 		byte[] lengthArray = {toRead[8], toRead[9], toRead[10], toRead[11]};
 		int length = ByteUtils.getInt(lengthArray);
-		System.out.println("\tFound length : " + length);
 		Element res = document.createElement("hkparam");
 		res.setAttribute("name", name);
 		res.setAttribute("numelements", "" + (length));
+		boolean isTextInternal = false;
 		if(length > 0) {
 			DataInternal dataChunk = data1.readNext();
 			long arrPos = dataChunk.to;
 			for(int i = 0; i < length; i++) {
 				Node internal = content.readIndirect(document, arrPos, data, data1, data2);
-				res.appendChild(internal);
+				if(internal.getNodeType() == Node.TEXT_NODE)
+					isTextInternal = true;
+				if(!isTextInternal)
+					res.appendChild(internal);
+				else
+					addToText(internal.getTextContent());
 				arrPos += content.getSize();
 			}
+			if(isTextInternal)
+				res.appendChild(document.createTextNode(getText()));
 		}
 		return res;
+	}
+
+	// A Hack to not handle text nodes.
+	private String textContent = "";
+	private String currentLine = "";
+	private int LINE_SIZE_LIMIT = 64;
+	private void addToText(String text) {
+		if(currentLine.length() > LINE_SIZE_LIMIT) {
+			textContent += "\n" + currentLine;
+			currentLine = "";
+		}
+		currentLine += " " + text;
+	}
+
+	private String getText() {
+		if(!currentLine.isEmpty())
+			textContent += currentLine;
+		return textContent;
 	}
 
 	@Override

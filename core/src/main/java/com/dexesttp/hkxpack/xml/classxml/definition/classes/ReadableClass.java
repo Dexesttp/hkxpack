@@ -66,7 +66,6 @@ public class ReadableClass extends ClassXML {
 
 	public Node resolve(Document doc, String uUName, Struct currentStruct, DataInterface data,
 			Data1Interface data1, Data2Interface data2, boolean isStruct) throws IOException, InvalidPositionException, UnsupportedCombinaisonException, UnknownEnumerationException, NonResolvedClassException, UnknownClassException {
-		System.out.println("Reading class : " + classname);
 		Element rootNode = doc.createElement("hkobject");
 		if(!isStruct) {
 			rootNode.setAttribute("class", classname);
@@ -80,7 +79,6 @@ public class ReadableClass extends ClassXML {
 			if(internal != null)
 				rootNode.appendChild(internal);
 		}
-		System.out.println("Leaving class : " + classname +"\n");
 		return rootNode;
 	}
 }

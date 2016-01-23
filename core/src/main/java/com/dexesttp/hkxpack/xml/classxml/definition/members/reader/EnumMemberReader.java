@@ -26,7 +26,6 @@ public class EnumMemberReader extends BaseMemberReader {
 	@Override
 	public Node readDirect(Document document, byte[] toRead, DataInterface data, Data1Interface data1,
 			Data2Interface data2) throws IOException, InvalidPositionException, UnsupportedCombinaisonException {
-		System.out.println("\tReading enum : " + name);
 		Element res = document.createElement("hkparam");
 		res.setAttribute("name", name);
 		int intVal = ByteUtils.getInt(toRead);
@@ -43,7 +42,6 @@ public class EnumMemberReader extends BaseMemberReader {
 	@Override
 	public Node readIndirect(Document document, long arrPos, DataInterface data, Data1Interface data1,
 			Data2Interface data2) throws UnsupportedCombinaisonException, IOException, InvalidPositionException {
-		System.out.println("\t\tReading enum : " + name);
 		byte[] byteVal = new byte[8];
 		RandomAccessFile file = data.setup(arrPos);
 		file.read(byteVal);

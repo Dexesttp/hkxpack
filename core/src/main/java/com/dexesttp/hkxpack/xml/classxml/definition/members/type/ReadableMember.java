@@ -39,7 +39,7 @@ public class ReadableMember extends ClassXMLMember {
 		try {
 			return resolver.readDirect(document, toRead, data, data1, data2);
 		} catch(InvalidPositionException e) {
-			System.err.println("Error : " + e.getLocalizedMessage());
+			e.printStackTrace();
 			return document.createComment(" failed to read member " + name + " ");
 		}
 	}
