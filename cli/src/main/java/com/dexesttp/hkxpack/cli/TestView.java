@@ -16,6 +16,7 @@ public class TestView {
 		DisplayProperties.displayDebugInfo = true;
 		DisplayProperties.displayFileDebugInfo = true;
 		DisplayProperties.displayReadTypesInfo = true;
+		DisplayProperties.displayClassImportsInfo = true;
 		try {
 			ClassFilesUtils.initFolder();
 		} catch (IOException e) {
