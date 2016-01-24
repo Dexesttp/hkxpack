@@ -10,7 +10,7 @@ import com.dexesttp.hkxpack.resources.DisplayProperties;
 public class TestView {
 	public static void main(String[] args) {
 		Main main = new Main();
-		String fileName = "D:\\Documents\\SANDBOX\\FO4\\Idle.hkx";
+		String fileName = "D:\\Documents\\SANDBOX\\FO4\\skeleton.hkx";
 		//String outName = "";
 		String outName =  RandomUtils.makeFromFileName(fileName);
 		DisplayProperties.displayDebugInfo = true;
