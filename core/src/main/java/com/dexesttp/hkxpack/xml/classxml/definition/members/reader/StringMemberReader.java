@@ -13,6 +13,7 @@ import com.dexesttp.hkxpack.hkx.data.DataInternal;
 import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
 import com.dexesttp.hkxpack.hkx.structs.DataInterface;
 import com.dexesttp.hkxpack.resources.ByteUtils;
+import com.dexesttp.hkxpack.resources.DisplayProperties;
 import com.dexesttp.hkxpack.xml.classxml.exceptions.UnsupportedCombinaisonException;
 
 public class StringMemberReader extends BaseMemberReader {
@@ -23,6 +24,8 @@ public class StringMemberReader extends BaseMemberReader {
 	@Override
 	public Node readDirect(Document document, byte[] toRead, DataInterface data, Data1Interface data1,
 			Data2Interface data2) throws IOException, InvalidPositionException, UnsupportedCombinaisonException {
+		if(DisplayProperties.displayDebugInfo)
+			System.out.println("[MEM]\t[STR]\t[DIR]\t" + name);
 		RandomAccessFile file;
 		DataInternal ptrAddr = data1.readNext();
 		file = data.setup(ptrAddr.to);
@@ -37,6 +40,8 @@ public class StringMemberReader extends BaseMemberReader {
 	@Override
 	public Node readIndirect(Document document, long arrPos, DataInterface data, Data1Interface data1,
 			Data2Interface data2) throws UnsupportedCombinaisonException, IOException, InvalidPositionException {
+		if(DisplayProperties.displayDebugInfo)
+			System.out.println("[MEM]\t[STR]\t[INDIR]\t" + arrPos);
 		RandomAccessFile file;
 		DataInternal ptrAddr = data1.readNext();
 		file = data.setup(ptrAddr.to);

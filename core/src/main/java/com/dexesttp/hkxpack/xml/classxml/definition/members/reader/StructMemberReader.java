@@ -31,7 +31,7 @@ public class StructMemberReader extends BaseMemberReader {
 	public Node readDirect(Document document, byte[] toRead, DataInterface data, Data1Interface data1,
 			Data2Interface data2) throws IOException, InvalidPositionException, UnsupportedCombinaisonException, UnknownEnumerationException, NonResolvedClassException, UnknownClassException {
 		if(DisplayProperties.displayDebugInfo)
-			System.out.println("[MEM]\t[STRT]\t[DIR]\t" + name);
+			System.out.println("[MEM]\t[STRUC]\t[DIR]\t" + name);
 		Element root = document.createElement("hkparam");
 		root.setAttribute("name", name);
 		// Get the struct position
@@ -49,7 +49,7 @@ public class StructMemberReader extends BaseMemberReader {
 	public Node readIndirect(Document document, long arrPos, DataInterface data, Data1Interface data1,
 			Data2Interface data2) throws UnsupportedCombinaisonException, IOException, InvalidPositionException, UnknownEnumerationException, NonResolvedClassException, UnknownClassException {
 		if(DisplayProperties.displayDebugInfo)
-			System.out.println("[MEM]\t[STRT]\t[INDIR]\t" + arrPos);
+			System.out.println("[MEM]\t[STRUC]\t[INDIR]\t" + arrPos);
 		// Read the struct.
 		Struct currentStruct = classInst.getStruct();
 		data.read(arrPos, currentStruct);
