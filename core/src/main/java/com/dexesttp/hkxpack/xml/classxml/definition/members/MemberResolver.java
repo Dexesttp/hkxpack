@@ -1,5 +1,6 @@
 package com.dexesttp.hkxpack.xml.classxml.definition.members;
 
+import com.dexesttp.hkxpack.resources.DisplayProperties;
 import com.dexesttp.hkxpack.xml.classxml.definition.members.resolver.BaseMemberResolver;
 import com.dexesttp.hkxpack.xml.classxml.definition.members.resolver.ResolverList;
 
@@ -13,6 +14,8 @@ public class MemberResolver {
 			if(enumInst != null)
 				break;
 		}
+		if(DisplayProperties.displayReadTypesInfo)
+			DisplayProperties.addReadType(enumInst.toString());
 		return (BaseMemberResolver) enumInst;
 	}
 	

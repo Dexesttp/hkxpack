@@ -15,6 +15,7 @@ import org.w3c.dom.Document;
 
 import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
 import com.dexesttp.hkxpack.hkx.logic.Reader;
+import com.dexesttp.hkxpack.resources.DisplayProperties;
 import com.dexesttp.hkxpack.xml.classxml.exceptions.NonImportedClassException;
 import com.dexesttp.hkxpack.xml.classxml.exceptions.NonResolvedClassException;
 import com.dexesttp.hkxpack.xml.classxml.exceptions.UnknownClassException;
@@ -52,6 +53,9 @@ public class Main {
 			else
 				outResult = new StreamResult(new File(outputFile));
 	        transformer.transform(source, outResult);
+	        
+	        if(DisplayProperties.displayReadTypesInfo)
+	        	DisplayProperties.outReadTypesInfo();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (TransformerException e) {
