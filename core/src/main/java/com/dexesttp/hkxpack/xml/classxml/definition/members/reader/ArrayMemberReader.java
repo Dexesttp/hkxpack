@@ -37,6 +37,8 @@ public class ArrayMemberReader extends BaseMemberReader {
 		cleanText();
 		if(length > 0) {
 			// DEBUG
+			if(DisplayProperties.displayEmbeddedData)
+				res.setAttribute("elemSize", ""+content.getSize());
 			if(DisplayProperties.displayDebugInfo)
 				System.out.println("[MEM]\t[ARR]\t[LEN]\t" + length);
 			DataInternal dataChunk = data1.readNext();

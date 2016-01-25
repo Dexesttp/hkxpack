@@ -10,13 +10,14 @@ import com.dexesttp.hkxpack.resources.DisplayProperties;
 public class TestView {
 	public static void main(String[] args) {
 		Main main = new Main();
-		String fileName = "D:\\Documents\\SANDBOX\\FO4\\skeleton.hkx";
+		String fileName = "D:\\Documents\\SANDBOX\\FO4\\clothdata.hkx";
 		//String outName = "";
 		String outName =  RandomUtils.makeFromFileName(fileName);
 		DisplayProperties.displayDebugInfo = true;
 		DisplayProperties.displayFileDebugInfo = true;
 		DisplayProperties.displayReadTypesInfo = true;
 		DisplayProperties.displayClassImportsInfo = true;
+		DisplayProperties.displayEmbeddedData = true;
 		try {
 			ClassFilesUtils.initFolder();
 		} catch (IOException e) {
