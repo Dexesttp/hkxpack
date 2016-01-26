@@ -42,8 +42,9 @@ public class StringMemberReader extends MemberReader {
 	@Override
 	public Node readInternal(long position, Document document, HKXConnector connector)
 			throws IOException, InvalidPositionException, InvalidArrayException {
+		DataInternal posDescriptor = connector.data1.readNext();
 		Element res = document.createElement("hkcstring");
-		RandomAccessFile file = connector.data.setup(position);
+		RandomAccessFile file = connector.data.setup(posDescriptor.to);
 		String text = ByteUtils.readString(file);
 		res.setTextContent(text);
 		return res;
