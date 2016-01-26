@@ -7,10 +7,10 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 
-import com.dexesttp.hkxpack.resources.DisplayProperties;
+import com.dexesttp.hkxpack.resources.LoggerUtil;
 import com.dexesttp.hkxpack.xml.classxml.definition.classes.BaseClass;
-import com.dexesttp.hkxpack.xml.classxml.definition.classes.ImportedClass;
 import com.dexesttp.hkxpack.xml.classxml.definition.classes.ClassResolver;
+import com.dexesttp.hkxpack.xml.classxml.definition.classes.ImportedClass;
 import com.dexesttp.hkxpack.xml.classxml.exceptions.NonImportedClassException;
 import com.dexesttp.hkxpack.xml.classxml.exceptions.NonResolvedClassException;
 import com.dexesttp.hkxpack.xml.classxml.exceptions.UnknownClassException;
@@ -37,8 +37,7 @@ public class ClassXMLList {
 	 * @param bClass
 	 */
 	public void addImport(BaseClass bClass) {
-		if(DisplayProperties.displayClassImportsInfo)
-			System.out.println("[CLA]\t[QUE]\t\t" + bClass.getClassName());
+		LoggerUtil.classLog(bClass.getClassName());
 		baseClasses.offer(bClass);
 	}
 

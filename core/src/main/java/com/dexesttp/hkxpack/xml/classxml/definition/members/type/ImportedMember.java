@@ -36,7 +36,7 @@ public class ImportedMember extends ClassXMLMember {
 		if(enumInst == null)
 			System.err.println("Unknown type : " + vtype);
 		MemberReader reader;
-		if(flag == "SERIALIZE_IGNORED")
+		if(flag.equals("SERIALIZE_IGNORED"))
 			reader = new SerializedMemberReader(name, Long.parseLong(offset), enumInst.getSize());
 		else
 			reader = enumInst.getReader(name, Long.parseLong(offset), vsubtype, ctype, etype);
