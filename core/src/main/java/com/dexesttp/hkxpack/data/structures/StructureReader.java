@@ -43,11 +43,11 @@ public class StructureReader extends Structure {
 				else
 					LoggerUtil.error("CLASS", "MEMBR", "NULL", "Received Null member");
 			} catch (InvalidPositionException e) {
-				e.printStackTrace();
 				res.appendChild(document.createComment(" could not read member : " + memReader.getName() + " /// INVALID DAT POS "));
+				LoggerUtil.error("CLASS", "MEMBR", "READ", "Invalid data pos : " + e.getMessage());
 			} catch (InvalidArrayException e) {
 				res.appendChild(document.createComment(" could not read member : " + memReader.getName() + " /// INVALID ARRAY "));
-				e.printStackTrace();
+				LoggerUtil.error("CLASS", "MEMBR", "ARR", "Invalid array : " + e.getMessage());
 			}
 		}
 		return res;
