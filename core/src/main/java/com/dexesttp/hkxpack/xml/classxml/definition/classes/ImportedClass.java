@@ -45,10 +45,10 @@ public class ImportedClass extends ClassXML {
 		return members;
 	}
 
-	public ReadableClass resolve() throws IOException, NonResolvedClassException, UnknownClassException, NumberFormatException, UnknownEnumerationException, UnsupportedCombinaisonException, NonImportedClassException {
-		ReadableClass classInst = new ReadableClass(classname, classID);
+	public ClassResolver resolve() throws IOException, NonResolvedClassException, UnknownClassException, NumberFormatException, UnknownEnumerationException, UnsupportedCombinaisonException, NonImportedClassException {
+		ClassResolver classInst = new ClassResolver(classname, classID);
 		if(parent != null) {
-			ReadableClass parentInst = ClassXMLList.getInstance().getOrResolveReadableClass(parent);
+			ClassResolver parentInst = ClassXMLList.getInstance().getOrResolveReadableClass(parent);
 			classInst.addMembers(parentInst.getMembers());
 		}
 		for(ImportedMember member : members)

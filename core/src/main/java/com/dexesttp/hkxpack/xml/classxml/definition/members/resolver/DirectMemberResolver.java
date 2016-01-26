@@ -2,10 +2,9 @@ package com.dexesttp.hkxpack.xml.classxml.definition.members.resolver;
 
 import java.util.function.Function;
 
+import com.dexesttp.hkxpack.data.members.MemberReader;
+import com.dexesttp.hkxpack.data.members.reader.DirectMemberReader;
 import com.dexesttp.hkxpack.resources.ByteUtils;
-import com.dexesttp.hkxpack.xml.classxml.definition.members.reader.BaseMemberReader;
-import com.dexesttp.hkxpack.xml.classxml.definition.members.reader.DirectMemberReader;
-import com.dexesttp.hkxpack.xml.classxml.exceptions.UnsupportedCombinaisonException;
 
 public enum DirectMemberResolver implements BaseMemberResolver {
 	TYPE_VOID(0, (value) -> {return "";}),
@@ -66,9 +65,8 @@ public enum DirectMemberResolver implements BaseMemberResolver {
 	}
 
 	@Override
-	public BaseMemberReader getReader(String name, String vsubtype, String ctype, String etype)
-			throws UnsupportedCombinaisonException {
-		return new DirectMemberReader(name, size, action);
+	public MemberReader getReader(String name, long offset, String vsubtype, String ctype, String etype) {
+		return new DirectMemberReader(name, offset, getSize(), action);
 	}
 	
 	private static byte[] subarray(byte[] array, int begin, int end) {

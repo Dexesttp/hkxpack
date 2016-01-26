@@ -13,8 +13,8 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 
+import com.dexesttp.hkxpack.data.logic.Reader;
 import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
-import com.dexesttp.hkxpack.hkx.logic.Reader;
 import com.dexesttp.hkxpack.resources.DisplayProperties;
 import com.dexesttp.hkxpack.xml.classxml.exceptions.NonImportedClassException;
 import com.dexesttp.hkxpack.xml.classxml.exceptions.NonResolvedClassException;
