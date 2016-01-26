@@ -8,7 +8,7 @@ import java.io.RandomAccessFile;
 import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
 import com.dexesttp.hkxpack.hkx.header.SectionData;
 import com.dexesttp.hkxpack.resources.ByteUtils;
-import com.dexesttp.hkxpack.resources.DisplayProperties;
+import com.dexesttp.hkxpack.resources.LoggerUtil;
 
 public class Data1Interface {
 	private RandomAccessFile file;
@@ -20,8 +20,7 @@ public class Data1Interface {
 	}
 	
 	public DataInternal read(int pos) throws IOException, InvalidPositionException {
-		if(DisplayProperties.displayFileDebugInfo)
-			System.out.println("[FILE]\t[INT]\t[DATA1]\t"+pos);
+		LoggerUtil.file("FILE", "DATA1", "INT", ""+pos);
 		DataInternal data = new DataInternal();
 		long dataPos = header.data1 + pos * 0x08;
 		if(pos < 0 || dataPos > header.data2)

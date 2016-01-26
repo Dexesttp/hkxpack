@@ -1,9 +1,8 @@
 package com.dexesttp.hkxpack.xml.classxml.definition.members.resolver;
 
-import com.dexesttp.hkxpack.xml.classxml.definition.members.reader.BaseMemberReader;
-import com.dexesttp.hkxpack.xml.classxml.definition.members.reader.PtrMemberReader;
+import com.dexesttp.hkxpack.data.members.MemberReader;
+import com.dexesttp.hkxpack.data.members.reader.PtrMemberReader;
 import com.dexesttp.hkxpack.xml.classxml.exceptions.UnknownEnumerationException;
-import com.dexesttp.hkxpack.xml.classxml.exceptions.UnsupportedCombinaisonException;
 
 public enum PtrMemberResolver implements BaseMemberResolver {
 	TYPE_POINTER,
@@ -15,8 +14,9 @@ public enum PtrMemberResolver implements BaseMemberResolver {
 	}
 
 	@Override
-	public BaseMemberReader getReader(String name, String vsubtype, String ctype, String etype)
-			throws UnsupportedCombinaisonException, UnknownEnumerationException {
-		return new PtrMemberReader(name, getSize());
+	public MemberReader getReader(String name, long offset, String vsubtype, String ctype, String etype)
+			throws UnknownEnumerationException {
+		// TODO change PTR_SIZE
+		return new PtrMemberReader(name, offset, 8);
 	}
 }

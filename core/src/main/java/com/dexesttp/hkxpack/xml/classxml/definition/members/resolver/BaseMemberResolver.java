@@ -2,7 +2,7 @@ package com.dexesttp.hkxpack.xml.classxml.definition.members.resolver;
 
 import java.io.IOException;
 
-import com.dexesttp.hkxpack.xml.classxml.definition.members.reader.BaseMemberReader;
+import com.dexesttp.hkxpack.data.members.MemberReader;
 import com.dexesttp.hkxpack.xml.classxml.exceptions.NonImportedClassException;
 import com.dexesttp.hkxpack.xml.classxml.exceptions.NonResolvedClassException;
 import com.dexesttp.hkxpack.xml.classxml.exceptions.UnknownClassException;
@@ -15,5 +15,6 @@ public interface BaseMemberResolver {
 	 * @return the data size
 	 */
 	public int getSize();
-	public BaseMemberReader getReader(String name, String vsubtype, String ctype, String etype) throws UnsupportedCombinaisonException, UnknownEnumerationException, NonResolvedClassException, UnknownClassException, NonImportedClassException, NumberFormatException, IOException;
+	
+	public MemberReader getReader(String name, long offset, String vsubtype, String ctype, String etype) throws UnknownEnumerationException, NumberFormatException, UnknownClassException, IOException, NonResolvedClassException, UnsupportedCombinaisonException, NonImportedClassException;
 }
