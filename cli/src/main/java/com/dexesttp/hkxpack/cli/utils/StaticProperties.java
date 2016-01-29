@@ -17,5 +17,5 @@ public class StaticProperties {
 	 * * Litteral representation of the 3rd digit.
 	 * * Doesn't exist with stable releases (no -HOTFIX or similar, this goes into the merge data or changelog !)
 	 */
-	public static String version_number = "0.0.3-alpha";
+	public static String version_number = "0.0.5-alpha";
 }
