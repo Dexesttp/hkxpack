@@ -9,7 +9,7 @@ import java.util.Map.Entry;
 import com.dexesttp.hkxpack.hkx.header.SectionData;
 import com.dexesttp.hkxpack.resources.ByteUtils;
 
-public class ClassnamesInteface {
+public class ClassnamesInterface {
 	private RandomAccessFile file;
 	private SectionData section;
 	

@@ -7,9 +7,10 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 
+import com.dexesttp.hkxpack.resources.LoggerUtil;
 import com.dexesttp.hkxpack.xml.classxml.definition.classes.BaseClass;
+import com.dexesttp.hkxpack.xml.classxml.definition.classes.ClassResolver;
 import com.dexesttp.hkxpack.xml.classxml.definition.classes.ImportedClass;
-import com.dexesttp.hkxpack.xml.classxml.definition.classes.ReadableClass;
 import com.dexesttp.hkxpack.xml.classxml.exceptions.NonImportedClassException;
 import com.dexesttp.hkxpack.xml.classxml.exceptions.NonResolvedClassException;
 import com.dexesttp.hkxpack.xml.classxml.exceptions.UnknownClassException;
@@ -36,6 +37,7 @@ public class ClassXMLList {
 	 * @param bClass
 	 */
 	public void addImport(BaseClass bClass) {
+		LoggerUtil.classLog(bClass.getClassName());
 		baseClasses.offer(bClass);
 	}
 
@@ -61,7 +63,7 @@ public class ClassXMLList {
 	
 
 	private Map<String, ImportedClass> importedClasses = new LinkedHashMap<>();
-	private Map<String, ReadableClass> readableClasses = new HashMap<>();
+	private Map<String, ClassResolver> classResolvers = new HashMap<>();
 	
 	/**
 	 * Add an imorted class into the ClassXML Import list.
@@ -69,7 +71,7 @@ public class ClassXMLList {
 	 * @param importedClass the imported class itself.
 	 */
 	public void addClass(String name, ImportedClass importedClass) {
-		if(importedClasses.containsKey(name) || readableClasses.containsKey(name))
+		if(importedClasses.containsKey(name) || classResolvers.containsKey(name))
 			return;
 		this.importedClasses.put(name, importedClass);
 	}
@@ -87,7 +89,7 @@ public class ClassXMLList {
 	public void resolve() throws IOException, NonResolvedClassException, UnknownClassException, NumberFormatException, UnknownEnumerationException, UnsupportedCombinaisonException, NonImportedClassException {
 		while(!importedClasses.isEmpty()) {
 			Map.Entry<String, ImportedClass> classObj = importedClasses.entrySet().iterator().next();
-			readableClasses.put(classObj.getKey(), classObj.getValue().resolve());
+			classResolvers.put(classObj.getKey(), classObj.getValue().resolve());
 			importedClasses.remove(classObj.getKey());
 		}
 		importedClasses.clear();
@@ -100,8 +102,8 @@ public class ClassXMLList {
 	 * @throws NonResolvedClassException if the wanted class wasn't resolved yet.
 	 * @throws UnknownClassException if the class wasn't even imported yet.
 	 */
-	public ReadableClass getReadableClass(String name) throws NonResolvedClassException, NonImportedClassException, UnknownClassException {
-		if(!readableClasses.containsKey(name)) {
+	public ClassResolver getClassResolver(String name) throws NonResolvedClassException, NonImportedClassException, UnknownClassException {
+		if(!classResolvers.containsKey(name)) {
 			if(importedClasses.containsKey(name))
 				throw new NonResolvedClassException(name);
 			for(BaseClass classInst : baseClasses)
@@ -109,16 +111,16 @@ public class ClassXMLList {
 					throw new NonImportedClassException(name);
 			throw new UnknownClassException(name);
 		}
-		return readableClasses.get(name);
+		return classResolvers.get(name);
 	}
 	
-	public ReadableClass getOrResolveReadableClass(String name) throws UnknownClassException, NumberFormatException, IOException, NonResolvedClassException, UnknownEnumerationException, UnsupportedCombinaisonException, NonImportedClassException {
+	public ClassResolver getOrResolveReadableClass(String name) throws UnknownClassException, NumberFormatException, IOException, NonResolvedClassException, UnknownEnumerationException, UnsupportedCombinaisonException, NonImportedClassException {
 		try {
-			return getReadableClass(name);
+			return getClassResolver(name);
 		} catch (NonResolvedClassException e) {
 			ImportedClass impCl = importedClasses.remove(name);
-			ReadableClass resCl = impCl.resolve();
-			readableClasses.put(name, resCl);
+			ClassResolver resCl = impCl.resolve();
+			classResolvers.put(name, resCl);
 			return resCl;
 		}
 	}
@@ -129,7 +131,7 @@ public class ClassXMLList {
 	 * @return
 	 */
 	public boolean hasClass(String name) {
-		if(readableClasses.containsKey(name))
+		if(classResolvers.containsKey(name))
 			return true;
 		if(importedClasses.containsKey(name))
 			return true;

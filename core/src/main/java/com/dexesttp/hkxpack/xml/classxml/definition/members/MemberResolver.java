@@ -1,5 +1,6 @@
 package com.dexesttp.hkxpack.xml.classxml.definition.members;
 
+import com.dexesttp.hkxpack.resources.LoggerUtil;
 import com.dexesttp.hkxpack.xml.classxml.definition.members.resolver.BaseMemberResolver;
 import com.dexesttp.hkxpack.xml.classxml.definition.members.resolver.ResolverList;
 
@@ -13,6 +14,8 @@ public class MemberResolver {
 			if(enumInst != null)
 				break;
 		}
+		
+		LoggerUtil.type(enumInst.toString());
 		return (BaseMemberResolver) enumInst;
 	}
 	
