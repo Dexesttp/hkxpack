@@ -14,6 +14,7 @@ public class Structure {
 	
 	public void resolvePadding() {
 		if(size > 8)
-			size = ((size + 8) / 8) * 8;
+			if(size % 8 != 0)
+				size = ((size + 8) / 8) * 8;
 	}
 }

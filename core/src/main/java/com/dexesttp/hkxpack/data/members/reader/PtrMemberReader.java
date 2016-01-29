@@ -40,7 +40,18 @@ public class PtrMemberReader extends MemberReader {
 	public Node readInternal(long position, Document document, HKXConnector connector)
 			throws IOException, InvalidPositionException, InvalidArrayException {
 		DataExternal ptrData = connector.data2.readNext();
-		String name = PointerNameGiver.getInstance().getName(ptrData.to);
+		String name;
+		long currPos = ptrData.from;
+		while(position+offset > currPos) {
+			ptrData = connector.data2.readNext();
+			currPos = ptrData.from;
+		}
+		if(position+offset == currPos) {
+			name = PointerNameGiver.getInstance().getName(ptrData.to);
+		} else {
+			connector.data2.backtrack();
+			name = "null";
+		}
 		Node res = document.createTextNode(name);
 		return res;
 	}

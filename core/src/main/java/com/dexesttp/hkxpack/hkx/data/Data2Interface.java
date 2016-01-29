@@ -46,4 +46,8 @@ public class Data2Interface {
 	public DataExternal readNext() throws IOException, InvalidPositionException {
 		return read(++lastPos);
 	}
+	
+	public void backtrack() {
+		lastPos--;
+	}
 }
