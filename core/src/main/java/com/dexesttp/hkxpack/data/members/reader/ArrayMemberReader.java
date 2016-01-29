@@ -74,7 +74,7 @@ public class ArrayMemberReader extends MemberReader {
 			long arrPos = dataChunk.to;
 			// Iterate over array content.
 			for(int i = 0; i < arrSize; i++) {
-				// Let the memebr handle the contents based on the curent gives position.
+				// Let the member handle the contents based on the curent gives position.
 				Node contentNode = internal.readInternal(arrPos, document, connector);
 				if(contentNode.getNodeType() == Node.TEXT_NODE)
 					isTextInternal = true;

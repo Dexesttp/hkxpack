@@ -4,8 +4,8 @@ public class Structure {
 	int size;
 	
 	public void setSize(int size) {
-		// TODO handle padding.
 		this.size = size;
+		resolvePadding();
 	}
 	
 	public int getSize() {
@@ -13,6 +13,7 @@ public class Structure {
 	}
 	
 	public void resolvePadding() {
-		
+		if(size > 8)
+			size = ((size + 8) / 8) * 8;
 	}
 }

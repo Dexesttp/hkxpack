@@ -30,11 +30,22 @@ public class StringMemberReader extends MemberReader {
 	@Override
 	public Node read(long position, Document document, HKXConnector connector)
 			throws IOException, InvalidPositionException, InvalidArrayException {
-		DataInternal posDescriptor = connector.data1.readNext();
 		Element res = document.createElement("hkparam");
 		res.setAttribute("name", name);
-		RandomAccessFile file = connector.data.setup(posDescriptor.to);
-		String text = ByteUtils.readString(file);
+		String text;
+		DataInternal posDescriptor = connector.data1.readNext();
+		long currPos = posDescriptor.from;
+		while(position+offset > currPos) {
+			posDescriptor = connector.data1.readNext();
+			currPos = posDescriptor.from;
+		}
+		if(position+offset == currPos) {
+			RandomAccessFile file = connector.data.setup(posDescriptor.to);
+			text = ByteUtils.readString(file);
+		} else {
+			connector.data1.backtrack();
+			text = "";
+		}
 		res.setTextContent(text);
 		return res;
 	}
@@ -42,10 +53,21 @@ public class StringMemberReader extends MemberReader {
 	@Override
 	public Node readInternal(long position, Document document, HKXConnector connector)
 			throws IOException, InvalidPositionException, InvalidArrayException {
-		DataInternal posDescriptor = connector.data1.readNext();
 		Element res = document.createElement("hkcstring");
-		RandomAccessFile file = connector.data.setup(posDescriptor.to);
-		String text = ByteUtils.readString(file);
+		String text;
+		DataInternal posDescriptor = connector.data1.readNext();
+		long currPos = posDescriptor.from;
+		while(position+offset > currPos) {
+			posDescriptor = connector.data1.readNext();
+			currPos = posDescriptor.from;
+		}
+		if(position+offset == currPos) {
+			RandomAccessFile file = connector.data.setup(posDescriptor.to);
+			text = ByteUtils.readString(file);
+		} else {
+			connector.data1.backtrack();
+			text = "";
+		}
 		res.setTextContent(text);
 		return res;
 	}

@@ -26,11 +26,17 @@ public class StructureReader extends Structure {
 	
 	public void addMember(MemberReader member) {
 		contents.add(member);
+		updateSize(member);
 	}
-	
+
+	private void updateSize(MemberReader member) {
+		setSize((int) (member.getOffset() + member.getSize()));
+	}
+
 	public Node read(long position, Document document, HKXConnector connector, String name) throws IOException {
 		Element res = document.createElement("hkobject");
 		if(!name.isEmpty()) {
+			LoggerUtil.info("STRUCT", "CLASS", "OPEN", classname);
 			res.setAttribute("name", name);
 			res.setAttribute("class", classname);
 			res.setAttribute("signature", "0x" + Integer.toHexString(signature));

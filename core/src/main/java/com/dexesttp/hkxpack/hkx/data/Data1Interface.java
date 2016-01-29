@@ -44,4 +44,8 @@ public class Data1Interface {
 	public DataInternal readNext() throws IOException, InvalidPositionException {
 		return read(++lastPos);
 	}
+	
+	public void backtrack() {
+		lastPos--;
+	}
 }
