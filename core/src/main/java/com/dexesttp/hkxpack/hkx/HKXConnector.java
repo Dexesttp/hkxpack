@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import com.dexesttp.hkxpack.hkx.classnames.ClassnamesData;
-import com.dexesttp.hkxpack.hkx.classnames.ClassnamesInteface;
+import com.dexesttp.hkxpack.hkx.classnames.ClassnamesInterface;
 import com.dexesttp.hkxpack.hkx.data.Data1Interface;
 import com.dexesttp.hkxpack.hkx.data.Data2Interface;
 import com.dexesttp.hkxpack.hkx.data.Data3Interface;
@@ -39,7 +39,7 @@ public class HKXConnector {
 		sectInt.close();
 		
 		// Extract the classnames
-		ClassnamesInteface cnamesInt = new ClassnamesInteface();
+		ClassnamesInterface cnamesInt = new ClassnamesInterface();
 		cnamesInt.connect(file, classnamesHead);
 		classnamesdata = cnamesInt.extract();
 		cnamesInt.close();
