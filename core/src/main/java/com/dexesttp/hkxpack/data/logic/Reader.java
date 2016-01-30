@@ -47,7 +47,23 @@ public class Reader {
 		classList.importClasses();
 		classList.resolve();
 		
+		// Create all default names for hkobjects
 		int pos = 0;
+		try {
+			while(true) {
+				// Get the next data3 class.
+				DataExternal currentClass = data3.read(pos++);
+				// Asks for its name, resulting in creating it.
+				PointerNameGiver.getInstance().getName(currentClass.from);
+			}
+		} catch (InvalidPositionException e) {
+			if(!e.getSection().equals("DATA_3"))
+				throw e;
+		}
+		// Reset position to the beginning of data3.
+		pos = 0;
+		
+		// Retrieve the actual data
 		try {
 			while(true) {
 				// Get the next data3 class.
