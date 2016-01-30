@@ -38,7 +38,7 @@ public class Command_unpack implements Command{
 			e.printStackTrace();
 			return 1;
 		}
-		main.exec(fileName, outName);
+		main.read(fileName, outName);
 		return 0;
 	}
 }

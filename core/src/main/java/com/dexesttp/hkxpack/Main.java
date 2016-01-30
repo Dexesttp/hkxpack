@@ -3,7 +3,9 @@ package com.dexesttp.hkxpack;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
@@ -14,6 +16,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 
 import com.dexesttp.hkxpack.data.logic.Reader;
+import com.dexesttp.hkxpack.data.logic.Writer;
 import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
 import com.dexesttp.hkxpack.resources.LoggerUtil;
 import com.dexesttp.hkxpack.xml.classxml.exceptions.NonImportedClassException;
@@ -27,7 +30,7 @@ public class Main {
 	 * Main entry point.
 	 * @param outputFile 
 	 */
-	public void exec(String fileName, String outputFile) {
+	public void read(String fileName, String outputFile) {
 		try {
 			// Get output document
 			// Read file
@@ -36,7 +39,7 @@ public class Main {
 			Reader reader = new Reader();
 			Document document = reader.read(file);
 			
-			// Output result
+			// Output result to new XML file
 	        TransformerFactory transformerFactory =
 	                 TransformerFactory.newInstance();
             Transformer transformer =
@@ -76,5 +79,9 @@ public class Main {
 		} catch (NonImportedClassException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void write(String fileName, String outputFile) {
+		// TODO
 	}
 }

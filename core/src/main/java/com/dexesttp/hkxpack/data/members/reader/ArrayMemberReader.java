@@ -53,7 +53,7 @@ public class ArrayMemberReader extends MemberReader {
 		});
 		// ERROR : check array validity [0x80 at the end]
 		if(arrDescriptor[PTR_SIZE+7] != -128) {
-			LoggerUtil.error("MEMBR", "ARRAY", "DESC", "Descriptor doesn't end in 0x80 ! @" + (position + offset));
+			LoggerUtil.info("MEMBR", "ARRAY", "DESC", "Descriptor doesn't end in 0x80 ! @" + (position + offset));
 			throw new InvalidArrayException();
 		}
 		// DEBUG : Display array size
