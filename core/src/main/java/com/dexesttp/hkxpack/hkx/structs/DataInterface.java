@@ -16,12 +16,6 @@ public class DataInterface {
 		this.file = new RandomAccessFile(file, "rw");
 		this.header = dataHead;
 	}
-
-	public void read(long position, Struct structure) throws IOException, InvalidPositionException {
-		if(position < 0 || position > header.data1)
-			throw new InvalidPositionException("DATA", position);
-		structure.read(position, this);
-	}
 	
 	public RandomAccessFile setup(long position) throws IOException, InvalidPositionException {
 		if(position < 0 || position > header.data1)
