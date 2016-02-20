@@ -27,8 +27,8 @@ class TagXMLMemberCreator {
 		switch(member.getType().getFamily()) {
 			case DIRECT:
 			case COMPLEX:
-				Node newDirectChild = handleDirectMembers((HKXDirectMember<?>) member);
-				memberNode.appendChild(newDirectChild);
+				String newDirectChild = handleDirectMembers((HKXDirectMember<?>) member);
+				memberNode.setTextContent(newDirectChild);
 				break;
 			case STRING:
 				String newStringChildContent = ((HKXStringMember) member).get();
@@ -55,8 +55,17 @@ class TagXMLMemberCreator {
 		return memberNode;
 	}
 
-	private Node handleDirectMembers(HKXDirectMember<?> member) {
-		// TODO Handle direct members
-		return document.createTextNode("Kappa");
+	private String handleDirectMembers(HKXDirectMember<?> member) {
+		if(member.get() instanceof Double[]) {
+			Double[] contents = (Double[]) member.get();
+			String contentsAccu = "";
+			for(int i = 0; i < contents.length; i++) {
+				contentsAccu += "" + contents[i] + " ";
+			}
+			return contentsAccu.substring(0, contentsAccu.length() - 1);
+		}
+		if(member.get() instanceof Character)
+			return "" + (int) ((char) member.get());
+		return "" + member.get();
 	}
 }
