@@ -16,6 +16,10 @@ public class HKXDescriptorFactory {
 	private final ClassXMLReader reader;
 	private Map<String, HKXDescriptor> contents = new HashMap<>();
 	
+	/**
+	 * Retrieves a new HKXDescriptorFactory.
+	 * @throws ClassListReadError if there was an error while reading the Class List.
+	 */
 	public HKXDescriptorFactory() throws ClassListReadError {
 		ClassXMLReaderFactory factory = new ClassXMLReaderFactory();
 		reader = factory.create(this);
@@ -25,7 +29,7 @@ public class HKXDescriptorFactory {
 	 * Retrieves a HKXDescriptor from the class name.
 	 * @param name the HKXDescriptor's name
 	 * @return the HKXDescriptor
-	 * @throws ClassFileReadError 
+	 * @throws ClassFileReadError if there was an error while reading the Class File.
 	 */
 	public synchronized HKXDescriptor get(String name) throws ClassFileReadError {
 		if(contents.containsKey(name))

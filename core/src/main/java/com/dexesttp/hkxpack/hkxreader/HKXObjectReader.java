@@ -15,10 +15,21 @@ public class HKXObjectReader {
 
 	private HKXMemberReaderFactory memberFactory;
 	
-	HKXObjectReader(HKXMemberReaderFactory memberFactory) {
-		this.memberFactory = memberFactory;
+	/**
+	 * Initialize the HKXObjectReader
+	 * @param memberReaderFactory the {@link HKXMemberReaderFactory} used to create the {@link HKXObject}'s {@link HKXMember}s {@link HKXMemberReader}.
+	 */
+	HKXObjectReader(HKXMemberReaderFactory memberReaderFactory) {
+		this.memberFactory = memberReaderFactory;
 	}
 
+	/**
+	 * Creates an HKXObject from a descriptor, a position and the object's name.
+	 * @param objectName the name of the object to create.
+	 * @param position the position to read the object from.
+	 * @param descriptor a descriptor of the {@link HKXObject}'s internal strucure.
+	 * @return the read {@link HKXObject}
+	 */
 	public HKXObject createHKXObject(String objectName, long position, HKXDescriptor descriptor) {
 		HKXObject result = new HKXObject(objectName, descriptor);
 		for(HKXMemberTemplate memberTemplate : descriptor.getMemberTemplates()) {

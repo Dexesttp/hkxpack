@@ -11,7 +11,7 @@ import com.dexesttp.hkxpack.descriptor.exceptions.ClassListReadError;
 import com.dexesttp.hkxpack.resources.ClassFilesUtils;
 
 class ClassXMLList {
-	private static String classResourcesList = "/properties/classxmllist.txt";
+	private static final String classResourcesList = "/properties/classxmllist.txt";
 	public final Map<String, String> filenameConverter = new HashMap<String, String>();
 	
 	ClassXMLList() throws ClassListReadError {

@@ -23,6 +23,12 @@ public class HKXReader {
 		this.descriptorFactory = descriptorFactory;
 	}
 	
+	/**
+	 * Read the data from the file.
+	 * @return the read {@link HKXFile}
+	 * @throws IOException if there was a problem accessing the file.
+	 * @throws InvalidPositionException if there was a positionning problem while reading the file.
+	 */
 	public HKXFile read() throws IOException, InvalidPositionException {
 		
 		// Connect the connector to the file.
