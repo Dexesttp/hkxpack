@@ -33,11 +33,10 @@ public class HKXMemberReaderFactory {
 			case ARRAY:
 				switch(template.vsubtype.getFamily()) {
 					case DIRECT:
+					case COMPLEX:
 						return new HKXDirectArrayMemberReader(connector, template.name, template.vsubtype, template.offset);
 					case STRING:
 						return new HKXStringArrayMemberReader(connector, template.name, template.vsubtype, template.offset);
-					case COMPLEX:
-						throw new RuntimeException(SBundle.getString("bug.known")+ "[#101]");
 					case OBJECT:
 						HKXDescriptor descriptor = descriptorFactory.get(template.target);
 						return new HKXObjectArrayMemberReader(connector, objectCreator, template.name, template.offset, descriptor);
