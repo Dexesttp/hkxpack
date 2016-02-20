@@ -1,7 +1,6 @@
 package com.dexesttp.hkxpack.tagxml;
 
 import java.io.File;
-import java.io.IOException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -16,29 +15,47 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+/**
+ * Handles a {@link File} intended to serve as the XML destination.
+ */
 class TagXMLHandler {
-	Document createDOM(String verName, int version) throws IOException {
-		try {
-			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder builder = factory.newDocumentBuilder();
-			Document doc = builder.newDocument();
-			Element root = doc.createElement("hkxpackfile");
-			root.setAttribute("classversion", ""+version);
-			root.setAttribute("contentsversion", verName);
-			doc.appendChild(root);
-			return doc;
-		} catch (ParserConfigurationException e) {
-			throw new IOException(e);
-		}
+	/**
+	 * Creates a {@link Document} containing the HKX's version and version name.
+	 * @param verName
+	 * @param version
+	 * @return
+	 * @throws ParserConfigurationException if there was an error while handling the Document creation.
+	 */
+	Document createDOM(String verName, int version) throws ParserConfigurationException {
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = factory.newDocumentBuilder();
+		Document doc = builder.newDocument();
+		Element root = doc.createElement("hkxpackfile");
+		root.setAttribute("classversion", ""+version);
+		root.setAttribute("contentsversion", verName);
+		doc.appendChild(root);
+		return doc;
 	}
 
-	Element createSection(Document document, String string) {
-		Element root = document.createElement("hksection");
-		root.setAttribute("name", "__data__");
-		document.getChildNodes().item(0).appendChild(root);
-		return root;
+	/**
+	 * Create a hksection in a {@link Document}, and returns it as an {@link Element}.
+	 * @param document the {@link Document} to create the section into.
+	 * @param name the name of the section.
+	 * @return the hksection's {@link Element}
+	 */
+	Element createSection(Document document, String name) {
+		Element section = document.createElement("hksection");
+		section.setAttribute("name", name);
+		document.getChildNodes().item(0).appendChild(section);
+		return section;
 	}
 
+	/**
+	 * Write a {@link Document} to a {@link File}.
+	 * @param document the {@link Document} to write.
+	 * @param outFile the {@link File} to write the {@link Document} into.
+	 * @throws TransformerException if there was an error while writing out the document.
+	 */
 	void writeToFile(Document document, File outFile) throws TransformerException {
 		// Create transformer
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();

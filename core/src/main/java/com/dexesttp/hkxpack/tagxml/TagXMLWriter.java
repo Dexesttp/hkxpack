@@ -3,6 +3,7 @@ package com.dexesttp.hkxpack.tagxml;
 import java.io.File;
 import java.io.IOException;
 
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
 import org.w3c.dom.Document;
@@ -21,12 +22,13 @@ public class TagXMLWriter {
 	}
 
 	/**
-	 * Write an {@link HKXFile} 
-	 * @param hkxFile
-	 * @throws IOException
-	 * @throws TransformerException
+	 * Write an {@link HKXFile} as an XML file.
+	 * @param hkxFile the HKXFiel to write.
+	 * @throws IOException if the XML file couldn't be written.
+	 * @throws TransformerException if there was a problem handling the {@link HKXFile}'s content.
+	 * @throws ParserConfigurationException if there was a problem creating the XML {@link Document}.
 	 */
-	public void write(HKXFile hkxFile) throws IOException, TransformerException {
+	public void write(HKXFile hkxFile) throws IOException, TransformerException, ParserConfigurationException {
 		TagXMLHandler handler = new TagXMLHandler();
 		// Create the new Document
 		Document document = handler.createDOM(hkxFile.getContentsVersion(), hkxFile.getClassVersion());

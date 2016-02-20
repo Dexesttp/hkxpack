@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
 import com.dexesttp.hkxpack.data.HKXFile;
@@ -13,9 +14,13 @@ import com.dexesttp.hkxpack.hkxreader.HKXReader;
 import com.dexesttp.hkxpack.resources.LoggerUtil;
 import com.dexesttp.hkxpack.tagxml.TagXMLWriter;
 
+/**
+ * Easy entry point for the HKXPack core.
+ * @since 0.0.1-alpha
+ */
 public class Main {
 	/**
-	 * Reading entry point
+	 * Convert a HKXFile to a XML file.
 	 * @param inputFileName
 	 * @param outputFileName 
 	 */
@@ -46,10 +51,17 @@ public class Main {
 			e.printStackTrace();
 		} catch (TransformerException e) {
 			e.printStackTrace();
+		} catch (ParserConfigurationException e) {
+			e.printStackTrace();
 		}
 	}
 	
-	public void write(String fileName, String outputFile) {
+	/**
+	 * Convert a XML file to an HKX file.
+	 * @param inputFileName
+	 * @param outputFileName
+	 */
+	public void write(String inputFileName, String outputFileName) {
 		try {
 			// TODO Main.write
 		} catch (Exception e) {

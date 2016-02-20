@@ -11,16 +11,30 @@ import com.dexesttp.hkxpack.data.members.HKXMember;
 import com.dexesttp.hkxpack.data.members.HKXPointerMember;
 import com.dexesttp.hkxpack.data.members.HKXStringMember;
 
+/**
+ * Creates {@link Node} from {@link HKXMember}<br >
+ * Please use {@link TagXMLDataCreator} as the handled class.
+ */
 class TagXMLMemberCreator {
 
 	private Document document;
 	private TagXMLDataCreator dataCreator;
 
+	/**
+	 * Creates a new {@link TagXMLMemberCreator} from its parent {@link TagXMLDataCreator}.<br >
+	 * This shoud only be done by a {@link TagXMLDataCreator}.
+	 * @param tagXMLDataCreator
+	 */
 	TagXMLMemberCreator(TagXMLDataCreator tagXMLDataCreator) {
 		this.dataCreator = tagXMLDataCreator;
 		this.document = tagXMLDataCreator.document();
 	}
 	
+	/**
+	 * Creates a {@link Node} from a {@link HKXMember}.<br >
+	 * @param member
+	 * @return
+	 */
 	Node create(HKXMember member) {
 		Element memberNode = document.createElement("hkxmember");
 		memberNode.setAttribute("name", member.getName());
