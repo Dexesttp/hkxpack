@@ -8,7 +8,7 @@ import com.dexesttp.hkxpack.data.members.HKXMember;
 import com.dexesttp.hkxpack.descriptor.HKXEnumResolver;
 import com.dexesttp.hkxpack.descriptor.enums.HKXType;
 import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
-import com.dexesttp.hkxpack.hkx.structs.MemberTypeResolver;
+import com.dexesttp.hkxpack.hkx.types.MemberSizeResolver;
 import com.dexesttp.hkxpack.hkxreader.HKXReaderConnector;
 import com.dexesttp.hkxpack.resources.ByteUtils;
 import com.dexesttp.hkxpack.resources.LoggerUtil;
@@ -32,7 +32,7 @@ public class HKXEnumMemberReader implements HKXMemberReader {
 
 	@Override
 	public HKXMember read(long classOffset) throws IOException, InvalidPositionException {
-		final int memberSize = (int) MemberTypeResolver.getSize(HKXType.TYPE_ENUM);
+		final int memberSize = (int) MemberSizeResolver.getSize(HKXType.TYPE_ENUM);
 		RandomAccessFile file = connector.data.setup(classOffset + memberOffset);
 		byte[] b = new byte[memberSize];
 		file.read(b);

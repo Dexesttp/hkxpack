@@ -6,7 +6,8 @@ import java.io.RandomAccessFile;
 import com.dexesttp.hkxpack.data.members.HKXMember;
 import com.dexesttp.hkxpack.descriptor.enums.HKXType;
 import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
-import com.dexesttp.hkxpack.hkx.structs.MemberTypeResolver;
+import com.dexesttp.hkxpack.hkx.types.MemberDataResolver;
+import com.dexesttp.hkxpack.hkx.types.MemberSizeResolver;
 import com.dexesttp.hkxpack.hkxreader.HKXReaderConnector;
 
 class HKXDirectMemberReader implements HKXMemberReader {
@@ -25,11 +26,11 @@ class HKXDirectMemberReader implements HKXMemberReader {
 
 	@Override
 	public HKXMember read(long classOffset) throws IOException, InvalidPositionException {
-		final int memberSize = (int) MemberTypeResolver.getSize(vtype);
+		final int memberSize = (int) MemberSizeResolver.getSize(vtype);
 		RandomAccessFile file = connector.data.setup(classOffset + memberOffset);
 		byte[] b = new byte[memberSize];
 		file.read(b);
-		HKXMember result = MemberTypeResolver.getMember(name, vtype, b);
+		HKXMember result = MemberDataResolver.getMember(name, vtype, b);
 		return result;
 	}
 
