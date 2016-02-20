@@ -14,11 +14,11 @@ class TagXMLDirectMemberHandler {
 	String getStringValue(HKXDirectMember<?> member) {
 		if(member.get() instanceof Double[]) {
 			Double[] contents = (Double[]) member.get();
-			String contentsAccu = "";
+			String contentsAccu = "(";
 			for(int i = 0; i < contents.length; i++) {
 				contentsAccu += "" + contents[i] + " ";
 			}
-			return contentsAccu.substring(0, contentsAccu.length() - 1);
+			return contentsAccu.substring(0, contentsAccu.length() - 1) + ")";
 		}
 		if(member.get() instanceof Character)
 			return "" + (int) ((char) member.get());
