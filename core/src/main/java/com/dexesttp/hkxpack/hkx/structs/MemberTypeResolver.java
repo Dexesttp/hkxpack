@@ -10,9 +10,24 @@ import com.dexesttp.hkxpack.descriptor.members.HKXMemberTemplate;
 import com.dexesttp.hkxpack.l10n.SBundle;
 import com.dexesttp.hkxpack.resources.ByteUtils;
 
+// TODO move that to a better place.
+/**
+ * Intended to retrieve {@link HKXType}-specific data.
+ * <p>
+ * {@link #getSize(HKXType)} retrieves the size of a {@link HKXType}
+ * {@link #getSize(HKXDescriptor)} retrieves the size of a {@link HKXDescriptor}, including padding.
+ * {@link #getMember(String, HKXType, byte[])} converts a {@link byte} array to a {@link HKXMember},
+ * 		given the {@link HKXType} of the member is standard. 
+ */
 public class MemberTypeResolver {
 	private static final long PTR_SIZE = 8;
 
+	/**
+	 * Retrieve the size of a standard {@link HKXType}.
+	 * @param type the {@link HKXType} to retrieve the size of.
+	 * @return the {@link HKXType}'s size.
+	 * @throws IllegalArgumentException if the given {@link HKXType} isn't standard.
+	 */
 	public static long getSize(HKXType type) {
 		switch(type) {
 			case TYPE_NONE:
@@ -68,47 +83,56 @@ public class MemberTypeResolver {
 		throw new IllegalArgumentException(type.toString() + " can't be analyzed with MemberTypeResolver#getSize");
 	}
 
-	public static HKXMember getMember(String name, HKXType type, byte[] b) {
+	/**
+	 * Read a simple / defined member from a byte array.
+	 * @param name the name of the member to create.
+	 * @param type the {@link HKXType} of data to convert the array into.
+	 * @param byteArray the {@link byte} array to read the member from.
+	 * @return the {@link HKXMember} containing the data.
+	 * @throws IllegalArgumentException if the given {@link HKXType} isn't standard.
+	 */
+	public static HKXMember getMember(String name, HKXType type, byte[] byteArray) {
 		switch(type) {
 		// Base values
 			case TYPE_BOOL:
 				HKXDirectMember<Boolean> member1 = new HKXDirectMember<>(name, type);
-				member1.set(ByteUtils.getInt(b) > 0);
+				member1.set(ByteUtils.getInt(byteArray) > 0);
 				return member1;
 			case TYPE_CHAR:
 			case TYPE_UINT8:
 			case TYPE_INT8:
 				HKXDirectMember<Character> member2 = new HKXDirectMember<>(name, type);
-				member2.set((char) ByteUtils.getInt(b));
+				member2.set((char) ByteUtils.getInt(byteArray));
 				return member2;
 			case TYPE_UINT16:
 			case TYPE_ULONG:
 			case TYPE_UINT32:
 			case TYPE_UINT64:
 				HKXDirectMember<Integer> member3 = new HKXDirectMember<>(name, type);
-				member3.set((int) ByteUtils.getInt(b));
+				member3.set((int) ByteUtils.getInt(byteArray));
 				return member3;
 			case TYPE_HALF:
 			case TYPE_INT16:
 			case TYPE_INT32:
 			case TYPE_INT64:
 				HKXDirectMember<Integer> member4 = new HKXDirectMember<>(name, type);
-				member4.set((int) ByteUtils.getSInt(b));
+				member4.set((int) ByteUtils.getSInt(byteArray));
 				return member4;
 			case TYPE_REAL:
 				HKXDirectMember<Double> member5 = new HKXDirectMember<>(name, type);
-				member5.set((double) ByteUtils.getFloat(b));
+				member5.set((double) ByteUtils.getFloat(byteArray));
 				return member5;
 			case TYPE_ENUM:
 			case TYPE_FLAGS:
 				HKXDirectMember<String> member6 = new HKXDirectMember<>(name, type);
+				// TODO read enums
 				member6.set("TODO : read enums");
 				return member6;
 		// Complex values
 			case TYPE_MATRIX3:
-				byte[] b11 = new byte[] {b[0], b[1], b[2], b[3]};
-				byte[] b12 = new byte[] {b[4], b[5], b[6], b[7]};
-				byte[] b13 = new byte[] {b[8], b[9], b[10], b[11]};
+				byte[] b11 = new byte[] {byteArray[0], byteArray[1], byteArray[2], byteArray[3]};
+				byte[] b12 = new byte[] {byteArray[4], byteArray[5], byteArray[6], byteArray[7]};
+				byte[] b13 = new byte[] {byteArray[8], byteArray[9], byteArray[10], byteArray[11]};
 				HKXDirectMember<Double[]> member7 = new HKXDirectMember<>(name, type);
 				member7.set(new Double[] {
 						(double) ByteUtils.getFloat(b11),
@@ -119,10 +143,10 @@ public class MemberTypeResolver {
 			case TYPE_VECTOR4:
 			case TYPE_QUATERNION:
 			case TYPE_QSTRANSFORM:
-				byte[] b21 = new byte[] {b[0], b[1], b[2], b[3]};
-				byte[] b22 = new byte[] {b[4], b[5], b[6], b[7]};
-				byte[] b23 = new byte[] {b[8], b[9], b[10], b[11]};
-				byte[] b24 = new byte[] {b[12], b[13], b[14], b[15]};
+				byte[] b21 = new byte[] {byteArray[0], byteArray[1], byteArray[2], byteArray[3]};
+				byte[] b22 = new byte[] {byteArray[4], byteArray[5], byteArray[6], byteArray[7]};
+				byte[] b23 = new byte[] {byteArray[8], byteArray[9], byteArray[10], byteArray[11]};
+				byte[] b24 = new byte[] {byteArray[12], byteArray[13], byteArray[14], byteArray[15]};
 				HKXDirectMember<Double[]> member8 = new HKXDirectMember<>(name, type);
 				member8.set(new Double[] {
 						(double) ByteUtils.getFloat(b21),
@@ -137,7 +161,11 @@ public class MemberTypeResolver {
 		} throw new IllegalArgumentException(type + " can't be analyzed with MemberTypeResolver#getMember");
 	}
 	
-	
+	/**
+	 * Retrieves the size of a {@link HKXDescriptor}, including end padding if needed.
+	 * @param descriptor the {@link HKXDescriptor} to retrieve the size from.
+	 * @return the {@link HKXDescriptor}'s size.
+	 */
 	public static long getSize(HKXDescriptor descriptor) {
 		List<HKXMemberTemplate> templates = descriptor.getMemberTemplates();
 		if(templates.isEmpty())
@@ -149,11 +177,11 @@ public class MemberTypeResolver {
 			throw new RuntimeException(SBundle.getString("bug.known") + " [#343]");
 	}
 
+	// TODO maybe improve SnapSize if it happens it isn't good enough.
 	/**
 	 * Snap to the next 0x04 factor if needed.
-	 * TODO maybe improve this if it happens it is not good enough
-	 * @param l
-	 * @return
+	 * @param l the value to snap.
+	 * @return the snapped size.
 	 */
 	private static long snapSize(long l) {
 		long smallSize = l / 4;
