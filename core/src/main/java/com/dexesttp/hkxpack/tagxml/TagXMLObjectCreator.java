@@ -20,9 +20,11 @@ class TagXMLObjectCreator {
 	Node create(HKXObject object) {
 		Element res = document.createElement("hkxobject");
 		// Create base class node.
-		res.setAttribute("class", object.getDescriptor().getName());
-		res.setAttribute("name", object.getName());
-		res.setAttribute("signature","0x" + Long.toHexString(object.getDescriptor().getSignature()));
+		if(!object.getName().isEmpty()) {
+			res.setAttribute("class", object.getDescriptor().getName());
+			res.setAttribute("name", object.getName());
+			res.setAttribute("signature","0x" + Long.toHexString(object.getDescriptor().getSignature()));
+		}
 		for(HKXMember member : object.members()) {
 			Node memberNode = memberCreator.create(member);
 			res.appendChild(memberNode);
