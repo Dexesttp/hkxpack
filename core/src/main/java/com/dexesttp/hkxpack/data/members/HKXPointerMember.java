@@ -12,6 +12,7 @@ public class HKXPointerMember implements HKXMember {
 		this.name = name;
 		this.type = type;
 		this.subtype = subtype;
+		this.value = target;
 	}
 	
 	public void set(String value) {
