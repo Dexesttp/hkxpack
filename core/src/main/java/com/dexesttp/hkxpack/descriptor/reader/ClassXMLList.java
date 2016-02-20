@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.dexesttp.hkxpack.descriptor.exceptions.ClassListReadError;
-import com.dexesttp.hkxpack.resources.ClassFilesUtils;
 
 class ClassXMLList {
 	private static final String classResourcesList = "/properties/classxmllist.txt";
@@ -23,7 +22,7 @@ class ClassXMLList {
 	}
 	
 	private void readEntries() throws IOException {
-		URL paths = ClassFilesUtils.class.getResource(classResourcesList);
+		URL paths = ClassXMLList.class.getResource(classResourcesList);
 		BufferedReader reader = new BufferedReader(new InputStreamReader(paths.openStream()));
 		String fileEntry;
 		while((fileEntry = reader.readLine()) != null) {
