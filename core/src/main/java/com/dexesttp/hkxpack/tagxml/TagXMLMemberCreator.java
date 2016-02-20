@@ -16,7 +16,6 @@ import com.dexesttp.hkxpack.data.members.HKXStringMember;
  * Please use {@link TagXMLDataCreator} as the handled class.
  */
 class TagXMLMemberCreator {
-
 	private Document document;
 	private TagXMLDataCreator dataCreator;
 
@@ -29,7 +28,7 @@ class TagXMLMemberCreator {
 		this.dataCreator = tagXMLDataCreator;
 		this.document = tagXMLDataCreator.document();
 	}
-	
+
 	/**
 	 * Creates a {@link Node} from a {@link HKXMember}.<br >
 	 * @param member
@@ -42,7 +41,8 @@ class TagXMLMemberCreator {
 			case DIRECT:
 			case COMPLEX:
 			case ENUM:
-				String newDirectChild = handleDirectMembers((HKXDirectMember<?>) member);
+				TagXMLDirectMemberHandler directMemberHandler = new TagXMLDirectMemberHandler();
+				String newDirectChild = directMemberHandler.getStringValue((HKXDirectMember<?>) member);
 				memberNode.setTextContent(newDirectChild);
 				break;
 			case STRING:
@@ -68,19 +68,5 @@ class TagXMLMemberCreator {
 				break;
 		}
 		return memberNode;
-	}
-
-	private String handleDirectMembers(HKXDirectMember<?> member) {
-		if(member.get() instanceof Double[]) {
-			Double[] contents = (Double[]) member.get();
-			String contentsAccu = "";
-			for(int i = 0; i < contents.length; i++) {
-				contentsAccu += "" + contents[i] + " ";
-			}
-			return contentsAccu.substring(0, contentsAccu.length() - 1);
-		}
-		if(member.get() instanceof Character)
-			return "" + (int) ((char) member.get());
-		return "" + member.get();
 	}
 }
