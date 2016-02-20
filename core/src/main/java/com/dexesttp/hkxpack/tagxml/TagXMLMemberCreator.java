@@ -36,7 +36,7 @@ class TagXMLMemberCreator {
 	 * @return
 	 */
 	Node create(HKXMember member) {
-		Element memberNode = document.createElement("hkxmember");
+		Element memberNode = document.createElement("hkparam");
 		memberNode.setAttribute("name", member.getName());
 		switch(member.getType().getFamily()) {
 			case DIRECT:
