@@ -1,4 +1,4 @@
-package com.dexesttp.hkxpack.hkx.structs;
+package com.dexesttp.hkxpack.hkx.data;
 
 import java.io.File;
 import java.io.FileNotFoundException;

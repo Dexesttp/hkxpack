@@ -8,11 +8,11 @@ import com.dexesttp.hkxpack.hkx.classnames.ClassnamesInterface;
 import com.dexesttp.hkxpack.hkx.data.Data1Interface;
 import com.dexesttp.hkxpack.hkx.data.Data2Interface;
 import com.dexesttp.hkxpack.hkx.data.Data3Interface;
+import com.dexesttp.hkxpack.hkx.data.DataInterface;
 import com.dexesttp.hkxpack.hkx.header.HeaderData;
 import com.dexesttp.hkxpack.hkx.header.HeaderInterface;
 import com.dexesttp.hkxpack.hkx.header.SectionData;
 import com.dexesttp.hkxpack.hkx.header.SectionInterface;
-import com.dexesttp.hkxpack.hkx.structs.DataInterface;
 
 public class HKXReaderConnector {
 	public final HeaderData header;

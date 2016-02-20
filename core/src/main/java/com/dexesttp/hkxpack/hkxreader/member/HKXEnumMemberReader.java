@@ -14,7 +14,6 @@ import com.dexesttp.hkxpack.resources.ByteUtils;
 import com.dexesttp.hkxpack.resources.LoggerUtil;
 
 public class HKXEnumMemberReader implements HKXMemberReader {
-	
 	private final HKXReaderConnector connector;
 	private final HKXEnumResolver enumResolver;
 	private final String name;
@@ -22,8 +21,7 @@ public class HKXEnumMemberReader implements HKXMemberReader {
 	private final String etype;
 	private final long memberOffset;
 
-	HKXEnumMemberReader(HKXReaderConnector connector, HKXEnumResolver enumResolver, String name, HKXType vtype, String target,
-			long offset) {
+	HKXEnumMemberReader(HKXReaderConnector connector, HKXEnumResolver enumResolver, String name, HKXType vtype, String target, long offset) {
 		this.connector = connector;
 		this.enumResolver = enumResolver;
 		this.name = name;
@@ -48,5 +46,4 @@ public class HKXEnumMemberReader implements HKXMemberReader {
 		}
 		return result;
 	}
-
 }
