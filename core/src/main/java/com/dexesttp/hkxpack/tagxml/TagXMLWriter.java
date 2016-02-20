@@ -20,6 +20,12 @@ public class TagXMLWriter {
 		this.outFile = outputFile;
 	}
 
+	/**
+	 * Write an {@link HKXFile} 
+	 * @param hkxFile
+	 * @throws IOException
+	 * @throws TransformerException
+	 */
 	public void write(HKXFile hkxFile) throws IOException, TransformerException {
 		TagXMLHandler handler = new TagXMLHandler();
 		// Create the new Document

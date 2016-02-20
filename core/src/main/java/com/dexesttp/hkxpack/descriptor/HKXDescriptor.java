@@ -26,14 +26,26 @@ public class HKXDescriptor {
 		this.members = members;
 	}
 	
+	/**
+	 * Get the descriptor's name.
+	 * @return the name, as a {@link String}
+	 */
 	public String getName() {
 		return name;
 	}
-	
+
+	/**
+	 * Get the descriptor's signature.
+	 * @return the signature, as a {@link long}
+	 */
 	public long getSignature() {
 		return signature;
 	}
 	
+	/**
+	 * Get a {@link List} of all the member's templates, as {@link HKXMemberTemplate}.
+	 * @return the list of members.
+	 */
 	public List<HKXMemberTemplate> getMemberTemplates() {
 		return members;
 	}

@@ -13,13 +13,13 @@ class TagXMLDataCreator {
 	private final TagXMLMemberCreator memberCreator;
 	private TagXMLObjectCreator objectCreator;
 
-	public TagXMLDataCreator(Document document) {
+	TagXMLDataCreator(Document document) {
 		this.document = document;
 		this.memberCreator = new TagXMLMemberCreator(this);
 		this.objectCreator = new TagXMLObjectCreator(this);
 	}
 
-	public Node create(HKXData content) {
+	Node create(HKXData content) {
 		if(content instanceof HKXObject)
 			return objectCreator.create((HKXObject) content);
 		if(content instanceof HKXMember)
@@ -27,11 +27,11 @@ class TagXMLDataCreator {
 		throw new IllegalArgumentException(SBundle.getString("error.tag.create.type.unknown") + "[#060]");
 	}
 
-	public Document document() {
-		return document;
-	}
-	
-	public TagXMLMemberCreator memberCreator() {
+	TagXMLMemberCreator memberCreator() {
 		return memberCreator;
+	}
+
+	Document document() {
+		return document;
 	}
 }

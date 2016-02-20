@@ -21,7 +21,7 @@ class TagXMLMemberCreator {
 		this.document = tagXMLDataCreator.document();
 	}
 	
-	public Node create(HKXMember member) {
+	Node create(HKXMember member) {
 		Element memberNode = document.createElement("hkxmember");
 		memberNode.setAttribute("name", member.getName());
 		switch(member.getType().getFamily()) {
