@@ -55,9 +55,10 @@ public class ClassXMLReader {
 		long signature = Long.parseLong(signatureString.substring(2), 16);
 		
 		// Read enums
-		Map<String, Integer> enumContents = new HashMap<String, Integer>();
-		// TODO handle enum reading.
-		enumResolver.add("", HashBiMap.create(enumContents));
+		NodeList enums = document.getElementsByTagName("enums");
+		if(enums.getLength() > 0) {
+			retrieveEnums(enums, enumResolver);
+		}
 		
 		// Handle eventual parent
 		String parentName = DOMUtils.getNodeAttr("parent", classNode);
@@ -74,6 +75,27 @@ public class ClassXMLReader {
 		
 		// Return the descriptor
 		return new HKXDescriptor(classname, signature, memberList);
+	}
+
+	private void retrieveEnums(NodeList enums, HKXEnumResolver enumResolver2) {
+		// TODO revisit this.
+		NodeList enumsObjects = enums.item(0).getChildNodes();
+		for(int i = 0; i < enumsObjects.getLength(); i++) {
+			Node enumObject = enumsObjects.item(i);
+			if(enumObject.getAttributes() != null) {
+				Map<String, Integer> enumContents = new HashMap<String, Integer>();
+				String enumName = DOMUtils.getNodeAttr("name", enumObject);
+				for(int j = 0; j < enumObject.getChildNodes().getLength(); j++) {
+					Node enumObjectContent = enumObject.getChildNodes().item(j);
+					if(enumObjectContent.getAttributes() != null) {
+						String enumObjectName = DOMUtils.getNodeAttr("name", enumObjectContent);
+						int enumObjectContents = Integer.parseInt(DOMUtils.getNodeAttr("value", enumObjectContent));
+						enumContents.put(enumObjectName, enumObjectContents);
+					}
+				}
+				enumResolver.add(enumName, HashBiMap.create(enumContents));
+			}
+		}
 	}
 
 	private Document openFile(String classname) throws ClassFileReadError {
