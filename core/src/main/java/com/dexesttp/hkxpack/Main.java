@@ -9,6 +9,7 @@ import javax.xml.transform.TransformerException;
 
 import com.dexesttp.hkxpack.data.HKXFile;
 import com.dexesttp.hkxpack.descriptor.HKXDescriptorFactory;
+import com.dexesttp.hkxpack.descriptor.HKXEnumResolver;
 import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
 import com.dexesttp.hkxpack.hkxreader.HKXReader;
 import com.dexesttp.hkxpack.resources.LoggerUtil;
@@ -30,8 +31,9 @@ public class Main {
 			
 			// Read file
 			File inFile = new File(inputFileName);
-			HKXDescriptorFactory descriptorFactory = new HKXDescriptorFactory();
-			HKXReader reader = new HKXReader(inFile, descriptorFactory);
+			HKXEnumResolver enumResolver = new HKXEnumResolver();
+			HKXDescriptorFactory descriptorFactory = new HKXDescriptorFactory(enumResolver);
+			HKXReader reader = new HKXReader(inFile, descriptorFactory, enumResolver);
 			HKXFile hkxFile = reader.read();
 			
 			// Write file

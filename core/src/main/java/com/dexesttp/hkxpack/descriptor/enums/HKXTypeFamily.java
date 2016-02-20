@@ -8,6 +8,7 @@ public enum HKXTypeFamily {
 	UNKNOWN,
 	DIRECT,
 	COMPLEX,
+	ENUM,
 	ARRAY,
 	POINTER,
 	STRING,

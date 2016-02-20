@@ -7,6 +7,7 @@ import com.dexesttp.hkxpack.data.HKXFile;
 import com.dexesttp.hkxpack.data.HKXObject;
 import com.dexesttp.hkxpack.descriptor.HKXDescriptor;
 import com.dexesttp.hkxpack.descriptor.HKXDescriptorFactory;
+import com.dexesttp.hkxpack.descriptor.HKXEnumResolver;
 import com.dexesttp.hkxpack.hkx.classnames.ClassnamesData;
 import com.dexesttp.hkxpack.hkx.data.Data3Interface;
 import com.dexesttp.hkxpack.hkx.data.DataExternal;
@@ -17,10 +18,12 @@ import com.dexesttp.hkxpack.hkxreader.member.HKXMemberReaderFactory;
 public class HKXReader {
 	private final File hkxFile;
 	private final HKXDescriptorFactory descriptorFactory;
+	private final HKXEnumResolver enumResolver;
 
-	public HKXReader(File hkxFile, HKXDescriptorFactory descriptorFactory) {
+	public HKXReader(File hkxFile, HKXDescriptorFactory descriptorFactory, HKXEnumResolver enumResolver) {
 		this.hkxFile = hkxFile;
 		this.descriptorFactory = descriptorFactory;
+		this.enumResolver = enumResolver;
 	}
 	
 	/**
@@ -36,7 +39,7 @@ public class HKXReader {
 		
 		// Get a file reader and a pointer name generator
 		PointerNameGenerator generator = new PointerNameGenerator();
-		HKXMemberReaderFactory memberFactory = new HKXMemberReaderFactory(descriptorFactory, connector, generator);
+		HKXMemberReaderFactory memberFactory = new HKXMemberReaderFactory(descriptorFactory, connector, generator, enumResolver);
 		HKXObjectReader creator = new HKXObjectReader(memberFactory);
 		memberFactory.connectObjectCreator(creator);
 		HKXDescriptorReader fileReader = new HKXDescriptorReader(creator, generator);

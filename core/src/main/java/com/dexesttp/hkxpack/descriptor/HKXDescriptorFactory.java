@@ -18,10 +18,11 @@ public class HKXDescriptorFactory {
 	
 	/**
 	 * Retrieves a new HKXDescriptorFactory.
+	 * @param enumResolver the {@link HKXEnumResolver} to put the read enums into.
 	 * @throws ClassListReadError if there was an error while reading the Class List.
 	 */
-	public HKXDescriptorFactory() throws ClassListReadError {
-		ClassXMLReaderFactory factory = new ClassXMLReaderFactory();
+	public HKXDescriptorFactory(HKXEnumResolver enumResolver) throws ClassListReadError {
+		ClassXMLReaderFactory factory = new ClassXMLReaderFactory(enumResolver);
 		reader = factory.create(this);
 	}
 	

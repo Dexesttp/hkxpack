@@ -3,6 +3,7 @@ package com.dexesttp.hkxpack.descriptor;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.dexesttp.hkxpack.descriptor.reader.ClassXMLReader;
 import com.google.common.collect.BiMap;
 
 /**
@@ -26,7 +27,14 @@ public class HKXEnumResolver {
 		}
 	}
 	
-	void add(String name, BiMap<String, Integer> contents) {
+	/**
+	 * Add a new Enum to the resolver.
+	 * <p>
+	 * This should only be done by the {@link ClassXMLReader} method. Please don't use this unless you're doing something technical.
+	 * @param name
+	 * @param contents
+	 */
+	public void add(String name, BiMap<String, Integer> contents) {
 		this.contents.put(name, new HKXEnum(contents));
 	}
 	

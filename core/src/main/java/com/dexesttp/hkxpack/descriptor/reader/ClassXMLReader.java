@@ -2,7 +2,9 @@ package com.dexesttp.hkxpack.descriptor.reader;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -14,20 +16,24 @@ import org.xml.sax.SAXException;
 
 import com.dexesttp.hkxpack.descriptor.HKXDescriptor;
 import com.dexesttp.hkxpack.descriptor.HKXDescriptorFactory;
+import com.dexesttp.hkxpack.descriptor.HKXEnumResolver;
 import com.dexesttp.hkxpack.descriptor.exceptions.ClassFileReadError;
 import com.dexesttp.hkxpack.descriptor.exceptions.ClassListReadError;
 import com.dexesttp.hkxpack.descriptor.members.HKXMemberTemplate;
 import com.dexesttp.hkxpack.resources.DOMUtils;
+import com.google.common.collect.HashBiMap;
 /**
  * Reads ClassXML and produces HKXDescriptorTemplates from it.
  */
 public class ClassXMLReader {
 	private final ClassXMLList classList;
 	private final HKXDescriptorFactory descriptorFactory;
+	private final HKXEnumResolver enumResolver;
 
-	ClassXMLReader(HKXDescriptorFactory descriptorFactory, ClassXMLList classList) throws ClassListReadError {
+	ClassXMLReader(HKXDescriptorFactory descriptorFactory, ClassXMLList classList, HKXEnumResolver enumResolver) throws ClassListReadError {
 		this.descriptorFactory  = descriptorFactory;
 		this.classList = classList;
+		this.enumResolver = enumResolver;
 	}
 	
 	/**
@@ -47,6 +53,11 @@ public class ClassXMLReader {
 		// Read signature
 		String signatureString = DOMUtils.getNodeAttr("signature", classNode);
 		long signature = Long.parseLong(signatureString.substring(2), 16);
+		
+		// Read enums
+		Map<String, Integer> enumContents = new HashMap<String, Integer>();
+		// TODO handle enum reading.
+		enumResolver.add("", HashBiMap.create(enumContents));
 		
 		// Handle eventual parent
 		String parentName = DOMUtils.getNodeAttr("parent", classNode);

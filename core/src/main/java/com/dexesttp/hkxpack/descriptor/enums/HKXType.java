@@ -34,8 +34,8 @@ public enum HKXType {
 	TYPE_QSTRANSFORM(HKXTypeFamily.COMPLEX),
 	TYPE_QUATERNION(HKXTypeFamily.COMPLEX),
 	// Complex types (enum)
-	TYPE_ENUM(HKXTypeFamily.COMPLEX),
-	TYPE_FLAGS(HKXTypeFamily.COMPLEX),
+	TYPE_ENUM(HKXTypeFamily.ENUM),
+	TYPE_FLAGS(HKXTypeFamily.ENUM),
 	
 // Array types
 	TYPE_SIMPLEARRAY(HKXTypeFamily.ARRAY),

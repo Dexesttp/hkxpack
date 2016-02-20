@@ -122,12 +122,6 @@ public class MemberTypeResolver {
 				HKXDirectMember<Double> member5 = new HKXDirectMember<>(name, type);
 				member5.set((double) ByteUtils.getFloat(byteArray));
 				return member5;
-			case TYPE_ENUM:
-			case TYPE_FLAGS:
-				HKXDirectMember<String> member6 = new HKXDirectMember<>(name, type);
-				// TODO read enums
-				member6.set("TODO : read enums");
-				return member6;
 		// Complex values
 			case TYPE_MATRIX3:
 				byte[] b11 = new byte[] {byteArray[0], byteArray[1], byteArray[2], byteArray[3]};

@@ -2,6 +2,7 @@ package com.dexesttp.hkxpack.hkxreader.member;
 
 import com.dexesttp.hkxpack.descriptor.HKXDescriptor;
 import com.dexesttp.hkxpack.descriptor.HKXDescriptorFactory;
+import com.dexesttp.hkxpack.descriptor.HKXEnumResolver;
 import com.dexesttp.hkxpack.descriptor.exceptions.ClassFileReadError;
 import com.dexesttp.hkxpack.descriptor.members.HKXMemberTemplate;
 import com.dexesttp.hkxpack.hkxreader.HKXObjectReader;
@@ -13,12 +14,14 @@ public class HKXMemberReaderFactory {
 	private final HKXDescriptorFactory descriptorFactory;
 	private final HKXReaderConnector connector;
 	private final PointerNameGenerator generator;
+	private final HKXEnumResolver enumResolver;
 	private HKXObjectReader objectCreator;
 
-	public HKXMemberReaderFactory(HKXDescriptorFactory descriptorFactory, HKXReaderConnector connector, PointerNameGenerator generator) {
+	public HKXMemberReaderFactory(HKXDescriptorFactory descriptorFactory, HKXReaderConnector connector, PointerNameGenerator generator, HKXEnumResolver enumResolver) {
 		this.descriptorFactory = descriptorFactory;
 		this.connector = connector;
 		this.generator = generator;
+		this.enumResolver = enumResolver;
 	}
 
 	public void connectObjectCreator(HKXObjectReader objectCreator) {
@@ -30,6 +33,9 @@ public class HKXMemberReaderFactory {
 			case DIRECT:
 			case COMPLEX:
 				return new HKXDirectMemberReader(connector, template.name, template.vtype, template.offset);
+			case ENUM:
+				return new HKXEnumMemberReader(connector, enumResolver, template.name, template.vtype, template.target, template.offset);
+				
 			case ARRAY:
 				switch(template.vsubtype.getFamily()) {
 					case DIRECT:
