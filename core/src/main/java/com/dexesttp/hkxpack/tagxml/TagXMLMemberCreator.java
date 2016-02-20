@@ -41,6 +41,7 @@ class TagXMLMemberCreator {
 		switch(member.getType().getFamily()) {
 			case DIRECT:
 			case COMPLEX:
+			case ENUM:
 				String newDirectChild = handleDirectMembers((HKXDirectMember<?>) member);
 				memberNode.setTextContent(newDirectChild);
 				break;
