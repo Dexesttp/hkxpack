@@ -57,7 +57,7 @@ public class ClassXMLReader {
 		// Read enums
 		NodeList enums = document.getElementsByTagName("enums");
 		if(enums.getLength() > 0) {
-			retrieveEnums(enums, enumResolver);
+			retrieveEnums(classname, enums);
 		}
 		
 		// Handle eventual parent
@@ -77,23 +77,24 @@ public class ClassXMLReader {
 		return new HKXDescriptor(classname, signature, memberList);
 	}
 
-	private void retrieveEnums(NodeList enums, HKXEnumResolver enumResolver2) {
+	private void retrieveEnums(String classname, NodeList enums) {
 		// TODO revisit this.
 		NodeList enumsObjects = enums.item(0).getChildNodes();
 		for(int i = 0; i < enumsObjects.getLength(); i++) {
 			Node enumObject = enumsObjects.item(i);
 			if(enumObject.getAttributes() != null) {
-				Map<String, Integer> enumContents = new HashMap<String, Integer>();
+				Map<Integer, String> enumContents = new HashMap<>();
 				String enumName = DOMUtils.getNodeAttr("name", enumObject);
+				enumName = classname + "." + enumName;
 				for(int j = 0; j < enumObject.getChildNodes().getLength(); j++) {
 					Node enumObjectContent = enumObject.getChildNodes().item(j);
 					if(enumObjectContent.getAttributes() != null) {
 						String enumObjectName = DOMUtils.getNodeAttr("name", enumObjectContent);
 						int enumObjectContents = Integer.parseInt(DOMUtils.getNodeAttr("value", enumObjectContent));
-						enumContents.put(enumObjectName, enumObjectContents);
+						enumContents.put(enumObjectContents, enumObjectName);
 					}
 				}
-				enumResolver.add(enumName, HashBiMap.create(enumContents));
+				enumResolver.add(enumName, HashBiMap.create(enumContents).inverse());
 			}
 		}
 	}
@@ -122,6 +123,8 @@ public class ClassXMLReader {
 		String vsubtype = DOMUtils.getNodeAttr("vsubtype", memberNode);
 		String ctype = DOMUtils.getNodeAttr("ctype", memberNode);
 		String etype = DOMUtils.getNodeAttr("etype", memberNode);
+		if(!etype.isEmpty())
+			etype = classname + "." + etype;
 		String arrsize = DOMUtils.getNodeAttr("arrsize", memberNode);
 		String flags = DOMUtils.getNodeAttr("flags", memberNode);
 		HKXMemberTemplate template = new HKXMemberTemplate(name, offset, vtype, vsubtype, ctype, etype, arrsize, flags);
