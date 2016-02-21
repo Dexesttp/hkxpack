@@ -11,6 +11,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import com.dexesttp.hkxpack.data.HKXFile;
+import com.dexesttp.hkxpack.data.HKXObject;
 import com.dexesttp.hkxpack.descriptor.HKXDescriptorFactory;
 import com.dexesttp.hkxpack.l10n.SBundle;
 import com.dexesttp.hkxpack.tagreader.exceptions.InvalidTagXMLException;
@@ -49,12 +50,13 @@ public class TagXMLReader {
 			throw new InvalidTagXMLException(SBundle.getString("error.tag.read.section") + "__data__");
 		
 		// Read the object nodes
-		TagXMLObjectHandler objectHandler = new TagXMLObjectHandler(hkxFile, descriptorFactory);
+		TagXMLNodeHandler nodeHandler = new TagXMLNodeHandler(descriptorFactory);
 		NodeList objectNodes = section.getChildNodes();
 		for(int i = 0; i < objectNodes.getLength(); i++) {
 			Node rootNode = objectNodes.item(i);
 			if(rootNode.getNodeName().equals("hkobject")) {
-				objectHandler.handleObject(rootNode);
+				HKXObject object = nodeHandler.handleObject(rootNode);
+				hkxFile.add(object);
 			}
 		}
 		

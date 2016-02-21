@@ -2,19 +2,39 @@ package com.dexesttp.hkxpack.tagreader;
 
 import org.w3c.dom.Node;
 
-import com.dexesttp.hkxpack.data.HKXFile;
+import com.dexesttp.hkxpack.data.HKXObject;
+import com.dexesttp.hkxpack.data.members.HKXMember;
+import com.dexesttp.hkxpack.descriptor.HKXDescriptor;
 import com.dexesttp.hkxpack.descriptor.HKXDescriptorFactory;
+import com.dexesttp.hkxpack.descriptor.exceptions.ClassFileReadError;
+import com.dexesttp.hkxpack.descriptor.members.HKXMemberTemplate;
+import com.dexesttp.hkxpack.resources.DOMUtils;
+import com.dexesttp.hkxpack.tagreader.exceptions.InvalidTagXMLException;
 
-public class TagXMLObjectHandler {
-	private final HKXFile hkxFile;
+class TagXMLObjectHandler {
 	private final HKXDescriptorFactory descriptorFactory;
+	private final TagXMLMemberHandler memberHandler;
 
-	public TagXMLObjectHandler(HKXFile hkxFile, HKXDescriptorFactory descriptorFactory) {
-		this.hkxFile = hkxFile;
+	TagXMLObjectHandler(HKXDescriptorFactory descriptorFactory, TagXMLMemberHandler memberHandler) {
 		this.descriptorFactory = descriptorFactory;
+		this.memberHandler = memberHandler;
 	}
 
-	public void handleObject(Node objectNode) {
-		// TODO handle a Tag object
+	HKXObject handleObject(Node objectNode) throws ClassFileReadError, InvalidTagXMLException {
+		// Retrieve descriptor
+		String className = DOMUtils.getNodeAttr("class", objectNode);
+		HKXDescriptor classDescriptor = descriptorFactory.get(className);
+		
+		// Create object 
+		String objectName = DOMUtils.getNodeAttr("name", objectNode);
+		HKXObject result = new HKXObject(objectName, classDescriptor);
+		
+		// Fill object
+		for(HKXMemberTemplate memberTemplate : classDescriptor.getMemberTemplates()) {
+			HKXMember member = memberHandler.getMember(objectNode, memberTemplate);
+			result.members().add(member);
+		}
+		
+		return result;
 	}
 }
