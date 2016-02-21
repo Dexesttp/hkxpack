@@ -64,7 +64,6 @@ public class MemberDataResolver {
 				return member7;
 			case TYPE_VECTOR4:
 			case TYPE_QUATERNION:
-			case TYPE_QSTRANSFORM:
 				byte[] b21 = new byte[] {byteArray[0], byteArray[1], byteArray[2], byteArray[3]};
 				byte[] b22 = new byte[] {byteArray[4], byteArray[5], byteArray[6], byteArray[7]};
 				byte[] b23 = new byte[] {byteArray[8], byteArray[9], byteArray[10], byteArray[11]};
@@ -77,6 +76,31 @@ public class MemberDataResolver {
 						(double) ByteUtils.getFloat(b24)
 				});
 				return member8;
+			case TYPE_QSTRANSFORM:
+				byte[] b31 = new byte[] {byteArray[0], byteArray[1], byteArray[2], byteArray[3]};
+				byte[] b32 = new byte[] {byteArray[4], byteArray[5], byteArray[6], byteArray[7]};
+				byte[] b33 = new byte[] {byteArray[8], byteArray[9], byteArray[10], byteArray[11]};
+				byte[] b35 = new byte[] {byteArray[16], byteArray[17], byteArray[18], byteArray[19]};
+				byte[] b36 = new byte[] {byteArray[20], byteArray[21], byteArray[22], byteArray[23]};
+				byte[] b37 = new byte[] {byteArray[24], byteArray[25], byteArray[26], byteArray[27]};
+				byte[] b38 = new byte[] {byteArray[28], byteArray[29], byteArray[30], byteArray[31]};
+				byte[] b39 = new byte[] {byteArray[32], byteArray[33], byteArray[34], byteArray[35]};
+				byte[] b3a = new byte[] {byteArray[36], byteArray[37], byteArray[38], byteArray[39]};
+				byte[] b3b = new byte[] {byteArray[40], byteArray[41], byteArray[42], byteArray[43]};
+				HKXDirectMember<Double[]> member9 = new HKXDirectMember<>(name, type);
+				member9.set(new Double[] {
+						(double) ByteUtils.getFloat(b31),
+						(double) ByteUtils.getFloat(b32),
+						(double) ByteUtils.getFloat(b33),
+						(double) ByteUtils.getFloat(b35),
+						(double) ByteUtils.getFloat(b36),
+						(double) ByteUtils.getFloat(b37),
+						(double) ByteUtils.getFloat(b38),
+						(double) ByteUtils.getFloat(b39),
+						(double) ByteUtils.getFloat(b3a),
+						(double) ByteUtils.getFloat(b3b)
+				});
+				return member9;
 		// Default
 			default:
 				break;

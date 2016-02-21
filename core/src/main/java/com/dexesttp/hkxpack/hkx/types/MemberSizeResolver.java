@@ -55,9 +55,10 @@ public class MemberSizeResolver {
 			case TYPE_MATRIX3:
 				return 0x0A;
 			case TYPE_QUATERNION:
-			case TYPE_QSTRANSFORM:
 			case TYPE_VECTOR4:
 				return 0x10;
+			case TYPE_QSTRANSFORM:
+				return 0x30;
 		// Strings and ptrs
 			case TYPE_CSTRING:
 			case TYPE_STRINGPTR:
