@@ -6,6 +6,7 @@ import org.w3c.dom.Node;
 
 import com.dexesttp.hkxpack.data.members.HKXArrayMember;
 import com.dexesttp.hkxpack.data.members.HKXDirectMember;
+import com.dexesttp.hkxpack.data.members.HKXFailedMember;
 import com.dexesttp.hkxpack.data.members.HKXMember;
 import com.dexesttp.hkxpack.data.members.HKXPointerMember;
 import com.dexesttp.hkxpack.data.members.HKXStringMember;
@@ -36,6 +37,10 @@ class TagXMLMemberCreator {
 	 * @return
 	 */
 	Node create(HKXMember member) {
+		if(member instanceof HKXFailedMember) {
+			HKXFailedMember failedMember = (HKXFailedMember) member;
+			return document.createComment(failedMember.getFailMessage());
+		}
 		Element memberNode = document.createElement("hkparam");
 		memberNode.setAttribute("name", member.getName());
 		switch(member.getType().getFamily()) {
