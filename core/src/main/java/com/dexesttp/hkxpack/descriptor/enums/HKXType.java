@@ -33,7 +33,8 @@ public enum HKXType {
 	TYPE_VECTOR4(HKXTypeFamily.COMPLEX),
 	TYPE_QSTRANSFORM(HKXTypeFamily.COMPLEX),
 	TYPE_QUATERNION(HKXTypeFamily.COMPLEX),
-	// Complex types (enum)
+
+// Enum types
 	TYPE_ENUM(HKXTypeFamily.ENUM),
 	TYPE_FLAGS(HKXTypeFamily.ENUM),
 	
