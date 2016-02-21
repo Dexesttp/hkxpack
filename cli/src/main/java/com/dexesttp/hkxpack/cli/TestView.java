@@ -29,8 +29,7 @@ public class TestView {
 			// Read file
 			File inFile = new File(inputFileName);
 			HKXEnumResolver enumResolver = new HKXEnumResolver();
-			HKXDescriptorFactory descriptorFactory;
-				descriptorFactory = new HKXDescriptorFactory(enumResolver);
+			HKXDescriptorFactory descriptorFactory = new HKXDescriptorFactory(enumResolver);
 			HKXReader reader = new HKXReader(inFile, descriptorFactory, enumResolver);
 			HKXFile hkxFile = reader.read();
 			
@@ -56,12 +55,11 @@ public class TestView {
 			// Read file
 			File inFile = new File(inputFileName);
 			HKXEnumResolver enumResolver = new HKXEnumResolver();
-			HKXDescriptorFactory descriptorFactory;
-				descriptorFactory = new HKXDescriptorFactory(enumResolver);
+			HKXDescriptorFactory descriptorFactory = new HKXDescriptorFactory(enumResolver);
 			TagXMLReader reader = new TagXMLReader(inFile, descriptorFactory, enumResolver);
 			reader.read();
 			
-			// TODO handle file write
+			// TODO handle HKX file write
 			System.out.println(outputFileName);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -81,15 +79,14 @@ public class TestView {
 		DisplayProperties.displayEmbeddedData = true;
 
 		try {
-			// Read file
+			// Read XML file
 			File inFile = new File(inputFileName);
 			HKXEnumResolver enumResolver = new HKXEnumResolver();
-			HKXDescriptorFactory descriptorFactory;
-				descriptorFactory = new HKXDescriptorFactory(enumResolver);
+			HKXDescriptorFactory descriptorFactory = new HKXDescriptorFactory(enumResolver);
 			TagXMLReader reader = new TagXMLReader(inFile, descriptorFactory, enumResolver);
 			HKXFile hkxFile = reader.read();
 			
-			// Write file
+			// Write XML file
 			File outFile = new File(outputFileName);
 			TagXMLWriter writer = new TagXMLWriter(outFile);
 			writer.write(hkxFile);

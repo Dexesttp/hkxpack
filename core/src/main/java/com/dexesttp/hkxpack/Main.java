@@ -27,7 +27,6 @@ public class Main {
 	 */
 	public void read(String inputFileName, String outputFileName) {
 		try {
-			// Get output document
 			
 			// Read file
 			File inFile = new File(inputFileName);
