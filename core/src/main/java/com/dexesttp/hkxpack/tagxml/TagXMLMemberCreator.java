@@ -4,7 +4,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import com.dexesttp.hkxpack.data.HKXData;
 import com.dexesttp.hkxpack.data.members.HKXArrayMember;
 import com.dexesttp.hkxpack.data.members.HKXDirectMember;
 import com.dexesttp.hkxpack.data.members.HKXMember;
@@ -18,6 +17,7 @@ import com.dexesttp.hkxpack.data.members.HKXStringMember;
 class TagXMLMemberCreator {
 	private Document document;
 	private TagXMLDataCreator dataCreator;
+	private TagXMLArrayMemberHandler arrayMemberHandler;
 
 	/**
 	 * Creates a new {@link TagXMLMemberCreator} from its parent {@link TagXMLDataCreator}.<br >
@@ -27,6 +27,7 @@ class TagXMLMemberCreator {
 	TagXMLMemberCreator(TagXMLDataCreator tagXMLDataCreator) {
 		this.dataCreator = tagXMLDataCreator;
 		this.document = tagXMLDataCreator.document();
+		this.arrayMemberHandler = new TagXMLArrayMemberHandler(dataCreator);
 	}
 
 	/**
@@ -54,11 +55,7 @@ class TagXMLMemberCreator {
 				memberNode.setTextContent(newPointerChildContent);
 				break;
 			case ARRAY:
-				memberNode.setAttribute("numelements", "" + ((HKXArrayMember) member).contents().size());
-				for(HKXData data : ((HKXArrayMember) member).contents()) {
-					Node newChild = dataCreator.create(data);
-					memberNode.appendChild(newChild);
-				}
+				arrayMemberHandler.fillArray(memberNode, (HKXArrayMember) member);
 				break;
 			case OBJECT:
 				Node newObjectNode = dataCreator.create(member);
