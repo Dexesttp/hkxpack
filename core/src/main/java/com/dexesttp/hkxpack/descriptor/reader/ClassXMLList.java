@@ -36,7 +36,7 @@ class ClassXMLList {
 	 * @param classname the class name
 	 * @return the file name to retrieve data from
 	 */
-	public String getFileName(String classname) {
+	String getFileName(String classname) {
 		return filenameConverter.get(classname);
 	}
 	
