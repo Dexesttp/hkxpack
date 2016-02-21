@@ -64,6 +64,7 @@ public class MemberDataResolver {
 				return member7;
 			case TYPE_VECTOR4:
 			case TYPE_QUATERNION:
+			case TYPE_TRANSFORM:
 				byte[] b21 = new byte[] {byteArray[0], byteArray[1], byteArray[2], byteArray[3]};
 				byte[] b22 = new byte[] {byteArray[4], byteArray[5], byteArray[6], byteArray[7]};
 				byte[] b23 = new byte[] {byteArray[8], byteArray[9], byteArray[10], byteArray[11]};
