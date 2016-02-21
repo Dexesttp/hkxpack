@@ -39,13 +39,13 @@ public class MemberDataResolver {
 				HKXDirectMember<Integer> member3 = new HKXDirectMember<>(name, type);
 				member3.set((int) ByteUtils.getInt(byteArray));
 				return member3;
-			case TYPE_HALF:
 			case TYPE_INT16:
 			case TYPE_INT32:
 			case TYPE_INT64:
 				HKXDirectMember<Integer> member4 = new HKXDirectMember<>(name, type);
 				member4.set((int) ByteUtils.getSInt(byteArray));
 				return member4;
+			case TYPE_HALF:
 			case TYPE_REAL:
 				HKXDirectMember<Double> member5 = new HKXDirectMember<>(name, type);
 				member5.set((double) ByteUtils.getFloat(byteArray));
