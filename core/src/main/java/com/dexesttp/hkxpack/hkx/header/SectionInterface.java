@@ -9,15 +9,34 @@ import java.nio.charset.StandardCharsets;
 import com.dexesttp.hkxpack.hkx.header.internals.SectionDescriptor;
 import com.dexesttp.hkxpack.resources.ByteUtils;
 
+/**
+ * Connects to a {@link File}, and allows easy retrieval and writing of {@link SectionData}.
+ */
 public class SectionInterface {
 	private RandomAccessFile file;
 	private HeaderData header;
-	
+
+	/**
+	 * Connect to a given {@link File}, based on the given {@link HeaderData}.
+	 * @param file the {@link File} to connect to.
+	 * @param header the {@link HeaderData} to base the search on.
+	 * @throws FileNotFoundException if there was a problem connecting to the given {@link File}.
+	 */
 	public void connect(File file, HeaderData header) throws FileNotFoundException {
 		this.file = new RandomAccessFile(file, "rw");
 		this.header = header;
 	}
-	
+
+	/**
+	 * Write a {@link SectionData} in the file, as the given Section ID.
+	 * <p>
+	 * Supported Section IDs are 0, 1, and 2.<br >
+	 * It is expected for the section ID 0 to be __classnames__,
+	 * 1 to be __types__ and 2 to be __data__
+	 * @param section The {@link SectionData} to write.
+	 * @param sectionID The Section ID to write the {@link SectionData} at.
+	 * @throws IOException if there was a problem writing to the {@link File}
+	 */
 	public void compress(SectionData section, int sectionID) throws IOException {
 		long sectionsize;
 		if(header.version == 11)
@@ -38,6 +57,14 @@ public class SectionInterface {
 		file.writeLong(section.end);
 	}
 
+	/**
+	 * Read the given Section ID.
+	 * <p>
+	 * Supported SectionIDs are 0, 1 and 2.
+	 * @param sectionID the Section ID to read.
+	 * @return the read {@link SectionData}
+	 * @throws IOException if there was a problem while reading the {@link File}.
+	 */
 	public SectionData extract(int sectionID) throws IOException {
 		long sectionsize;
 		if(header.version == 11)
@@ -70,7 +97,11 @@ public class SectionInterface {
 		data.end = ByteUtils.getLong(descriptor.end);
 		return data;
 	}
-	
+
+	/**
+	 * Close the connection with the given {@link File}
+	 * @throws IOException if there was a problem while closing the {@link File}
+	 */
 	public void close() throws IOException {
 		file.close();
 	}
