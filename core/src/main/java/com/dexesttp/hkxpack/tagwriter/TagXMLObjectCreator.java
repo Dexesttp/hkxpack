@@ -33,7 +33,7 @@ class TagXMLObjectCreator {
 	 * @return the created node.
 	 */
 	Node create(HKXObject object) {
-		Element res = document.createElement("hkxobject");
+		Element res = document.createElement("hkobject");
 		// Create base class node.
 		if(!object.getName().isEmpty()) {
 			res.setAttribute("class", object.getDescriptor().getName());
