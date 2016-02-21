@@ -56,7 +56,7 @@ public class TestView {
 			File inFile = new File(inputFileName);
 			HKXEnumResolver enumResolver = new HKXEnumResolver();
 			HKXDescriptorFactory descriptorFactory = new HKXDescriptorFactory(enumResolver);
-			TagXMLReader reader = new TagXMLReader(inFile, descriptorFactory, enumResolver);
+			TagXMLReader reader = new TagXMLReader(inFile, descriptorFactory);
 			reader.read();
 			
 			// TODO handle HKX file write
@@ -83,7 +83,7 @@ public class TestView {
 			File inFile = new File(inputFileName);
 			HKXEnumResolver enumResolver = new HKXEnumResolver();
 			HKXDescriptorFactory descriptorFactory = new HKXDescriptorFactory(enumResolver);
-			TagXMLReader reader = new TagXMLReader(inFile, descriptorFactory, enumResolver);
+			TagXMLReader reader = new TagXMLReader(inFile, descriptorFactory);
 			HKXFile hkxFile = reader.read();
 			
 			// Write XML file
