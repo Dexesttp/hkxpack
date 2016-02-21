@@ -13,7 +13,7 @@ import com.dexesttp.hkxpack.descriptor.HKXEnumResolver;
 import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
 import com.dexesttp.hkxpack.hkxreader.HKXReader;
 import com.dexesttp.hkxpack.resources.LoggerUtil;
-import com.dexesttp.hkxpack.tagxml.TagXMLWriter;
+import com.dexesttp.hkxpack.tagwriter.TagXMLWriter;
 
 /**
  * Easy entry point for the HKXPack core.

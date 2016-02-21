@@ -1,4 +1,4 @@
-package com.dexesttp.hkxpack.tagxml;
+package com.dexesttp.hkxpack.tagwriter;
 
 import com.dexesttp.hkxpack.data.members.HKXDirectMember;
 
