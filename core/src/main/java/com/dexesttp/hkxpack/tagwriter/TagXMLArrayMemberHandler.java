@@ -52,7 +52,10 @@ class TagXMLArrayMemberHandler {
 			HKXDirectMember<?> subMember = (HKXDirectMember<?>) data;
 			String subMemberString = directMemberHandler.getStringValue(subMember);
 			if((contents + subMemberString).length() > MAX_LENGTH_PER_LINE ) {
-				accu += "\n" + contents.substring(0, contents.length() - 1);
+				if(contents.isEmpty())
+					accu += "\n";
+				else
+					accu += "\n" + contents.substring(0, contents.length() - 1);
 				contents = "";
 			}
 			contents += subMemberString + " ";
