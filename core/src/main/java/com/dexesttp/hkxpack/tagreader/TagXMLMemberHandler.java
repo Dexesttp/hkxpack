@@ -28,7 +28,7 @@ public class TagXMLMemberHandler {
 		// Get the contents from the node
 		switch(memberTemplate.vtype.getFamily()) {
 			case DIRECT:
-				directHandler.handleString(member.getTextContent(), memberTemplate.name, memberTemplate.vtype);
+				return directHandler.handleString(member.getTextContent(), memberTemplate.name, memberTemplate.vtype);
 			case ENUM:
 			case STRING:
 			case POINTER:
