@@ -8,6 +8,7 @@ import org.w3c.dom.NodeList;
 
 import com.dexesttp.hkxpack.data.members.HKXArrayMember;
 import com.dexesttp.hkxpack.data.members.HKXMember;
+import com.dexesttp.hkxpack.data.members.HKXPointerMember;
 import com.dexesttp.hkxpack.data.members.HKXStringMember;
 import com.dexesttp.hkxpack.descriptor.enums.HKXType;
 import com.dexesttp.hkxpack.descriptor.exceptions.ClassFileReadError;
@@ -16,6 +17,7 @@ import com.dexesttp.hkxpack.tagreader.TagXMLNodeHandler;
 import com.dexesttp.hkxpack.tagreader.exceptions.InvalidTagXMLException;
 
 class TagXMLArrayHandler implements TagXMLContentsHandler {
+	private final Pattern simplePattern = Pattern.compile("(\\S+)[\\s|$]");
 	private final TagXMLEmbeddedObjectHandler objectHandler;
 	private final TagXMLDirectHandler directHandler;
 	private final TagXMLComplexHandler complexHandler;
@@ -40,6 +42,8 @@ class TagXMLArrayHandler implements TagXMLContentsHandler {
 			case STRING:
 				handleString(result, member);
 				break;
+			case POINTER:
+				handlePointer(result, member, memberTemplate);
 			case OBJECT:
 				handleObject(result, member, memberTemplate.target);
 				break;
@@ -50,8 +54,7 @@ class TagXMLArrayHandler implements TagXMLContentsHandler {
 	}
 
 	private void handleDirect(HKXArrayMember root, Node member, HKXType subtype) {
-		Pattern pattern = Pattern.compile("(\\S+)[\\s|$]");
-		Matcher m = pattern.matcher(member.getTextContent());
+		Matcher m = simplePattern.matcher(member.getTextContent());
 		while(m.find()) {
 			HKXMember contents = directHandler.handleString(m.group(1), "", subtype);
 			root.add(contents);
@@ -67,25 +70,34 @@ class TagXMLArrayHandler implements TagXMLContentsHandler {
 		}
 	}
 
-	private void handleString(HKXArrayMember result, Node member) {
+	private void handleString(HKXArrayMember root, Node member) {
 		NodeList children = member.getChildNodes();
 		for(int i = 0; i < children.getLength(); i++) {
 			Node child = children.item(i);
 			if(child.getNodeName().equals("cstring")) {
 				HKXStringMember string = new HKXStringMember("", HKXType.TYPE_CSTRING);
 				string.set(child.getTextContent());
-				result.add(string);
+				root.add(string);
 			}
 		}
 	}
 
-	private void handleObject(HKXArrayMember result, Node member, String target) throws ClassFileReadError, InvalidTagXMLException {
+	private void handlePointer(HKXArrayMember root, Node member, HKXMemberTemplate memberTemplate) {
+		Matcher m = simplePattern.matcher(member.getTextContent());
+		while(m.find()) {
+			HKXPointerMember contents = new HKXPointerMember("", memberTemplate.vsubtype, HKXType.TYPE_VOID, memberTemplate.target);
+			contents.set(m.group(1));
+			root.add(contents);
+		}
+	}
+
+	private void handleObject(HKXArrayMember root, Node member, String target) throws ClassFileReadError, InvalidTagXMLException {
 		NodeList children = member.getChildNodes();
 		for(int i = 0; i < children.getLength(); i++) {
 			Node child = children.item(i);
 			if(child.getNodeName().equals("hkobject")) {
 				HKXMember subObject = objectHandler.handleNode(child, target);
-				result.add(subObject);
+				root.add(subObject);
 			}
 		}
 	}
