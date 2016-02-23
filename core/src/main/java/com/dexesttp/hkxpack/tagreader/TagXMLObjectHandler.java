@@ -10,6 +10,7 @@ import com.dexesttp.hkxpack.descriptor.exceptions.ClassFileReadError;
 import com.dexesttp.hkxpack.descriptor.members.HKXMemberTemplate;
 import com.dexesttp.hkxpack.resources.DOMUtils;
 import com.dexesttp.hkxpack.tagreader.exceptions.InvalidTagXMLException;
+import com.dexesttp.hkxpack.tagreader.members.TagXMLMemberHandler;
 
 class TagXMLObjectHandler {
 	private final HKXDescriptorFactory descriptorFactory;

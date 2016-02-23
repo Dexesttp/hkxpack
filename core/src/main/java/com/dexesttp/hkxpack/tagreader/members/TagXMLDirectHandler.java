@@ -1,15 +1,22 @@
-package com.dexesttp.hkxpack.tagreader;
+package com.dexesttp.hkxpack.tagreader.members;
+
+import org.w3c.dom.Node;
 
 import com.dexesttp.hkxpack.data.members.HKXDirectMember;
 import com.dexesttp.hkxpack.data.members.HKXMember;
 import com.dexesttp.hkxpack.descriptor.enums.HKXType;
 import com.dexesttp.hkxpack.descriptor.enums.HKXTypeFamily;
+import com.dexesttp.hkxpack.descriptor.members.HKXMemberTemplate;
 
 /**
- * Handler for String content of {@link HKXTypeFamily#DIRECT} types.
+ * Handler for {@link Node} content of {@link HKXTypeFamily#DIRECT} types.
  */
-class TagXMLDirectHandler {
-
+class TagXMLDirectHandler implements TagXMLContentsHandler {
+	@Override
+	public HKXMember handleNode(Node member, HKXMemberTemplate memberTemplate) {
+		return handleString(member.getTextContent(), memberTemplate.name, memberTemplate.vtype);
+	}
+	
 	/**
 	 * Create a {@link HKXMember} from a {@link String}, its name and its type, providing that {@link HKXType#getFamily()} is {@link HKXTypeFamily#DIRECT}
 	 * @param content the {@link String} to transform.

@@ -1,14 +1,19 @@
-package com.dexesttp.hkxpack.tagreader;
+package com.dexesttp.hkxpack.tagreader.members;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.dexesttp.hkxpack.data.members.HKXMember;
+import com.dexesttp.hkxpack.descriptor.HKXDescriptor;
 import com.dexesttp.hkxpack.descriptor.members.HKXMemberTemplate;
 import com.dexesttp.hkxpack.l10n.SBundle;
 import com.dexesttp.hkxpack.resources.DOMUtils;
+import com.dexesttp.hkxpack.tagreader.TagXMLNodeHandler;
 import com.dexesttp.hkxpack.tagreader.exceptions.InvalidTagXMLException;
 
+/**
+ * Handle a {@link Node} described by a {@link HKXDescriptor}'s {@link HKXMemberTemplate} into a full {@link HKXMember}.
+ */
 public class TagXMLMemberHandler {
 
 	private final TagXMLNodeHandler nodeHandler;
@@ -21,6 +26,13 @@ public class TagXMLMemberHandler {
 		this.directHandler = new TagXMLDirectHandler();
 	}
 
+	/**
+	 * Creates a {@link HKXMember} from a {@link Node}.
+	 * @param objectNode the {@link Node} to read the data from.
+	 * @param memberTemplate the {@link Node}'s description, as a {@link HKXMemberTemplate}.
+	 * @return the resulting {@link HKXMember}.
+	 * @throws InvalidTagXMLException
+	 */
 	public HKXMember getMember(Node objectNode, HKXMemberTemplate memberTemplate) throws InvalidTagXMLException {
 		// Get the right node.
 		Node member = getMemberNode(objectNode, memberTemplate.name);
@@ -28,7 +40,7 @@ public class TagXMLMemberHandler {
 		// Get the contents from the node
 		switch(memberTemplate.vtype.getFamily()) {
 			case DIRECT:
-				return directHandler.handleString(member.getTextContent(), memberTemplate.name, memberTemplate.vtype);
+				return directHandler.handleNode(member, memberTemplate);
 			case ENUM:
 			case STRING:
 			case POINTER:
