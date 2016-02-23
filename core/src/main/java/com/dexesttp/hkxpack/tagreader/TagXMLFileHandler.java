@@ -31,21 +31,21 @@ class TagXMLFileHandler {
 		return result;
 	}
 	
-	public Node getRootNode(Document document) throws InvalidTagXMLException {
+	Node getRootNode(Document document) throws InvalidTagXMLException {
 		NodeList nodeList = document.getElementsByTagName("hkxpackfile");
 		if(nodeList.getLength() != 1)
 			throw new InvalidTagXMLException(SBundle.getString("error.tag.read.hkxpackfile") + nodeList.getLength());
 		return nodeList.item(0);
 	}
 
-	public HKXFile getHKXFile(Node root) {
+	HKXFile getHKXFile(Node root) {
 		int classVersion = Integer.parseInt(DOMUtils.getNodeAttr("classversion", root));
 		String contentsVersion = DOMUtils.getNodeAttr("contentsversion", root);
 		HKXFile result = new HKXFile(contentsVersion, classVersion);
 		return result;
 	}
 
-	public Node getSectionNode(Document document, String name) {
+	Node getSectionNode(Document document, String name) {
 		NodeList sectionList = document.getElementsByTagName("hksection");
 		for(int i = 0; i < sectionList.getLength(); i++) {
 			Node section = sectionList.item(i);

@@ -1,4 +1,4 @@
-package com.dexesttp.hkxpack.tagreader.members;
+package com.dexesttp.hkxpack.tagreader;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -9,13 +9,14 @@ import com.dexesttp.hkxpack.descriptor.exceptions.ClassFileReadError;
 import com.dexesttp.hkxpack.descriptor.members.HKXMemberTemplate;
 import com.dexesttp.hkxpack.l10n.SBundle;
 import com.dexesttp.hkxpack.resources.DOMUtils;
-import com.dexesttp.hkxpack.tagreader.TagXMLNodeHandler;
 import com.dexesttp.hkxpack.tagreader.exceptions.InvalidTagXMLException;
+import com.dexesttp.hkxpack.tagreader.members.TagXMLContentsHandler;
+import com.dexesttp.hkxpack.tagreader.members.TagXMLContentsHandlerFactory;
 
 /**
  * Handle a {@link Node} described by a {@link HKXDescriptor}'s {@link HKXMemberTemplate} into a full {@link HKXMember}.
  */
-public class TagXMLMemberHandler {
+class TagXMLMemberHandler {
 
 	private final TagXMLNodeHandler nodeHandler;
 	private final TagXMLContentsHandlerFactory contentsFactory;
@@ -33,7 +34,7 @@ public class TagXMLMemberHandler {
 	 * @throws InvalidTagXMLException if there was an error in the given TagXML.
 	 * @throws ClassFileReadError if there was an error retrieving a ClassFile.
 	 */
-	public HKXMember getMember(Node objectNode, HKXMemberTemplate memberTemplate) throws InvalidTagXMLException, ClassFileReadError {
+	HKXMember getMember(Node objectNode, HKXMemberTemplate memberTemplate) throws InvalidTagXMLException, ClassFileReadError {
 		// Get the right node.
 		Node member = getMemberNode(objectNode, memberTemplate.name);
 		

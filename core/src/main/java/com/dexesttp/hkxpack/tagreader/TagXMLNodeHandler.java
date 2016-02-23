@@ -7,7 +7,6 @@ import com.dexesttp.hkxpack.descriptor.HKXDescriptorFactory;
 import com.dexesttp.hkxpack.descriptor.exceptions.ClassFileReadError;
 import com.dexesttp.hkxpack.resources.DOMUtils;
 import com.dexesttp.hkxpack.tagreader.exceptions.InvalidTagXMLException;
-import com.dexesttp.hkxpack.tagreader.members.TagXMLMemberHandler;
 
 public class TagXMLNodeHandler {
 	private final TagXMLMemberHandler memberHandler;
@@ -18,7 +17,7 @@ public class TagXMLNodeHandler {
 		this.objectHandler = new TagXMLObjectHandler(descriptorFactory, memberHandler);
 	}
 
-	public HKXObject handleObject(Node objectNode) throws ClassFileReadError, InvalidTagXMLException {
+	HKXObject handleObject(Node objectNode) throws ClassFileReadError, InvalidTagXMLException {
 		// Retrieve descriptor
 		String className = DOMUtils.getNodeAttr("class", objectNode);
 		return objectHandler.handleObject(objectNode, className);

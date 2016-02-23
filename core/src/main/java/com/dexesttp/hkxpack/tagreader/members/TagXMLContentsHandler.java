@@ -10,7 +10,7 @@ import com.dexesttp.hkxpack.tagreader.exceptions.InvalidTagXMLException;
 /**
  * Handle the contents of a {@link Node} into a {@link HKXMember}
  */
-interface TagXMLContentsHandler {
+public interface TagXMLContentsHandler {
 	/**
 	 * Creates a {@link HKXMember} based on a {@link Node} and its contents description as a {@link HKXMemberTemplate}
 	 * @param member the {@link Node} to read.
