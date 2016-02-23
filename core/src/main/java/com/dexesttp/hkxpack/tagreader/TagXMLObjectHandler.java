@@ -21,11 +21,8 @@ class TagXMLObjectHandler {
 		this.memberHandler = memberHandler;
 	}
 
-	HKXObject handleObject(Node objectNode) throws ClassFileReadError, InvalidTagXMLException {
-		// Retrieve descriptor
-		String className = DOMUtils.getNodeAttr("class", objectNode);
+	HKXObject handleObject(Node objectNode, String className) throws ClassFileReadError, InvalidTagXMLException {
 		HKXDescriptor classDescriptor = descriptorFactory.get(className);
-		
 		// Create object 
 		String objectName = DOMUtils.getNodeAttr("name", objectNode);
 		HKXObject result = new HKXObject(objectName, classDescriptor);
