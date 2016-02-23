@@ -17,7 +17,7 @@ import com.dexesttp.hkxpack.tagreader.TagXMLNodeHandler;
 import com.dexesttp.hkxpack.tagreader.exceptions.InvalidTagXMLException;
 
 class TagXMLArrayHandler implements TagXMLContentsHandler {
-	private final Pattern simplePattern = Pattern.compile("(\\S+)[\\s|$]");
+	private final Pattern simplePattern = Pattern.compile("(\\S+)(?:\\s|\\z)");
 	private final TagXMLEmbeddedObjectHandler objectHandler;
 	private final TagXMLDirectHandler directHandler;
 	private final TagXMLComplexHandler complexHandler;
