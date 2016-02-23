@@ -6,6 +6,7 @@ import org.w3c.dom.Node;
 import com.dexesttp.hkxpack.data.HKXData;
 import com.dexesttp.hkxpack.data.members.HKXArrayMember;
 import com.dexesttp.hkxpack.data.members.HKXDirectMember;
+import com.dexesttp.hkxpack.data.members.HKXPointerMember;
 
 /**
  * Handles the conversion between a {@link HKXArrayMember} and its contents as an {@link Element}.
@@ -30,6 +31,9 @@ class TagXMLArrayMemberHandler {
 			case COMPLEX:
 			case ENUM:
 				handleStringOutType(memberNode, member);
+				break;
+			case POINTER:
+				handlePtrOutType(memberNode, member);
 				break;
 			default:
 				handleNodeOutType(memberNode, member);
@@ -68,4 +72,14 @@ class TagXMLArrayMemberHandler {
 		memberNode.setTextContent(accu);
 	}
 
+
+	private void handlePtrOutType(Element memberNode, HKXArrayMember member) {
+		String accu = "\n";
+		for(HKXData data : member.contents()) {
+			HKXPointerMember subMember = (HKXPointerMember) data;
+			String subMemberString = subMember.get();
+			accu += subMemberString + "\n";
+		}
+		memberNode.setTextContent(accu);
+	}
 }
