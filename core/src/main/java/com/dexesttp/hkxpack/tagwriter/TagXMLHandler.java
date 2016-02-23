@@ -30,7 +30,7 @@ class TagXMLHandler {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder = factory.newDocumentBuilder();
 		Document doc = builder.newDocument();
-		Element root = doc.createElement("hkxpackfile");
+		Element root = doc.createElement("hkpackfile");
 		root.setAttribute("classversion", ""+version);
 		root.setAttribute("contentsversion", verName);
 		doc.appendChild(root);
