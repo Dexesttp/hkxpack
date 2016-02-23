@@ -23,5 +23,4 @@ class TagXMLArrayHandler implements TagXMLContentsHandler {
 	public HKXMember handleNode(Node member, HKXMemberTemplate memberTemplate) {
 		return handleNode(member, memberTemplate.vsubtype);
 	}
-
 }

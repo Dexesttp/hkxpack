@@ -51,7 +51,7 @@ public class TagXMLMemberHandler {
 			case COMPLEX:
 				return complexMember.handleNode(member, memberTemplate);
 			case ARRAY:
-				return arrayHandler.handleNode(member, memberTemplate.vsubtype);
+				return arrayHandler.handleNode(member, memberTemplate);
 			case OBJECT:
 				// Handle object
 				return null;
