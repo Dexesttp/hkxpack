@@ -11,13 +11,25 @@ import com.dexesttp.hkxpack.descriptor.members.HKXMemberTemplate;
 import com.dexesttp.hkxpack.l10n.SBundle;
 import com.dexesttp.hkxpack.tagreader.TagXMLNodeHandler;
 
+/**
+ * Allows creating {@link TagXMLContentsHandler}s.
+ */
 public class TagXMLContentsHandlerFactory {
 	private final TagXMLNodeHandler nodeHandler;
 
+	/**
+	 * Creates a {@link TagXMLContentsHandlerFactory}.
+	 * @param nodeHandler the {@link TagXMLNodeHandler} to use while resolving objects.
+	 */
 	public TagXMLContentsHandlerFactory(TagXMLNodeHandler nodeHandler) {
 		this.nodeHandler = nodeHandler;
 	}
 	
+	/**
+	 * Returns a {@link TagXMLContentsHandler} from a {@link HKXType}.
+	 * @param type the {@link HKXType} to handle.
+	 * @return the {@link TagXMLContentsHandler} that can ahndle the given {@link HKXType}.
+	 */
 	public TagXMLContentsHandler getHandler(HKXType type) {
 		switch(type.getFamily()) {
 			case DIRECT:

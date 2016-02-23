@@ -16,16 +16,25 @@ import com.dexesttp.hkxpack.descriptor.HKXDescriptorFactory;
 import com.dexesttp.hkxpack.l10n.SBundle;
 import com.dexesttp.hkxpack.tagreader.exceptions.InvalidTagXMLException;
 
+/**
+ * Reads a TagXML file into a {@link HKXFile}.
+ * <p>
+ * Use {@link TagXMLReader#read()} to process the file.
+ */
 public class TagXMLReader {
 	private final File tagFile;
 	private final HKXDescriptorFactory descriptorFactory;
 
+	/**
+	 * Creates a TagXML reader.
+	 * @param file the {@link File} to read from.
+	 * @param descriptorFactory the {@link HKXDescriptorFactory} to use while parsing the file.
+	 */
 	public TagXMLReader(File file, HKXDescriptorFactory descriptorFactory) {
 		this.tagFile = file;
 		this.descriptorFactory = descriptorFactory;
 	}
 
-	
 	/**
 	 * Read the data from the file.
 	 * @return the read {@link HKXFile}
