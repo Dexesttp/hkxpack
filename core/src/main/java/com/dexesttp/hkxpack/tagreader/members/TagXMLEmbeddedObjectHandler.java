@@ -18,15 +18,19 @@ public class TagXMLEmbeddedObjectHandler implements TagXMLContentsHandler {
 	}
 
 	@Override
-	public HKXMember handleNode(Node member, HKXMemberTemplate memberTemplate)
-			throws ClassFileReadError, InvalidTagXMLException {
+	public HKXMember handleNode(Node member, HKXMemberTemplate memberTemplate) throws ClassFileReadError, InvalidTagXMLException {
+		String target = memberTemplate.target;
 		NodeList children = member.getChildNodes();
 		for(int i = 0; i < children.getLength(); i++) {
 			Node objectNode = children.item(i);
 			if(objectNode.getNodeName().equals("hkobject")) {
-				return nodeHandler.handleSubObject(objectNode, memberTemplate.target);
+				return handleNode(objectNode, target);
 			}
 		}
-		throw new InvalidTagXMLException(SBundle.getString("error.tag.read.sobject") + memberTemplate.target);
+		throw new InvalidTagXMLException(SBundle.getString("error.tag.read.sobject") + target);
+	}
+
+	HKXMember handleNode(Node member, String target) throws ClassFileReadError, InvalidTagXMLException {
+		return nodeHandler.handleSubObject(member, target);
 	}
 }
