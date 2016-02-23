@@ -19,11 +19,13 @@ public class TagXMLMemberHandler {
 	private final TagXMLNodeHandler nodeHandler;
 	private final TagXMLArrayHandler arrayHandler;
 	private final TagXMLDirectHandler directHandler;
+	private final TagXMLComplexHandler complexMember;
 
 	public TagXMLMemberHandler(TagXMLNodeHandler tagXMLNodeHandler) {
 		this.nodeHandler = tagXMLNodeHandler;
 		this.arrayHandler = new TagXMLArrayHandler(nodeHandler);
 		this.directHandler = new TagXMLDirectHandler();
+		this.complexMember = new TagXMLComplexHandler();
 	}
 
 	/**
@@ -45,9 +47,9 @@ public class TagXMLMemberHandler {
 			case STRING:
 			case POINTER:
 				// Handle string-based
-			case COMPLEX:
-				// Handle complex w/ value parsing.
 				return null;
+			case COMPLEX:
+				return complexMember.handleNode(member, memberTemplate);
 			case ARRAY:
 				return arrayHandler.handleNode(member, memberTemplate.vsubtype);
 			case OBJECT:
