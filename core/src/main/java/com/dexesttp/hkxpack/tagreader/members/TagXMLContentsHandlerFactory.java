@@ -1,18 +1,15 @@
 package com.dexesttp.hkxpack.tagreader.members;
 
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 import com.dexesttp.hkxpack.data.members.HKXDirectMember;
 import com.dexesttp.hkxpack.data.members.HKXMember;
 import com.dexesttp.hkxpack.data.members.HKXPointerMember;
 import com.dexesttp.hkxpack.data.members.HKXStringMember;
 import com.dexesttp.hkxpack.descriptor.enums.HKXType;
-import com.dexesttp.hkxpack.descriptor.exceptions.ClassFileReadError;
 import com.dexesttp.hkxpack.descriptor.members.HKXMemberTemplate;
 import com.dexesttp.hkxpack.l10n.SBundle;
 import com.dexesttp.hkxpack.tagreader.TagXMLNodeHandler;
-import com.dexesttp.hkxpack.tagreader.exceptions.InvalidTagXMLException;
 
 public class TagXMLContentsHandlerFactory {
 	private final TagXMLNodeHandler nodeHandler;
@@ -57,21 +54,9 @@ public class TagXMLContentsHandlerFactory {
 			case ARRAY:
 				return new TagXMLArrayHandler(nodeHandler);
 			case OBJECT:
-				return new TagXMLContentsHandler() {
-					@Override
-					public HKXMember handleNode(Node memberNode, HKXMemberTemplate memberTemplate) throws ClassFileReadError, InvalidTagXMLException {
-						NodeList children = memberNode.getChildNodes();
-						for(int i = 0; i < children.getLength(); i++) {
-							Node objectNode = children.item(i);
-							if(objectNode.getNodeName().equals("hkobject")) {
-								return nodeHandler.handleSubObject(objectNode, memberTemplate.target);
-							}
-						}
-						throw new InvalidTagXMLException(SBundle.getString("error.tag.read.sobject") + memberTemplate.target);
-					};
-				};
+				return new TagXMLEmbeddedObjectHandler(nodeHandler);
 			default :
-				return null;
+				throw new IllegalArgumentException(SBundle.getString("error.tag.read.type.unknown"));
 		}
 	}
 }
