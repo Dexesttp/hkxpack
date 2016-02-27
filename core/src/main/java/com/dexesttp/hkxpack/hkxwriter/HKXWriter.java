@@ -1,10 +1,14 @@
 package com.dexesttp.hkxpack.hkxwriter;
 
 import java.io.File;
+import java.io.IOException;
 
 import com.dexesttp.hkxpack.data.HKXFile;
 import com.dexesttp.hkxpack.descriptor.HKXEnumResolver;
+import com.dexesttp.hkxpack.hkx.classnames.ClassnamesData;
+import com.dexesttp.hkxpack.hkx.exceptions.UnsupportedVersionError;
 import com.dexesttp.hkxpack.hkx.header.HeaderData;
+import com.dexesttp.hkxpack.hkx.header.SectionData;
 import com.dexesttp.hkxpack.hkxreader.HKXReader;
 
 /**
@@ -27,11 +31,36 @@ public class HKXWriter {
 	/**
 	 * Writes a {@link HKXFile}'s data inot this {@link HKXReader}'s {@link File}.
 	 * @param file the {@link HKXFile} to take data from.
+	 * @throws IOException 
+	 * @throws UnsupportedVersionError 
 	 */
-	public void write(HKXFile file) {
+	public void write(HKXFile file) throws IOException, UnsupportedVersionError {
+		// Connect to the file.
+		HKXWriterConnector connector = new HKXWriterConnector(outputFile);
+		
 		// Create the header.
 		HeaderData header = new HKXHeaderFactory().create(file);
 		
-		//
+		// Create the file's section data.
+		HKXSectionHandler sectionHandler = new HKXSectionHandler(header);
+		SectionData classnames = new SectionData();
+		SectionData types = new SectionData();
+		SectionData data = new SectionData();
+		sectionHandler.init(HKXSectionHandler.CLASSNAME, classnames);
+		
+		// Create the ClassNames data.
+		HKXClassnamesHandler cnameHandler = new HKXClassnamesHandler();
+		ClassnamesData cnameData = cnameHandler.getClassnames(file);
+		
+		// Write ClassNames data to the file.
+		long classnamesEnd = connector.writeClassnames(header, classnames, cnameData);
+		sectionHandler.fillCName(classnames, classnamesEnd);
+		connector.writeHeader(header);
+		connector.writeSection(header, HKXSectionHandler.CLASSNAME, classnames);
+		sectionHandler.init(HKXSectionHandler.TYPES, types);
+		connector.writeSection(header, HKXSectionHandler.TYPES, types);
+		
+		// Update things to prepare for Data writing.
+		sectionHandler.init(HKXSectionHandler.DATA, data);
 	}
 }

@@ -40,11 +40,16 @@ public class ByteUtils {
 	}
 
 	public static byte[] fromInt(int value) {
-		byte[] res = new byte[4];
-		res[3] = (byte) (value / (Byte.MAX_VALUE ^3));
-		res[2] = (byte) ((value / (Byte.MAX_VALUE ^2)) % Byte.MAX_VALUE);
-		res[1] = (byte) ((value / Byte.MAX_VALUE) % Byte.MAX_VALUE);
-		res[0] = (byte) (value % Byte.MAX_VALUE);
+		return fromLong(value, 4);
+	}
+
+	public static byte[] fromLong(long value, int numBytes) {
+		long mask = 0xFF;
+		byte[] res = new byte[numBytes];
+		for(int i = 0; i < numBytes; i++) {
+			res[i] = (byte) (value & mask);
+			value = value >> 8;
+		}
 		return res;
 	}
 

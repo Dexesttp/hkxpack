@@ -8,7 +8,7 @@ public class HeaderDescriptor_v11 extends HeaderDescriptor {
 		extras = new byte[] {8, 1, 0, 1};
 		verName = new byte[] {'h', 'k', '_', '2', '0', '1', '4', '.', '1', '.', '0', '-', 'r', '1'};
 		extras_v11 = new byte[] {21, 0};
-		padding_v11 = new byte[] {10, 0};
+		padding_v11 = new byte[] {16, 0};
 	}
 	public byte[] padding = new byte[]
 			{20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};

@@ -8,4 +8,11 @@ public class ClassnamesData extends LinkedHashMap<Long, Classname> {
 	public Classname put(long position, String name, byte[] id){
 		return super.put(position, new Classname(name, id));
 	}
+
+	public boolean containsClass(String name) {
+		for(Classname classname : this.values())
+			if(classname.name.equals(name))
+				return true;
+		return false;
+	}
 }

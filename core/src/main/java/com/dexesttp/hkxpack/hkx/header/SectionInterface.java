@@ -48,13 +48,16 @@ public class SectionInterface {
 		file.write(section.name.getBytes());
 		file.skipBytes(0x10 - section.name.length());
 		file.write(descriptor.constant);
-		file.writeLong(section.offset);
-		file.writeLong(section.data1);
-		file.writeLong(section.data2);
-		file.writeLong(section.data3);
-		file.writeLong(section.data4);
-		file.writeLong(section.data5);
-		file.writeLong(section.end);
+		file.write(ByteUtils.fromLong(section.offset, 4));
+		file.write(ByteUtils.fromLong(section.data1, 4));
+		file.write(ByteUtils.fromLong(section.data2, 4));
+		file.write(ByteUtils.fromLong(section.data3, 4));
+		file.write(ByteUtils.fromLong(section.data4, 4));
+		file.write(ByteUtils.fromLong(section.data5, 4));
+		file.write(ByteUtils.fromLong(section.end, 4));
+		if(header.version == 11)
+			for(int i = 0; i < 0x10; i++)
+				file.writeByte(0xFF);
 	}
 
 	/**
