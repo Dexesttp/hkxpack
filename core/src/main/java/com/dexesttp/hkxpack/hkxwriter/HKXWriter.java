@@ -4,6 +4,7 @@ import java.io.File;
 
 import com.dexesttp.hkxpack.data.HKXFile;
 import com.dexesttp.hkxpack.descriptor.HKXEnumResolver;
+import com.dexesttp.hkxpack.hkx.header.HeaderData;
 import com.dexesttp.hkxpack.hkxreader.HKXReader;
 
 /**
@@ -28,6 +29,9 @@ public class HKXWriter {
 	 * @param file the {@link HKXFile} to take data from.
 	 */
 	public void write(HKXFile file) {
+		// Create the header.
+		HeaderData header = new HKXHeaderFactory().create(file);
 		
+		//
 	}
 }
