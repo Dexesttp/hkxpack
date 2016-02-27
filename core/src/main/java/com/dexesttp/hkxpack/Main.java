@@ -13,11 +13,18 @@ import com.dexesttp.hkxpack.descriptor.HKXEnumResolver;
 import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
 import com.dexesttp.hkxpack.hkxreader.HKXReader;
 import com.dexesttp.hkxpack.resources.LoggerUtil;
+import com.dexesttp.hkxpack.tagreader.TagXMLReader;
 import com.dexesttp.hkxpack.tagwriter.TagXMLWriter;
 
 /**
  * Easy entry point for the HKXPack core.
  * @since 0.0.1-alpha
+ * <p>
+ * These methods use the following classes :<br>
+ * {@link HKXReader} to read a HKX file into a {@link HKXFile} DOM-like component.<br>
+ * {@link TagXMLReader} to read a XML file inot a {@link HKXFile} DOM-like component.<br>
+ * {@link HKXWriter} to write a {@link HKXFile} into a hkx File.<br>
+ * {@link TagXMLWriter} to write a {@link HKXFile} into a xml File.
  */
 public class Main {
 	/**
@@ -64,7 +71,15 @@ public class Main {
 	 */
 	public void write(String inputFileName, String outputFileName) {
 		try {
-			// TODO Main.write
+			// Read file
+			File inFile = new File(inputFileName);
+			HKXEnumResolver enumResolver = new HKXEnumResolver();
+			HKXDescriptorFactory descriptorFactory = new HKXDescriptorFactory(enumResolver);
+			TagXMLReader reader = new TagXMLReader(inFile, descriptorFactory);
+			reader.read();
+			
+			// TODO handle HKX file write
+			System.out.println(outputFileName);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

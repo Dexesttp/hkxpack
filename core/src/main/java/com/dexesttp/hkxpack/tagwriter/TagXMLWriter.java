@@ -13,10 +13,16 @@ import org.w3c.dom.Node;
 import com.dexesttp.hkxpack.data.HKXFile;
 import com.dexesttp.hkxpack.data.HKXObject;
 
+/**
+ * Handles writing {@link HKXFile} data into a {@link File} using the TagXML notation.
+ */
 public class TagXMLWriter {
-
 	private final File outFile;
 
+	/**
+	 * Creates a {@link TagXMLWriter}.
+	 * @param outputFile the file to output the data into.
+	 */
 	public TagXMLWriter(File outputFile) {
 		this.outFile = outputFile;
 	}
@@ -44,5 +50,4 @@ public class TagXMLWriter {
 		}
 		handler.writeToFile(document, outFile);
 	}
-
 }

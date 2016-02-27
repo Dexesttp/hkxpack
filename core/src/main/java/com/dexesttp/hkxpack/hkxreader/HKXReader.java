@@ -15,11 +15,20 @@ import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
 import com.dexesttp.hkxpack.hkx.header.HeaderData;
 import com.dexesttp.hkxpack.hkxreader.member.HKXMemberReaderFactory;
 
+/**
+ * Reads the content of a {@link File}, containing information in the hkx format, into a DOM-like {@link HKXFile}.
+ */
 public class HKXReader {
 	private final File hkxFile;
 	private final HKXDescriptorFactory descriptorFactory;
 	private final HKXEnumResolver enumResolver;
 
+	/**
+	 * Creates a {@link HKXReader}.
+	 * @param hkxFile the {@link File} to read data from.
+	 * @param descriptorFactory the {@link HKXDescriptorFactory} to use to solve the {@link File}'s classes.
+	 * @param enumResolver the {@link HKXEnumResolver} to store enumerations into.
+	 */
 	public HKXReader(File hkxFile, HKXDescriptorFactory descriptorFactory, HKXEnumResolver enumResolver) {
 		this.hkxFile = hkxFile;
 		this.descriptorFactory = descriptorFactory;
@@ -33,7 +42,6 @@ public class HKXReader {
 	 * @throws InvalidPositionException if there was a positionning problem while reading the file.
 	 */
 	public HKXFile read() throws IOException, InvalidPositionException {
-		
 		// Connect the connector to the file.
 		HKXReaderConnector connector = new HKXReaderConnector(hkxFile);
 		
