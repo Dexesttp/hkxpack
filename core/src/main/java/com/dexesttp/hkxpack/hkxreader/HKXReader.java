@@ -36,7 +36,7 @@ public class HKXReader {
 	}
 	
 	/**
-	 * Read the data from the file.
+	 * Read data from this {@link HKXReader}'s {@link File}.
 	 * @return the read {@link HKXFile}
 	 * @throws IOException if there was a problem accessing the file.
 	 * @throws InvalidPositionException if there was a positionning problem while reading the file.
