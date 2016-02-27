@@ -57,10 +57,12 @@ public class HKXWriter {
 		sectionHandler.fillCName(classnames, classnamesEnd);
 		connector.writeHeader(header);
 		connector.writeSection(header, HKXSectionHandler.CLASSNAME, classnames);
-		sectionHandler.init(HKXSectionHandler.TYPES, types);
-		connector.writeSection(header, HKXSectionHandler.TYPES, types);
 		
 		// Update things to prepare for Data writing.
+		sectionHandler.init(HKXSectionHandler.TYPES, types);
+		connector.writeSection(header, HKXSectionHandler.TYPES, types);
 		sectionHandler.init(HKXSectionHandler.DATA, data);
+		
+		// Write data in the file and store data1/data2/data3 values.
 	}
 }
