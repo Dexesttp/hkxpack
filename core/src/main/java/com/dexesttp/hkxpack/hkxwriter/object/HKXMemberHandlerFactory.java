@@ -1,6 +1,9 @@
 package com.dexesttp.hkxpack.hkxwriter.object;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.util.List;
 
 import com.dexesttp.hkxpack.data.members.HKXMember;
@@ -10,7 +13,7 @@ import com.dexesttp.hkxpack.hkx.data.DataExternal;
 import com.dexesttp.hkxpack.hkx.data.DataInternal;
 
 public class HKXMemberHandlerFactory {
-	private final File outFile;
+	private final RandomAccessFile outFile;
 	private final HKXEnumResolver enumResolver;
 	private final List<DataInternal> data1List;
 	private final List<DataExternal> data2List;
@@ -19,11 +22,13 @@ public class HKXMemberHandlerFactory {
 	 * Creates a {@link HKXMemberHandlerFactory}.
 	 * @param outFile the {@link File} to write into.
 	 * @param enumResolver the {@link HKXEnumResolver} to use to resolve enums.
-	 * @param data1List the list of {@link DataInternal} to fill while solving a 
-	 * @param data2List
+	 * @param data1List the list of {@link DataInternal} to fill while solving an array or a string.
+	 * @param data2List the list of {@link DataExternal} to fill while solving pointers.
+	 * @throws FileNotFoundException if there was a problem opening a conenction to the given {@link File}.
 	 */
-	public HKXMemberHandlerFactory(File outFile, HKXEnumResolver enumResolver, List<DataInternal> data1List, List<DataExternal> data2List) {
-		this.outFile = outFile;
+	public HKXMemberHandlerFactory(File outFile, HKXEnumResolver enumResolver, List<DataInternal> data1List, List<DataExternal> data2List)
+			throws FileNotFoundException {
+		this.outFile = new RandomAccessFile(outFile, "rw");
 		this.enumResolver = enumResolver;
 		this.data1List = data1List;
 		this.data2List = data2List;
@@ -35,17 +40,27 @@ public class HKXMemberHandlerFactory {
 	 * @return the relevant {@link HKXMemberHandler}.
 	 */
 	public HKXMemberHandler create(HKXMemberTemplate memberTemplate) {
-		return new HKXMemberHandler() {
-			@Override
-			public HKXMemberCallback write(HKXMember member, long currentPos) {
-				return new HKXMemberCallback() {
-					@Override
-					public long process(List<HKXMemberCallback> memberCallbacks, long position) {
-						return 0;
-					}
-				};
-			}
-		};
+		switch(memberTemplate.vtype.getFamily()) {
+			case DIRECT:
+			case COMPLEX:
+				return new HKXDirectMemberHandler(outFile, memberTemplate.offset);
+			case ENUM:
+				return new HKXEnumMemberHandler(outFile, memberTemplate.offset, enumResolver, memberTemplate.target);
+			default:
+				// TODO once all known cases are handled, throw an error.
+				return (member, currentPos) ->{
+						return (memberCallbacks, position) -> {
+								return 0;
+							};
+					};
+		}
 	}
-
+	
+	/**
+	 * Close this {@link HKXMemberHandlerFactory}.
+	 * @throws IOException if there was a problem closing the connection to the {@link File}.
+	 */
+	public void close() throws IOException {
+		outFile.close();
+	}
 }

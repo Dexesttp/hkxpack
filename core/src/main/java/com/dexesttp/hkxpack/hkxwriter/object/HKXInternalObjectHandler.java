@@ -1,6 +1,7 @@
 package com.dexesttp.hkxpack.hkxwriter.object;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import com.dexesttp.hkxpack.data.HKXObject;
@@ -26,7 +27,7 @@ public class HKXInternalObjectHandler implements HKXMemberHandler {
 	}
 	
 	@Override
-	public HKXMemberCallback write(HKXMember objectAsMember, long currentPos) {
+	public HKXMemberCallback write(HKXMember objectAsMember, long currentPos) throws IOException {
 		HKXObject object = (HKXObject) objectAsMember;
 		// Prepare the member handlers, and fill the raw structure.
 		List<HKXMember> members = object.members();

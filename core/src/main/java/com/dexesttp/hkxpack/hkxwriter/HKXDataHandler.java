@@ -46,13 +46,15 @@ class HKXDataHandler {
 	 * @param data the {@link SectionData} describing at least the data offset.
 	 * @param file the {@link HKXFile} to write data from.
 	 * @return the position of the byte just after the end of the Data section
+	 * @throws IOException if there was a problem writing to this {@link HKXDataHandler}'s {@link File}.
 	 */
-	long fillFile(SectionData data, HKXFile file) {
+	long fillFile(SectionData data, HKXFile file) throws IOException {
 		long currentPos = data.offset;
 		HKXObjectHandler objectHandler = new HKXObjectHandler(outFile, cnameData, data, enumResolver, data1queue, data2queue, data3queue);
 		for(HKXObject object : file.content()) {
 			currentPos = objectHandler.handle(object, currentPos);
 		}
+		objectHandler.close();
 		return currentPos;
 	}
 

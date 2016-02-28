@@ -1,6 +1,8 @@
 package com.dexesttp.hkxpack.hkxwriter;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,14 +24,15 @@ public class HKXObjectHandler {
 	private final SectionData section;
 
 	public HKXObjectHandler(File outFile, ClassnamesData classnamesData, SectionData dataSection,
-			HKXEnumResolver enumResolver, List<DataInternal> data1List, List<DataExternal> data2List, List<DataExternal> data3List) {
+			HKXEnumResolver enumResolver, List<DataInternal> data1List, List<DataExternal> data2List, List<DataExternal> data3List)
+					throws FileNotFoundException {
 		this.memberHandlerFactory = new HKXMemberHandlerFactory(outFile, enumResolver, data1List, data2List);
 		this.cnameData = classnamesData;
 		this.section = dataSection;
 		this.data3List = data3List;
 	}
 
-	public long handle(HKXObject object, long currentPos) {
+	public long handle(HKXObject object, long currentPos) throws IOException {
 		// Add the object into data3.
 		DataExternal classEntry = new DataExternal();
 		classEntry.from = currentPos - section.offset;
@@ -49,5 +52,9 @@ public class HKXObjectHandler {
 			currentPos += callback.process(memberCallbacks, currentPos);
 		}
 		return currentPos;
+	}
+
+	public void close() throws IOException {
+		memberHandlerFactory.close();
 	}
 }

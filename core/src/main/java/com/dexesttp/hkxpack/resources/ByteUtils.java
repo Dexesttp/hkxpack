@@ -31,6 +31,11 @@ public class ByteUtils {
 		return res;
 	}
 
+	public static float getFloat(byte[] value) {
+		int val = getInt(value);
+		return Float.intBitsToFloat(val);
+	}
+
 	public static String readString(RandomAccessFile in) throws IOException {
 		String s = "";
 		byte b;
@@ -53,9 +58,8 @@ public class ByteUtils {
 		return res;
 	}
 
-	public static float getFloat(byte[] value) {
-		int val = getInt(value);
-		return Float.intBitsToFloat(val);
+	public static byte[] fromFloat(double double1, int i) {
+		return new byte[i];
 	}
 
 	
@@ -77,5 +81,11 @@ public class ByteUtils {
 			accu *= 256;
 		}
 		return ""+res;
+	}
+
+	public static byte[] fromSLong(long character, int i) {
+		// TODO maybe revisit this ?
+		byte[] res = fromLong(character, i);
+		return res;
 	}
 }

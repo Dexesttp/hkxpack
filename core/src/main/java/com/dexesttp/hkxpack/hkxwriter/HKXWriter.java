@@ -69,12 +69,8 @@ public class HKXWriter {
 		// Write data in the file and store data1/data2/data3 values.
 		HKXDataHandler dataHandler = new HKXDataHandler(outputFile, cnameData, enumResolver);
 		long endData = dataHandler.fillFile(data, file) - data.offset;
-		System.out.println("offset : " + data.offset);
-		System.out.println("EndData : " + endData);
 		data.data1 = endData%0x10 == 0 ? endData : (1 + endData / 0x10) * 0x10;
-		System.out.println("data1 : " + data.data1);
 		dataHandler.fillPointers(data);
-		System.out.println("data2 : " + data.data2);
 		
 		// Write the data section to the file.
 		connector.writeSection(header, HKXSectionHandler.DATA, data);
