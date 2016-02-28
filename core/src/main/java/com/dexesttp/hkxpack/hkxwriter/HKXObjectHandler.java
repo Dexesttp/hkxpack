@@ -61,8 +61,8 @@ public class HKXObjectHandler {
 		
 		// Resolve the member handlers.
 		currentPos += MemberSizeResolver.getSize(object.getDescriptor());
-		for(int i = 0; i < memberCallbacks.size(); i++) {
-			HKXMemberCallback callback = memberCallbacks.get(i);
+		while(!memberCallbacks.isEmpty()) {
+			HKXMemberCallback callback = memberCallbacks.remove(0);
 			currentPos += callback.process(memberCallbacks, currentPos);
 		}
 		memberHandlerFactory.close();
