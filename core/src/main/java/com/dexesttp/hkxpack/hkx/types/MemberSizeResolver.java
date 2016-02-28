@@ -14,7 +14,7 @@ import com.dexesttp.hkxpack.l10n.SBundle;
  * {@link #getSize(HKXDescriptor)} retrieves the size of a {@link HKXDescriptor}, including padding.
  */
 public class MemberSizeResolver {
-	private static final long PTR_SIZE = 8;
+	private static final long PTR_SIZE = 0x08;
 
 	/**
 	 * Retrieve the size of a standard {@link HKXType}.

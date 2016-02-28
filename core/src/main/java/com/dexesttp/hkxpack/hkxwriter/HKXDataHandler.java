@@ -56,6 +56,7 @@ class HKXDataHandler {
 		HKXObjectHandler objectHandler = new HKXObjectHandler(outFile, cnameData, data, enumResolver, data1queue, data2queue, data3queue, resolver);
 		for(HKXObject object : file.content()) {
 			currentPos = objectHandler.handle(object, currentPos);
+			currentPos = snap(currentPos);
 		}
 		return currentPos;
 	}
@@ -69,8 +70,22 @@ class HKXDataHandler {
 		HKXPointersHandler handler = new HKXPointersHandler(outFile, data);
 		// TODO resolve data2;
 		List<DataExternal> data2resolved = new ArrayList<>();
-		for(PointerObject ptr : data2queue)
-			data2resolved.add(resolver.resolve(ptr));
+		for(DataInternal internal : data1queue) {
+			internal.from -= data.offset;
+			internal.to -= data.offset;
+		}
+		for(PointerObject ptr : data2queue) {
+			DataExternal resolved = resolver.resolve(ptr);
+			resolved.from -= data.offset;
+			resolved.to -= data.offset;
+			data2resolved.add(resolved);
+		}
 		handler.write(data1queue, data2resolved, data3queue);
+	}
+
+	private long snap(long currentPos) {
+		if(currentPos % 0x10 == 0)
+			return currentPos;
+		return (1 + currentPos / 0x10) * 0x10;
 	}
 }
