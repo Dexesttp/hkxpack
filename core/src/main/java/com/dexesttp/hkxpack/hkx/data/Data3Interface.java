@@ -60,7 +60,7 @@ public class Data3Interface {
 	 * @throws IOException if there was a problem writing to the file.
 	 */
 	public long write(int pos, DataExternal data) throws IOException {
-		long dataPos = header.data2 + pos * 0x0C;
+		long dataPos = header.data3 + pos * 0x0C;
 		file.seek(header.offset + dataPos);
 		file.write(ByteUtils.fromLong(data.from, 4));
 		file.write(ByteUtils.fromLong(data.section, 4));
