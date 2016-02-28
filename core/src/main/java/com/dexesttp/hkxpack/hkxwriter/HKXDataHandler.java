@@ -11,7 +11,13 @@ import com.dexesttp.hkxpack.descriptor.HKXEnumResolver;
 import com.dexesttp.hkxpack.hkx.data.DataExternal;
 import com.dexesttp.hkxpack.hkx.data.DataInternal;
 import com.dexesttp.hkxpack.hkx.header.SectionData;
+import com.dexesttp.hkxpack.hkxwriter.object.HKXObjectHandler;
 
+/**
+ * Handles the different components of the Data section.
+ * <p>
+ * This uses {@link HKXPointersHandler} and {@link HKXObjectHandler} as its main components.
+ */
 class HKXDataHandler {
 	private final File outFile;
 	private final HKXEnumResolver enumResolver;
@@ -19,6 +25,11 @@ class HKXDataHandler {
 	private final List<DataExternal> data2queue;
 	private final List<DataExternal> data3queue;
 
+	/**
+	 * Create a {@link HKXDataHandler} assocaited with the given output {@link File} as well as the given {@link HKXEnumResolver}.
+	 * @param outFile the {@link File} to write data to.
+	 * @param enumResolver the {@link HKXEnumResolver} to resolve enums with.
+	 */
 	HKXDataHandler(File outFile, HKXEnumResolver enumResolver) {
 		this.outFile = outFile;
 		this.enumResolver = enumResolver;
@@ -31,7 +42,7 @@ class HKXDataHandler {
 	 * Fill this {@link HKXDataHandler}'s {@link File} section 'data' with the given {@link HKXFile}'s contents.
 	 * @param data the {@link SectionData} describing at least the data offset.
 	 * @param file the {@link HKXFile} to write data from.
-	 * @return the position of the bye tjust after the end of the Data section
+	 * @return the position of the byte just after the end of the Data section
 	 */
 	long fillFile(SectionData data, HKXFile file) {
 		long currentPos = data.offset;
@@ -44,8 +55,8 @@ class HKXDataHandler {
 
 	/**
 	 * Fill the file with the intended Data pointers, and store the offsets in the given {@link SectionData}.
-	 * @param data
-	 * @throws IOException
+	 * @param data the section data to store the offsets into.
+	 * @throws IOException if there was a problem writing data to the file.
 	 */
 	void fillPointers(SectionData data) throws IOException {
 		HKXPointersHandler handler = new HKXPointersHandler(outFile, data);

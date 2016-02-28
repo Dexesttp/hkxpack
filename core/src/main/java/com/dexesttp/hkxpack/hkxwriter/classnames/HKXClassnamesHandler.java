@@ -1,16 +1,25 @@
-package com.dexesttp.hkxpack.hkxwriter;
+package com.dexesttp.hkxpack.hkxwriter.classnames;
 
 import com.dexesttp.hkxpack.data.HKXFile;
 import com.dexesttp.hkxpack.data.HKXObject;
 import com.dexesttp.hkxpack.hkx.classnames.ClassnamesData;
 import com.dexesttp.hkxpack.resources.ByteUtils;
 
-class HKXClassnamesHandler {
+/**
+ * Creates a {@link ClassnamesData} from a {@link HKXFile}.
+ */
+public class HKXClassnamesHandler {
 	private static final long hkClassID = 0x33D42383;
 	private static final long hkClassMemberID = 0xB0EFA719;
 	private static final long hkClassEnumID = 0x8A3609CF;
 	private static final long hkClassEnumItemID = 0xCE6F8A6C;
-	ClassnamesData getClassnames(HKXFile file) {
+
+	/**
+	 * Creates a {@link ClassnamesData} instance from the given {@link HKXFile}.
+	 * @param file the {@link HKXFile} to extract data from.
+	 * @return the relevant {@link ClassnamesData}.
+	 */
+	public ClassnamesData getClassnames(HKXFile file) {
 		ClassnamesData data = new ClassnamesData();
 		data.put(5, "hkClass", ByteUtils.fromLong(hkClassID, 4));
 		data.put(18, "hkClassMember", ByteUtils.fromLong(hkClassMemberID, 4));

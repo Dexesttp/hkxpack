@@ -10,6 +10,9 @@ import com.dexesttp.hkxpack.hkx.exceptions.UnsupportedVersionError;
 import com.dexesttp.hkxpack.hkx.header.HeaderData;
 import com.dexesttp.hkxpack.hkx.header.SectionData;
 import com.dexesttp.hkxpack.hkxreader.HKXReader;
+import com.dexesttp.hkxpack.hkxwriter.classnames.HKXClassnamesHandler;
+import com.dexesttp.hkxpack.hkxwriter.header.HKXHeaderFactory;
+import com.dexesttp.hkxpack.hkxwriter.header.HKXSectionHandler;
 
 /**
  * Handles writing a {@link HKXFile} into a {@link File}, using the binary hkx notation.
@@ -53,7 +56,7 @@ public class HKXWriter {
 		ClassnamesData cnameData = cnameHandler.getClassnames(file);
 		
 		// Write ClassNames data to the file.
-		long classnamesEnd = connector.writeClassnames(header, classnames, cnameData);
+		long classnamesEnd = connector.writeClassnames(classnames, cnameData);
 		sectionHandler.fillCName(classnames, classnamesEnd);
 		connector.writeHeader(header);
 		connector.writeSection(header, HKXSectionHandler.CLASSNAME, classnames);

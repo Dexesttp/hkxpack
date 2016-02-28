@@ -1,4 +1,4 @@
-package com.dexesttp.hkxpack.hkxwriter;
+package com.dexesttp.hkxpack.hkxwriter.object;
 
 import java.io.File;
 import java.util.List;
