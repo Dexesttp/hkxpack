@@ -8,10 +8,10 @@ import java.util.List;
 import com.dexesttp.hkxpack.data.HKXFile;
 import com.dexesttp.hkxpack.data.HKXObject;
 import com.dexesttp.hkxpack.descriptor.HKXEnumResolver;
+import com.dexesttp.hkxpack.hkx.classnames.ClassnamesData;
 import com.dexesttp.hkxpack.hkx.data.DataExternal;
 import com.dexesttp.hkxpack.hkx.data.DataInternal;
 import com.dexesttp.hkxpack.hkx.header.SectionData;
-import com.dexesttp.hkxpack.hkxwriter.object.HKXObjectHandler;
 
 /**
  * Handles the different components of the Data section.
@@ -20,6 +20,7 @@ import com.dexesttp.hkxpack.hkxwriter.object.HKXObjectHandler;
  */
 class HKXDataHandler {
 	private final File outFile;
+	private final ClassnamesData cnameData;
 	private final HKXEnumResolver enumResolver;
 	private final List<DataInternal> data1queue;
 	private final List<DataExternal> data2queue;
@@ -28,10 +29,12 @@ class HKXDataHandler {
 	/**
 	 * Create a {@link HKXDataHandler} assocaited with the given output {@link File} as well as the given {@link HKXEnumResolver}.
 	 * @param outFile the {@link File} to write data to.
+	 * @param classnamesData the {@link ClassnamesData}.
 	 * @param enumResolver the {@link HKXEnumResolver} to resolve enums with.
 	 */
-	HKXDataHandler(File outFile, HKXEnumResolver enumResolver) {
+	HKXDataHandler(File outFile, ClassnamesData classnamesData, HKXEnumResolver enumResolver) {
 		this.outFile = outFile;
+		this.cnameData = classnamesData;
 		this.enumResolver = enumResolver;
 		this.data1queue = new ArrayList<>();
 		this.data2queue = new ArrayList<>();
@@ -46,7 +49,7 @@ class HKXDataHandler {
 	 */
 	long fillFile(SectionData data, HKXFile file) {
 		long currentPos = data.offset;
-		HKXObjectHandler objectHandler = new HKXObjectHandler(outFile, enumResolver, data1queue, data2queue, data3queue);
+		HKXObjectHandler objectHandler = new HKXObjectHandler(outFile, cnameData, data, enumResolver, data1queue, data2queue, data3queue);
 		for(HKXObject object : file.content()) {
 			currentPos = objectHandler.handle(object, currentPos);
 		}

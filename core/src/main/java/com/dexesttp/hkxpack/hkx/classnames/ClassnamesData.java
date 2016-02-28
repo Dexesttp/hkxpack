@@ -15,4 +15,11 @@ public class ClassnamesData extends LinkedHashMap<Long, Classname> {
 				return true;
 		return false;
 	}
+
+	public long getPosition(String name) {
+		for(java.util.Map.Entry<Long, Classname> entries : this.entrySet())
+			if(entries.getValue().name.equals(name))
+				return entries.getKey();
+		return 0x05;
+	}
 }

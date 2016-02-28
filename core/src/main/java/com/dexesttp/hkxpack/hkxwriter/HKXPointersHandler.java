@@ -46,7 +46,7 @@ class HKXPointersHandler {
 			endPos = connector1.write(i++, internal);
 		}
 		connector1.close();
-		endPos = fillBytes(endPos);
+		endPos = fillBytes(endPos + data.offset) - data.offset;
 		data.data2 = endPos;
 		
 		// Handle data2
@@ -57,7 +57,7 @@ class HKXPointersHandler {
 			endPos = connector2.write(j++, pointer);
 		}
 		connector2.close();
-		endPos = fillBytes(endPos);
+		endPos = fillBytes(endPos + data.offset) - data.offset;
 		data.data3 = endPos;
 		
 		// Handle data3
@@ -68,7 +68,7 @@ class HKXPointersHandler {
 			endPos = connector3.write(k++, classLink);
 		}
 		connector3.close();
-		endPos = fillBytes(endPos);
+		endPos = fillBytes(endPos + data.offset) - data.offset;
 		
 		// Fill the section header.
 		data.data4 = endPos;
