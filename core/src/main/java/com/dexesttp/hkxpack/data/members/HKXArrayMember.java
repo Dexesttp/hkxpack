@@ -26,7 +26,7 @@ public class HKXArrayMember implements HKXMember {
 	
 	public void add(HKXData data) {
 		if(subtype != HKXType.TYPE_NONE && data.getType() != subtype)
-			throw new IllegalArgumentException("Array data type is defined");
+			throw new IllegalArgumentException("Array data type is defined as : " + subtype + " while the given argument is " + data.getType());
 		this.contents.add(data);
 	}
 	
