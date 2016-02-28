@@ -39,12 +39,7 @@ public class HKXInternalObjectHandler implements HKXMemberHandler {
 			memberCallbacks.add(memberHandler.write(member, currentPos));
 		}
 		final long positionToReturn = currentPos + MemberSizeResolver.getSize(object.getDescriptor());
-		return new HKXMemberCallback() {
-			@Override
-			public long process(List<HKXMemberCallback> memberCallbacks, long position) {
-				return positionToReturn;
-			}
-		};
+		return (memberCallbacks, position) -> { return positionToReturn; };
 	}
 
 }
