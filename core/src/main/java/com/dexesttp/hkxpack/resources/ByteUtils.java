@@ -59,7 +59,8 @@ public class ByteUtils {
 	}
 
 	public static byte[] fromFloat(double double1, int i) {
-		return new byte[i];
+		int temp = Float.floatToIntBits((float) double1);
+		return fromLong(temp, i);
 	}
 
 	
