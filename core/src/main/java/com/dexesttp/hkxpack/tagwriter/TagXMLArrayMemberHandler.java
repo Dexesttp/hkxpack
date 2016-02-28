@@ -7,6 +7,7 @@ import com.dexesttp.hkxpack.data.HKXData;
 import com.dexesttp.hkxpack.data.members.HKXArrayMember;
 import com.dexesttp.hkxpack.data.members.HKXDirectMember;
 import com.dexesttp.hkxpack.data.members.HKXPointerMember;
+import com.dexesttp.hkxpack.data.members.HKXStringMember;
 
 /**
  * Handles the conversion between a {@link HKXArrayMember} and its contents as an {@link Element}.
@@ -30,6 +31,9 @@ class TagXMLArrayMemberHandler {
 			case DIRECT:
 			case COMPLEX:
 			case ENUM:
+				handleEnumOutType(memberNode, member);
+				break;
+			case STRING:
 				handleStringOutType(memberNode, member);
 				break;
 			case POINTER:
@@ -41,6 +45,16 @@ class TagXMLArrayMemberHandler {
 		}
 	}
 
+	private void handleStringOutType(Element memberNode, HKXArrayMember member) {
+		for(HKXData data : member.contents()) {
+			HKXStringMember subMember = (HKXStringMember) data;
+			String subMemberString = subMember.get();
+			Element stringNode = dataCreator.document().createElement("hkcstring");
+			stringNode.setTextContent(subMemberString);
+			memberNode.appendChild(stringNode);
+		}
+	}
+
 	private void handleNodeOutType(Element memberNode, HKXArrayMember member) {
 		for(HKXData data : member.contents()) {
 			Node newChild = dataCreator.create(data);
@@ -48,7 +62,7 @@ class TagXMLArrayMemberHandler {
 		}
 	}
 
-	private void handleStringOutType(Element memberNode, HKXArrayMember member) {
+	private void handleEnumOutType(Element memberNode, HKXArrayMember member) {
 		TagXMLDirectMemberHandler directMemberHandler = new TagXMLDirectMemberHandler();
 		String accu = "";
 		String contents = "";

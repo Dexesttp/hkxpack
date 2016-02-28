@@ -74,8 +74,8 @@ class TagXMLArrayHandler implements TagXMLContentsHandler {
 		NodeList children = member.getChildNodes();
 		for(int i = 0; i < children.getLength(); i++) {
 			Node child = children.item(i);
-			if(child.getNodeName().equals("cstring")) {
-				HKXStringMember string = new HKXStringMember("", HKXType.TYPE_CSTRING);
+			if(child.getNodeName().equals("hkcstring")) {
+				HKXStringMember string = new HKXStringMember("", root.getSubType());
 				string.set(child.getTextContent());
 				root.add(string);
 			}
