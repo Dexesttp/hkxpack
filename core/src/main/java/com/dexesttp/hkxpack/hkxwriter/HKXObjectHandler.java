@@ -20,20 +20,26 @@ import com.dexesttp.hkxpack.hkxwriter.utils.PointerObject;
 import com.dexesttp.hkxpack.hkxwriter.utils.PointerResolver;
 
 public class HKXObjectHandler {
-	private final HKXMemberHandlerFactory memberHandlerFactory;
 	private final ClassnamesData cnameData;
-	private final List<DataExternal> data3List;
 	private final SectionData section;
 	private final PointerResolver resolver;
+	private final File outFile;
+	private final HKXEnumResolver enumResolver;
+	private final List<DataInternal> data1List;
+	private final List<PointerObject> data2List;
+	private final List<DataExternal> data3List;
 
 	public HKXObjectHandler(File outFile, ClassnamesData classnamesData, SectionData dataSection,
 			HKXEnumResolver enumResolver, List<DataInternal> data1List,
 			List<PointerObject> data2List, List<DataExternal> data3List,
 			PointerResolver resolver)
 					throws FileNotFoundException {
-		this.memberHandlerFactory = new HKXMemberHandlerFactory(outFile, enumResolver, data1List, data2List);
+		this.outFile = outFile;
+		this.enumResolver = enumResolver;
 		this.cnameData = classnamesData;
 		this.section = dataSection;
+		this.data1List = data1List;
+		this.data2List = data2List;
 		this.data3List = data3List;
 		this.resolver = resolver;
 	}
@@ -47,6 +53,7 @@ public class HKXObjectHandler {
 		data3List.add(classEntry);
 		resolver.add(object.getName(), currentPos);
 		List<HKXMemberCallback> memberCallbacks = new ArrayList<HKXMemberCallback>();
+		HKXMemberHandlerFactory memberHandlerFactory = new HKXMemberHandlerFactory(outFile, enumResolver, data1List, data2List, memberCallbacks);
 		
 		HKXInternalObjectHandler objectHandler = new HKXInternalObjectHandler(memberHandlerFactory, memberCallbacks);
 		
@@ -58,10 +65,7 @@ public class HKXObjectHandler {
 			HKXMemberCallback callback = memberCallbacks.get(i);
 			currentPos += callback.process(memberCallbacks, currentPos);
 		}
-		return currentPos;
-	}
-
-	public void close() throws IOException {
 		memberHandlerFactory.close();
+		return currentPos;
 	}
 }

@@ -17,6 +17,7 @@ public class HKXMemberHandlerFactory {
 	private final HKXEnumResolver enumResolver;
 	private final List<DataInternal> data1List;
 	private final List<PointerObject> data2List;
+	private List<HKXMemberCallback> memberCallbacks;
 
 	/**
 	 * Creates a {@link HKXMemberHandlerFactory}.
@@ -27,12 +28,14 @@ public class HKXMemberHandlerFactory {
 	 * @throws FileNotFoundException if there was a problem opening a conenction to the given {@link File}.
 	 */
 	public HKXMemberHandlerFactory(File outFile, HKXEnumResolver enumResolver,
-			List<DataInternal> data1List, List<PointerObject> data2List)
+			List<DataInternal> data1List, List<PointerObject> data2List,
+			List<HKXMemberCallback> memberCallbacks)
 			throws FileNotFoundException {
 		this.outFile = new RandomAccessFile(outFile, "rw");
 		this.enumResolver = enumResolver;
 		this.data1List = data1List;
 		this.data2List = data2List;
+		this.memberCallbacks = memberCallbacks;
 	}
 
 	/**
@@ -50,7 +53,7 @@ public class HKXMemberHandlerFactory {
 			case POINTER:
 				return new HKXPointerMemberHandler(memberTemplate.offset, data2List);
 			case OBJECT:
-				return new HKXObjectMemberHandler(memberTemplate.offset, this, data1List);
+				return new HKXObjectMemberHandler(memberTemplate.offset, this, memberCallbacks);
 			default:
 				// TODO once all known cases are handled, throw an error.
 				return (member, currentPos) ->{

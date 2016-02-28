@@ -57,7 +57,6 @@ class HKXDataHandler {
 		for(HKXObject object : file.content()) {
 			currentPos = objectHandler.handle(object, currentPos);
 		}
-		objectHandler.close();
 		return currentPos;
 	}
 
