@@ -28,7 +28,7 @@ public class TagXMLComplexHandler implements TagXMLContentsHandler {
 		Pattern pattern = getPattern(memberType);
 		Matcher m = pattern.matcher(contents);
 		if(!m.find())
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("memberName : " + memberName);
 		return handleMatcher(m, memberName, memberType);
 	}
 

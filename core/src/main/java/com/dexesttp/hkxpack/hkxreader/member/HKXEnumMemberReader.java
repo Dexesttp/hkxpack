@@ -41,7 +41,7 @@ public class HKXEnumMemberReader implements HKXMemberReader {
 		try {
 			result.set(enumResolver.resolve(etype, contents));
 		} catch(NullPointerException e) {
-			LoggerUtil.error("HKREAD", "ENUM", "", "Couldn't read enum : " + etype);
+			LoggerUtil.error("HKREAD", "ENUM", "", "Couldn't read enum : " + etype + " in " + name);
 			result.set("" + contents);
 		}
 		return result;

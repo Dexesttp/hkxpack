@@ -68,7 +68,6 @@ class HKXDataHandler {
 	 */
 	void fillPointers(SectionData data, PointerResolver resolver) throws IOException {
 		HKXPointersHandler handler = new HKXPointersHandler(outFile, data);
-		// TODO resolve data2;
 		List<DataExternal> data2resolved = new ArrayList<>();
 		for(DataInternal internal : data1queue) {
 			internal.from -= data.offset;
