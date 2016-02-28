@@ -76,9 +76,11 @@ class HKXDataHandler {
 		}
 		for(PointerObject ptr : data2queue) {
 			DataExternal resolved = resolver.resolve(ptr);
-			resolved.from -= data.offset;
-			resolved.to -= data.offset;
-			data2resolved.add(resolved);
+			if(resolved != null) {
+				resolved.from -= data.offset;
+				resolved.to -= data.offset;
+				data2resolved.add(resolved);
+			}
 		}
 		handler.write(data1queue, data2resolved, data3queue);
 	}

@@ -13,11 +13,12 @@ public class PointerResolver {
 	}
 	
 	public DataExternal resolve(PointerObject object) {
+		if(!map.keySet().contains(object.to))
+			return null;
 		DataExternal res = new DataExternal();
 		res.section = 0x02;
 		res.from = object.from;
-		if(map.keySet().contains(object.to))
-			res.to = map.get(object.to);
+		res.to = map.get(object.to);
 		return res;
 	}
 }
