@@ -12,7 +12,7 @@ import com.dexesttp.hkxpack.hkx.types.MemberSizeResolver;
 /**
  * Handles writing a {@link HKXObject}'s contents into a {@link File}.
  */
-public class HKXInternalObjectHandler implements HKXMemberHandler {
+public class HKXInternalObjectHandler {
 	private final HKXMemberHandlerFactory memberHandlerFactory;
 	private List<HKXMemberCallback> memberCallbacks;
 
@@ -26,8 +26,7 @@ public class HKXInternalObjectHandler implements HKXMemberHandler {
 		this.memberCallbacks = memberCallbacks;
 	}
 	
-	@Override
-	public HKXMemberCallback write(HKXMember objectAsMember, long currentPos) throws IOException {
+	public long write(HKXMember objectAsMember, long currentPos) throws IOException {
 		HKXObject object = (HKXObject) objectAsMember;
 		// Prepare the member handlers, and fill the raw structure.
 		List<HKXMember> members = object.members();
@@ -38,8 +37,7 @@ public class HKXInternalObjectHandler implements HKXMemberHandler {
 			HKXMemberHandler memberHandler = memberHandlerFactory.create(memberTemplate);
 			memberCallbacks.add(memberHandler.write(member, currentPos));
 		}
-		final long positionToReturn = currentPos + MemberSizeResolver.getSize(object.getDescriptor());
-		return (memberCallbacks, position) -> { return positionToReturn; };
+		return currentPos + MemberSizeResolver.getSize(object.getDescriptor());
 	}
 
 }

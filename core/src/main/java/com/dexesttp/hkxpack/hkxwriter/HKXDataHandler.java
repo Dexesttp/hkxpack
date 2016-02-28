@@ -12,6 +12,8 @@ import com.dexesttp.hkxpack.hkx.classnames.ClassnamesData;
 import com.dexesttp.hkxpack.hkx.data.DataExternal;
 import com.dexesttp.hkxpack.hkx.data.DataInternal;
 import com.dexesttp.hkxpack.hkx.header.SectionData;
+import com.dexesttp.hkxpack.hkxwriter.utils.PointerObject;
+import com.dexesttp.hkxpack.hkxwriter.utils.PointerResolver;
 
 /**
  * Handles the different components of the Data section.
@@ -23,7 +25,7 @@ class HKXDataHandler {
 	private final ClassnamesData cnameData;
 	private final HKXEnumResolver enumResolver;
 	private final List<DataInternal> data1queue;
-	private final List<DataExternal> data2queue;
+	private final List<PointerObject> data2queue;
 	private final List<DataExternal> data3queue;
 
 	/**
@@ -45,12 +47,13 @@ class HKXDataHandler {
 	 * Fill this {@link HKXDataHandler}'s {@link File} section 'data' with the given {@link HKXFile}'s contents.
 	 * @param data the {@link SectionData} describing at least the data offset.
 	 * @param file the {@link HKXFile} to write data from.
+	 * @param resolver the PointerResolver to resolve objects with.
 	 * @return the position of the byte just after the end of the Data section
 	 * @throws IOException if there was a problem writing to this {@link HKXDataHandler}'s {@link File}.
 	 */
-	long fillFile(SectionData data, HKXFile file) throws IOException {
+	long fillFile(SectionData data, HKXFile file, PointerResolver resolver) throws IOException {
 		long currentPos = data.offset;
-		HKXObjectHandler objectHandler = new HKXObjectHandler(outFile, cnameData, data, enumResolver, data1queue, data2queue, data3queue);
+		HKXObjectHandler objectHandler = new HKXObjectHandler(outFile, cnameData, data, enumResolver, data1queue, data2queue, data3queue, resolver);
 		for(HKXObject object : file.content()) {
 			currentPos = objectHandler.handle(object, currentPos);
 		}
@@ -63,8 +66,12 @@ class HKXDataHandler {
 	 * @param data the section data to store the offsets into.
 	 * @throws IOException if there was a problem writing data to the file.
 	 */
-	void fillPointers(SectionData data) throws IOException {
+	void fillPointers(SectionData data, PointerResolver resolver) throws IOException {
 		HKXPointersHandler handler = new HKXPointersHandler(outFile, data);
-		handler.write(data1queue, data2queue, data3queue);
+		// TODO resolve data2;
+		List<DataExternal> data2resolved = new ArrayList<>();
+		for(PointerObject ptr : data2queue)
+			data2resolved.add(resolver.resolve(ptr));
+		handler.write(data1queue, data2resolved, data3queue);
 	}
 }

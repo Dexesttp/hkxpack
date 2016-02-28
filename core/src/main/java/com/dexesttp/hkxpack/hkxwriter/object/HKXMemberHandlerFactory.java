@@ -6,17 +6,17 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.List;
 
-import com.dexesttp.hkxpack.data.members.HKXMember;
 import com.dexesttp.hkxpack.descriptor.HKXEnumResolver;
 import com.dexesttp.hkxpack.descriptor.members.HKXMemberTemplate;
 import com.dexesttp.hkxpack.hkx.data.DataExternal;
 import com.dexesttp.hkxpack.hkx.data.DataInternal;
+import com.dexesttp.hkxpack.hkxwriter.utils.PointerObject;
 
 public class HKXMemberHandlerFactory {
 	private final RandomAccessFile outFile;
 	private final HKXEnumResolver enumResolver;
 	private final List<DataInternal> data1List;
-	private final List<DataExternal> data2List;
+	private final List<PointerObject> data2List;
 
 	/**
 	 * Creates a {@link HKXMemberHandlerFactory}.
@@ -26,7 +26,8 @@ public class HKXMemberHandlerFactory {
 	 * @param data2List the list of {@link DataExternal} to fill while solving pointers.
 	 * @throws FileNotFoundException if there was a problem opening a conenction to the given {@link File}.
 	 */
-	public HKXMemberHandlerFactory(File outFile, HKXEnumResolver enumResolver, List<DataInternal> data1List, List<DataExternal> data2List)
+	public HKXMemberHandlerFactory(File outFile, HKXEnumResolver enumResolver,
+			List<DataInternal> data1List, List<PointerObject> data2List)
 			throws FileNotFoundException {
 		this.outFile = new RandomAccessFile(outFile, "rw");
 		this.enumResolver = enumResolver;
@@ -46,6 +47,10 @@ public class HKXMemberHandlerFactory {
 				return new HKXDirectMemberHandler(outFile, memberTemplate.offset);
 			case ENUM:
 				return new HKXEnumMemberHandler(outFile, memberTemplate.offset, enumResolver, memberTemplate.target);
+			case POINTER:
+				return new HKXPointerMemberHandler(memberTemplate.offset, data2List);
+			case OBJECT:
+				return new HKXObjectMemberHandler(memberTemplate.offset, this, data1List);
 			default:
 				// TODO once all known cases are handled, throw an error.
 				return (member, currentPos) ->{

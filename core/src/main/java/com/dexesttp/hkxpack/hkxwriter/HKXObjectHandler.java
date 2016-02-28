@@ -16,29 +16,36 @@ import com.dexesttp.hkxpack.hkx.types.MemberSizeResolver;
 import com.dexesttp.hkxpack.hkxwriter.object.HKXInternalObjectHandler;
 import com.dexesttp.hkxpack.hkxwriter.object.HKXMemberCallback;
 import com.dexesttp.hkxpack.hkxwriter.object.HKXMemberHandlerFactory;
+import com.dexesttp.hkxpack.hkxwriter.utils.PointerObject;
+import com.dexesttp.hkxpack.hkxwriter.utils.PointerResolver;
 
 public class HKXObjectHandler {
 	private final HKXMemberHandlerFactory memberHandlerFactory;
 	private final ClassnamesData cnameData;
 	private final List<DataExternal> data3List;
 	private final SectionData section;
+	private final PointerResolver resolver;
 
 	public HKXObjectHandler(File outFile, ClassnamesData classnamesData, SectionData dataSection,
-			HKXEnumResolver enumResolver, List<DataInternal> data1List, List<DataExternal> data2List, List<DataExternal> data3List)
+			HKXEnumResolver enumResolver, List<DataInternal> data1List,
+			List<PointerObject> data2List, List<DataExternal> data3List,
+			PointerResolver resolver)
 					throws FileNotFoundException {
 		this.memberHandlerFactory = new HKXMemberHandlerFactory(outFile, enumResolver, data1List, data2List);
 		this.cnameData = classnamesData;
 		this.section = dataSection;
 		this.data3List = data3List;
+		this.resolver = resolver;
 	}
 
 	public long handle(HKXObject object, long currentPos) throws IOException {
-		// Add the object into data3.
+		// Add the object into data3 and the resolver
 		DataExternal classEntry = new DataExternal();
 		classEntry.from = currentPos - section.offset;
 		classEntry.section = 0x00;
 		classEntry.to = cnameData.getPosition(object.getDescriptor().getName());
 		data3List.add(classEntry);
+		resolver.add(object.getName(), currentPos);
 		List<HKXMemberCallback> memberCallbacks = new ArrayList<HKXMemberCallback>();
 		
 		HKXInternalObjectHandler objectHandler = new HKXInternalObjectHandler(memberHandlerFactory, memberCallbacks);

@@ -31,7 +31,7 @@ public class HKXEnumMemberHandler implements HKXMemberHandler {
 			byte[] res = ByteUtils.fromLong(enumVal, 4);
 			outFile.write(res);
 		}
-		return (memberCallbacks, position) -> { return 0x04; };
+		return (memberCallbacks, position) -> { return 0; };
 	}
 
 }

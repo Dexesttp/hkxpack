@@ -2,6 +2,7 @@ package com.dexesttp.hkxpack.hkxwriter;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import com.dexesttp.hkxpack.hkx.classnames.ClassnamesData;
 import com.dexesttp.hkxpack.hkx.classnames.ClassnamesInterface;
@@ -24,6 +25,15 @@ class HKXWriterConnector {
 	 */
 	HKXWriterConnector(File outputFile) {
 		this.file = outputFile;
+	}
+	
+	/**
+	 * Cleans the file.
+	 * @throws IOException if there was a problem cleaning the file.
+	 */
+	void clean() throws IOException {
+		PrintWriter writer = new PrintWriter(file);
+		writer.close();
 	}
 
 	/**

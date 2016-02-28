@@ -13,6 +13,7 @@ import com.dexesttp.hkxpack.hkxreader.HKXReader;
 import com.dexesttp.hkxpack.hkxwriter.classnames.HKXClassnamesHandler;
 import com.dexesttp.hkxpack.hkxwriter.header.HKXHeaderFactory;
 import com.dexesttp.hkxpack.hkxwriter.header.HKXSectionHandler;
+import com.dexesttp.hkxpack.hkxwriter.utils.PointerResolver;
 
 /**
  * Handles writing a {@link HKXFile} into a {@link File}, using the binary hkx notation.
@@ -40,6 +41,7 @@ public class HKXWriter {
 	public void write(HKXFile file) throws IOException, UnsupportedVersionError {
 		// Connect to the file.
 		HKXWriterConnector connector = new HKXWriterConnector(outputFile);
+		connector.clean();
 		
 		// Create the header.
 		HeaderData header = new HKXHeaderFactory().create(file);
@@ -67,10 +69,11 @@ public class HKXWriter {
 		sectionHandler.init(HKXSectionHandler.DATA, data);
 		
 		// Write data in the file and store data1/data2/data3 values.
+		PointerResolver resolver = new PointerResolver();
 		HKXDataHandler dataHandler = new HKXDataHandler(outputFile, cnameData, enumResolver);
-		long endData = dataHandler.fillFile(data, file) - data.offset;
+		long endData = dataHandler.fillFile(data, file, resolver) - data.offset;
 		data.data1 = endData%0x10 == 0 ? endData : (1 + endData / 0x10) * 0x10;
-		dataHandler.fillPointers(data);
+		dataHandler.fillPointers(data, resolver);
 		
 		// Write the data section to the file.
 		connector.writeSection(header, HKXSectionHandler.DATA, data);

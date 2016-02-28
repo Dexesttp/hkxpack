@@ -5,7 +5,6 @@ import java.io.RandomAccessFile;
 
 import com.dexesttp.hkxpack.data.members.HKXMember;
 import com.dexesttp.hkxpack.hkx.types.MemberDataResolver;
-import com.dexesttp.hkxpack.hkx.types.MemberSizeResolver;
 
 public class HKXDirectMemberHandler implements HKXMemberHandler {
 	private final RandomAccessFile outFile;
@@ -21,6 +20,6 @@ public class HKXDirectMemberHandler implements HKXMemberHandler {
 		byte[] value = MemberDataResolver.fromMember(member);
 		outFile.seek(currentPos + memberOffset);
 		outFile.write(value);
-		return (memberCallbacks, position) -> { return MemberSizeResolver.getSize(member.getType()); };
+		return (memberCallbacks, position) -> { return 0; };
 	}
 }
