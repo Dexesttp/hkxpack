@@ -24,9 +24,9 @@ public class HKXStringMemberHandler implements HKXMemberHandler {
 		final HKXStringMember strMember = (HKXStringMember) member;
 		final DataInternal stringData = new DataInternal();
 		stringData.from = currentPos + offset;
-		data1.add(stringData);
 		return (callbacks, position) -> { 
 			stringData.to = position;
+			data1.add(stringData);
 			outFile.seek(position);
 			outFile.writeBytes(strMember.get());
 			outFile.writeByte(0x00);
