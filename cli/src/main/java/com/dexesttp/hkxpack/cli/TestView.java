@@ -60,7 +60,6 @@ public class TestView {
 			TagXMLReader reader = new TagXMLReader(inFile, descriptorFactory);
 			HKXFile file = reader.read();
 			
-			// TODO handle HKX file write
 			File outFile = new File(outputFileName);
 			HKXWriter writer = new HKXWriter(outFile, enumResolver);
 			writer.write(file);

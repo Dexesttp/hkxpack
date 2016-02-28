@@ -12,6 +12,7 @@ import com.dexesttp.hkxpack.descriptor.HKXDescriptorFactory;
 import com.dexesttp.hkxpack.descriptor.HKXEnumResolver;
 import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
 import com.dexesttp.hkxpack.hkxreader.HKXReader;
+import com.dexesttp.hkxpack.hkxwriter.HKXWriter;
 import com.dexesttp.hkxpack.resources.LoggerUtil;
 import com.dexesttp.hkxpack.tagreader.TagXMLReader;
 import com.dexesttp.hkxpack.tagwriter.TagXMLWriter;
@@ -76,10 +77,11 @@ public class Main {
 			HKXEnumResolver enumResolver = new HKXEnumResolver();
 			HKXDescriptorFactory descriptorFactory = new HKXDescriptorFactory(enumResolver);
 			TagXMLReader reader = new TagXMLReader(inFile, descriptorFactory);
-			reader.read();
+			HKXFile file = reader.read();
 			
-			// TODO handle HKX file write
-			System.out.println(outputFileName);
+			File outFile = new File(outputFileName);
+			HKXWriter writer = new HKXWriter(outFile, enumResolver);
+			writer.write(file);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
