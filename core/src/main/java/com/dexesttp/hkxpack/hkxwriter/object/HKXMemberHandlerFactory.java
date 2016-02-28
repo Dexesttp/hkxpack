@@ -50,6 +50,8 @@ public class HKXMemberHandlerFactory {
 				return new HKXDirectMemberHandler(outFile, memberTemplate.offset);
 			case ENUM:
 				return new HKXEnumMemberHandler(outFile, memberTemplate.offset, enumResolver, memberTemplate.target);
+			case STRING:
+				return new HKXStringMemberHandler(outFile, memberTemplate.offset, data1List);
 			case POINTER:
 				return new HKXPointerMemberHandler(memberTemplate.offset, data2List);
 			case OBJECT:
