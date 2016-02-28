@@ -23,7 +23,13 @@ public class HKXEnumResolver {
 		}
 		
 		int get(String str) {
-			return contents.get(str);
+			if(contents.containsKey(str))
+				return contents.get(str);
+			try {
+				return Integer.parseInt(str);
+			} catch(NumberFormatException e) {
+				return 0;
+			}
 		}
 	}
 	
@@ -55,6 +61,9 @@ public class HKXEnumResolver {
 	 * @return
 	 */
 	public int resolve(String enumName, String value) {
-		return contents.get(enumName).get(value);
+		HKXEnum enumContainer = contents.get(enumName);
+		if(enumContainer == null)
+			return 0;
+		return enumContainer.get(value);
 	}
 }
