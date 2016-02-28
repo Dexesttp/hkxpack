@@ -7,6 +7,7 @@ import java.io.RandomAccessFile;
 import java.util.List;
 
 import com.dexesttp.hkxpack.descriptor.HKXEnumResolver;
+import com.dexesttp.hkxpack.descriptor.enums.HKXType;
 import com.dexesttp.hkxpack.descriptor.members.HKXMemberTemplate;
 import com.dexesttp.hkxpack.hkx.data.DataExternal;
 import com.dexesttp.hkxpack.hkx.data.DataInternal;
@@ -31,11 +32,28 @@ public class HKXMemberHandlerFactory {
 			List<DataInternal> data1List, List<PointerObject> data2List,
 			List<HKXMemberCallback> memberCallbacks)
 			throws FileNotFoundException {
-		this.outFile = new RandomAccessFile(outFile, "rw");
+		this(new RandomAccessFile(outFile, "rw"), enumResolver, data1List, data2List, memberCallbacks);
+	}
+	
+	private HKXMemberHandlerFactory(RandomAccessFile outFile, HKXEnumResolver enumResolver,
+			List<DataInternal> data1List, List<PointerObject> data2List,
+			List<HKXMemberCallback> memberCallbacks) {
+		this.outFile = outFile;
 		this.enumResolver = enumResolver;
 		this.data1List = data1List;
 		this.data2List = data2List;
 		this.memberCallbacks = memberCallbacks;
+	}
+	
+	/**
+	 * Clones the factory, but changes the memberCallback queue.
+	 * @param memberCallbacks then new {@link HKXMemberCallback} list ot use.
+	 * @return the cloned {@link HKXMemberHandlerFactory}.
+	 */
+	public HKXMemberHandlerFactory clone(List<HKXMemberCallback> memberCallbacks) {
+		return new HKXMemberHandlerFactory(outFile, enumResolver,
+				data1List, data2List,
+				memberCallbacks);
 	}
 
 	/**
@@ -43,26 +61,23 @@ public class HKXMemberHandlerFactory {
 	 * @param memberTemplate the {@link HKXMemberTemplate} to base the {@link HKXMemberHandler} on.
 	 * @return the relevant {@link HKXMemberHandler}.
 	 */
-	public HKXMemberHandler create(HKXMemberTemplate memberTemplate) {
-		switch(memberTemplate.vtype.getFamily()) {
+	public HKXMemberHandler create(HKXType vtype, long offset, String target) {
+		switch(vtype.getFamily()) {
 			case DIRECT:
 			case COMPLEX:
-				return new HKXDirectMemberHandler(outFile, memberTemplate.offset);
+				return new HKXDirectMemberHandler(outFile, offset);
 			case ENUM:
-				return new HKXEnumMemberHandler(outFile, memberTemplate.offset, enumResolver, memberTemplate.target);
+				return new HKXEnumMemberHandler(outFile, offset, enumResolver, target);
 			case STRING:
-				return new HKXStringMemberHandler(outFile, memberTemplate.offset, data1List);
+				return new HKXStringMemberHandler(outFile, offset, data1List);
 			case POINTER:
-				return new HKXPointerMemberHandler(memberTemplate.offset, data2List);
+				return new HKXPointerMemberHandler(offset, data2List);
 			case OBJECT:
-				return new HKXObjectMemberHandler(memberTemplate.offset, this, memberCallbacks);
+				return new HKXObjectMemberHandler(offset, this, memberCallbacks);
+			case ARRAY:
+				return new HKXArrayMemberHandler(outFile, offset, data1List, this);
 			default:
-				// TODO once all known cases are handled, throw an error.
-				return (member, currentPos) ->{
-						return (memberCallbacks, position) -> {
-								return 0;
-							};
-					};
+				throw new IllegalArgumentException("Unknown type : " + vtype);
 		}
 	}
 	
