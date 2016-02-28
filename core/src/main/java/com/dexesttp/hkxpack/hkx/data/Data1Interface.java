@@ -53,6 +53,21 @@ public class Data1Interface {
 	}
 
 	/**
+	 * Writes the given Internal data to the file, at the given position.
+	 * @param pos the position to write the data to.
+	 * @param internal the {@link DataInternal} to write.
+	 * @return the position of the end of the {@link DataInternal}.
+	 * @throws IOException if there was a problem while writing to the file.
+	 */
+	public long write(int pos, DataInternal internal) throws IOException {
+		long dataPos = header.data1 + pos * 0x08;
+		file.seek(header.offset + dataPos);
+		file.write(ByteUtils.fromLong(internal.from, 4));
+		file.write(ByteUtils.fromLong(internal.to, 4));
+		return dataPos + 0x08;
+	}
+
+	/**
 	 * Reads the next element from the Data1 section.
 	 * @return The requested {@link DataInternal}
 	 * @throws IOException if there was a problem reading the file.

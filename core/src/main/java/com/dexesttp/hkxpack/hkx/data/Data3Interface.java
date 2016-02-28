@@ -53,6 +53,22 @@ public class Data3Interface {
 	}
 
 	/**
+	 * Write a given External data to the file at the given position.
+	 * @param pos the position to write the external data at.
+	 * @param data the {@link DataExternal} to write.
+	 * @return the position as section offset of the end of the written {@link DataExternal}.
+	 * @throws IOException if there was a problem writing to the file.
+	 */
+	public long write(int pos, DataExternal data) throws IOException {
+		long dataPos = header.data2 + pos * 0x0C;
+		file.seek(header.offset + dataPos);
+		file.write(ByteUtils.fromLong(data.from, 4));
+		file.write(ByteUtils.fromLong(data.section, 4));
+		file.write(ByteUtils.fromLong(data.to, 4));
+		return dataPos + 0x0C;
+	}
+
+	/**
 	 * Close this {@link Data3Interface} connection with the {@link File}.
 	 * @throws IOException
 	 */
