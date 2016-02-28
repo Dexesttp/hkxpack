@@ -45,7 +45,7 @@ public class HKXMemberReaderFactory {
 						return new HKXStringArrayMemberReader(connector, template.name, template.vsubtype, template.offset);
 					case OBJECT:
 						HKXDescriptor descriptor = descriptorFactory.get(template.target);
-						return new HKXObjectArrayMemberReader(connector, objectCreator, template.name, template.offset, descriptor);
+						return new HKXObjectArrayMemberReader(connector, objectCreator, descriptorFactory, template.name, template.offset, descriptor);
 					case POINTER:
 						return new HKXPointerArrayMemberReader(connector, generator, template.name, template.vsubtype, template.offset);
 					default:

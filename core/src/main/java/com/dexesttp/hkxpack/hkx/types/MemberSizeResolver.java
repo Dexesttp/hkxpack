@@ -2,10 +2,12 @@ package com.dexesttp.hkxpack.hkx.types;
 
 import java.util.List;
 
+import com.dexesttp.hkxpack.data.HKXObject;
 import com.dexesttp.hkxpack.descriptor.HKXDescriptor;
+import com.dexesttp.hkxpack.descriptor.HKXDescriptorFactory;
 import com.dexesttp.hkxpack.descriptor.enums.HKXType;
+import com.dexesttp.hkxpack.descriptor.exceptions.ClassFileReadError;
 import com.dexesttp.hkxpack.descriptor.members.HKXMemberTemplate;
-import com.dexesttp.hkxpack.l10n.SBundle;
 
 /**
  * Intended to retrieve {@link HKXType}-specific data.
@@ -83,24 +85,36 @@ public class MemberSizeResolver {
 	 * Retrieves the size of a {@link HKXDescriptor}, including end padding if needed.
 	 * @param descriptor the {@link HKXDescriptor} to retrieve the size from.
 	 * @return the {@link HKXDescriptor}'s size.
+	 * @throws ClassFileReadError 
 	 */
-	public static long getSize(HKXDescriptor descriptor) {
+	public static long getSize(HKXDescriptor descriptor, HKXDescriptorFactory descriptorFactory) throws ClassFileReadError {
 		List<HKXMemberTemplate> templates = descriptor.getMemberTemplates();
 		if(templates.isEmpty())
 			return 0;
 		HKXMemberTemplate lastTemplate = templates.get(templates.size() - 1);
 		if(lastTemplate.vtype != HKXType.TYPE_STRUCT)
 			return snapSize(lastTemplate.offset + getSize(lastTemplate.vtype));
-		else
-			throw new RuntimeException(SBundle.getString("bug.known") + " [#343]");
+		HKXDescriptor internalDescriptor = descriptorFactory.get(lastTemplate.target);
+		return snapSize(lastTemplate.offset + getSize(internalDescriptor, descriptorFactory));
 	}
 
-	// TODO maybe improve SnapSize if it happens it isn't good enough.
+	public static long getSize(HKXObject object) {
+		List<HKXMemberTemplate> templates = object.getDescriptor().getMemberTemplates();
+		if(templates.isEmpty())
+			return 0;
+		HKXMemberTemplate lastTemplate = templates.get(templates.size() - 1);
+		if(lastTemplate.vtype != HKXType.TYPE_STRUCT)
+			return snapSize(lastTemplate.offset + getSize(lastTemplate.vtype));
+		HKXObject internalObject = (HKXObject) object.members().get(templates.size() - 1);
+		return snapSize(lastTemplate.offset + getSize(internalObject));
+	}
+
 	/**
 	 * Snap to the next 0x04 factor if needed.
 	 * @param l the value to snap.
 	 * @return the snapped size.
 	 */
+	// TODO maybe improve SnapSize if it happens it isn't good enough.
 	private static long snapSize(long l) {
 		long smallSize = l / 4;
 		smallSize *= 4;

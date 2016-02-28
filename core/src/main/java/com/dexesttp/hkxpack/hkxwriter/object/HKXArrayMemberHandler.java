@@ -55,7 +55,7 @@ public class HKXArrayMemberHandler implements HKXMemberHandler {
 					for(HKXData data : arrMember.contents()) {
 						if(data instanceof HKXObject) {
 							HKXObject internalObject = (HKXObject) data;
-							long objectSize = MemberSizeResolver.getSize(internalObject.getDescriptor());
+							long objectSize = MemberSizeResolver.getSize(internalObject);
 							HKXMemberHandler memberHandler = new HKXObjectMemberHandler(0, memberHandlerFactory.clone(internalCallbacks), internalCallbacks);
 							internalCallbacks.add(memberHandler.write(internalObject, newPos));
 							newPos += objectSize;

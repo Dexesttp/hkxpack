@@ -37,7 +37,7 @@ public class HKXInternalObjectHandler {
 			HKXMemberHandler memberHandler = memberHandlerFactory.create(memberTemplate.vtype, memberTemplate.offset, memberTemplate.target);
 			memberCallbacks.add(memberHandler.write(member, currentPos));
 		}
-		return currentPos + MemberSizeResolver.getSize(object.getDescriptor());
+		return currentPos + MemberSizeResolver.getSize(object);
 	}
 
 }

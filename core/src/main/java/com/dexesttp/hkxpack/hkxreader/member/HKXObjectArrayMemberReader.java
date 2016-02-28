@@ -5,7 +5,9 @@ import java.io.IOException;
 import com.dexesttp.hkxpack.data.HKXData;
 import com.dexesttp.hkxpack.data.HKXObject;
 import com.dexesttp.hkxpack.descriptor.HKXDescriptor;
+import com.dexesttp.hkxpack.descriptor.HKXDescriptorFactory;
 import com.dexesttp.hkxpack.descriptor.enums.HKXType;
+import com.dexesttp.hkxpack.descriptor.exceptions.ClassFileReadError;
 import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
 import com.dexesttp.hkxpack.hkx.types.MemberSizeResolver;
 import com.dexesttp.hkxpack.hkxreader.HKXObjectReader;
@@ -16,11 +18,11 @@ class HKXObjectArrayMemberReader extends HKXArrayMemberReader {
 	private final HKXDescriptor descriptor;
 	private final int contentSize;
 
-	HKXObjectArrayMemberReader(HKXReaderConnector connector, HKXObjectReader reader, String name, long offset, HKXDescriptor descriptor) {
+	HKXObjectArrayMemberReader(HKXReaderConnector connector, HKXObjectReader reader, HKXDescriptorFactory descriptorFactory, String name, long offset, HKXDescriptor descriptor) throws ClassFileReadError {
 		super(connector, name, HKXType.TYPE_STRUCT, offset);
 		this.reader = reader;
 		this.descriptor = descriptor;
-		this.contentSize = (int) MemberSizeResolver.getSize(descriptor);
+		this.contentSize = (int) MemberSizeResolver.getSize(descriptor, descriptorFactory);
 	}
 
 	@Override
