@@ -11,7 +11,6 @@ import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
 import com.dexesttp.hkxpack.hkx.types.MemberSizeResolver;
 import com.dexesttp.hkxpack.hkxreader.HKXReaderConnector;
 import com.dexesttp.hkxpack.resources.ByteUtils;
-import com.dexesttp.hkxpack.resources.LoggerUtil;
 
 public class HKXEnumMemberReader implements HKXMemberReader {
 	private final HKXReaderConnector connector;
@@ -38,12 +37,7 @@ public class HKXEnumMemberReader implements HKXMemberReader {
 		file.read(b);
 		int contents = ByteUtils.getInt(b);
 		HKXDirectMember<String> result = new HKXDirectMember<>(name, vtype);
-		try {
-			result.set(enumResolver.resolve(etype, contents));
-		} catch(NullPointerException e) {
-			LoggerUtil.error("HKREAD", "ENUM", "", "Couldn't read enum : " + etype + " in " + name);
-			result.set("" + contents);
-		}
+		result.set(enumResolver.resolve(etype, contents));
 		return result;
 	}
 }
