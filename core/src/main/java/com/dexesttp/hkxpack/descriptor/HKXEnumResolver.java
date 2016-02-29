@@ -19,7 +19,9 @@ public class HKXEnumResolver {
 		}
 		
 		String get(int i) {
-			return contents.inverse().get(i);
+			if(contents.containsValue(i))
+				return contents.inverse().get(i);
+			return "" + i;
 		}
 		
 		int get(String str) {
@@ -51,7 +53,10 @@ public class HKXEnumResolver {
 	 * @return
 	 */
 	public String resolve(String enumName, int value) {
-		return contents.get(enumName).get(value);
+		HKXEnum enumContainer = contents.get(enumName);
+		if(enumContainer != null)
+			return enumContainer.get(value);
+		return "" + value;
 	}
 	
 	/**
