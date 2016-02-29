@@ -9,6 +9,8 @@ public class CommandFactory {
 	{
 		commandParser.put("extract", Command_unpack.class);
 		commandParser.put("unpack", Command_unpack.class);
+		commandParser.put("compress", Command_pack.class);
+		commandParser.put("pack", Command_pack.class);
 		commandParser.put("help", Command_help.class);
 	}
 	
