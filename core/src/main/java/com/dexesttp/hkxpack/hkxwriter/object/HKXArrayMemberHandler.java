@@ -9,6 +9,7 @@ import com.dexesttp.hkxpack.data.HKXData;
 import com.dexesttp.hkxpack.data.HKXObject;
 import com.dexesttp.hkxpack.data.members.HKXArrayMember;
 import com.dexesttp.hkxpack.data.members.HKXMember;
+import com.dexesttp.hkxpack.data.members.HKXPointerMember;
 import com.dexesttp.hkxpack.hkx.data.DataInternal;
 import com.dexesttp.hkxpack.hkx.types.MemberSizeResolver;
 import com.dexesttp.hkxpack.resources.ByteUtils;
@@ -46,6 +47,27 @@ public class HKXArrayMemberHandler implements HKXMemberHandler {
 		arrData.from = currentPos + offset;
 		
 		switch(arrMember.getSubType().getFamily()) {
+			case POINTER:
+				final List<HKXArrayPointerMemberHandler> apmhList = new ArrayList<>(); 
+				for(HKXData data : arrMember.contents()) {
+					if(data instanceof HKXPointerMember) {
+						HKXPointerMember internalPointer = (HKXPointerMember) data;
+						HKXArrayPointerMemberHandler arrayPointerMemberHandler = memberHandlerFactory.createAPMH();
+						arrayPointerMemberHandler.setPointer(internalPointer);
+						apmhList.add(arrayPointerMemberHandler);
+					}
+				}
+				return (memberCallbacks, position) -> {
+					arrData.to = position;
+					data1.add(arrData);
+					long newPos = position;
+					for(HKXArrayPointerMemberHandler apmh : apmhList) {
+						long objectSize = MemberSizeResolver.getSize(arrMember.getSubType());
+						apmh.resolve(newPos);
+						newPos += objectSize;
+					}
+					return newPos - position;
+				};
 			case OBJECT:
 				return (memberCallbacks, position) -> {
 					arrData.to = position;
@@ -59,6 +81,24 @@ public class HKXArrayMemberHandler implements HKXMemberHandler {
 							HKXMemberHandler memberHandler = new HKXObjectMemberHandler(0, memberHandlerFactory.clone(internalCallbacks), internalCallbacks);
 							internalCallbacks.add(memberHandler.write(internalObject, newPos));
 							newPos += objectSize;
+						}
+					}
+					memberCallbacks.addAll(0, internalCallbacks);
+					return newPos - position;
+				};
+			case STRING:
+				return (memberCallbacks, position) -> {
+					arrData.to = position;
+					data1.add(arrData);
+					long newPos = position;
+					long memberSize = MemberSizeResolver.getSize(arrMember.getSubType());
+					List<HKXMemberCallback> internalCallbacks = new ArrayList<>();
+					for(HKXData data : arrMember.contents()) {
+						if(data instanceof HKXMember) {
+							HKXMember internalMember = (HKXMember) data;
+							HKXMemberHandler memberHandler = memberHandlerFactory.create(internalMember.getType(), 0, "");
+							internalCallbacks.add(memberHandler.write(internalMember, newPos));
+							newPos += memberSize;
 						}
 					}
 					memberCallbacks.addAll(0, internalCallbacks);

@@ -57,7 +57,7 @@ public class HKXMemberHandlerFactory {
 	}
 
 	/**
-	 * Creates the {@link HKXMemberHandler} rekevant to the given {@link HKXMemberTemplate}.
+	 * Creates the {@link HKXMemberHandler} relevant to the given {@link HKXMemberTemplate}.
 	 * @param memberTemplate the {@link HKXMemberTemplate} to base the {@link HKXMemberHandler} on.
 	 * @return the relevant {@link HKXMemberHandler}.
 	 */
@@ -79,6 +79,14 @@ public class HKXMemberHandlerFactory {
 			default:
 				throw new IllegalArgumentException("Unknown type : " + vtype);
 		}
+	}
+	
+	/**
+	 * Creates a APMH to handle pointer stacking at array initialization but the filling of the pointeronly at array writing.
+	 * @return a brand new {@link HKXArrayPointerMemberHandler}.
+	 */
+	HKXArrayPointerMemberHandler createAPMH() {
+		return new HKXArrayPointerMemberHandler(data2List);
 	}
 	
 	/**
