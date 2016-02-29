@@ -11,6 +11,7 @@ class TagXMLDirectMemberHandler {
 	 * @param member the {@link HKXDirectMember} to convert
 	 * @return a {@link String} containign the value of the {@link HKXDirectMember}.
 	 */
+	@SuppressWarnings("unchecked")
 	String getStringValue(HKXDirectMember<?> member) {
 		if(member.get() instanceof Double[]) {
 			Double[] contents = (Double[]) member.get();
@@ -27,7 +28,7 @@ class TagXMLDirectMemberHandler {
 			}
 		}
 		if(member.get() instanceof Character)
-			return "" + (int) ((char) member.get());
+			return "" + (int) ((char) ((HKXDirectMember<Character>) member).get());
 		return "" + member.get();
 	}
 }
