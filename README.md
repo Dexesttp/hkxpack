@@ -1,4 +1,4 @@
-# HKXPack version 0.0.5-alpha
+# HKXPack version 0.0.7-alpha
 
 HKXPack is a tool to 'pack' and 'unpack' to and from hkx files, which is the Havok compressed file format.
 
@@ -17,6 +17,9 @@ To use this tool, you will need a Java Runtime Environement (jre) for Java 8 or 
 ##### Unpack the files  
 Use the command `java -jar hkxpack-cli.jar unpack <filename>.hkx` to extract the file into <filename>.xml
 
+##### Pack the files  
+Use the command `java -jar hkxpack-cli.jar pack <filename>.xml` to pack the file into <filename>.hkx
+
 # Compilation
 
 This project can be built using Maven
@@ -29,7 +32,7 @@ Import this project as a standard Maven project.
 
 # Information
 
-The tool was written for Java 8 (jdk1.8.0_66) using the Oracle JavaSE JDK, and was intended to be a proof of concept.
+The tool was written for Java 8 using the Oracle JavaSE JDK (jdk1.8.0_66), and was originally intended to be a proof of concept.
 
 You may find all available information under /doc. It contains mostly analysis and comparison of the hkx files as well as some software architecture concepts of the hkxpack software.
 
