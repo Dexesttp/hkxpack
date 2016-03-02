@@ -6,12 +6,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.dexesttp.hkxpack.data.HKXData;
-import com.dexesttp.hkxpack.data.HKXObject;
 import com.dexesttp.hkxpack.data.members.HKXArrayMember;
 import com.dexesttp.hkxpack.data.members.HKXMember;
 import com.dexesttp.hkxpack.data.members.HKXPointerMember;
 import com.dexesttp.hkxpack.hkx.data.DataInternal;
-import com.dexesttp.hkxpack.hkx.types.MemberSizeResolver;
+import com.dexesttp.hkxpack.hkxwriter.object.callbacks.HKXDefaultArrayMemberCallback;
+import com.dexesttp.hkxpack.hkxwriter.object.callbacks.HKXMemberCallback;
+import com.dexesttp.hkxpack.hkxwriter.object.callbacks.HKXObjectArrayMemberCallback;
+import com.dexesttp.hkxpack.hkxwriter.object.callbacks.HKXPointerArrayMemberCallback;
+import com.dexesttp.hkxpack.hkxwriter.object.callbacks.HKXStringArrayMemberCallback;
 import com.dexesttp.hkxpack.resources.ByteUtils;
 
 public class HKXArrayMemberHandler implements HKXMemberHandler {
@@ -48,78 +51,26 @@ public class HKXArrayMemberHandler implements HKXMemberHandler {
 		
 		switch(arrMember.getSubType().getFamily()) {
 			case POINTER:
-				final List<HKXArrayPointerMemberHandler> apmhList = new ArrayList<>(); 
-				for(HKXData data : arrMember.contents()) {
-					if(data instanceof HKXPointerMember) {
-						HKXPointerMember internalPointer = (HKXPointerMember) data;
-						HKXArrayPointerMemberHandler arrayPointerMemberHandler = memberHandlerFactory.createAPMH();
-						arrayPointerMemberHandler.setPointer(internalPointer);
-						apmhList.add(arrayPointerMemberHandler);
-					}
-				}
-				return (memberCallbacks, position) -> {
-					arrData.to = position;
-					data1.add(arrData);
-					long newPos = position;
-					for(HKXArrayPointerMemberHandler apmh : apmhList) {
-						long objectSize = MemberSizeResolver.getSize(arrMember.getSubType());
-						apmh.resolve(newPos);
-						newPos += objectSize;
-					}
-					return newPos - position;
-				};
+				return handlePointer(arrData, arrMember);
 			case OBJECT:
-				return (memberCallbacks, position) -> {
-					arrData.to = position;
-					data1.add(arrData);
-					long newPos = position;
-					List<HKXMemberCallback> internalCallbacks = new ArrayList<>();
-					for(HKXData data : arrMember.contents()) {
-						if(data instanceof HKXObject) {
-							HKXObject internalObject = (HKXObject) data;
-							long objectSize = MemberSizeResolver.getSize(internalObject);
-							HKXMemberHandler memberHandler = new HKXObjectMemberHandler(0, memberHandlerFactory.clone(internalCallbacks), internalCallbacks);
-							internalCallbacks.add(memberHandler.write(internalObject, newPos));
-							newPos += objectSize;
-						}
-					}
-					memberCallbacks.addAll(0, internalCallbacks);
-					return newPos - position;
-				};
+				return new HKXObjectArrayMemberCallback(data1, arrData, arrMember, memberHandlerFactory);
 			case STRING:
-				return (memberCallbacks, position) -> {
-					arrData.to = position;
-					data1.add(arrData);
-					long newPos = position;
-					long memberSize = MemberSizeResolver.getSize(arrMember.getSubType());
-					List<HKXMemberCallback> internalCallbacks = new ArrayList<>();
-					for(HKXData data : arrMember.contents()) {
-						if(data instanceof HKXMember) {
-							HKXMember internalMember = (HKXMember) data;
-							HKXMemberHandler memberHandler = memberHandlerFactory.create(internalMember.getType(), 0, "");
-							internalCallbacks.add(memberHandler.write(internalMember, newPos));
-							newPos += memberSize;
-						}
-					}
-					memberCallbacks.addAll(0, internalCallbacks);
-					return newPos - position;
-				};
+				return new HKXStringArrayMemberCallback(data1, arrData, arrMember, memberHandlerFactory);
 			default:
-				return (memberCallbacks, position) -> {
-					arrData.to = position;
-					data1.add(arrData);
-					long newPos = position;
-					long memberSize = MemberSizeResolver.getSize(arrMember.getSubType());
-					for(HKXData data : arrMember.contents()) {
-						if(data instanceof HKXMember) {
-							HKXMember internalMember = (HKXMember) data;
-							HKXMemberHandler memberHandler = memberHandlerFactory.create(internalMember.getType(), 0, "");
-							memberCallbacks.add(memberHandler.write(internalMember, newPos));
-							newPos += memberSize;
-						}
-					}
-					return newPos - position;
-				};
+				return new HKXDefaultArrayMemberCallback(data1, arrData, arrMember, memberHandlerFactory);
 		}
+	}
+
+	private HKXMemberCallback handlePointer(final DataInternal arrData, final HKXArrayMember arrMember) {
+		final List<HKXArrayPointerMemberHandler> apmhList = new ArrayList<>(); 
+		for(HKXData data : arrMember.contents()) {
+			if(data instanceof HKXPointerMember) {
+				HKXPointerMember internalPointer = (HKXPointerMember) data;
+				HKXArrayPointerMemberHandler arrayPointerMemberHandler = memberHandlerFactory.createAPMH();
+				arrayPointerMemberHandler.setPointer(internalPointer);
+				apmhList.add(arrayPointerMemberHandler);
+			}
+		}
+		return new HKXPointerArrayMemberCallback(arrData, data1, arrMember, apmhList);
 	}
 }

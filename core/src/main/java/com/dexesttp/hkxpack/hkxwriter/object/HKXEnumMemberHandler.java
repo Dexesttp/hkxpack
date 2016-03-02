@@ -6,6 +6,7 @@ import java.io.RandomAccessFile;
 import com.dexesttp.hkxpack.data.members.HKXDirectMember;
 import com.dexesttp.hkxpack.data.members.HKXMember;
 import com.dexesttp.hkxpack.descriptor.HKXEnumResolver;
+import com.dexesttp.hkxpack.hkxwriter.object.callbacks.HKXMemberCallback;
 import com.dexesttp.hkxpack.resources.ByteUtils;
 
 public class HKXEnumMemberHandler implements HKXMemberHandler {

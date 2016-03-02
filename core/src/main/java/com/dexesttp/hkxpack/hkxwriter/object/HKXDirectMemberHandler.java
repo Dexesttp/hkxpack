@@ -5,6 +5,7 @@ import java.io.RandomAccessFile;
 
 import com.dexesttp.hkxpack.data.members.HKXMember;
 import com.dexesttp.hkxpack.hkx.types.MemberDataResolver;
+import com.dexesttp.hkxpack.hkxwriter.object.callbacks.HKXMemberCallback;
 
 public class HKXDirectMemberHandler implements HKXMemberHandler {
 	private final RandomAccessFile outFile;

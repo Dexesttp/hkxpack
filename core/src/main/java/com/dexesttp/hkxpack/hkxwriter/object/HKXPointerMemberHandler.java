@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.dexesttp.hkxpack.data.members.HKXMember;
 import com.dexesttp.hkxpack.data.members.HKXPointerMember;
+import com.dexesttp.hkxpack.hkxwriter.object.callbacks.HKXMemberCallback;
 import com.dexesttp.hkxpack.hkxwriter.utils.PointerObject;
 
 public class HKXPointerMemberHandler implements HKXMemberHandler {

@@ -11,6 +11,7 @@ import com.dexesttp.hkxpack.descriptor.enums.HKXType;
 import com.dexesttp.hkxpack.descriptor.members.HKXMemberTemplate;
 import com.dexesttp.hkxpack.hkx.data.DataExternal;
 import com.dexesttp.hkxpack.hkx.data.DataInternal;
+import com.dexesttp.hkxpack.hkxwriter.object.callbacks.HKXMemberCallback;
 import com.dexesttp.hkxpack.hkxwriter.utils.PointerObject;
 
 public class HKXMemberHandlerFactory {

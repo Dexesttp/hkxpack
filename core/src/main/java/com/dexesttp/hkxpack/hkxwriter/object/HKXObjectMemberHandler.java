@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.dexesttp.hkxpack.data.HKXObject;
 import com.dexesttp.hkxpack.data.members.HKXMember;
+import com.dexesttp.hkxpack.hkxwriter.object.callbacks.HKXMemberCallback;
 
 public class HKXObjectMemberHandler implements HKXMemberHandler {
 	private final HKXMemberHandlerFactory memberHandlerFactory;

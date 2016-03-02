@@ -8,6 +8,7 @@ import com.dexesttp.hkxpack.data.HKXObject;
 import com.dexesttp.hkxpack.data.members.HKXMember;
 import com.dexesttp.hkxpack.descriptor.members.HKXMemberTemplate;
 import com.dexesttp.hkxpack.hkx.types.MemberSizeResolver;
+import com.dexesttp.hkxpack.hkxwriter.object.callbacks.HKXMemberCallback;
 
 /**
  * Handles writing a {@link HKXObject}'s contents into a {@link File}.

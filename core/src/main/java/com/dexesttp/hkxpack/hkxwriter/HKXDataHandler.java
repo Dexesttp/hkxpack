@@ -8,6 +8,7 @@ import java.util.List;
 import com.dexesttp.hkxpack.data.HKXFile;
 import com.dexesttp.hkxpack.data.HKXObject;
 import com.dexesttp.hkxpack.descriptor.HKXEnumResolver;
+import com.dexesttp.hkxpack.hkx.HKXUtils;
 import com.dexesttp.hkxpack.hkx.classnames.ClassnamesData;
 import com.dexesttp.hkxpack.hkx.data.DataExternal;
 import com.dexesttp.hkxpack.hkx.data.DataInternal;
@@ -56,7 +57,7 @@ class HKXDataHandler {
 		HKXObjectHandler objectHandler = new HKXObjectHandler(outFile, cnameData, data, enumResolver, data1queue, data2queue, data3queue, resolver);
 		for(HKXObject object : file.content()) {
 			currentPos = objectHandler.handle(object, currentPos);
-			currentPos = snap(currentPos);
+			currentPos = HKXUtils.snapLine(currentPos);
 		}
 		return currentPos;
 	}
@@ -82,11 +83,5 @@ class HKXDataHandler {
 			}
 		}
 		handler.write(data1queue, data2resolved, data3queue);
-	}
-
-	private long snap(long currentPos) {
-		if(currentPos % 0x10 == 0)
-			return currentPos;
-		return (1 + currentPos / 0x10) * 0x10;
 	}
 }

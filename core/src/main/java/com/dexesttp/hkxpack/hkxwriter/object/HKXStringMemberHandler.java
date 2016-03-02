@@ -6,7 +6,9 @@ import java.util.List;
 
 import com.dexesttp.hkxpack.data.members.HKXMember;
 import com.dexesttp.hkxpack.data.members.HKXStringMember;
+import com.dexesttp.hkxpack.hkx.HKXUtils;
 import com.dexesttp.hkxpack.hkx.data.DataInternal;
+import com.dexesttp.hkxpack.hkxwriter.object.callbacks.HKXMemberCallback;
 
 public class HKXStringMemberHandler implements HKXMemberHandler {
 	private final RandomAccessFile outFile;
@@ -30,7 +32,7 @@ public class HKXStringMemberHandler implements HKXMemberHandler {
 			outFile.seek(position);
 			outFile.writeBytes(strMember.get());
 			outFile.writeByte(0x00);
-			return strMember.get().length() + 1;
+			return HKXUtils.snapString(strMember.get().length() + 1);
 		};
 	}
 

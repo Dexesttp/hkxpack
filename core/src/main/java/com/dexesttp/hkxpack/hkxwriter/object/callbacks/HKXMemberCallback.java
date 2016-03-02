@@ -1,4 +1,4 @@
-package com.dexesttp.hkxpack.hkxwriter.object;
+package com.dexesttp.hkxpack.hkxwriter.object.callbacks;
 
 import java.io.IOException;
 import java.util.List;
