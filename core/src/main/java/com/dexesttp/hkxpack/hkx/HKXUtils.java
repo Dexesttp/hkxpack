@@ -4,21 +4,6 @@ package com.dexesttp.hkxpack.hkx;
  * Contain utils for the HKX classes.
  */
 public class HKXUtils {
-
-	/**
-	 * Snap to the next 0x04 factor if needed.
-	 * @param l the value to snap.
-	 * @return the snapped size.
-	 */
-	// TODO maybe improve SnapSize if it happens it isn't good enough.
-	public static long snapSize(long l) {
-		long smallSize = l / 4;
-		smallSize *= 4;
-		if(l == smallSize)
-			return l;
-		else
-			return smallSize + 4;
-	}
 	
 	/**
 	 * Snap the object's position to the relevant byte.
@@ -53,5 +38,17 @@ public class HKXUtils {
 		if(currentSize % 0x10 == 0)
 			return currentSize;
 		return (1 + currentSize / 0x10) * 0x10;
+	}
+
+	/**
+	 * Snap a size to the given snap and offset to the given offset.
+	 * @param offset the offset to snap
+	 * @param snap the snap.
+	 * @return
+	 */
+	public static long snapSize(long offset, long snap) {
+		if(offset % snap == 0)
+			return offset;
+		return (1 + offset / snap) * snap;
 	}
 }

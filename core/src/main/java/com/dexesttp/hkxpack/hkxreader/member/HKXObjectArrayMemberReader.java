@@ -9,7 +9,7 @@ import com.dexesttp.hkxpack.descriptor.HKXDescriptorFactory;
 import com.dexesttp.hkxpack.descriptor.enums.HKXType;
 import com.dexesttp.hkxpack.descriptor.exceptions.ClassFileReadError;
 import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
-import com.dexesttp.hkxpack.hkx.types.MemberSizeResolver;
+import com.dexesttp.hkxpack.hkx.types.ObjectSizeResolver;
 import com.dexesttp.hkxpack.hkxreader.HKXObjectReader;
 import com.dexesttp.hkxpack.hkxreader.HKXReaderConnector;
 
@@ -22,7 +22,7 @@ class HKXObjectArrayMemberReader extends HKXArrayMemberReader {
 		super(connector, name, HKXType.TYPE_STRUCT, offset);
 		this.reader = reader;
 		this.descriptor = descriptor;
-		this.contentSize = (int) MemberSizeResolver.getSize(descriptor, descriptorFactory);
+		this.contentSize = (int) ObjectSizeResolver.getSize(descriptor, descriptorFactory);
 	}
 
 	@Override

@@ -8,7 +8,7 @@ import com.dexesttp.hkxpack.data.HKXData;
 import com.dexesttp.hkxpack.data.HKXObject;
 import com.dexesttp.hkxpack.data.members.HKXArrayMember;
 import com.dexesttp.hkxpack.hkx.data.DataInternal;
-import com.dexesttp.hkxpack.hkx.types.MemberSizeResolver;
+import com.dexesttp.hkxpack.hkx.types.ObjectSizeResolver;
 import com.dexesttp.hkxpack.hkxwriter.object.HKXMemberHandler;
 import com.dexesttp.hkxpack.hkxwriter.object.HKXMemberHandlerFactory;
 import com.dexesttp.hkxpack.hkxwriter.object.HKXObjectMemberHandler;
@@ -35,7 +35,7 @@ public class HKXObjectArrayMemberCallback implements HKXMemberCallback {
 		for(HKXData data : arrMember.contents()) {
 			if(data instanceof HKXObject) {
 				HKXObject internalObject = (HKXObject) data;
-				long objectSize = MemberSizeResolver.getSize(internalObject);
+				long objectSize = ObjectSizeResolver.getSize(internalObject);
 				HKXMemberHandler memberHandler = new HKXObjectMemberHandler(0, memberHandlerFactory.clone(internalCallbacks), internalCallbacks);
 				internalCallbacks.add(memberHandler.write(internalObject, newPos));
 				newPos += objectSize;

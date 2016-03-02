@@ -13,7 +13,7 @@ import com.dexesttp.hkxpack.hkx.classnames.ClassnamesData;
 import com.dexesttp.hkxpack.hkx.data.DataExternal;
 import com.dexesttp.hkxpack.hkx.data.DataInternal;
 import com.dexesttp.hkxpack.hkx.header.SectionData;
-import com.dexesttp.hkxpack.hkx.types.MemberSizeResolver;
+import com.dexesttp.hkxpack.hkx.types.ObjectSizeResolver;
 import com.dexesttp.hkxpack.hkxwriter.object.HKXInternalObjectHandler;
 import com.dexesttp.hkxpack.hkxwriter.object.HKXMemberHandlerFactory;
 import com.dexesttp.hkxpack.hkxwriter.object.callbacks.HKXMemberCallback;
@@ -61,7 +61,7 @@ public class HKXObjectHandler {
 		objectHandler.write(object, currentPos);
 		
 		// Resolve the member handlers.
-		currentPos += HKXUtils.snapLine(MemberSizeResolver.getSize(object));
+		currentPos += HKXUtils.snapLine(ObjectSizeResolver.getSize(object));
 		while(!memberCallbacks.isEmpty()) {
 			HKXMemberCallback callback = memberCallbacks.remove(0);
 			currentPos += callback.process(memberCallbacks, currentPos);

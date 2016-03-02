@@ -7,7 +7,7 @@ import java.util.List;
 import com.dexesttp.hkxpack.data.HKXObject;
 import com.dexesttp.hkxpack.data.members.HKXMember;
 import com.dexesttp.hkxpack.descriptor.members.HKXMemberTemplate;
-import com.dexesttp.hkxpack.hkx.types.MemberSizeResolver;
+import com.dexesttp.hkxpack.hkx.types.ObjectSizeResolver;
 import com.dexesttp.hkxpack.hkxwriter.object.callbacks.HKXMemberCallback;
 
 /**
@@ -38,7 +38,7 @@ public class HKXInternalObjectHandler {
 			HKXMemberHandler memberHandler = memberHandlerFactory.create(memberTemplate.vtype, memberTemplate.offset, memberTemplate.target);
 			memberCallbacks.add(memberHandler.write(member, currentPos));
 		}
-		return currentPos + MemberSizeResolver.getSize(object);
+		return currentPos + ObjectSizeResolver.getSize(object);
 	}
 
 }

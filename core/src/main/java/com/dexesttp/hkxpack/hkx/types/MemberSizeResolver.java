@@ -1,14 +1,7 @@
 package com.dexesttp.hkxpack.hkx.types;
 
-import java.util.List;
-
-import com.dexesttp.hkxpack.data.HKXObject;
 import com.dexesttp.hkxpack.descriptor.HKXDescriptor;
-import com.dexesttp.hkxpack.descriptor.HKXDescriptorFactory;
 import com.dexesttp.hkxpack.descriptor.enums.HKXType;
-import com.dexesttp.hkxpack.descriptor.exceptions.ClassFileReadError;
-import com.dexesttp.hkxpack.descriptor.members.HKXMemberTemplate;
-import com.dexesttp.hkxpack.hkx.HKXUtils;
 
 /**
  * Intended to retrieve {@link HKXType}-specific data.
@@ -80,38 +73,5 @@ public class MemberSizeResolver {
 				break;
 		}
 		throw new IllegalArgumentException(type.toString() + " can't be analyzed with MemberTypeResolver#getSize");
-	}
-
-	/**
-	 * Retrieves the size of a {@link HKXDescriptor}, including end padding if needed.
-	 * @param descriptor the {@link HKXDescriptor} to retrieve the size from.
-	 * @return the {@link HKXDescriptor}'s size, in bytes.
-	 * @throws ClassFileReadError if there was an error resolving this {@link HKXDescriptor}'s subclass 
-	 */
-	public static long getSize(HKXDescriptor descriptor, HKXDescriptorFactory descriptorFactory) throws ClassFileReadError {
-		List<HKXMemberTemplate> templates = descriptor.getMemberTemplates();
-		if(templates.isEmpty())
-			return 0;
-		HKXMemberTemplate lastTemplate = templates.get(templates.size() - 1);
-		if(lastTemplate.vtype != HKXType.TYPE_STRUCT)
-			return HKXUtils.snapSize(lastTemplate.offset + getSize(lastTemplate.vtype));
-		HKXDescriptor internalDescriptor = descriptorFactory.get(lastTemplate.target);
-		return HKXUtils.snapSize(lastTemplate.offset + getSize(internalDescriptor, descriptorFactory));
-	}
-
-	/**
-	 * Retrieves the size of a {@link HKXObject}, including end padding if needed.
-	 * @param object the {@link HKXObject} to retrieve the size from.
-	 * @return the {@link HKXObject}'s size, in bytes.
-	 */
-	public static long getSize(HKXObject object) {
-		List<HKXMemberTemplate> templates = object.getDescriptor().getMemberTemplates();
-		if(templates.isEmpty())
-			return 0;
-		HKXMemberTemplate lastTemplate = templates.get(templates.size() - 1);
-		if(lastTemplate.vtype != HKXType.TYPE_STRUCT)
-			return HKXUtils.snapSize(lastTemplate.offset + getSize(lastTemplate.vtype));
-		HKXObject internalObject = (HKXObject) object.members().get(templates.size() - 1);
-		return HKXUtils.snapSize(lastTemplate.offset + getSize(internalObject));
 	}
 }
