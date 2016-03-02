@@ -126,6 +126,8 @@ public class ClassXMLReader {
 		if(!etype.isEmpty())
 			etype = classname + "." + etype;
 		String arrsize = DOMUtils.getNodeAttr("arrsize", memberNode);
+		if(!arrsize.equals("0"))
+			System.err.println("Warning ! an unsupported member has been detected. The file might not work in-game.");
 		String flags = DOMUtils.getNodeAttr("flags", memberNode);
 		HKXMemberTemplate template = new HKXMemberTemplate(name, offset, vtype, vsubtype, ctype, etype, arrsize, flags);
 		return template;
