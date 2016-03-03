@@ -17,7 +17,7 @@ public class TagXMLNodeHandler {
 	private final TagXMLObjectHandler objectHandler;
 
 	TagXMLNodeHandler(HKXDescriptorFactory descriptorFactory) {
-		this.memberHandler = new TagXMLMemberHandler(this);
+		this.memberHandler = new TagXMLMemberHandler(this, descriptorFactory);
 		this.objectHandler = new TagXMLObjectHandler(descriptorFactory, memberHandler);
 	}
 

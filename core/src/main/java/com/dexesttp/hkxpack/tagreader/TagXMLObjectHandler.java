@@ -39,11 +39,8 @@ class TagXMLObjectHandler {
 	HKXObject handleObject(Node objectNode, String className) throws ClassFileReadError, InvalidTagXMLException {
 		HKXDescriptor classDescriptor = descriptorFactory.get(className);
 		// Create object 
-		String objectName = objectNode == null ? "" : DOMUtils.getNodeAttr("name", objectNode);
+		String objectName = DOMUtils.getNodeAttr("name", objectNode);
 		HKXObject result = new HKXObject(objectName, classDescriptor);
-		
-		if(objectNode == null)
-			return result;
 		
 		// Fill object
 		for(HKXMemberTemplate memberTemplate : classDescriptor.getMemberTemplates()) {

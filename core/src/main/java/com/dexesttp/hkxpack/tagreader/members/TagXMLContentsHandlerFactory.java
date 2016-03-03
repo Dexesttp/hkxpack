@@ -3,11 +3,9 @@ package com.dexesttp.hkxpack.tagreader.members;
 import com.dexesttp.hkxpack.data.members.HKXDirectMember;
 import com.dexesttp.hkxpack.data.members.HKXPointerMember;
 import com.dexesttp.hkxpack.data.members.HKXStringMember;
-import com.dexesttp.hkxpack.descriptor.enums.Flag;
 import com.dexesttp.hkxpack.descriptor.enums.HKXType;
 import com.dexesttp.hkxpack.l10n.SBundle;
 import com.dexesttp.hkxpack.tagreader.TagXMLNodeHandler;
-import com.dexesttp.hkxpack.tagreader.exceptions.InvalidTagXMLException;
 
 /**
  * Allows creating {@link TagXMLContentsHandler}s.
@@ -34,34 +32,19 @@ public class TagXMLContentsHandlerFactory {
 				return new TagXMLDirectHandler();
 			case ENUM:
 				return (member, memberTemplate) -> {
-						HKXDirectMember<String> directMember = new HKXDirectMember<>(memberTemplate.name, memberTemplate.vtype);
-						if(member == null) {
-							if(memberTemplate.flag == Flag.SERIALIZE_IGNORED)
-								return directMember;
-							throw new InvalidTagXMLException(SBundle.getString("error.tag.read.member") + memberTemplate.name);
-						}
-						directMember.set(member.getTextContent());
-						return directMember;
+						HKXDirectMember<String> enumMember = new HKXDirectMember<>(memberTemplate.name, memberTemplate.vtype);
+						enumMember.set(member.getTextContent());
+						return enumMember;
 					};
 			case STRING:
 				return (member, memberTemplate) -> {
 						HKXStringMember stringMember = new HKXStringMember(memberTemplate.name, memberTemplate.vtype);
-						if(member == null) {
-							if(memberTemplate.flag == Flag.SERIALIZE_IGNORED)
-								return stringMember;
-							throw new InvalidTagXMLException(SBundle.getString("error.tag.read.member") + memberTemplate.name);
-						}
 						stringMember.set(member.getTextContent());
 						return stringMember;
 					};
 			case POINTER:
 				return (member, memberTemplate) -> {
 						HKXPointerMember pointerMember = new HKXPointerMember(memberTemplate.name, memberTemplate.vtype, memberTemplate.vsubtype, memberTemplate.target);
-						if(member == null) {
-							if(memberTemplate.flag == Flag.SERIALIZE_IGNORED)
-								return pointerMember;
-							throw new InvalidTagXMLException(SBundle.getString("error.tag.read.member") + memberTemplate.name);
-						}
 						pointerMember.set(member.getTextContent());
 						return pointerMember;
 					};
