@@ -15,11 +15,13 @@ import com.dexesttp.hkxpack.tagwriter.TagXMLWriter;
 
 public class TestView {
 	public static void main(String[] args) {
+		read(args, "D:\\Documents\\SANDBOX\\FO4\\hkx_files\\BloatflyRootBehavior.hkx");
 		write(args);
+		read(args, "D:\\Documents\\SANDBOX\\FO4\\hkx_files\\BloatflyRootBehavior-new.hkx");
 	}
 	
-	public static void read(String[] args) {
-		String inputFileName = "D:\\Documents\\SANDBOX\\FO4\\hkx_files\\DeathChest01.hkx";
+	public static void read(String[] args, String name) {
+		String inputFileName = name;
 		String outputFileName =  RandomUtils.makeFromFileName(inputFileName);
 		DisplayProperties.displayDebugInfo = true;
 		DisplayProperties.displayFileDebugInfo = true;
@@ -33,7 +35,7 @@ public class TestView {
 			HKXDescriptorFactory descriptorFactory = new HKXDescriptorFactory(enumResolver);
 			HKXReader reader = new HKXReader(inFile, descriptorFactory, enumResolver);
 			HKXFile hkxFile = reader.read();
-			
+
 			// Write file
 			File outFile = new File(outputFileName);
 			TagXMLWriter writer = new TagXMLWriter(outFile);
@@ -44,8 +46,8 @@ public class TestView {
 	}
 	
 	public static void write(String[] args) {
-		String inputFileName = "D:\\Documents\\SANDBOX\\FO4\\hkx_files\\Idle.xml";
-		String outputFileName = "D:\\Documents\\SANDBOX\\FO4\\hkx_files\\Idle-out.hkx";
+		String inputFileName = "D:\\Documents\\SANDBOX\\FO4\\hkx_files\\BloatflyRootBehavior.xml";
+		String outputFileName = "D:\\Documents\\SANDBOX\\FO4\\hkx_files\\BloatflyRootBehavior-new.hkx";
 		DisplayProperties.displayDebugInfo = true;
 		DisplayProperties.displayFileDebugInfo = true;
 		DisplayProperties.displayReadTypesInfo = true;
