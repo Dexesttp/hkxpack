@@ -1,11 +1,16 @@
 package com.dexesttp.hkxpack.tagwriter;
 
+import java.util.List;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import com.dexesttp.hkxpack.data.HKXObject;
 import com.dexesttp.hkxpack.data.members.HKXMember;
+import com.dexesttp.hkxpack.descriptor.enums.Flag;
+import com.dexesttp.hkxpack.descriptor.members.HKXMemberTemplate;
+import com.dexesttp.hkxpack.resources.DisplayProperties;
 
 /**
  * Converts {@link HKXObject} instances to {@link Nodes}<br >
@@ -40,8 +45,16 @@ class TagXMLObjectCreator {
 			res.setAttribute("name", object.getName());
 			res.setAttribute("signature","0x" + Long.toHexString(object.getDescriptor().getSignature()));
 		}
-		for(HKXMember member : object.members()) {
+		List<HKXMember> members = object.members();
+		List<HKXMemberTemplate> memberTemplates = object.getDescriptor().getMemberTemplates();
+		for(int i = 0; i < members.size(); i++) {
+			HKXMember member = members.get(i);
 			Node memberNode = memberCreator.create(member);
+			if(memberTemplates.get(i).flag == Flag.SERIALIZE_IGNORED && DisplayProperties.ignoreSerialized) {
+				memberNode = document.createComment(" " + member.getName() + " SERIALIZE_IGNORED ");
+			} else {
+				memberNode = memberCreator.create(member);
+			}
 			res.appendChild(memberNode);
 		}
 		return res;
