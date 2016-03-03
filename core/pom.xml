@@ -3,7 +3,7 @@
   <parent>
     <groupId>com.dexesttp</groupId>
     <artifactId>hkxpack</artifactId>
-    <version>0.0.5-alpha</version>
+    <version>0.0.7-alpha</version>
   </parent>
   
   <groupId>com.dexesttp.hkxpack</groupId>
@@ -11,4 +11,11 @@
   
   <name>HKXPack Core</name>
   <description>Set of core modules containing the logic to unpack and pack the hkx files</description>
+  <dependencies>
+  	<dependency>
+  		<groupId>com.google.guava</groupId>
+  		<artifactId>guava</artifactId>
+  		<version>19.0</version>
+  	</dependency>
+  </dependencies>
 </project>

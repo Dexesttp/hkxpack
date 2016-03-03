@@ -11,6 +11,8 @@ public class Command_help implements Command {
 		System.out.println("Arguments :");
 		System.out.println("\t"+"unpack"	+"\t" +"<filename>" + "\t\t" + "Extracts <filename>.hkx into <filename>.xml");
 		System.out.println("\t\t\t" +"-o <outputfile>" + "\t" + "Set the output file");
+		System.out.println("\t"+"pack"	+"\t" +"<filename>" + "\t\t" + "Compress <filename>.xml into <filename>.hkx");
+		System.out.println("\t\t\t" +"-o <outputfile>" + "\t" + "Set the output file");
 		System.out.println("\t"+"help"		+"\t\t\t\t"+ "Show this window");
 		System.out.println();
 		System.out.println("Report bugs or findings at github.com/dexesttp/hkxpack");

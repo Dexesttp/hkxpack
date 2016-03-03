@@ -30,9 +30,8 @@ public class ClassnamesInterface {
 		file.seek(section.offset);
 		for(Entry<Long, Classname> classData : data.entrySet()) {
 			file.write(classData.getValue().uuid);
-			file.writeByte(0x90);
-			data.put(file.getFilePointer(), classData.getValue());
-			file.writeChars(classData.getValue().name);
+			file.writeByte(0x09);
+			file.writeBytes(classData.getValue().name);
 			file.writeByte(0x0);
 		}
 		// Fill the end with FFs and then return the pos.
@@ -41,7 +40,7 @@ public class ClassnamesInterface {
 		pos += toDo;
 		for(;toDo>0;toDo--)
 			file.writeByte(-1);
-		return pos;
+		return pos + toDo;
 	}
 	
 	public ClassnamesData extract() throws IOException {

@@ -4,76 +4,85 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 
-import org.w3c.dom.Document;
-
-import com.dexesttp.hkxpack.data.logic.Reader;
+import com.dexesttp.hkxpack.data.HKXFile;
+import com.dexesttp.hkxpack.descriptor.HKXDescriptorFactory;
+import com.dexesttp.hkxpack.descriptor.HKXEnumResolver;
 import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
+import com.dexesttp.hkxpack.hkxreader.HKXReader;
+import com.dexesttp.hkxpack.hkxwriter.HKXWriter;
 import com.dexesttp.hkxpack.resources.LoggerUtil;
-import com.dexesttp.hkxpack.xml.classxml.exceptions.NonImportedClassException;
-import com.dexesttp.hkxpack.xml.classxml.exceptions.NonResolvedClassException;
-import com.dexesttp.hkxpack.xml.classxml.exceptions.UnknownClassException;
-import com.dexesttp.hkxpack.xml.classxml.exceptions.UnknownEnumerationException;
-import com.dexesttp.hkxpack.xml.classxml.exceptions.UnsupportedCombinaisonException;
+import com.dexesttp.hkxpack.tagreader.TagXMLReader;
+import com.dexesttp.hkxpack.tagwriter.TagXMLWriter;
 
+/**
+ * Easy entry point for the HKXPack core.
+ * @since 0.0.1-alpha
+ * <p>
+ * These methods use the following classes :<br>
+ * {@link HKXReader} to read a HKX file into a {@link HKXFile} DOM-like component.<br>
+ * {@link TagXMLReader} to read a XML file inot a {@link HKXFile} DOM-like component.<br>
+ * {@link HKXWriter} to write a {@link HKXFile} into a hkx File.<br>
+ * {@link TagXMLWriter} to write a {@link HKXFile} into a xml File.
+ */
 public class Main {
 	/**
-	 * Main entry point.
-	 * @param outputFile 
+	 * Convert a HKXFile to a XML file.
+	 * @param inputFileName
+	 * @param outputFileName 
 	 */
-	public void exec(String fileName, String outputFile) {
+	public void read(String inputFileName, String outputFileName) {
 		try {
-			// Get output document
+			
 			// Read file
-			File file = new File(fileName);
+			File inFile = new File(inputFileName);
+			HKXEnumResolver enumResolver = new HKXEnumResolver();
+			HKXDescriptorFactory descriptorFactory = new HKXDescriptorFactory(enumResolver);
+			HKXReader reader = new HKXReader(inFile, descriptorFactory, enumResolver);
+			HKXFile hkxFile = reader.read();
 			
-			Reader reader = new Reader();
-			Document document = reader.read(file);
+			// Write file
+			File outFile = new File(outputFileName);
+			TagXMLWriter writer = new TagXMLWriter(outFile);
+			writer.write(hkxFile);
 			
-			// Output result
-	        TransformerFactory transformerFactory =
-	                 TransformerFactory.newInstance();
-            Transformer transformer =
-	                 transformerFactory.newTransformer();
-            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-            transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-            transformer.setOutputProperty(OutputKeys.ENCODING, "ascii");
-        	transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
-            DOMSource source = new DOMSource(document);
-			
-			StreamResult outResult;
-			if(outputFile == "")
-				outResult = new StreamResult(System.out);
-			else
-				outResult = new StreamResult(new File(outputFile));
-	        transformer.transform(source, outResult);
-	        
+			// Print logs
 	        LoggerUtil.output();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-		} catch (TransformerException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (NonResolvedClassException e) {
-			e.printStackTrace();
-		} catch (UnknownClassException e) {
 			e.printStackTrace();
 		} catch (InvalidPositionException e) {
 			e.printStackTrace();
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
-		} catch (UnsupportedCombinaisonException e) {
+		} catch (TransformerException e) {
 			e.printStackTrace();
-		} catch (UnknownEnumerationException e) {
+		} catch (ParserConfigurationException e) {
 			e.printStackTrace();
-		} catch (NonImportedClassException e) {
+		}
+	}
+	
+	/**
+	 * Convert a XML file to an HKX file.
+	 * @param inputFileName
+	 * @param outputFileName
+	 */
+	public void write(String inputFileName, String outputFileName) {
+		try {
+			// Read file
+			File inFile = new File(inputFileName);
+			HKXEnumResolver enumResolver = new HKXEnumResolver();
+			HKXDescriptorFactory descriptorFactory = new HKXDescriptorFactory(enumResolver);
+			TagXMLReader reader = new TagXMLReader(inFile, descriptorFactory);
+			HKXFile file = reader.read();
+			
+			File outFile = new File(outputFileName);
+			HKXWriter writer = new HKXWriter(outFile, enumResolver);
+			writer.write(file);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

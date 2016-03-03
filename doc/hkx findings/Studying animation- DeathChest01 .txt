@@ -1,0 +1,20 @@
+What we know (from Highflex's Havok2FBX tool) :
+
+ - Animations conversion software use the following files to create the actual animation data :
+	A skeleton
+	An animation file
+
+ - The output can be put in a FBX fle, which will then be self-sufficient.
+	An FBX file contains : 
+
+There is a number of members that can be related easily to each other :
+
+hkaSplineCompressedAnimation [#92]:
+	Number of transform tracks <=> annotation tracks (size)
+	Num frames <=> reference Frame samples (size) of target extractedMotion
+	maxFramesPerBlock * frameDuration => blockDuration
+	1 / blockDuration => blockInverseDuration
+	duration <=> blockDuration * numFrames / maxFramesPerBlock
+	
+hkaAnimationBinding [#94]:
+	Transform Track To Bone Indice (size) <=> number of Transform Tracks of target animation
