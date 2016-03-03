@@ -62,6 +62,7 @@ public class MemberDataResolver {
 						(double) ByteUtils.getFloat(b13)
 				});
 				return member7;
+			case TYPE_MATRIX4:
 			case TYPE_VECTOR4:
 			case TYPE_QUATERNION:
 			case TYPE_TRANSFORM:
@@ -164,6 +165,7 @@ public class MemberDataResolver {
 						memberMt3_2[0], memberMt3_2[1], memberMt3_2[2], memberMt3_2[3],
 						memberMt3_3[0], memberMt3_3[1], memberMt3_3[2], memberMt3_3[3]
 				};
+			case TYPE_MATRIX4:
 			case TYPE_VECTOR4:
 			case TYPE_QUATERNION:
 			case TYPE_TRANSFORM:

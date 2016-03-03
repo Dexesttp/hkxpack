@@ -50,6 +50,7 @@ public class MemberSizeResolver {
 		// Complex values
 			case TYPE_MATRIX3:
 				return 0x0A;
+			case TYPE_MATRIX4:
 			case TYPE_VECTOR4:
 			case TYPE_QUATERNION:
 			case TYPE_TRANSFORM:

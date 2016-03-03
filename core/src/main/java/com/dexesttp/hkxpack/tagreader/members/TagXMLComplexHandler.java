@@ -37,6 +37,7 @@ public class TagXMLComplexHandler implements TagXMLContentsHandler {
 		switch(memberType) {
 			case TYPE_MATRIX3:
 				return pattern3;
+			case TYPE_MATRIX4:
 			case TYPE_VECTOR4:
 			case TYPE_TRANSFORM:
 			case TYPE_QUATERNION:
