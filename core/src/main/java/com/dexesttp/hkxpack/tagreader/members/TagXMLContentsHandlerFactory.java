@@ -1,15 +1,13 @@
 package com.dexesttp.hkxpack.tagreader.members;
 
-import org.w3c.dom.Node;
-
 import com.dexesttp.hkxpack.data.members.HKXDirectMember;
-import com.dexesttp.hkxpack.data.members.HKXMember;
 import com.dexesttp.hkxpack.data.members.HKXPointerMember;
 import com.dexesttp.hkxpack.data.members.HKXStringMember;
+import com.dexesttp.hkxpack.descriptor.enums.Flag;
 import com.dexesttp.hkxpack.descriptor.enums.HKXType;
-import com.dexesttp.hkxpack.descriptor.members.HKXMemberTemplate;
 import com.dexesttp.hkxpack.l10n.SBundle;
 import com.dexesttp.hkxpack.tagreader.TagXMLNodeHandler;
+import com.dexesttp.hkxpack.tagreader.exceptions.InvalidTagXMLException;
 
 /**
  * Allows creating {@link TagXMLContentsHandler}s.
@@ -35,32 +33,38 @@ public class TagXMLContentsHandlerFactory {
 			case DIRECT:
 				return new TagXMLDirectHandler();
 			case ENUM:
-				return new TagXMLContentsHandler() {
-					@Override
-					public HKXMember handleNode(Node member, HKXMemberTemplate memberTemplate) {
+				return (member, memberTemplate) -> {
 						HKXDirectMember<String> directMember = new HKXDirectMember<>(memberTemplate.name, memberTemplate.vtype);
+						if(member == null) {
+							if(memberTemplate.flag == Flag.SERIALIZE_IGNORED)
+								return directMember;
+							throw new InvalidTagXMLException(SBundle.getString("error.tag.read.member") + memberTemplate.name);
+						}
 						directMember.set(member.getTextContent());
 						return directMember;
-					}
-				};
+					};
 			case STRING:
-				return new TagXMLContentsHandler() {
-					@Override
-					public HKXMember handleNode(Node member, HKXMemberTemplate memberTemplate) {
+				return (member, memberTemplate) -> {
 						HKXStringMember stringMember = new HKXStringMember(memberTemplate.name, memberTemplate.vtype);
+						if(member == null) {
+							if(memberTemplate.flag == Flag.SERIALIZE_IGNORED)
+								return stringMember;
+							throw new InvalidTagXMLException(SBundle.getString("error.tag.read.member") + memberTemplate.name);
+						}
 						stringMember.set(member.getTextContent());
 						return stringMember;
-					}
-				};
+					};
 			case POINTER:
-				return new TagXMLContentsHandler() {
-					@Override
-					public HKXMember handleNode(Node member, HKXMemberTemplate memberTemplate) {
+				return (member, memberTemplate) -> {
 						HKXPointerMember pointerMember = new HKXPointerMember(memberTemplate.name, memberTemplate.vtype, memberTemplate.vsubtype, memberTemplate.target);
+						if(member == null) {
+							if(memberTemplate.flag == Flag.SERIALIZE_IGNORED)
+								return pointerMember;
+							throw new InvalidTagXMLException(SBundle.getString("error.tag.read.member") + memberTemplate.name);
+						}
 						pointerMember.set(member.getTextContent());
 						return pointerMember;
-					}
-				};
+					};
 			case COMPLEX:
 				return new TagXMLComplexHandler();
 			case ARRAY:

@@ -7,8 +7,11 @@ import org.w3c.dom.Node;
 
 import com.dexesttp.hkxpack.data.members.HKXDirectMember;
 import com.dexesttp.hkxpack.data.members.HKXMember;
+import com.dexesttp.hkxpack.descriptor.enums.Flag;
 import com.dexesttp.hkxpack.descriptor.enums.HKXType;
 import com.dexesttp.hkxpack.descriptor.members.HKXMemberTemplate;
+import com.dexesttp.hkxpack.l10n.SBundle;
+import com.dexesttp.hkxpack.tagreader.exceptions.InvalidTagXMLException;
 
 public class TagXMLComplexHandler implements TagXMLContentsHandler {
 	private static final String numMatch = "(-?\\d+(?:\\.\\d+)?(?:E-?\\d+)? ?)";
@@ -20,10 +23,34 @@ public class TagXMLComplexHandler implements TagXMLContentsHandler {
 			+ "\\("+numMatch+numMatch+numMatch+"\\)");
 	
 	@Override
-	public HKXMember handleNode(Node member, HKXMemberTemplate memberTemplate) {
+	public HKXMember handleNode(Node member, HKXMemberTemplate memberTemplate) throws InvalidTagXMLException {
+		if(member == null) {
+			if(memberTemplate.flag == Flag.SERIALIZE_IGNORED)
+				return emptyMember(memberTemplate);
+			throw new InvalidTagXMLException(SBundle.getString("error.tag.read.member") + memberTemplate.name);
+		}
 		return handleString(member.getTextContent(), memberTemplate.name, memberTemplate.vtype);
 	}
 	
+	private HKXMember emptyMember(HKXMemberTemplate memberTemplate) {
+		HKXDirectMember<Double[]> member = new HKXDirectMember<>(memberTemplate.name, memberTemplate.vtype);
+		switch(memberTemplate.vtype) {
+			case TYPE_MATRIX3:
+				member.set(new Double[3]);
+				break;
+			case TYPE_VECTOR4:
+			case TYPE_TRANSFORM:
+			case TYPE_QUATERNION:
+				member.set(new Double[4]);
+				break;
+			case TYPE_QSTRANSFORM:
+				member.set(new Double[10]);
+			default:
+				break;
+		}
+		return member;
+	}
+
 	HKXMember handleString(String contents, String memberName, HKXType memberType) {
 		Pattern pattern = getPattern(memberType);
 		Matcher m = pattern.matcher(contents);

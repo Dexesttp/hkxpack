@@ -7,7 +7,6 @@ import com.dexesttp.hkxpack.data.members.HKXMember;
 import com.dexesttp.hkxpack.descriptor.HKXDescriptor;
 import com.dexesttp.hkxpack.descriptor.exceptions.ClassFileReadError;
 import com.dexesttp.hkxpack.descriptor.members.HKXMemberTemplate;
-import com.dexesttp.hkxpack.l10n.SBundle;
 import com.dexesttp.hkxpack.resources.DOMUtils;
 import com.dexesttp.hkxpack.tagreader.exceptions.InvalidTagXMLException;
 import com.dexesttp.hkxpack.tagreader.members.TagXMLContentsHandler;
@@ -52,6 +51,6 @@ class TagXMLMemberHandler {
 					return child;
 			}
 		}
-		throw new InvalidTagXMLException(SBundle.getString("error.tag.read.member") + name);
+		return null;
 	}
 }

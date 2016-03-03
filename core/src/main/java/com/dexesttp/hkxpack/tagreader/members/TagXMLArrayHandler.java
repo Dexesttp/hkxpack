@@ -10,9 +10,11 @@ import com.dexesttp.hkxpack.data.members.HKXArrayMember;
 import com.dexesttp.hkxpack.data.members.HKXMember;
 import com.dexesttp.hkxpack.data.members.HKXPointerMember;
 import com.dexesttp.hkxpack.data.members.HKXStringMember;
+import com.dexesttp.hkxpack.descriptor.enums.Flag;
 import com.dexesttp.hkxpack.descriptor.enums.HKXType;
 import com.dexesttp.hkxpack.descriptor.exceptions.ClassFileReadError;
 import com.dexesttp.hkxpack.descriptor.members.HKXMemberTemplate;
+import com.dexesttp.hkxpack.l10n.SBundle;
 import com.dexesttp.hkxpack.tagreader.TagXMLNodeHandler;
 import com.dexesttp.hkxpack.tagreader.exceptions.InvalidTagXMLException;
 
@@ -31,6 +33,11 @@ class TagXMLArrayHandler implements TagXMLContentsHandler {
 	@Override
 	public HKXMember handleNode(Node member, HKXMemberTemplate memberTemplate) throws ClassFileReadError, InvalidTagXMLException {
 		HKXArrayMember result = new HKXArrayMember(memberTemplate.name, memberTemplate.vtype, memberTemplate.vsubtype);
+		if(member == null) {
+			if(memberTemplate.flag == Flag.SERIALIZE_IGNORED)
+				return result;
+			throw new InvalidTagXMLException(SBundle.getString("error.tag.read.member") + memberTemplate.name);
+		}
 		// Change behavior based on internal content type's family
 		switch (memberTemplate.vsubtype.getFamily()) {
 			case DIRECT:
