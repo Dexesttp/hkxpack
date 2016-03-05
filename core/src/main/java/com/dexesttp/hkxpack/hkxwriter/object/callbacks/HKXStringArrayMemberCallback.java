@@ -52,7 +52,7 @@ public class HKXStringArrayMemberCallback implements HKXMemberCallback {
 			outFile.seek(position);
 			outFile.writeBytes(internalMember.get());
 			outFile.writeByte(0x00);
-			return internalMember.get().length() + 1;
+			return internalMember.get().length() + 2;
 		};
 	}
 }
