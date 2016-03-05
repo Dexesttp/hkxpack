@@ -17,9 +17,12 @@ import org.xml.sax.SAXException;
 import com.dexesttp.hkxpack.descriptor.HKXDescriptor;
 import com.dexesttp.hkxpack.descriptor.HKXDescriptorFactory;
 import com.dexesttp.hkxpack.descriptor.HKXEnumResolver;
+import com.dexesttp.hkxpack.descriptor.enums.HKXType;
 import com.dexesttp.hkxpack.descriptor.exceptions.ClassFileReadError;
 import com.dexesttp.hkxpack.descriptor.exceptions.ClassListReadError;
 import com.dexesttp.hkxpack.descriptor.members.HKXMemberTemplate;
+import com.dexesttp.hkxpack.hkx.types.MemberSizeResolver;
+import com.dexesttp.hkxpack.hkx.types.ObjectSizeResolver;
 import com.dexesttp.hkxpack.resources.DOMUtils;
 import com.google.common.collect.HashBiMap;
 /**
@@ -70,7 +73,7 @@ public class ClassXMLReader {
 		NodeList members = document.getElementsByTagName("member");
 		for(int i = 0; i < members.getLength(); i++) {
 			Node memberNode = members.item(i);
-			memberList.add(resolveMember(memberNode, classname));
+			memberList.addAll(resolveMember(memberNode, classname));
 		}
 		
 		// Return the descriptor
@@ -116,7 +119,7 @@ public class ClassXMLReader {
 		return document;
 	}
 
-	private HKXMemberTemplate resolveMember(Node memberNode, String classname) {
+	private List<HKXMemberTemplate> resolveMember(Node memberNode, String classname) throws ClassFileReadError {
 		String name = DOMUtils.getNodeAttr("name", memberNode);
 		String offset = DOMUtils.getNodeAttr("offset", memberNode);
 		String vtype = DOMUtils.getNodeAttr("vtype", memberNode);
@@ -126,10 +129,25 @@ public class ClassXMLReader {
 		if(!etype.isEmpty())
 			etype = classname + "." + etype;
 		String arrsize = DOMUtils.getNodeAttr("arrsize", memberNode);
-		if(!arrsize.equals("0"))
-			System.err.println("Warning ! an unsupported member has been detected. The file might not work in-game.");
 		String flags = DOMUtils.getNodeAttr("flags", memberNode);
-		HKXMemberTemplate template = new HKXMemberTemplate(name, offset, vtype, vsubtype, ctype, etype, arrsize, flags);
-		return template;
+		List<HKXMemberTemplate> res = new ArrayList<HKXMemberTemplate>();
+		if(!arrsize.equals("0")) {
+			int size = Integer.parseInt(arrsize);
+			long memberSize = 0;
+			if(vtype == "TYPE_STRUCT") {
+				memberSize = ObjectSizeResolver.getSize(descriptorFactory.get(ctype), descriptorFactory);
+			} else {
+				memberSize = MemberSizeResolver.getSize(HKXType.valueOf(vtype));
+			}
+			long memberOffset = Integer.parseInt(offset);
+			for(int i = 0; i < size; i++) {
+				HKXMemberTemplate template = new HKXMemberTemplate(name + (i+1), "" + (memberOffset + i * memberSize), vtype, vsubtype, ctype, etype, arrsize, flags);
+				res.add(template);
+			}
+		} else {
+			HKXMemberTemplate template = new HKXMemberTemplate(name, offset, vtype, vsubtype, ctype, etype, arrsize, flags);
+			res.add(template);
+		}
+		return res;
 	}
 }
