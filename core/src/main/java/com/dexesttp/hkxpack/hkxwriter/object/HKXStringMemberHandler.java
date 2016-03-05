@@ -32,7 +32,7 @@ public class HKXStringMemberHandler implements HKXMemberHandler {
 			outFile.seek(position);
 			outFile.writeBytes(strMember.get());
 			outFile.writeByte(0x00);
-			return HKXUtils.snapString(strMember.get().length() + 1);
+			return HKXUtils.snapString(position + strMember.get().length() + 1) - position;
 		};
 	}
 
