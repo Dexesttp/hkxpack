@@ -6,6 +6,7 @@ import org.w3c.dom.Node;
 
 import com.dexesttp.hkxpack.data.members.HKXArrayMember;
 import com.dexesttp.hkxpack.data.members.HKXDirectMember;
+import com.dexesttp.hkxpack.data.members.HKXEnumMember;
 import com.dexesttp.hkxpack.data.members.HKXFailedMember;
 import com.dexesttp.hkxpack.data.members.HKXMember;
 import com.dexesttp.hkxpack.data.members.HKXPointerMember;
@@ -46,10 +47,13 @@ class TagXMLMemberCreator {
 		switch(member.getType().getFamily()) {
 			case DIRECT:
 			case COMPLEX:
-			case ENUM:
 				TagXMLDirectMemberHandler directMemberHandler = new TagXMLDirectMemberHandler();
 				String newDirectChild = directMemberHandler.getStringValue((HKXDirectMember<?>) member);
 				memberNode.setTextContent(newDirectChild);
+				break;
+			case ENUM:
+				String newEnumChildContent = ((HKXEnumMember) member).get();
+				memberNode.setTextContent(newEnumChildContent);
 				break;
 			case STRING:
 				String newStringChildContent = ((HKXStringMember) member).get();
