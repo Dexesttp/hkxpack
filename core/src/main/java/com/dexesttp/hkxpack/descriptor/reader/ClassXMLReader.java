@@ -134,7 +134,7 @@ public class ClassXMLReader {
 		if(!arrsize.equals("0")) {
 			int size = Integer.parseInt(arrsize);
 			long memberSize = 0;
-			if(vtype == "TYPE_STRUCT") {
+			if(vtype.equals("TYPE_STRUCT")) {
 				memberSize = ObjectSizeResolver.getSize(descriptorFactory.get(ctype), descriptorFactory);
 			} else {
 				memberSize = MemberSizeResolver.getSize(HKXType.valueOf(vtype));
