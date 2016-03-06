@@ -14,7 +14,7 @@ import com.dexesttp.hkxpack.tagreader.TagXMLReader;
 import com.dexesttp.hkxpack.tagwriter.TagXMLWriter;
 
 public class TestView {
-	private static final String testName = "temp\\Idle_1";
+	private static final String testName = "Locomotion";
 	public static void main(String[] args) {
 		read(args, "D:\\Documents\\SANDBOX\\FO4\\hkx_files\\" + testName + ".hkx");
 		write(args);

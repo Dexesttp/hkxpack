@@ -3,7 +3,7 @@
   <parent>
     <groupId>com.dexesttp</groupId>
     <artifactId>hkxpack</artifactId>
-    <version>0.0.71-alpha</version>
+    <version>0.0.9-alpha</version>
   </parent>
   
   <groupId>com.dexesttp.hkxpack</groupId>
