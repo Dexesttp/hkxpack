@@ -18,6 +18,7 @@ public class HKXHeaderFactory {
 	 */
 	public HKXHeaderFactory() {
 		animClassesList.add("hkaAnimationContainer");
+		animClassesList.add("hclClothData");
 	}
 	
 	/**
