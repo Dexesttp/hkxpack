@@ -150,10 +150,10 @@ public class MemberDataResolver {
 				return ByteUtils.fromLong(memberInt64.get(), 8);
 			case TYPE_HALF:
 				HKXDirectMember<Double> memberHalf = (HKXDirectMember<Double>) member;
-				return ByteUtils.fromFloat(memberHalf.get(), 4);
+				return ByteUtils.fromFloat(memberHalf.get(), 2);
 			case TYPE_REAL:
 				HKXDirectMember<Double> memberReal = (HKXDirectMember<Double>) member;
-				return ByteUtils.fromFloat(memberReal.get(), 8);
+				return ByteUtils.fromFloat(memberReal.get(), 4);
 		// Complex values
 			case TYPE_MATRIX3:
 				HKXDirectMember<Double[]> memberMt3 = (HKXDirectMember<Double[]>) member;
