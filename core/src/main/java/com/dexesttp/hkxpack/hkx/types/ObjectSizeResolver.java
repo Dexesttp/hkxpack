@@ -42,7 +42,7 @@ public class ObjectSizeResolver {
 		case TYPE_INT64:
 			return 0X08;
 		case TYPE_REAL:
-			return 0X08;
+			return 0X04;
 	// Complex values
 		case TYPE_MATRIX3:
 			return 0x0A;

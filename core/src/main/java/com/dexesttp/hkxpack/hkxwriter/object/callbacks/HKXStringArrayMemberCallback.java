@@ -9,24 +9,21 @@ import com.dexesttp.hkxpack.data.HKXData;
 import com.dexesttp.hkxpack.data.members.HKXArrayMember;
 import com.dexesttp.hkxpack.data.members.HKXMember;
 import com.dexesttp.hkxpack.data.members.HKXStringMember;
+import com.dexesttp.hkxpack.hkx.HKXUtils;
 import com.dexesttp.hkxpack.hkx.data.DataInternal;
 import com.dexesttp.hkxpack.hkx.types.MemberSizeResolver;
-import com.dexesttp.hkxpack.hkxwriter.object.HKXMemberHandler;
-import com.dexesttp.hkxpack.hkxwriter.object.HKXMemberHandlerFactory;
 
 public class HKXStringArrayMemberCallback implements HKXMemberCallback {
 	private final List<DataInternal> data1;
 	private final DataInternal arrData;
 	private final HKXArrayMember arrMember;
-	private final HKXMemberHandlerFactory memberHandlerFactory;
 	private RandomAccessFile outFile;
 
-	public HKXStringArrayMemberCallback(List<DataInternal> data1, DataInternal arrData, HKXArrayMember arrMember,
-			HKXMemberHandlerFactory memberHandlerFactory) {
+	public HKXStringArrayMemberCallback(List<DataInternal> data1, DataInternal arrData, HKXArrayMember arrMember, RandomAccessFile outFile) {
 		this.data1 = data1;
 		this.arrData = arrData;
 		this.arrMember = arrMember;
-		this.memberHandlerFactory = memberHandlerFactory;
+		this.outFile = outFile;
 	}
 
 	@Override
@@ -39,14 +36,15 @@ public class HKXStringArrayMemberCallback implements HKXMemberCallback {
 		for(HKXData data : arrMember.contents()) {
 			if(data instanceof HKXMember) {
 				HKXMember internalMember = (HKXMember) data;
-				HKXMemberHandler memberHandler = memberHandlerFactory.create(internalMember.getType(), 0);
-				internalCallbacks.add(memberHandler.write(internalMember, newPos));
+				internalCallbacks.add(stringHandler((HKXStringMember) internalMember, newPos));
 				newPos += memberSize;
 			}
 		}
+		internalCallbacks.add((callbacks, newPosition) -> {return HKXUtils.snapLine(newPosition) - newPosition;});
 		memberCallbacks.addAll(0, internalCallbacks);
 		return newPos - position;
 	}
+	
 	public HKXMemberCallback stringHandler(HKXStringMember internalMember, long pos) {
 		final DataInternal stringData = new DataInternal();
 		stringData.from = pos;
@@ -56,7 +54,8 @@ public class HKXStringArrayMemberCallback implements HKXMemberCallback {
 			outFile.seek(position);
 			outFile.writeBytes(internalMember.get());
 			outFile.writeByte(0x00);
-			return internalMember.get().length() + 1;
+			long outSize = internalMember.get().length() + 1;
+			return outSize + ((position + outSize) % 2);
 		};
 	}
 }

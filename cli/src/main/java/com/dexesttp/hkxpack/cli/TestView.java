@@ -14,10 +14,11 @@ import com.dexesttp.hkxpack.tagreader.TagXMLReader;
 import com.dexesttp.hkxpack.tagwriter.TagXMLWriter;
 
 public class TestView {
+	private static final String testName = "temp\\Idle_1";
 	public static void main(String[] args) {
-		read(args, "D:\\Documents\\SANDBOX\\FO4\\hkx_files\\BloatflyRootBehavior.hkx");
+		read(args, "D:\\Documents\\SANDBOX\\FO4\\hkx_files\\" + testName + ".hkx");
 		write(args);
-		read(args, "D:\\Documents\\SANDBOX\\FO4\\hkx_files\\BloatflyRootBehavior-new.hkx");
+		read(args, "D:\\Documents\\SANDBOX\\FO4\\hkx_files\\" + testName + "-new.hkx");
 	}
 	
 	public static void read(String[] args, String name) {
@@ -46,8 +47,8 @@ public class TestView {
 	}
 	
 	public static void write(String[] args) {
-		String inputFileName = "D:\\Documents\\SANDBOX\\FO4\\hkx_files\\BloatflyRootBehavior.xml";
-		String outputFileName = "D:\\Documents\\SANDBOX\\FO4\\hkx_files\\BloatflyRootBehavior-new.hkx";
+		String inputFileName = "D:\\Documents\\SANDBOX\\FO4\\hkx_files\\" + testName + ".xml";
+		String outputFileName = "D:\\Documents\\SANDBOX\\FO4\\hkx_files\\" + testName + "-new.hkx";
 		DisplayProperties.displayDebugInfo = true;
 		DisplayProperties.displayFileDebugInfo = true;
 		DisplayProperties.displayReadTypesInfo = true;
@@ -74,8 +75,8 @@ public class TestView {
 	}
 	
 	public static void xmlTest(String[] args) {
-		String inputFileName = "D:\\Documents\\SANDBOX\\FO4\\hkx_files\\DeathChest01.xml";
-		String outputFileName = "D:\\Documents\\SANDBOX\\FO4\\hkx_files\\DeathChest01-out.xml";
+		String inputFileName = "D:\\Documents\\SANDBOX\\FO4\\hkx_files\\" + testName + ".xml";
+		String outputFileName = "D:\\Documents\\SANDBOX\\FO4\\hkx_files\\" + testName + "-new.xml";
 		DisplayProperties.displayDebugInfo = true;
 		DisplayProperties.displayFileDebugInfo = true;
 		DisplayProperties.displayReadTypesInfo = true;

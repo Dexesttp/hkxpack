@@ -22,5 +22,4 @@ public class HKXArrayPointerMemberHandler {
 	public void resolve(long newPos) {
 		data2Instance.from = newPos;
 	}
-
 }
