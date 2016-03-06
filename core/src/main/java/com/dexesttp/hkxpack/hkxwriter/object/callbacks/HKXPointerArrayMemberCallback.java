@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import com.dexesttp.hkxpack.data.members.HKXArrayMember;
+import com.dexesttp.hkxpack.hkx.HKXUtils;
 import com.dexesttp.hkxpack.hkx.data.DataInternal;
 import com.dexesttp.hkxpack.hkx.types.MemberSizeResolver;
 import com.dexesttp.hkxpack.hkxwriter.object.HKXArrayPointerMemberHandler;
@@ -32,7 +33,7 @@ public class HKXPointerArrayMemberCallback implements HKXMemberCallback {
 			apmh.resolve(newPos);
 			newPos += objectSize;
 		}
-		return newPos - position;
+		return HKXUtils.snapLine(newPos) - position;
 	}
 
 }
