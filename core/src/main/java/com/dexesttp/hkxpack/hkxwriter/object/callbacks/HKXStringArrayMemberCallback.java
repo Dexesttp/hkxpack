@@ -39,7 +39,7 @@ public class HKXStringArrayMemberCallback implements HKXMemberCallback {
 		for(HKXData data : arrMember.contents()) {
 			if(data instanceof HKXMember) {
 				HKXMember internalMember = (HKXMember) data;
-				HKXMemberHandler memberHandler = memberHandlerFactory.create(internalMember.getType(), 0, "");
+				HKXMemberHandler memberHandler = memberHandlerFactory.create(internalMember.getType(), 0);
 				internalCallbacks.add(memberHandler.write(internalMember, newPos));
 				newPos += memberSize;
 			}
