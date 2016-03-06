@@ -59,8 +59,13 @@ public class ByteUtils {
 	}
 
 	public static byte[] fromFloat(double double1, int i) {
-		int temp = Float.floatToIntBits((float) double1);
-		return fromLong(temp, i);
+		if(i == 8) {
+			long temp = Double.doubleToLongBits(double1);
+			return fromLong(temp, i);
+		} else {
+			int temp = Float.floatToIntBits((float) double1);
+			return fromLong(temp, i);
+		}
 	}
 
 	

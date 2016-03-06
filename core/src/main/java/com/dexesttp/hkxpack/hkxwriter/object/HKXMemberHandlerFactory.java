@@ -62,13 +62,13 @@ public class HKXMemberHandlerFactory {
 	 * @param memberTemplate the {@link HKXMemberTemplate} to base the {@link HKXMemberHandler} on.
 	 * @return the relevant {@link HKXMemberHandler}.
 	 */
-	public HKXMemberHandler create(HKXType vtype, long offset, String target) {
+	public HKXMemberHandler create(HKXType vtype, long offset) {
 		switch(vtype.getFamily()) {
 			case DIRECT:
 			case COMPLEX:
 				return new HKXDirectMemberHandler(outFile, offset);
 			case ENUM:
-				return new HKXEnumMemberHandler(outFile, offset, enumResolver, target);
+				return new HKXEnumMemberHandler(outFile, offset, enumResolver);
 			case STRING:
 				return new HKXStringMemberHandler(outFile, offset, data1List);
 			case POINTER:

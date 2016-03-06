@@ -52,10 +52,10 @@ public class HKXArrayMemberHandler implements HKXMemberHandler {
 		switch(arrMember.getSubType().getFamily()) {
 			case POINTER:
 				return handlePointer(arrData, arrMember);
+			case STRING:
+				return new HKXStringArrayMemberCallback(data1, arrData, arrMember, outFile);
 			case OBJECT:
 				return new HKXObjectArrayMemberCallback(data1, arrData, arrMember, memberHandlerFactory);
-			case STRING:
-				return new HKXStringArrayMemberCallback(data1, arrData, arrMember, memberHandlerFactory);
 			default:
 				return new HKXDefaultArrayMemberCallback(data1, arrData, arrMember, memberHandlerFactory);
 		}

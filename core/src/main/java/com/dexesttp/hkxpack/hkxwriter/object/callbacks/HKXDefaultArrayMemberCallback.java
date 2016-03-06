@@ -6,6 +6,7 @@ import java.util.List;
 import com.dexesttp.hkxpack.data.HKXData;
 import com.dexesttp.hkxpack.data.members.HKXArrayMember;
 import com.dexesttp.hkxpack.data.members.HKXMember;
+import com.dexesttp.hkxpack.hkx.HKXUtils;
 import com.dexesttp.hkxpack.hkx.data.DataInternal;
 import com.dexesttp.hkxpack.hkx.types.MemberSizeResolver;
 import com.dexesttp.hkxpack.hkxwriter.object.HKXMemberHandler;
@@ -34,12 +35,12 @@ public class HKXDefaultArrayMemberCallback implements HKXMemberCallback {
 		for(HKXData data : arrMember.contents()) {
 			if(data instanceof HKXMember) {
 				HKXMember internalMember = (HKXMember) data;
-				HKXMemberHandler memberHandler = memberHandlerFactory.create(internalMember.getType(), 0, "");
+				HKXMemberHandler memberHandler = memberHandlerFactory.create(internalMember.getType(), 0);
 				memberCallbacks.add(memberHandler.write(internalMember, newPos));
 				newPos += memberSize;
 			}
 		}
-		return newPos - position;
+		return HKXUtils.snapLine(newPos) - position;
 	}
 
 }

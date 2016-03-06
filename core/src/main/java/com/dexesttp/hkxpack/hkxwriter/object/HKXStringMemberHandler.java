@@ -24,6 +24,8 @@ public class HKXStringMemberHandler implements HKXMemberHandler {
 	@Override
 	public HKXMemberCallback write(HKXMember member, long currentPos) throws IOException {
 		final HKXStringMember strMember = (HKXStringMember) member;
+		if(strMember.get().isEmpty())
+			return (callbacks, position) -> {return 0;};
 		final DataInternal stringData = new DataInternal();
 		stringData.from = currentPos + offset;
 		return (callbacks, position) -> { 
@@ -32,7 +34,7 @@ public class HKXStringMemberHandler implements HKXMemberHandler {
 			outFile.seek(position);
 			outFile.writeBytes(strMember.get());
 			outFile.writeByte(0x00);
-			return HKXUtils.snapString(strMember.get().length() + 1);
+			return HKXUtils.snapString(position + strMember.get().length() + 1) - position;
 		};
 	}
 

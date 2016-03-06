@@ -67,8 +67,13 @@ public class HKXEnumResolver {
 	 */
 	public int resolve(String enumName, String value) {
 		HKXEnum enumContainer = contents.get(enumName);
-		if(enumContainer == null)
-			return 0;
+		if(enumContainer == null) {
+			try {
+				return Integer.parseInt(value);
+			} catch(NumberFormatException e) {
+				return 0;	
+			}
+		}
 		return enumContainer.get(value);
 	}
 }

@@ -1,7 +1,7 @@
 package com.dexesttp.hkxpack.tagreader.serialized;
 
 import com.dexesttp.hkxpack.data.members.HKXArrayMember;
-import com.dexesttp.hkxpack.data.members.HKXDirectMember;
+import com.dexesttp.hkxpack.data.members.HKXEnumMember;
 import com.dexesttp.hkxpack.data.members.HKXPointerMember;
 import com.dexesttp.hkxpack.data.members.HKXStringMember;
 import com.dexesttp.hkxpack.descriptor.HKXDescriptorFactory;
@@ -34,7 +34,7 @@ public class TagXMLSerializedHandlerFactory {
 				return new TagXMLDirectSerializedHandler();
 			case ENUM:
 				return (memberTemplate) -> {
-						HKXDirectMember<String> enumMember = new HKXDirectMember<>(memberTemplate.name, memberTemplate.vtype);
+						HKXEnumMember enumMember = new HKXEnumMember(memberTemplate.name, memberTemplate.vtype, memberTemplate.vsubtype, memberTemplate.target);
 						enumMember.set("");
 						return enumMember;
 					};

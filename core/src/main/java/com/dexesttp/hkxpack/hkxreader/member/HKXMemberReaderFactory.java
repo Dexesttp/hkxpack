@@ -34,7 +34,7 @@ public class HKXMemberReaderFactory {
 			case COMPLEX:
 				return new HKXDirectMemberReader(connector, template.name, template.vtype, template.offset);
 			case ENUM:
-				return new HKXEnumMemberReader(connector, enumResolver, template.name, template.vtype, template.target, template.offset);
+				return new HKXEnumMemberReader(connector, enumResolver, template.name, template.vtype, template.vsubtype, template.target, template.offset);
 				
 			case ARRAY:
 				switch(template.vsubtype.getFamily()) {

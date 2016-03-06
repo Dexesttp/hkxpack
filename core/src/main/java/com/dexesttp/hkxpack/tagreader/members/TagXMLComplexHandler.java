@@ -13,12 +13,11 @@ import com.dexesttp.hkxpack.tagreader.exceptions.InvalidTagXMLException;
 
 public class TagXMLComplexHandler implements TagXMLContentsHandler {
 	private static final String numMatch = "(-?\\d+(?:\\.\\d+)?(?:E-?\\d+)? ?)";
+	private static final String vec4 = "\\("+numMatch+numMatch+numMatch+numMatch+"\\)";
 	private static final Pattern pattern3 = Pattern.compile("\\("+numMatch+numMatch+numMatch+"\\)");
-	private static final Pattern pattern4 = Pattern.compile("\\("+numMatch+numMatch+numMatch+numMatch+"\\)");
-	private static final Pattern patternQS = Pattern.compile(
-			  "\\("+numMatch+numMatch+numMatch+"\\)"
-			+ "\\("+numMatch+numMatch+numMatch+numMatch+"\\)"
-			+ "\\("+numMatch+numMatch+numMatch+"\\)");
+	private static final Pattern pattern4 = Pattern.compile(vec4);
+	private static final Pattern patternQS = Pattern.compile(vec4 + vec4 + vec4);
+	private static final Pattern patternM4 = Pattern.compile(vec4 + vec4 + vec4 + vec4);
 	
 	@Override
 	public HKXMember handleNode(Node member, HKXMemberTemplate memberTemplate) throws InvalidTagXMLException {
@@ -37,13 +36,14 @@ public class TagXMLComplexHandler implements TagXMLContentsHandler {
 		switch(memberType) {
 			case TYPE_MATRIX3:
 				return pattern3;
-			case TYPE_MATRIX4:
 			case TYPE_VECTOR4:
 			case TYPE_TRANSFORM:
 			case TYPE_QUATERNION:
 				return pattern4;
 			case TYPE_QSTRANSFORM:
 				return patternQS;
+			case TYPE_MATRIX4:
+				return patternM4;
 			default:
 				throw new IllegalArgumentException();
 		}
@@ -67,7 +67,7 @@ public class TagXMLComplexHandler implements TagXMLContentsHandler {
 					Double.parseDouble(m.group(4))
 				});
 				break;
-			case 10:
+			case 12:
 				member.set(new Double[]{
 					Double.parseDouble(m.group(1)),
 					Double.parseDouble(m.group(2)),
@@ -78,7 +78,29 @@ public class TagXMLComplexHandler implements TagXMLContentsHandler {
 					Double.parseDouble(m.group(7)),
 					Double.parseDouble(m.group(8)),
 					Double.parseDouble(m.group(9)),
-					Double.parseDouble(m.group(10))
+					Double.parseDouble(m.group(10)),
+					Double.parseDouble(m.group(11)),
+					Double.parseDouble(m.group(12))
+				});
+				break;
+			case 16:
+				member.set(new Double[]{
+					Double.parseDouble(m.group(1)),
+					Double.parseDouble(m.group(2)),
+					Double.parseDouble(m.group(3)),
+					Double.parseDouble(m.group(4)),
+					Double.parseDouble(m.group(5)),
+					Double.parseDouble(m.group(6)),
+					Double.parseDouble(m.group(7)),
+					Double.parseDouble(m.group(8)),
+					Double.parseDouble(m.group(9)),
+					Double.parseDouble(m.group(10)),
+					Double.parseDouble(m.group(11)),
+					Double.parseDouble(m.group(12)),
+					Double.parseDouble(m.group(13)),
+					Double.parseDouble(m.group(14)),
+					Double.parseDouble(m.group(15)),
+					Double.parseDouble(m.group(16))
 				});
 				break;
 		}

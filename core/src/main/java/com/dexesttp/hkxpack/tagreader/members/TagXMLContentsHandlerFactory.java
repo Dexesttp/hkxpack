@@ -1,6 +1,6 @@
 package com.dexesttp.hkxpack.tagreader.members;
 
-import com.dexesttp.hkxpack.data.members.HKXDirectMember;
+import com.dexesttp.hkxpack.data.members.HKXEnumMember;
 import com.dexesttp.hkxpack.data.members.HKXPointerMember;
 import com.dexesttp.hkxpack.data.members.HKXStringMember;
 import com.dexesttp.hkxpack.descriptor.enums.HKXType;
@@ -32,7 +32,7 @@ public class TagXMLContentsHandlerFactory {
 				return new TagXMLDirectHandler();
 			case ENUM:
 				return (member, memberTemplate) -> {
-						HKXDirectMember<String> enumMember = new HKXDirectMember<>(memberTemplate.name, memberTemplate.vtype);
+						HKXEnumMember enumMember = new HKXEnumMember(memberTemplate.name, memberTemplate.vtype, memberTemplate.vsubtype, memberTemplate.target);
 						enumMember.set(member.getTextContent());
 						return enumMember;
 					};

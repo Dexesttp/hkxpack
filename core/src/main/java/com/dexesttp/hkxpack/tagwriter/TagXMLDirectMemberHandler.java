@@ -22,9 +22,15 @@ class TagXMLDirectMemberHandler {
 				}
 				return contentsAccu.substring(0, contentsAccu.length() - 1) + ")";
 			} else {
-				return "(" + contents[0] + " " + contents[1] + " " + contents[2] + " " + ")" +
-						"(" + contents[3] + " " + contents[4] + " " + contents[5]+ " " + contents[6] + ")" +
-						"(" + contents[7] + " " + contents[8] + " " + contents[9] + " " + ")";
+				if(contents.length == 12)
+					return "(" + contents[0] + " " + contents[1] + " " + contents[2] + " " + contents[3] + ")" +
+							"(" + contents[4] + " " + contents[5] + " " + contents[6]+ " " + contents[7] + ")" +
+							"(" + contents[8] + " " + contents[9] + " " + contents[10] + " " + contents[11] + ")";
+				else
+					return "(" + contents[0] + " " + contents[1] + " " + contents[2] + " " + contents[3] + ")" +
+							"(" + contents[4] + " " + contents[5] + " " + contents[6] + " " + contents[7] + ")" +
+							"(" + contents[8] + " " + contents[9] + " " + contents[10] + " " + contents[11] + ")" +
+							"(" + contents[12] + " " + contents[13] + " " + contents[14] + " " + contents[15] + ")";
 			}
 		}
 		if(member.get() instanceof Character)

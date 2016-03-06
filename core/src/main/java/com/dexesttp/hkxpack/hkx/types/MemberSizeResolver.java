@@ -46,17 +46,18 @@ public class MemberSizeResolver {
 			case TYPE_INT64:
 				return 0X08;
 			case TYPE_REAL:
-				return 0X08;
+				return 0X04;
 		// Complex values
 			case TYPE_MATRIX3:
 				return 0x0A;
-			case TYPE_MATRIX4:
 			case TYPE_VECTOR4:
 			case TYPE_QUATERNION:
 			case TYPE_TRANSFORM:
 				return 0x10;
 			case TYPE_QSTRANSFORM:
 				return 0x30;
+			case TYPE_MATRIX4:
+				return 0x40;
 		// Strings and ptrs
 			case TYPE_CSTRING:
 			case TYPE_STRINGPTR:
