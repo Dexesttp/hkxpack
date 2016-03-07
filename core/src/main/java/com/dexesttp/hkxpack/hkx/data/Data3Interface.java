@@ -37,7 +37,7 @@ public class Data3Interface {
 	public DataExternal read(int pos) throws IOException, InvalidPositionException {
 		DataExternal data = new DataExternal();
 		long dataPos = header.data3 + pos * 0x0C;
-		if(pos < 0 || dataPos > header.end)
+		if(pos < 0 || dataPos >= header.end)
 			throw new InvalidPositionException("DATA_3", pos );
 		file.seek(header.offset + dataPos);
 		byte[] dataLine = new byte[4];

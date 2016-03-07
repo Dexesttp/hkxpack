@@ -8,6 +8,7 @@ import com.dexesttp.hkxpack.data.HKXObject;
 import com.dexesttp.hkxpack.descriptor.HKXDescriptor;
 import com.dexesttp.hkxpack.descriptor.HKXDescriptorFactory;
 import com.dexesttp.hkxpack.descriptor.HKXEnumResolver;
+import com.dexesttp.hkxpack.hkx.classnames.Classname;
 import com.dexesttp.hkxpack.hkx.classnames.ClassnamesData;
 import com.dexesttp.hkxpack.hkx.data.Data3Interface;
 import com.dexesttp.hkxpack.hkx.data.DataExternal;
@@ -83,14 +84,19 @@ public class HKXReader {
 				DataExternal currentClass = data3.read(pos++);
 				
 				// Resolve the object's class into a HKXDescriptor
-				String className = classConverter.get(currentClass.to).name;
-				HKXDescriptor descriptor = descriptorFactory.get(className);
-				
-				// Read the HKXDescriptor into an HKXClass
-				HKXObject result = fileReader.read(currentClass.from, descriptor);
-				
-				// Store the resulting class
-				content.add(result);
+				Classname classObj = classConverter.get(currentClass.to);
+				if(classObj != null) {
+					String className = classObj.name;
+					HKXDescriptor descriptor = descriptorFactory.get(className);
+					
+					// Read the HKXDescriptor into an HKXClass
+					HKXObject result = fileReader.read(currentClass.from, descriptor);
+					
+					// Store the resulting class
+					content.add(result);
+				} else {
+					System.err.println("Illegal linked Classname position (" + currentClass.from + "//" + currentClass.to + "). Ignoring.");
+				}
 			}
 		} catch (InvalidPositionException e) {
 			if(!e.getSection().equals("DATA_3"))
