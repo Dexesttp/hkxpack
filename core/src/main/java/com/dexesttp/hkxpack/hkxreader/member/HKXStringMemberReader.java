@@ -26,13 +26,17 @@ class HKXStringMemberReader implements HKXMemberReader {
 
 	@Override
 	public HKXMember read(long classOffset) throws IOException, InvalidPositionException {
-		DataInternal data = connector.data1.readNext();
 		String contents = "";
-		if(data.from == memberOffset + classOffset) {
-			RandomAccessFile file = connector.data.setup(data.to);
-			contents = ByteUtils.readString(file);
-		} else {
-			connector.data1.backtrack();
+		try {
+			DataInternal data = connector.data1.readNext();
+			if(data.from == memberOffset + classOffset) {
+				RandomAccessFile file = connector.data.setup(data.to);
+				contents = ByteUtils.readString(file);
+			} else {
+				connector.data1.backtrack();
+			}
+		} catch(InvalidPositionException e) {
+			// NO OP.
 		}
 		HKXStringMember result = new HKXStringMember(name, vtype);
 		result.set(contents);
