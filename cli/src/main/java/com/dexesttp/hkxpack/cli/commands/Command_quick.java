@@ -11,11 +11,9 @@ public class Command_quick implements Command {
 	
 	@Override
 	public int execute(String... parameters) {
-		Command help = new Command_help();
 		Command command = null;
 		if(parameters.length > 1) {
-	        help.execute(parameters);
-	        return 0;
+			return (new Command_help()).execute(parameters);
 		}
 		String inName = parameters[0];
 		File inFile = new File(inName);
@@ -38,11 +36,9 @@ public class Command_quick implements Command {
 	    		throw new Exception("Unsupported file type.");
 	    } catch (Exception e) {
 	    	System.err.println(e.getMessage());
-	        help.execute(parameters);
-	        return 0;
+	        return 1;
 	    }
-	    command.execute(command_arg, inName, "-o", outFile);
-		return 0;
+	    return command.execute(command_arg, inName, "-o", outFile);
 	}
 
 }
