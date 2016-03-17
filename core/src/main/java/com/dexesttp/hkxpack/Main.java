@@ -20,6 +20,7 @@ import com.dexesttp.hkxpack.tagwriter.TagXMLWriter;
 /**
  * Easy entry point for the HKXPack core.
  * @since 0.0.1-alpha
+ * @deprecated
  * <p>
  * These methods use the following classes :<br>
  * {@link HKXReader} to read a HKX file into a {@link HKXFile} DOM-like component.<br>

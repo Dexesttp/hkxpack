@@ -1,34 +1,56 @@
 package com.dexesttp.hkxpack.cli.commands;
 
-import com.dexesttp.hkxpack.Main;
-import com.dexesttp.hkxpack.cli.utils.RandomUtils;
+import java.io.File;
 
-public class Command_unpack implements Command{
+import com.dexesttp.hkxpack.cli.utils.CLIProperties;
+import com.dexesttp.hkxpack.data.HKXFile;
+import com.dexesttp.hkxpack.descriptor.HKXDescriptorFactory;
+import com.dexesttp.hkxpack.descriptor.HKXEnumResolver;
+import com.dexesttp.hkxpack.hkxreader.HKXReader;
+import com.dexesttp.hkxpack.resources.LoggerUtil;
+import com.dexesttp.hkxpack.tagwriter.TagXMLWriter;
+
+public class Command_unpack extends Command_IO {
+
 	@Override
-	public int execute(String... parameters) {
-		Main main = new Main();
-		if(parameters.length < 2) {
-			System.err.println("No filename given.");
-			return 1;
-		}
-		String fileName = parameters[1];
-		String outName = "";
-		if(parameters.length <= 2 || parameters[2].equals("-o")) {
+	protected Runnable getThreadLambda(String inputFileName, String outputFileName,
+			HKXDescriptorFactory descriptorFactory, HKXEnumResolver enumResolver) {
+		return () -> {
 			try {
-				outName = RandomUtils.makeFromFileName(fileName);
+				// Read file
+				File inFile = new File(inputFileName);
+				HKXReader reader = new HKXReader(inFile, descriptorFactory, enumResolver);
+				HKXFile hkxFile = reader.read();
+				
+				// Write file
+				File outFile = new File(outputFileName);
+				TagXMLWriter writer = new TagXMLWriter(outFile);
+				writer.write(hkxFile);
+				
+				// Print logs
+		        LoggerUtil.output();
+			} catch (Exception e) {
+				System.out.println("Error reading file : " + inputFileName);
+				if(CLIProperties.debug)
+					e.printStackTrace();
+				else if(!CLIProperties.quiet)
+					System.err.println(e.getMessage());
+			} finally {
+				if(CLIProperties.verbose) {
+					System.out.println(inputFileName);
+					System.out.println("\t=> " + outputFileName);
+				}
 			}
-			catch(Exception e) {
-				System.err.println("Invalid filename !");
-				return 1;
-			}
-		} else {
-			if(parameters.length < 3) {
-				System.err.println("No output filename given.");
-				return 1;
-			}
-			outName = parameters[3];
-		}
-		main.read(fileName, outName);
-		return 0;
+		};
+	}
+
+	@Override
+	protected String extractFileName(String ogName) {
+		return ogName.substring(0, ogName.lastIndexOf(".")) + ".xml";
+	}
+
+	@Override
+	protected String[] getFileExtensions() {
+		return new String[] {".hkx"};
 	}
 }
