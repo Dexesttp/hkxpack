@@ -2,11 +2,11 @@ package com.dexesttp.hkxpack.cli.commands;
 
 import java.io.File;
 
+import com.dexesttp.hkxpack.cli.utils.CLIProperties;
 import com.dexesttp.hkxpack.data.HKXFile;
 import com.dexesttp.hkxpack.descriptor.HKXDescriptorFactory;
 import com.dexesttp.hkxpack.descriptor.HKXEnumResolver;
 import com.dexesttp.hkxpack.hkxreader.HKXReader;
-import com.dexesttp.hkxpack.resources.DisplayProperties;
 import com.dexesttp.hkxpack.resources.LoggerUtil;
 import com.dexesttp.hkxpack.tagwriter.TagXMLWriter;
 
@@ -31,13 +31,15 @@ public class Command_unpack extends Command_IO {
 		        LoggerUtil.output();
 			} catch (Exception e) {
 				System.out.println("Error reading file : " + inputFileName);
-				if(DisplayProperties.displayDebugInfo)
+				if(CLIProperties.debug)
 					e.printStackTrace();
-				else
+				else if(!CLIProperties.quiet)
 					System.err.println(e.getMessage());
 			} finally {
-				System.out.println(inputFileName);
-				System.out.println("\t=> " + outputFileName);
+				if(CLIProperties.verbose) {
+					System.out.println(inputFileName);
+					System.out.println("\t=> " + outputFileName);
+				}
 			}
 		};
 	}

@@ -2,25 +2,28 @@ package com.dexesttp.hkxpack.cli.commands;
 
 import java.io.File;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import com.dexesttp.hkxpack.cli.utils.ArgsParser;
+import com.dexesttp.hkxpack.cli.utils.CLIProperties;
 import com.dexesttp.hkxpack.cli.utils.DirWalker;
 import com.dexesttp.hkxpack.cli.utils.WrongSizeException;
 import com.dexesttp.hkxpack.descriptor.HKXDescriptorFactory;
 import com.dexesttp.hkxpack.descriptor.HKXEnumResolver;
-import com.dexesttp.hkxpack.resources.DisplayProperties;
 
 public abstract class Command_IO implements Command {
 	private int nbConcurrentThreads = 32;
 	
 	public int execute(String... args) {
+		// Options handling
 		ArgsParser parser = new ArgsParser();
 		parser.addOption("-o", 1);
 		parser.addOption("-t", 1);
 		parser.addOption("-d", 0);
+		parser.addOption("-q", 0);
+		parser.addOption("-v", 0);
 		ArgsParser.Options result;
 		try {
 			result = parser.parse(args);
@@ -33,7 +36,11 @@ public abstract class Command_IO implements Command {
 		if(result.exists("-t"))
 			nbConcurrentThreads = Integer.parseInt(result.get("-t", 0));
 		
-		DisplayProperties.displayDebugInfo = result.exists("-d");
+		CLIProperties.debug = result.exists("-d");
+		CLIProperties.quiet = result.exists("-q");
+		CLIProperties.verbose = result.exists("-v");
+		
+		// Routing
 		File fileIn = new File(fileName);
 		if(fileIn.isDirectory())
 			return execute_multi(fileIn, outName);
@@ -61,7 +68,13 @@ public abstract class Command_IO implements Command {
 			outDir = "out";
 		DirWalker walker = new DirWalker(getFileExtensions());
 		List<DirWalker.Entry> toConvert = walker.walk(inDir);
-		ExecutorService pool = Executors.newFixedThreadPool(nbConcurrentThreads);
+		
+		if(!CLIProperties.quiet)
+			System.out.println("Detected " + toConvert.size() + " files to handle.");
+		
+		ThreadPoolExecutor pool = new ThreadPoolExecutor(
+				nbConcurrentThreads, nbConcurrentThreads,
+				0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
 		HKXEnumResolver enumResolver = new HKXEnumResolver();
 		HKXDescriptorFactory descriptorFactory;
 		try {
@@ -79,7 +92,13 @@ public abstract class Command_IO implements Command {
 		}
 		
 		try {
-			pool.awaitTermination(1, TimeUnit.DAYS);
+			long numberOfHandledTasks = 0;
+			while(!pool.awaitTermination(30, TimeUnit.SECONDS)) {
+				if(pool.getCompletedTaskCount() > numberOfHandledTasks)
+					numberOfHandledTasks = pool.getCompletedTaskCount();
+				if(!CLIProperties.verbose && !CLIProperties.quiet)
+					System.out.println("Handled " + numberOfHandledTasks + " files.");
+			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
