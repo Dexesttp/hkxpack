@@ -1,34 +1,47 @@
 package com.dexesttp.hkxpack.cli.commands;
 
-import com.dexesttp.hkxpack.Main;
-import com.dexesttp.hkxpack.cli.utils.RandomUtils;
+import java.io.File;
 
-public class Command_pack implements Command{
+import com.dexesttp.hkxpack.data.HKXFile;
+import com.dexesttp.hkxpack.descriptor.HKXDescriptorFactory;
+import com.dexesttp.hkxpack.descriptor.HKXEnumResolver;
+import com.dexesttp.hkxpack.hkxwriter.HKXWriter;
+import com.dexesttp.hkxpack.resources.DisplayProperties;
+import com.dexesttp.hkxpack.tagreader.TagXMLReader;
+
+public class Command_pack extends Command_IO {
+
 	@Override
-	public int execute(String... parameters) {
-		Main main = new Main();
-		if(parameters.length < 2) {
-			System.err.println("No filename given.");
-			return 1;
-		}
-		String fileName = parameters[1];
-		String outName = "";
-		if(parameters.length <= 2 || parameters[2].equals("-o")) {
+	protected Runnable getThreadLambda(String inputFileName, String outputFileName,
+			HKXDescriptorFactory descriptorFactory, HKXEnumResolver enumResolver) {
+		return () -> {
 			try {
-				outName = RandomUtils.unmakeFromFileName(fileName);
+				// Read file
+				File inFile = new File(inputFileName);
+				TagXMLReader reader = new TagXMLReader(inFile, descriptorFactory);
+				HKXFile file = reader.read();
+				
+				File outFile = new File(outputFileName);
+				outFile.createNewFile();
+				HKXWriter writer = new HKXWriter(outFile, enumResolver);
+				writer.write(file);
+			} catch (Exception e) {
+				System.out.println("Error reading file : " + inputFileName);
+				if(DisplayProperties.displayDebugInfo)
+					e.printStackTrace();
+				else
+					System.err.println(e.getMessage());
 			}
-			catch(Exception e) {
-				System.err.println("Invalid filename !");
-				return 1;
-			}
-		} else {
-			if(parameters.length < 3) {
-				System.err.println("No output filename given.");
-				return 1;
-			}
-			outName = parameters[3];
-		}
-		main.write(fileName, outName);
-		return 0;
+		};
+	}
+
+	@Override
+	protected String extractFileName(String ogName) {
+		return ogName.substring(0, ogName.lastIndexOf(".")) + ".hkx";
+	}
+
+	@Override
+	protected String[] getFileExtensions() {
+		return new String[] {".xml"};
 	}
 }
