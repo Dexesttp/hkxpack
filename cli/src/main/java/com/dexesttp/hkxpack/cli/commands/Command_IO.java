@@ -1,8 +1,10 @@
 package com.dexesttp.hkxpack.cli.commands;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import com.dexesttp.hkxpack.cli.utils.ArgsParser;
 import com.dexesttp.hkxpack.cli.utils.DirWalker;
@@ -12,9 +14,12 @@ import com.dexesttp.hkxpack.descriptor.HKXEnumResolver;
 import com.dexesttp.hkxpack.resources.DisplayProperties;
 
 public abstract class Command_IO implements Command {
+	private int nbConcurrentThreads = 32;
+	
 	public int execute(String... args) {
 		ArgsParser parser = new ArgsParser();
 		parser.addOption("-o", 1);
+		parser.addOption("-t", 1);
 		parser.addOption("-d", 0);
 		ArgsParser.Options result;
 		try {
@@ -25,6 +30,9 @@ public abstract class Command_IO implements Command {
 		}
 		String fileName = result.get("", 1);
 		String outName = result.get("-o", 0);
+		if(result.exists("-t"))
+			nbConcurrentThreads = Integer.parseInt(result.get("-t", 0));
+		
 		DisplayProperties.displayDebugInfo = result.exists("-d");
 		File fileIn = new File(fileName);
 		if(fileIn.isDirectory())
@@ -53,29 +61,27 @@ public abstract class Command_IO implements Command {
 			outDir = "out";
 		DirWalker walker = new DirWalker(getFileExtensions());
 		List<DirWalker.Entry> toConvert = walker.walk(inDir);
-		List<Thread> threads = new ArrayList<>();
+		ExecutorService pool = Executors.newFixedThreadPool(nbConcurrentThreads);
 		HKXEnumResolver enumResolver = new HKXEnumResolver();
 		HKXDescriptorFactory descriptorFactory;
 		try {
 			descriptorFactory = new HKXDescriptorFactory(enumResolver);
-			for(DirWalker.Entry fileInDirectory : toConvert) {
-				new File(fileInDirectory.getPath("out")).mkdirs();
-				final String inputFileName = fileInDirectory.getFullName();
-				final String outputFileName = fileInDirectory.getPath("out") + "/" + extractFileName(fileInDirectory.getName());
-				Thread toRun = new Thread(getThreadLambda(inputFileName, outputFileName, descriptorFactory, enumResolver));
-				threads.add(toRun);
-				System.out.println(inputFileName);
-				System.out.println("\t=> " + outputFileName);
-			}
-
-			for(Thread thread : threads)
-				thread.start();
-
-			for(Thread thread : threads)
-				thread.join();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return 1;
+		}
+		
+		for(DirWalker.Entry fileInDirectory : toConvert) {
+			new File(fileInDirectory.getPath("out")).mkdirs();
+			final String inputFileName = fileInDirectory.getFullName();
+			final String outputFileName = fileInDirectory.getPath("out") + "/" + extractFileName(fileInDirectory.getName());
+			pool.execute(getThreadLambda(inputFileName, outputFileName, descriptorFactory, enumResolver));
+		}
+		
+		try {
+			pool.awaitTermination(1, TimeUnit.DAYS);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 		return 0;
 	}

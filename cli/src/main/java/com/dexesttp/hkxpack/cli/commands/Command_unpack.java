@@ -35,6 +35,9 @@ public class Command_unpack extends Command_IO {
 					e.printStackTrace();
 				else
 					System.err.println(e.getMessage());
+			} finally {
+				System.out.println(inputFileName);
+				System.out.println("\t=> " + outputFileName);
 			}
 		};
 	}
