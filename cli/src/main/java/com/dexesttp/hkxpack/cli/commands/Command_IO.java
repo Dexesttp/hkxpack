@@ -91,7 +91,7 @@ public abstract class Command_IO implements Command {
 			final String outputFileName = fileInDirectory.getPath("out") + "/" + extractFileName(fileInDirectory.getName());
 			pool.execute(getThreadLambda(inputFileName, outputFileName, descriptorFactory, enumResolver));
 		}
-		
+		pool.shutdown();
 		try {
 			long numberOfHandledTasks = 0;
 			while(!pool.awaitTermination(30, TimeUnit.SECONDS)) {
