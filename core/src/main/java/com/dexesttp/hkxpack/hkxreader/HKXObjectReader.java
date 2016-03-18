@@ -10,6 +10,7 @@ import com.dexesttp.hkxpack.descriptor.members.HKXMemberTemplate;
 import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
 import com.dexesttp.hkxpack.hkxreader.member.HKXMemberReader;
 import com.dexesttp.hkxpack.hkxreader.member.HKXMemberReaderFactory;
+import com.dexesttp.hkxpack.resources.LoggerUtil;
 
 public class HKXObjectReader {
 
@@ -39,7 +40,7 @@ public class HKXObjectReader {
 				member = memberReader.read(position);
 			} catch (IOException | InvalidPositionException e) {
 				member = new HKXFailedMember(memberTemplate.name, memberTemplate.vtype, e.getClass().getName());
-				e.printStackTrace();
+				LoggerUtil.add(e);
 			}
 			result.members().add(member);
 		}

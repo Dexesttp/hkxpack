@@ -20,7 +20,7 @@ public class CommandFactory {
 		try {
 			return (Command) commandClass.newInstance();
 		} catch (Exception e) {
-			return new Command_help();
+			return new Command_quick();
 		}
 	}
 }

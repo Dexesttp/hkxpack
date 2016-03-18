@@ -2,28 +2,26 @@ package com.dexesttp.hkxpack.cli;
 
 import java.io.File;
 
-import com.dexesttp.hkxpack.cli.utils.RandomUtils;
 import com.dexesttp.hkxpack.data.HKXFile;
 import com.dexesttp.hkxpack.descriptor.HKXDescriptorFactory;
 import com.dexesttp.hkxpack.descriptor.HKXEnumResolver;
 import com.dexesttp.hkxpack.hkxreader.HKXReader;
 import com.dexesttp.hkxpack.hkxwriter.HKXWriter;
 import com.dexesttp.hkxpack.resources.DisplayProperties;
-import com.dexesttp.hkxpack.resources.LoggerUtil;
 import com.dexesttp.hkxpack.tagreader.TagXMLReader;
 import com.dexesttp.hkxpack.tagwriter.TagXMLWriter;
 
 public class TestView {
 	private static final String testName = "Locomotion";
 	public static void main(String[] args) {
-		read(args, "D:\\Documents\\SANDBOX\\FO4\\hkx_files\\" + testName + ".hkx");
+		read(args, testName);
 		write(args);
-		read(args, "D:\\Documents\\SANDBOX\\FO4\\hkx_files\\" + testName + "-new.hkx");
+		read(args, testName + "-new");
 	}
 	
 	public static void read(String[] args, String name) {
-		String inputFileName = name;
-		String outputFileName =  RandomUtils.makeFromFileName(inputFileName);
+		String inputFileName = "D:\\Documents\\SANDBOX\\FO4\\hkx_files\\" + name + ".hkx";
+		String outputFileName =  "D:\\Documents\\SANDBOX\\FO4\\hkx_files\\" + name + ".xml";
 		DisplayProperties.displayDebugInfo = true;
 		DisplayProperties.displayFileDebugInfo = true;
 		DisplayProperties.displayReadTypesInfo = true;
@@ -69,9 +67,6 @@ public class TestView {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		// Print logs
-        LoggerUtil.output();
 	}
 	
 	public static void xmlTest(String[] args) {
@@ -98,8 +93,5 @@ public class TestView {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		// Print logs
-        LoggerUtil.output();
 	}
 }

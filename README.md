@@ -1,4 +1,4 @@
-# HKXPack version 0.0.91-alpha
+# HKXPack version 0.1.0-beta
 
 HKXPack is a tool to 'pack' and 'unpack' to and from hkx files, which is the Havok compressed file format.
 
@@ -15,22 +15,40 @@ You can download the latest release at https://github.com/Dexesttp/hkxpack/relea
 To use this tool, you will need a Java Runtime Environement (jre) for Java 8 or higher.
 
 ##### Unpack the files  
-Use the command `java -jar hkxpack-cli.jar unpack <filename>.hkx` to extract the file into <filename>.xml
+Use the command `java -jar hkxpack-cli.jar unpack <filename>.hkx` to extract the file into <filename>.xml  
+You can also use `java -jar hkxpack-cli.jar unpack <directory>` to extract the directory's HKX files into XML files, under the `out/` folder
 
 ##### Pack the files  
-Use the command `java -jar hkxpack-cli.jar pack <filename>.xml` to pack the file into <filename>.hkx
+Use the command `java -jar hkxpack-cli.jar pack <filename>.xml` to pack the file into <filename>.hkx  
+You can also use `java -jar hkxpack-cli.jar pack <directory>` to extract the directory's XML files into HKX files, under the `out/` folder
 
-# Compilation
+##### Options
+Common options are :
+- `-q` for quiet output.
+- `-v` for verbose output.
+- `-o` to select either the output file or the output directory.
+
+Advanced options are :
+- `-t` to set the maximum number of threads to use while walking directories. The default is 32.
+- `-d` for debug output, mostly prints stacks on error.
+
+# Known bugs
+
+The tool can't yet parse a HKX file representing a Skeleton. There will be random errors if you try.
+
+# Developping
+
+## Compilation
 
 This project can be built using Maven
 Use the command by running the following Maven goals `mvn clean package`  
 The compiled jar will then be available under /cli/target/hkxpack-cli.jar
 
-# Eclipse
+## Eclipse
 
 Import this project as a standard Maven project.
 
-# Information
+## General information
 
 The tool was written for Java 8 using the Oracle JavaSE JDK (jdk1.8.0_66), and was originally intended to be a proof of concept.
 
