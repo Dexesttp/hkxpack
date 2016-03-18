@@ -1,4 +1,4 @@
-# HKXPack version 0.0.91-alpha
+# HKXPack version 0.1.0-beta
 
 HKXPack is a tool to 'pack' and 'unpack' to and from hkx files, which is the Havok compressed file format.
 
