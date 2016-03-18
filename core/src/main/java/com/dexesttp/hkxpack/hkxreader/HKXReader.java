@@ -15,6 +15,7 @@ import com.dexesttp.hkxpack.hkx.data.DataExternal;
 import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
 import com.dexesttp.hkxpack.hkx.header.HeaderData;
 import com.dexesttp.hkxpack.hkxreader.member.HKXMemberReaderFactory;
+import com.dexesttp.hkxpack.resources.LoggerUtil;
 
 /**
  * Reads the content of a {@link File}, containing information in the hkx format, into a DOM-like {@link HKXFile}.
@@ -95,7 +96,7 @@ public class HKXReader {
 					// Store the resulting class
 					content.add(result);
 				} else {
-					System.err.println("Illegal linked Classname position (" + currentClass.from + "//" + currentClass.to + "). Ignoring.");
+					LoggerUtil.add(new Exception("Illegal linked Classname position (" + currentClass.from + "//" + currentClass.to + "). Ignoring."));
 				}
 			}
 		} catch (InvalidPositionException e) {
