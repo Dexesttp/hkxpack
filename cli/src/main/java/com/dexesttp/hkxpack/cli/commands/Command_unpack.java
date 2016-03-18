@@ -7,7 +7,6 @@ import com.dexesttp.hkxpack.data.HKXFile;
 import com.dexesttp.hkxpack.descriptor.HKXDescriptorFactory;
 import com.dexesttp.hkxpack.descriptor.HKXEnumResolver;
 import com.dexesttp.hkxpack.hkxreader.HKXReader;
-import com.dexesttp.hkxpack.resources.LoggerUtil;
 import com.dexesttp.hkxpack.tagwriter.TagXMLWriter;
 
 public class Command_unpack extends Command_IO {
@@ -26,9 +25,6 @@ public class Command_unpack extends Command_IO {
 				File outFile = new File(outputFileName);
 				TagXMLWriter writer = new TagXMLWriter(outFile);
 				writer.write(hkxFile);
-				
-				// Print logs
-		        LoggerUtil.output();
 			} catch (Exception e) {
 				System.out.println("Error reading file : " + inputFileName);
 				if(CLIProperties.debug)

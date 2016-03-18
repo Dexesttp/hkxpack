@@ -8,7 +8,6 @@ import com.dexesttp.hkxpack.descriptor.HKXEnumResolver;
 import com.dexesttp.hkxpack.hkxreader.HKXReader;
 import com.dexesttp.hkxpack.hkxwriter.HKXWriter;
 import com.dexesttp.hkxpack.resources.DisplayProperties;
-import com.dexesttp.hkxpack.resources.LoggerUtil;
 import com.dexesttp.hkxpack.tagreader.TagXMLReader;
 import com.dexesttp.hkxpack.tagwriter.TagXMLWriter;
 
@@ -68,9 +67,6 @@ public class TestView {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		// Print logs
-        LoggerUtil.output();
 	}
 	
 	public static void xmlTest(String[] args) {
@@ -97,8 +93,5 @@ public class TestView {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		// Print logs
-        LoggerUtil.output();
 	}
 }

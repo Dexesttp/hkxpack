@@ -1,19 +1,12 @@
 package com.dexesttp.hkxpack;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
 
 import com.dexesttp.hkxpack.data.HKXFile;
 import com.dexesttp.hkxpack.descriptor.HKXDescriptorFactory;
 import com.dexesttp.hkxpack.descriptor.HKXEnumResolver;
-import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
 import com.dexesttp.hkxpack.hkxreader.HKXReader;
 import com.dexesttp.hkxpack.hkxwriter.HKXWriter;
-import com.dexesttp.hkxpack.resources.LoggerUtil;
 import com.dexesttp.hkxpack.tagreader.TagXMLReader;
 import com.dexesttp.hkxpack.tagwriter.TagXMLWriter;
 
@@ -48,21 +41,8 @@ public class Main {
 			File outFile = new File(outputFileName);
 			TagXMLWriter writer = new TagXMLWriter(outFile);
 			writer.write(hkxFile);
-			
-			// Print logs
-	        LoggerUtil.output();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (InvalidPositionException e) {
-			e.printStackTrace();
-		} catch (NumberFormatException e) {
-			e.printStackTrace();
-		} catch (TransformerException e) {
-			e.printStackTrace();
-		} catch (ParserConfigurationException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			// NO OP
 		}
 	}
 	
@@ -84,7 +64,7 @@ public class Main {
 			HKXWriter writer = new HKXWriter(outFile, enumResolver);
 			writer.write(file);
 		} catch (Exception e) {
-			e.printStackTrace();
+			// NO OP
 		}
 	}
 }

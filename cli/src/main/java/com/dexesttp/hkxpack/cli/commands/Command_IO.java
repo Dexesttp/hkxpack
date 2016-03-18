@@ -12,6 +12,7 @@ import com.dexesttp.hkxpack.cli.utils.DirWalker;
 import com.dexesttp.hkxpack.cli.utils.WrongSizeException;
 import com.dexesttp.hkxpack.descriptor.HKXDescriptorFactory;
 import com.dexesttp.hkxpack.descriptor.HKXEnumResolver;
+import com.dexesttp.hkxpack.resources.LoggerUtil;
 
 public abstract class Command_IO implements Command {
 	private int nbConcurrentThreads = 32;
@@ -96,8 +97,17 @@ public abstract class Command_IO implements Command {
 			while(!pool.awaitTermination(30, TimeUnit.SECONDS)) {
 				if(pool.getCompletedTaskCount() > numberOfHandledTasks)
 					numberOfHandledTasks = pool.getCompletedTaskCount();
-				if(!CLIProperties.verbose && !CLIProperties.quiet)
-					System.out.println("Handled " + numberOfHandledTasks + " files.");
+				if(!CLIProperties.quiet) {
+					if(!CLIProperties.verbose)
+						System.out.println("Handled " + numberOfHandledTasks + " files.");
+					while(!LoggerUtil.getList().isEmpty()) {
+						Throwable e = LoggerUtil.getList().remove(0);
+						if(CLIProperties.debug)
+							e.printStackTrace();
+						else
+							System.err.println(e.getMessage());
+					}
+				}
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
