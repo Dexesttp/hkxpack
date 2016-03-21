@@ -51,17 +51,6 @@ public class MemberDataResolver {
 				member5.set((double) ByteUtils.getFloat(byteArray));
 				return member5;
 		// Complex values
-			case TYPE_MATRIX3:
-				byte[] b11 = new byte[] {byteArray[0], byteArray[1], byteArray[2], byteArray[3]};
-				byte[] b12 = new byte[] {byteArray[4], byteArray[5], byteArray[6], byteArray[7]};
-				byte[] b13 = new byte[] {byteArray[8], byteArray[9], byteArray[10], byteArray[11]};
-				HKXDirectMember<Double[]> member7 = new HKXDirectMember<>(name, type);
-				member7.set(new Double[] {
-						(double) ByteUtils.getFloat(b11),
-						(double) ByteUtils.getFloat(b12),
-						(double) ByteUtils.getFloat(b13)
-				});
-				return member7;
 			case TYPE_VECTOR4:
 			case TYPE_QUATERNION:
 			case TYPE_TRANSFORM:
@@ -77,6 +66,7 @@ public class MemberDataResolver {
 						(double) ByteUtils.getFloat(b24)
 				});
 				return member8;
+			case TYPE_MATRIX3:
 			case TYPE_QSTRANSFORM:
 				byte[] b31 = new byte[] {byteArray[0], byteArray[1], byteArray[2], byteArray[3]};
 				byte[] b32 = new byte[] {byteArray[4], byteArray[5], byteArray[6], byteArray[7]};
@@ -146,7 +136,8 @@ public class MemberDataResolver {
 		// Default
 			default:
 				break;
-		} throw new IllegalArgumentException(type + " can't be analyzed with MemberTypeResolver#getMember");
+		}
+		throw new IllegalArgumentException(type + " can't be analyzed with MemberTypeResolver#getMember");
 	}
 	
 	/**
@@ -195,16 +186,6 @@ public class MemberDataResolver {
 				HKXDirectMember<Double> memberReal = (HKXDirectMember<Double>) member;
 				return ByteUtils.fromFloat(memberReal.get(), 4);
 		// Complex values
-			case TYPE_MATRIX3:
-				HKXDirectMember<Double[]> memberMt3 = (HKXDirectMember<Double[]>) member;
-				byte[] memberMt3_1 = ByteUtils.fromFloat(memberMt3.get()[0], 4);
-				byte[] memberMt3_2 = ByteUtils.fromFloat(memberMt3.get()[1], 4);
-				byte[] memberMt3_3 = ByteUtils.fromFloat(memberMt3.get()[2], 4);
-				return new byte[]{
-						memberMt3_1[0], memberMt3_1[1], memberMt3_1[2], memberMt3_1[3],
-						memberMt3_2[0], memberMt3_2[1], memberMt3_2[2], memberMt3_2[3],
-						memberMt3_3[0], memberMt3_3[1], memberMt3_3[2], memberMt3_3[3]
-				};
 			case TYPE_VECTOR4:
 			case TYPE_QUATERNION:
 			case TYPE_TRANSFORM:
@@ -219,6 +200,7 @@ public class MemberDataResolver {
 						memberTr_3[0], memberTr_3[1], memberTr_3[2], memberTr_3[3],
 						memberTr_4[0], memberTr_4[1], memberTr_4[2], memberTr_4[3]
 				};
+			case TYPE_MATRIX3:
 			case TYPE_QSTRANSFORM:
 				HKXDirectMember<Double[]> memberQs = (HKXDirectMember<Double[]>) member;
 				byte[][] memberQs_1 = new byte[][] {
