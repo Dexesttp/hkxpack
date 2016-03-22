@@ -3,6 +3,7 @@ package com.dexesttp.hkxpack.hkxreader.member;
 import com.dexesttp.hkxpack.descriptor.HKXDescriptor;
 import com.dexesttp.hkxpack.descriptor.HKXDescriptorFactory;
 import com.dexesttp.hkxpack.descriptor.HKXEnumResolver;
+import com.dexesttp.hkxpack.descriptor.enums.HKXType;
 import com.dexesttp.hkxpack.descriptor.exceptions.ClassFileReadError;
 import com.dexesttp.hkxpack.descriptor.members.HKXMemberTemplate;
 import com.dexesttp.hkxpack.hkxreader.HKXObjectReader;
@@ -40,12 +41,18 @@ public class HKXMemberReaderFactory {
 				switch(template.vsubtype.getFamily()) {
 					case DIRECT:
 					case COMPLEX:
-						return new HKXDirectArrayMemberReader(connector, template.name, template.vsubtype, template.offset);
+						if(template.vtype == HKXType.TYPE_RELARRAY)
+							return new HKXRelArrayMemberReader(connector, template.name, template.vsubtype, template.offset);
+						else
+							return new HKXDirectArrayMemberReader(connector, template.name, template.vsubtype, template.offset);
 					case STRING:
 						return new HKXStringArrayMemberReader(connector, template.name, template.vsubtype, template.offset);
 					case OBJECT:
 						HKXDescriptor descriptor = descriptorFactory.get(template.target);
-						return new HKXObjectArrayMemberReader(connector, objectCreator, descriptorFactory, template.name, template.offset, descriptor);
+						if(template.vtype == HKXType.TYPE_RELARRAY)
+							return new HKXRelArrayMemberReader(connector, template.name, template.vsubtype, template.offset, descriptor, descriptorFactory);
+						else
+							return new HKXObjectArrayMemberReader(connector, objectCreator, descriptorFactory, template.name, template.offset, descriptor);
 					case POINTER:
 						return new HKXPointerArrayMemberReader(connector, generator, template.name, template.vsubtype, template.offset);
 					default:
