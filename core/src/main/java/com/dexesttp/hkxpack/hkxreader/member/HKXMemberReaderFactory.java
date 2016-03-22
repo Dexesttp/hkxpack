@@ -38,21 +38,17 @@ public class HKXMemberReaderFactory {
 				return new HKXEnumMemberReader(connector, enumResolver, template.name, template.vtype, template.vsubtype, template.target, template.offset);
 				
 			case ARRAY:
+				if(template.vtype == HKXType.TYPE_RELARRAY)
+					return new HKXRelArrayMemberReader(connector, template.name, template.vsubtype, template.offset);
 				switch(template.vsubtype.getFamily()) {
 					case DIRECT:
 					case COMPLEX:
-						if(template.vtype == HKXType.TYPE_RELARRAY)
-							return new HKXRelArrayMemberReader(connector, template.name, template.vsubtype, template.offset);
-						else
-							return new HKXDirectArrayMemberReader(connector, template.name, template.vsubtype, template.offset);
+						return new HKXDirectArrayMemberReader(connector, template.name, template.vsubtype, template.offset);
 					case STRING:
 						return new HKXStringArrayMemberReader(connector, template.name, template.vsubtype, template.offset);
 					case OBJECT:
 						HKXDescriptor descriptor = descriptorFactory.get(template.target);
-						if(template.vtype == HKXType.TYPE_RELARRAY)
-							return new HKXRelArrayMemberReader(connector, template.name, template.vsubtype, template.offset, descriptor, descriptorFactory);
-						else
-							return new HKXObjectArrayMemberReader(connector, objectCreator, descriptorFactory, template.name, template.offset, descriptor);
+						return new HKXObjectArrayMemberReader(connector, objectCreator, descriptorFactory, template.name, template.offset, descriptor);
 					case POINTER:
 						return new HKXPointerArrayMemberReader(connector, generator, template.name, template.vsubtype, template.offset);
 					default:

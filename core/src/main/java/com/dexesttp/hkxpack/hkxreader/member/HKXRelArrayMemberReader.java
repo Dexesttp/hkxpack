@@ -29,15 +29,7 @@ public class HKXRelArrayMemberReader implements HKXMemberReader {
 		this.name = name;
 		this.subtype = subtype;
 		this.offset = offset;
-		this.subsize = (int) MemberSizeResolver.getSize(subtype);
-	}
-
-	public HKXRelArrayMemberReader(HKXReaderConnector connector, String name, HKXType subtype, long offset, HKXDescriptor descriptor, HKXDescriptorFactory descriptorFactory) throws ClassFileReadError {
-		this.connector = connector;
-		this.name = name;
-		this.subtype = subtype;
-		this.offset = offset;
-		this.subsize = (int) ObjectSizeResolver.getSize(descriptor, descriptorFactory);
+		this.subsize = 4;
 	}
 	
 	@Override
@@ -48,7 +40,6 @@ public class HKXRelArrayMemberReader implements HKXMemberReader {
 		System.out.println("Subtype : " + subtype);
 		// Random idea.
 		System.out.println("Probable size : " + subsize);
-		System.out.println("");
 		RandomAccessFile file = connector.data.setup(classOffset + offset);
 		byte[] b = new byte[subsize];
 		file.read(b);System.out.println("Contents : " + Arrays.toString(b));
@@ -60,7 +51,7 @@ public class HKXRelArrayMemberReader implements HKXMemberReader {
 			System.out.println("No contents found.");
 			data1.backtrack();
 		}
-		return new HKXFailedMember("", HKXType.TYPE_RELARRAY, "Can't read RelArrays yet");
+		return new HKXFailedMember(name, HKXType.TYPE_RELARRAY, "Can't read RelArrays yet");
 	}
 
 }
