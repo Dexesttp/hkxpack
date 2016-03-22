@@ -16,7 +16,7 @@ import com.dexesttp.hkxpack.tagwriter.TagXMLWriter;
  */
 class TestView {
 	private static final String rootName = "D:\\Documents\\SANDBOX\\FO4\\hkx_files\\";
-	private static final String testName = "Locomotion";
+	private static final String testName = "skBareBody";
 	public static void main(String[] args) {
 		read(args, testName);
 		write(args);
