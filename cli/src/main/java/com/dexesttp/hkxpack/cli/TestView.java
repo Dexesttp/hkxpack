@@ -8,6 +8,7 @@ import com.dexesttp.hkxpack.descriptor.HKXEnumResolver;
 import com.dexesttp.hkxpack.hkxreader.HKXReader;
 import com.dexesttp.hkxpack.hkxwriter.HKXWriter;
 import com.dexesttp.hkxpack.resources.DisplayProperties;
+import com.dexesttp.hkxpack.resources.LoggerUtil;
 import com.dexesttp.hkxpack.tagreader.TagXMLReader;
 import com.dexesttp.hkxpack.tagwriter.TagXMLWriter;
 
@@ -21,6 +22,8 @@ class TestView {
 		read(args, testName);
 		write(args);
 		read(args, testName + "-new");
+		for(Throwable e: LoggerUtil.getList())
+			e.printStackTrace();
 	}
 	
 	private static void read(String[] args, String name) {
