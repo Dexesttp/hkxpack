@@ -7,7 +7,9 @@ import java.util.Arrays;
 import com.dexesttp.hkxpack.data.members.HKXFailedMember;
 import com.dexesttp.hkxpack.data.members.HKXMember;
 import com.dexesttp.hkxpack.descriptor.enums.HKXType;
+import com.dexesttp.hkxpack.descriptor.enums.HKXTypeFamily;
 import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
+import com.dexesttp.hkxpack.hkx.types.MemberSizeResolver;
 import com.dexesttp.hkxpack.hkxreader.HKXReaderConnector;
 import com.dexesttp.hkxpack.resources.ByteUtils;
 
@@ -33,23 +35,26 @@ public class HKXRelArrayMemberReader implements HKXMemberReader {
 		// Random idea.
 		System.out.println("Probable size : " + 4);
 		RandomAccessFile file = connector.data.setup(classOffset + offset);
-		byte[] b = new byte[4];
-		file.read(b);
-		System.out.println("Contents : " + Arrays.toString(b));
-		int mayBeAFlag = b[0];
-		System.out.print("Flag (?) : ");
-		for(int i = 0; i < 8; i++) {
-			System.out.print(""+mayBeAFlag % 2);
-			mayBeAFlag >>= 1;
-		}
-		System.out.println("");
-		byte[] bOff = new byte[] {b[2], b[3]};
+		byte[] bSize = new byte[2];
+		byte[] bOff = new byte[2];
+		file.read(bSize);
+		file.read(bOff);
+		System.out.println("Contents : " + Arrays.toString(bSize) + " // " + Arrays.toString(bOff));
+		int mayBeASize = ByteUtils.getInt(bSize);
+		System.out.println("Size : " + mayBeASize);
 		int mayBeAnOffset = ByteUtils.getInt(bOff);
 		System.out.println("Offset (?) : " + mayBeAnOffset);
-		byte[] bRes = new byte[16];
+		int memberSize = 0;
+		if(subtype.getFamily() == HKXTypeFamily.OBJECT)
+			memberSize = 16;
+		else
+			memberSize = (int) MemberSizeResolver.getSize(subtype);
 		file = connector.data.setup(classOffset + mayBeAnOffset);
-		file.read(bRes);
-		System.out.println("Found data : " + Arrays.toString(bRes));
+		byte[] bRes = new byte[memberSize];
+		for(int i = 0; i < mayBeASize; i++) {
+			file.read(bRes);
+			System.out.println("Found data : " + Arrays.toString(bRes));
+		}
 		return new HKXFailedMember(name, HKXType.TYPE_RELARRAY, "Can't read RelArrays yet");
 	}
 
