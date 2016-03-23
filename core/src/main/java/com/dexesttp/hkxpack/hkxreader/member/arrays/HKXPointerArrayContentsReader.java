@@ -1,4 +1,4 @@
-package com.dexesttp.hkxpack.hkxreader.member;
+package com.dexesttp.hkxpack.hkxreader.member.arrays;
 
 import java.io.IOException;
 
@@ -11,17 +11,23 @@ import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
 import com.dexesttp.hkxpack.hkxreader.HKXReaderConnector;
 import com.dexesttp.hkxpack.hkxreader.PointerNameGenerator;
 
-public class HKXPointerArrayMemberReader extends HKXArrayMemberReader {
+public class HKXPointerArrayContentsReader implements HKXArrayContentsReader {
 	private final PointerNameGenerator generator;
+	private final HKXReaderConnector connector;
 
-	HKXPointerArrayMemberReader(HKXReaderConnector connector, PointerNameGenerator generator, String name, HKXType subtype, long offset) {
-		super(connector, name, subtype, offset);
+	HKXPointerArrayContentsReader(HKXReaderConnector connector, PointerNameGenerator generator) {
+		this.connector = connector;
 		this.generator = generator;
 	}
 
 	@Override
-	protected HKXData getContents(long arrayStart, int position) throws IOException, InvalidPositionException {
-		long contentsPosition = arrayStart + position * 0x08;
+	public long getSize() {
+		return 0x08;
+	}
+
+	@Override
+	public HKXData getContents(long arrayStart, int position) throws IOException, InvalidPositionException {
+		long contentsPosition = arrayStart + position * getSize();
 		DataExternal data = connector.data2.readNext();
 		String target = "null";
 		if(data.from == contentsPosition) {
@@ -29,8 +35,7 @@ public class HKXPointerArrayMemberReader extends HKXArrayMemberReader {
 		} else {
 			connector.data2.backtrack();
 		}
-		HKXMember result = new HKXPointerMember(name, HKXType.TYPE_POINTER, HKXType.TYPE_NONE, target);
+		HKXMember result = new HKXPointerMember("", HKXType.TYPE_POINTER, HKXType.TYPE_NONE, target);
 		return result;
 	}
-
 }

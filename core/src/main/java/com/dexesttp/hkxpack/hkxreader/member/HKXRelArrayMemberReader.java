@@ -11,6 +11,7 @@ import com.dexesttp.hkxpack.descriptor.enums.HKXTypeFamily;
 import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
 import com.dexesttp.hkxpack.hkx.types.MemberSizeResolver;
 import com.dexesttp.hkxpack.hkxreader.HKXReaderConnector;
+import com.dexesttp.hkxpack.hkxreader.member.arrays.HKXArrayContentsReader;
 import com.dexesttp.hkxpack.resources.ByteUtils;
 
 public class HKXRelArrayMemberReader implements HKXMemberReader {
@@ -19,7 +20,7 @@ public class HKXRelArrayMemberReader implements HKXMemberReader {
 	private final HKXType subtype;
 	private long offset;
 
-	public HKXRelArrayMemberReader(HKXReaderConnector connector, String name, HKXType subtype, long offset) {
+	public HKXRelArrayMemberReader(HKXReaderConnector connector, String name, HKXType subtype, HKXArrayContentsReader arrayContentsReader, long offset) {
 		this.connector = connector;
 		this.name = name;
 		this.subtype = subtype;
