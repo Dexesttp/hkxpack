@@ -21,13 +21,8 @@ class HKXDirectArrayContentsReader implements HKXArrayContentsReader {
 	}
 
 	@Override
-	public long getSize() {
-		return MemberSizeResolver.getSize(contentType);
-	}
-
-	@Override
 	public HKXData getContents(long arrayStart, int position) throws IOException, InvalidPositionException {
-		final int contentSize = (int) getSize();
+		final int contentSize = (int) MemberSizeResolver.getSize(contentType);
 		byte[] b = new byte[contentSize];
 		RandomAccessFile file = connector.data.setup(arrayStart + position * contentSize);
 		file.read(b);

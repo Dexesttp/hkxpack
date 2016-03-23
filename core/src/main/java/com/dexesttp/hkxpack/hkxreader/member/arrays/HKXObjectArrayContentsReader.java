@@ -23,11 +23,6 @@ class HKXObjectArrayContentsReader implements HKXArrayContentsReader {
 	}
 
 	@Override
-	public long getSize() {
-		return contentSize;
-	}
-
-	@Override
 	public HKXData getContents(long arrayStart, int position) throws IOException, InvalidPositionException {
 		long contentsPos = arrayStart + position * contentSize;
 		HKXObject data = reader.createHKXObject("", contentsPos, descriptor);

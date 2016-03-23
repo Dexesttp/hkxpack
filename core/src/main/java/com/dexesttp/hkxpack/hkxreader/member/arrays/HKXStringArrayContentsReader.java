@@ -21,13 +21,8 @@ class HKXStringArrayContentsReader implements HKXArrayContentsReader {
 	}
 
 	@Override
-	public long getSize() {
-		return 0x08;
-	}
-
-	@Override
 	public HKXData getContents(long arrayStart, int position) throws IOException, InvalidPositionException {
-		long descriptorPosition = arrayStart + position * getSize();
+		long descriptorPosition = arrayStart + position * 0x08;
 		DataInternal data = connector.data1.readNext();
 		String contents = "";
 		if(data.from == descriptorPosition) {
