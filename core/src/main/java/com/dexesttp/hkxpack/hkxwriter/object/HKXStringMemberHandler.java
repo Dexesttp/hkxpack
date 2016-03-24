@@ -15,7 +15,7 @@ public class HKXStringMemberHandler implements HKXMemberHandler {
 	private final long offset;
 	private final List<DataInternal> data1;
 
-	public HKXStringMemberHandler(RandomAccessFile outFile, long offset, List<DataInternal> data1List) {
+	HKXStringMemberHandler(RandomAccessFile outFile, long offset, List<DataInternal> data1List) {
 		this.outFile = outFile;
 		this.offset = offset;
 		this.data1 = data1List;
