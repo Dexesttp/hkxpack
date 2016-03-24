@@ -34,13 +34,13 @@ public class TagXMLComplexHandler implements TagXMLContentsHandler {
 	Pattern getPattern(HKXType memberType) {
 		switch(memberType) {
 			case TYPE_VECTOR4:
-			case TYPE_TRANSFORM:
 			case TYPE_QUATERNION:
 				return pattern4;
 			case TYPE_MATRIX3:
 			case TYPE_QSTRANSFORM:
 				return patternQS;
 			case TYPE_MATRIX4:
+			case TYPE_TRANSFORM:
 				return patternM4;
 			default:
 				throw new IllegalArgumentException();
