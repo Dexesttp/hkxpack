@@ -1,4 +1,4 @@
-package com.dexesttp.hkxpack.hkxwriter.object;
+package com.dexesttp.hkxpack.hkxwriter.object.array;
 
 import java.util.List;
 

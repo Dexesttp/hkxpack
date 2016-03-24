@@ -53,7 +53,6 @@ public class MemberDataResolver {
 		// Complex values
 			case TYPE_VECTOR4:
 			case TYPE_QUATERNION:
-			case TYPE_TRANSFORM:
 				byte[] b21 = new byte[] {byteArray[0], byteArray[1], byteArray[2], byteArray[3]};
 				byte[] b22 = new byte[] {byteArray[4], byteArray[5], byteArray[6], byteArray[7]};
 				byte[] b23 = new byte[] {byteArray[8], byteArray[9], byteArray[10], byteArray[11]};
@@ -97,6 +96,7 @@ public class MemberDataResolver {
 				});
 				return member9;
 			case TYPE_MATRIX4:
+			case TYPE_TRANSFORM:
 				byte[] b41 = new byte[] {byteArray[0], byteArray[1], byteArray[2], byteArray[3]};
 				byte[] b42 = new byte[] {byteArray[4], byteArray[5], byteArray[6], byteArray[7]};
 				byte[] b43 = new byte[] {byteArray[8], byteArray[9], byteArray[10], byteArray[11]};
@@ -188,7 +188,6 @@ public class MemberDataResolver {
 		// Complex values
 			case TYPE_VECTOR4:
 			case TYPE_QUATERNION:
-			case TYPE_TRANSFORM:
 				HKXDirectMember<Double[]> memberTransform = (HKXDirectMember<Double[]>) member;
 				byte[] memberTr_1 = ByteUtils.fromFloat(memberTransform.get()[0], 4);
 				byte[] memberTr_2 = ByteUtils.fromFloat(memberTransform.get()[1], 4);
@@ -238,6 +237,7 @@ public class MemberDataResolver {
 						memberQs_3[3][0], memberQs_3[3][1], memberQs_3[3][2], memberQs_3[3][3]
 				};
 			case TYPE_MATRIX4:
+			case TYPE_TRANSFORM:
 				HKXDirectMember<Double[]> memberM4 = (HKXDirectMember<Double[]>) member;
 				byte[][] memberM4_1 = new byte[][] {
 					ByteUtils.fromFloat(memberM4.get()[0], 4),

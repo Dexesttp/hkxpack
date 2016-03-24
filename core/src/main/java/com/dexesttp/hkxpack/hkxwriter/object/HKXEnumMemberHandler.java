@@ -15,7 +15,7 @@ public class HKXEnumMemberHandler implements HKXMemberHandler {
 	private final long offset;
 	private final HKXEnumResolver enumResolver;
 
-	public HKXEnumMemberHandler(RandomAccessFile outFile, long offset, HKXEnumResolver enumResolver) {
+	HKXEnumMemberHandler(RandomAccessFile outFile, long offset, HKXEnumResolver enumResolver) {
 		this.outFile = outFile;
 		this.offset = offset;
 		this.enumResolver = enumResolver;

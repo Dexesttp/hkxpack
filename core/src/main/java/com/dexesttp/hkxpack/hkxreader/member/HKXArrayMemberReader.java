@@ -12,18 +12,21 @@ import com.dexesttp.hkxpack.hkx.data.DataInternal;
 import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
 import com.dexesttp.hkxpack.hkx.types.MemberSizeResolver;
 import com.dexesttp.hkxpack.hkxreader.HKXReaderConnector;
+import com.dexesttp.hkxpack.hkxreader.member.arrays.HKXArrayContentsReader;
 import com.dexesttp.hkxpack.resources.ByteUtils;
 
-public abstract class HKXArrayMemberReader implements HKXMemberReader {
-	protected final HKXReaderConnector connector;
-	protected final String name;
-	protected final HKXType subtype;
-	protected final long memberOffset;
+public class HKXArrayMemberReader implements HKXMemberReader {
+	private final HKXReaderConnector connector;
+	private final String name;
+	private final HKXType subtype;
+	private final HKXArrayContentsReader internals;
+	private final long memberOffset;
 
-	HKXArrayMemberReader(HKXReaderConnector connector, String name, HKXType subtype, long offset) {
+	HKXArrayMemberReader(HKXReaderConnector connector, String name, HKXType subtype, HKXArrayContentsReader internals, long offset) {
 		this.connector = connector;
 		this.name = name;
 		this.subtype = subtype;
+		this.internals = internals;
 		this.memberOffset = offset;
 	}
 
@@ -40,14 +43,12 @@ public abstract class HKXArrayMemberReader implements HKXMemberReader {
 			DataInternal arrValue = data1.readNext();
 			assert(arrValue.from == classOffset + memberOffset);
 			for(int i = 0; i < arrSize; i++ ) {
-				HKXData data = getContents(arrValue.to, i);
+				HKXData data = internals.getContents(arrValue.to, i);
 				result.add(data);
 			}
 		}
 		return result;
 	}
-
-	protected abstract HKXData getContents(long arrayStart, int position) throws IOException, InvalidPositionException;
 
 	private int getSizeComponent(byte[] b) {
 		byte[] newB = new byte[]{b[8], b[9], b[10], b[11]};
