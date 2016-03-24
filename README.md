@@ -1,4 +1,4 @@
-# HKXPack version 0.1.0-beta
+# HKXPack version 0.1.1-beta
 
 HKXPack is a tool to 'pack' and 'unpack' to and from hkx files, which is the Havok compressed file format.
 
@@ -36,7 +36,7 @@ Advanced options are :
 
 The tool can't yet parse a HKX file representing a Skeleton. There will be random errors if you try.
 
-# Developping
+# Developing
 
 ## Compilation
 
@@ -58,6 +58,7 @@ You might find out that some of the data required to run the tool is missing. Th
 
 # Contributions
 
+Thanks to Aerisam for his help understanding the animation data.  
 Thanks to CPU for his overall help with making this project.  
 Thanks to Figment for his help to obtain information about the hkx classes. Without him, none of this would be possible.  
 Thanks to Fore for his FNIS tool that allowed slight modifications of old files, and for sharing his knowledge of behaviours with me.  

@@ -24,5 +24,5 @@ public class StaticProperties {
 	 * * Doesn't exist with stable releases (no -HOTFIX or similar, this goes into the merge data or changelog !)
 	 * </pre>
 	 */
-	public static String version_number = "0.1.0-beta";
+	public static String version_number = "0.1.1-beta";
 }
