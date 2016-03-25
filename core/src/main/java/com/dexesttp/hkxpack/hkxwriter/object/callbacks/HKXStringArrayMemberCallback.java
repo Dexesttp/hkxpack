@@ -1,7 +1,7 @@
 package com.dexesttp.hkxpack.hkxwriter.object.callbacks;
 
 import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,9 +17,9 @@ public class HKXStringArrayMemberCallback implements HKXMemberCallback {
 	private final List<DataInternal> data1;
 	private final DataInternal arrData;
 	private final HKXArrayMember arrMember;
-	private RandomAccessFile outFile;
+	private ByteBuffer outFile;
 
-	public HKXStringArrayMemberCallback(List<DataInternal> data1, DataInternal arrData, HKXArrayMember arrMember, RandomAccessFile outFile) {
+	public HKXStringArrayMemberCallback(List<DataInternal> data1, DataInternal arrData, HKXArrayMember arrMember, ByteBuffer outFile) {
 		this.data1 = data1;
 		this.arrData = arrData;
 		this.arrMember = arrMember;
@@ -51,9 +51,9 @@ public class HKXStringArrayMemberCallback implements HKXMemberCallback {
 		return (callbacks, position) -> { 
 			stringData.to = position;
 			data1.add(stringData);
-			outFile.seek(position);
-			outFile.writeBytes(internalMember.get());
-			outFile.writeByte(0x00);
+			outFile.position((int) position);
+			outFile.put(internalMember.get().getBytes());
+			outFile.put((byte) 0x00);
 			long outSize = internalMember.get().length() + 1;
 			return outSize + ((position + outSize) % 2);
 		};

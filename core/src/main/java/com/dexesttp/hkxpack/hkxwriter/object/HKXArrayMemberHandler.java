@@ -1,7 +1,7 @@
 package com.dexesttp.hkxpack.hkxwriter.object;
 
 import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,12 +18,12 @@ import com.dexesttp.hkxpack.hkxwriter.object.callbacks.HKXStringArrayMemberCallb
 import com.dexesttp.hkxpack.resources.ByteUtils;
 
 public class HKXArrayMemberHandler implements HKXMemberHandler {
-	private final RandomAccessFile outFile;
+	private final ByteBuffer outFile;
 	private final long offset;
 	private final List<DataInternal> data1;
 	private final HKXMemberHandlerFactory memberHandlerFactory;
 
-	public HKXArrayMemberHandler(RandomAccessFile outFile, long offset,
+	public HKXArrayMemberHandler(ByteBuffer outFile, long offset,
 			List<DataInternal> data1List, HKXMemberHandlerFactory hkxMemberHandlerFactory) {
 		this.outFile = outFile;
 		this.offset = offset;
@@ -41,8 +41,8 @@ public class HKXArrayMemberHandler implements HKXMemberHandler {
 				sizeVals[0], sizeVals[1], sizeVals[2], sizeVals[3],
 				sizeVals[0], sizeVals[1], sizeVals[2], (byte) 0x80
 		};
-		outFile.seek(currentPos + offset);
-		outFile.write(arrayData);
+		outFile.position((int) (currentPos + offset));
+		outFile.put(arrayData);
 		if(size == 0)
 			return (memberCallbacks, position) -> { return 0; };
 		

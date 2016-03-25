@@ -2,7 +2,7 @@ package com.dexesttp.hkxpack.hkxwriter;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
 import java.util.List;
 
 import com.dexesttp.hkxpack.hkx.data.Data1Interface;
@@ -16,7 +16,7 @@ import com.dexesttp.hkxpack.hkx.header.SectionData;
  * Write pointers (stored internally as a list of {@link DataInternal} and {@link DataExternal}) into the given file, at the described position.
  */
 class HKXPointersHandler {
-	private File outFile;
+	private ByteBuffer outFile;
 	private SectionData data;
 
 	/**
@@ -24,7 +24,7 @@ class HKXPointersHandler {
 	 * @param outFile the {@link File} to write data to.
 	 * @param data the {@link SectionData} describing at least the wanted offset and data1 position.
 	 */
-	HKXPointersHandler(File outFile, SectionData data) {
+	HKXPointersHandler(ByteBuffer outFile, SectionData data) {
 		this.outFile = outFile;
 		this.data = data;
 	}
@@ -45,7 +45,7 @@ class HKXPointersHandler {
 		for(DataInternal internal : data1List) {
 			endPos = connector1.write(i++, internal);
 		}
-		connector1.close();
+		//connector1.close();
 		endPos = fillBytes(endPos + data.offset) - data.offset;
 		data.data2 = endPos;
 		
@@ -56,7 +56,7 @@ class HKXPointersHandler {
 		for(DataExternal pointer : data2List) {
 			endPos = connector2.write(j++, pointer);
 		}
-		connector2.close();
+		//connector2.close();
 		endPos = fillBytes(endPos + data.offset) - data.offset;
 		data.data3 = endPos;
 		
@@ -67,7 +67,7 @@ class HKXPointersHandler {
 		for(DataExternal classLink : data3List) {
 			endPos = connector3.write(k++, classLink);
 		}
-		connector3.close();
+		//connector3.close();
 		endPos = fillBytes(endPos + data.offset) - data.offset;
 		
 		// Fill the section header.
@@ -80,12 +80,12 @@ class HKXPointersHandler {
 		if(endPos % 0x10 == 0)
 			return endPos;
 		long newEndPos = (1 + endPos / 0x10) * 0x10;
-		RandomAccessFile file = new RandomAccessFile(outFile, "rw");
-		file.seek(endPos);
+		//RandomAccessFile file = new RandomAccessFile(outFile, "rw");
+		outFile.position((int) endPos);
 		for(; endPos < newEndPos; endPos++ ) {
-			file.writeByte(0xFF);
+			outFile.put((byte) 0xFF);
 		}
-		file.close();
+		//outFile.close();
 		return newEndPos;
 	}
 

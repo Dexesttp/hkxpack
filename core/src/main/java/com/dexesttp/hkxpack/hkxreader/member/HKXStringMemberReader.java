@@ -1,7 +1,7 @@
 package com.dexesttp.hkxpack.hkxreader.member;
 
 import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
 
 import com.dexesttp.hkxpack.data.members.HKXMember;
 import com.dexesttp.hkxpack.data.members.HKXStringMember;
@@ -30,7 +30,7 @@ class HKXStringMemberReader implements HKXMemberReader {
 		try {
 			DataInternal data = connector.data1.readNext();
 			if(data.from == memberOffset + classOffset) {
-				RandomAccessFile file = connector.data.setup(data.to);
+				ByteBuffer file = connector.data.setup(data.to);
 				contents = ByteUtils.readString(file);
 			} else {
 				connector.data1.backtrack();

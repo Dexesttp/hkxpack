@@ -1,7 +1,7 @@
 package com.dexesttp.hkxpack.hkxreader.member;
 
 import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
 
 import com.dexesttp.hkxpack.data.members.HKXEnumMember;
 import com.dexesttp.hkxpack.data.members.HKXMember;
@@ -34,9 +34,9 @@ public class HKXEnumMemberReader implements HKXMemberReader {
 	@Override
 	public HKXMember read(long classOffset) throws IOException, InvalidPositionException {
 		final int memberSize = (int) MemberSizeResolver.getSize(vsubtype);
-		RandomAccessFile file = connector.data.setup(classOffset + memberOffset);
+		ByteBuffer file = connector.data.setup(classOffset + memberOffset);
 		byte[] b = new byte[memberSize];
-		file.read(b);
+		file.get(b);
 		int contents = ByteUtils.getInt(b);
 		HKXEnumMember result = new HKXEnumMember(name, vtype, vsubtype, etype);
 		result.set(enumResolver.resolve(etype, contents));

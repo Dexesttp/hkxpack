@@ -2,6 +2,9 @@ package com.dexesttp.hkxpack.hkxreader;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel.MapMode;
 
 import com.dexesttp.hkxpack.data.HKXFile;
 import com.dexesttp.hkxpack.data.HKXObject;
@@ -21,7 +24,8 @@ import com.dexesttp.hkxpack.resources.LoggerUtil;
  * Reads the content of a {@link File}, containing information in the hkx format, into a DOM-like {@link HKXFile}.
  */
 public class HKXReader {
-	private final File hkxFile;
+	private File hkxFile;
+	private ByteBuffer hkxBB;
 	private final HKXDescriptorFactory descriptorFactory;
 	private final HKXEnumResolver enumResolver;
 
@@ -37,6 +41,12 @@ public class HKXReader {
 		this.enumResolver = enumResolver;
 	}
 	
+	public HKXReader(ByteBuffer hkxBB, HKXDescriptorFactory descriptorFactory, HKXEnumResolver enumResolver) {
+		this.hkxBB = hkxBB;
+		this.descriptorFactory = descriptorFactory;
+		this.enumResolver = enumResolver;
+	}
+	
 	/**
 	 * Read data from this {@link HKXReader}'s {@link File}.
 	 * @return the read {@link HKXFile}
@@ -44,8 +54,16 @@ public class HKXReader {
 	 * @throws InvalidPositionException if there was a positionning problem while reading the file.
 	 */
 	public HKXFile read() throws IOException, InvalidPositionException {
+	
+		if(hkxFile != null)
+		{
+			RandomAccessFile raf =new RandomAccessFile(hkxFile, "rw" );
+			this.hkxBB = raf.getChannel().map(MapMode.READ_WRITE, 0, hkxFile.length());
+			raf.close();
+		}
+		
 		// Connect the connector to the file.
-		HKXReaderConnector connector = new HKXReaderConnector(hkxFile);
+		HKXReaderConnector connector= new HKXReaderConnector(hkxBB);
 		
 		// Get a file reader and a pointer name generator
 		PointerNameGenerator generator = new PointerNameGenerator();
@@ -105,6 +123,7 @@ public class HKXReader {
 		}
 		
 		return content;
+	 
 	}
 	
 }

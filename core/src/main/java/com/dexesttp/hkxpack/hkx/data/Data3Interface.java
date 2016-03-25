@@ -3,7 +3,7 @@ package com.dexesttp.hkxpack.hkx.data;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
 
 import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
 import com.dexesttp.hkxpack.hkx.header.SectionData;
@@ -13,7 +13,7 @@ import com.dexesttp.hkxpack.resources.ByteUtils;
  * Interface on the Data3 section of a HKX file.
  */
 public class Data3Interface {
-	private RandomAccessFile file;
+	private ByteBuffer file;
 	private SectionData header;
 
 	/**
@@ -22,8 +22,8 @@ public class Data3Interface {
 	 * @param dataHeader the {@link SectionData} relative to the Data section.
 	 * @throws FileNotFoundException if the {@link File} couldn't be opened.
 	 */
-	public void connect(File file, SectionData data1) throws FileNotFoundException {
-		this.file = new RandomAccessFile(file, "rw");
+	public void connect(ByteBuffer file, SectionData data1) throws FileNotFoundException {
+		this.file = file;
 		this.header = data1;
 	}
 
@@ -39,15 +39,15 @@ public class Data3Interface {
 		long dataPos = header.data3 + pos * 0x0C;
 		if(pos < 0 || dataPos >= header.end)
 			throw new InvalidPositionException("DATA_3", pos );
-		file.seek(header.offset + dataPos);
+		file.position((int) (header.offset + dataPos));
 		byte[] dataLine = new byte[4];
-		file.read(dataLine);
+		file.get(dataLine);
 		data.from = ByteUtils.getLong(dataLine);
 		if(data.from > header.offset + header.data1)
 			throw new InvalidPositionException("DATA_3", pos );
-		file.read(dataLine);
+		file.get(dataLine);
 		data.section = ByteUtils.getInt(dataLine);
-		file.read(dataLine);
+		file.get(dataLine);
 		data.to = ByteUtils.getLong(dataLine);
 		return data;
 	}
@@ -61,10 +61,10 @@ public class Data3Interface {
 	 */
 	public long write(int pos, DataExternal data) throws IOException {
 		long dataPos = header.data3 + pos * 0x0C;
-		file.seek(header.offset + dataPos);
-		file.write(ByteUtils.fromLong(data.from, 4));
-		file.write(ByteUtils.fromLong(data.section, 4));
-		file.write(ByteUtils.fromLong(data.to, 4));
+		file.position((int) (header.offset + dataPos));
+		file.put(ByteUtils.fromLong(data.from, 4));
+		file.put(ByteUtils.fromLong(data.section, 4));
+		file.put(ByteUtils.fromLong(data.to, 4));
 		return dataPos + 0x0C;
 	}
 
@@ -72,7 +72,7 @@ public class Data3Interface {
 	 * Close this {@link Data3Interface} connection with the {@link File}.
 	 * @throws IOException
 	 */
-	public void close() throws IOException {
+/*	public void close() throws IOException {
 		file.close();
-	}
+	}*/
 }

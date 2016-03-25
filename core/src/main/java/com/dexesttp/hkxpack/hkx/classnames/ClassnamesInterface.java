@@ -1,20 +1,19 @@
 package com.dexesttp.hkxpack.hkx.classnames;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
 import java.util.Map.Entry;
 
 import com.dexesttp.hkxpack.hkx.header.SectionData;
 import com.dexesttp.hkxpack.resources.ByteUtils;
 
 public class ClassnamesInterface {
-	private RandomAccessFile file;
+	private ByteBuffer file;
 	private SectionData section;
 	
-	public void connect(File file, SectionData classnameSection) throws FileNotFoundException {
-		this.file = new RandomAccessFile(file, "rw");
+	public void connect(ByteBuffer file, SectionData classnameSection) throws FileNotFoundException {
+		this.file = file;
 		this.section = classnameSection;
 	}
 	
@@ -27,19 +26,19 @@ public class ClassnamesInterface {
 	 * @throws IOException
 	 */
 	public long compress(ClassnamesData data) throws IOException {
-		file.seek(section.offset);
+		file.position((int) section.offset);
 		for(Entry<Long, Classname> classData : data.entrySet()) {
-			file.write(classData.getValue().uuid);
-			file.writeByte(0x09);
-			file.writeBytes(classData.getValue().name);
-			file.writeByte(0x0);
+			file.put(classData.getValue().uuid);
+			file.put((byte) 0x09);
+			file.put(classData.getValue().name.getBytes());
+			file.put((byte) 0x0);
 		}
 		// Fill the end with FFs and then return the pos.
-		long pos = file.getFilePointer();
+		long pos = file.position();
 		long toDo = 0x10 - (pos % 0x10);
 		pos += toDo;
 		for(;toDo>0;toDo--)
-			file.writeByte(-1);
+			file.put((byte) -1);
 		return pos + toDo;
 	}
 	
@@ -47,12 +46,12 @@ public class ClassnamesInterface {
 		final long limit = section.offset + section.data1;
 		ClassnamesData data = new ClassnamesData();
 		byte[] idList = new byte[4];
-		file.seek(section.offset);
-		while(file.getFilePointer() < limit) {
-			file.read(idList);
-			if(file.readByte() != 0x09)
+		file.position((int) section.offset);
+		while(file.position() < limit) {
+			file.get(idList);
+			if(file.get() != 0x09)
 				break;
-			long position = file.getFilePointer();
+			long position = file.position();
 			if(position > limit)
 				break;
 			String name = ByteUtils.readString(file);
@@ -62,7 +61,7 @@ public class ClassnamesInterface {
 		return data;
 	}
 
-	public void close() throws IOException {
+	/*public void close() throws IOException {
 		file.close();
-	}
+	}*/
 }

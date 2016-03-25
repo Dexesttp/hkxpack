@@ -3,7 +3,7 @@ package com.dexesttp.hkxpack.hkx.header;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
 import com.dexesttp.hkxpack.hkx.header.internals.SectionDescriptor;
@@ -13,7 +13,7 @@ import com.dexesttp.hkxpack.resources.ByteUtils;
  * Connects to a {@link File}, and allows easy retrieval and writing of {@link SectionData}.
  */
 public class SectionInterface {
-	private RandomAccessFile file;
+	private ByteBuffer file;
 	private HeaderData header;
 
 	/**
@@ -22,8 +22,8 @@ public class SectionInterface {
 	 * @param header the {@link HeaderData} to base the search on.
 	 * @throws FileNotFoundException if there was a problem connecting to the given {@link File}.
 	 */
-	public void connect(File file, HeaderData header) throws FileNotFoundException {
-		this.file = new RandomAccessFile(file, "rw");
+	public void connect(ByteBuffer file, HeaderData header) throws FileNotFoundException {
+		this.file = file;
 		this.header = header;
 	}
 
@@ -43,21 +43,21 @@ public class SectionInterface {
 			sectionsize = 0x40;
 		else
 			sectionsize = 0x30;
-		file.seek(0x40 + header.padding_after + sectionsize * sectionID);
+		file.position((int) (0x40 + header.padding_after + sectionsize * sectionID));
 		SectionDescriptor descriptor = new SectionDescriptor();
-		file.write(section.name.getBytes());
-		file.skipBytes(0x10 - section.name.length());
-		file.write(descriptor.constant);
-		file.write(ByteUtils.fromLong(section.offset, 4));
-		file.write(ByteUtils.fromLong(section.data1, 4));
-		file.write(ByteUtils.fromLong(section.data2, 4));
-		file.write(ByteUtils.fromLong(section.data3, 4));
-		file.write(ByteUtils.fromLong(section.data4, 4));
-		file.write(ByteUtils.fromLong(section.data5, 4));
-		file.write(ByteUtils.fromLong(section.end, 4));
+		file.put(section.name.getBytes());
+		file.position(file.position() + (0x10 - section.name.length()));
+		file.put(descriptor.constant);
+		file.put(ByteUtils.fromLong(section.offset, 4));
+		file.put(ByteUtils.fromLong(section.data1, 4));
+		file.put(ByteUtils.fromLong(section.data2, 4));
+		file.put(ByteUtils.fromLong(section.data3, 4));
+		file.put(ByteUtils.fromLong(section.data4, 4));
+		file.put(ByteUtils.fromLong(section.data5, 4));
+		file.put(ByteUtils.fromLong(section.end, 4));
 		if(header.version == 11)
 			for(int i = 0; i < 0x10; i++)
-				file.writeByte(0xFF);
+				file.put((byte) 0xFF);
 	}
 
 	/**
@@ -75,17 +75,17 @@ public class SectionInterface {
 		else
 			sectionsize = 0x30;
 		SectionData data = new SectionData();
-		file.seek(0x40 + header.padding_after + sectionsize * sectionID);
+		file.position((int) (0x40 + header.padding_after + sectionsize * sectionID));
 		SectionDescriptor descriptor = new SectionDescriptor();
-		file.read(descriptor.secName);
-		file.read(descriptor.constant);
-		file.read(descriptor.offset);
-		file.read(descriptor.data1);
-		file.read(descriptor.data2);
-		file.read(descriptor.data3);
-		file.read(descriptor.data4);
-		file.read(descriptor.data5);
-		file.read(descriptor.end);
+		file.get(descriptor.secName);
+		file.get(descriptor.constant);
+		file.get(descriptor.offset);
+		file.get(descriptor.data1);
+		file.get(descriptor.data2);
+		file.get(descriptor.data3);
+		file.get(descriptor.data4);
+		file.get(descriptor.data5);
+		file.get(descriptor.end);
 		// Convert name
 		data.name = new String(descriptor.secName, StandardCharsets.US_ASCII);
 		int last0 = data.name.indexOf(0);
@@ -105,7 +105,7 @@ public class SectionInterface {
 	 * Close the connection with the given {@link File}
 	 * @throws IOException if there was a problem while closing the {@link File}
 	 */
-	public void close() throws IOException {
+/*	public void close() throws IOException {
 		file.close();
-	}
+	}*/
 }

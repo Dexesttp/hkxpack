@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
 
 import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
 import com.dexesttp.hkxpack.hkx.header.SectionData;
@@ -12,7 +13,7 @@ import com.dexesttp.hkxpack.hkx.header.SectionData;
  * Interface to connect to the Data section of the file.
  */
 public class DataInterface {
-	private RandomAccessFile file;
+	private ByteBuffer file;
 	private SectionData header;
 
 	/**
@@ -21,8 +22,8 @@ public class DataInterface {
 	 * @param dataHeader the {@link SectionData} information relative to the Data sections.
 	 * @throws FileNotFoundException if the {@link File} couldn't be opened.
 	 */
-	public void connect(File file, SectionData dataHeader) throws FileNotFoundException {
-		this.file = new RandomAccessFile(file, "rw");
+	public void connect(ByteBuffer file, SectionData dataHeader) throws FileNotFoundException {
+		this.file = file;
 		this.header = dataHeader;
 	}
 	
@@ -33,10 +34,10 @@ public class DataInterface {
 	 * @throws InvalidPositionException if the position is outside the file's Data definition.
 	 * @throws IOException if the {@link RandomAccessFile} positionnement created an error.
 	 */
-	public RandomAccessFile setup(long position) throws IOException, InvalidPositionException {
+	public ByteBuffer setup(long position) throws IOException, InvalidPositionException {
 		if(position < 0 || position > header.data1)
 			throw new InvalidPositionException("DATA", position);
-		file.seek(header.offset + position);
+		file.position((int) (header.offset + position));
 		return file;
 	}
 }

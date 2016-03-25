@@ -1,8 +1,7 @@
 package com.dexesttp.hkxpack.hkxwriter;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.nio.ByteBuffer;
 
 import com.dexesttp.hkxpack.hkx.classnames.ClassnamesData;
 import com.dexesttp.hkxpack.hkx.classnames.ClassnamesInterface;
@@ -17,13 +16,13 @@ import com.dexesttp.hkxpack.hkxreader.HKXReaderConnector;
  * Handles all connections to the {@link File} for {@link HeaderData} and {@link SectionData} objects.
  */
 class HKXWriterConnector {
-	private File file;
+	private ByteBuffer file;
 
 	/**
 	 * Creates a {@link HKXWriterConnector} linked to the given {@link File}.
 	 * @param outputFile the {@link File} to link this connector to.
 	 */
-	HKXWriterConnector(File outputFile) {
+	HKXWriterConnector(ByteBuffer outputFile) {
 		this.file = outputFile;
 	}
 	
@@ -32,8 +31,8 @@ class HKXWriterConnector {
 	 * @throws IOException if there was a problem cleaning the file.
 	 */
 	void clean() throws IOException {
-		PrintWriter writer = new PrintWriter(file);
-		writer.close();
+		//PrintWriter writer = new PrintWriter(file);
+		//writer.close();
 	}
 
 	/**
@@ -46,7 +45,7 @@ class HKXWriterConnector {
 		HeaderInterface headerConnector = new HeaderInterface();
 		headerConnector.connect(file);
 		headerConnector.compress(data);
-		headerConnector.close();
+		//headerConnector.close();
 	}
 
 	/**
@@ -60,7 +59,7 @@ class HKXWriterConnector {
 		SectionInterface sectionConnector = new SectionInterface();
 		sectionConnector.connect(file, header);
 		sectionConnector.compress(section, sectionID);
-		sectionConnector.close();
+		//sectionConnector.close();
 	}
 
 	/**
@@ -74,7 +73,7 @@ class HKXWriterConnector {
 		ClassnamesInterface classnamesConnector = new ClassnamesInterface();
 		classnamesConnector.connect(file, classnames);
 		long cnameEnd = classnamesConnector.compress(data);
-		classnamesConnector.close();
+		//classnamesConnector.close();
 		return cnameEnd;
 	}
 }

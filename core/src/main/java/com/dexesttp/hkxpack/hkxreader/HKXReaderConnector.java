@@ -1,7 +1,7 @@
 package com.dexesttp.hkxpack.hkxreader;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 
 import com.dexesttp.hkxpack.hkx.classnames.ClassnamesData;
 import com.dexesttp.hkxpack.hkx.classnames.ClassnamesInterface;
@@ -24,25 +24,25 @@ public class HKXReaderConnector {
 	public final Data2Interface data2;
 	public final Data3Interface data3;
 
-	HKXReaderConnector(File file) throws IOException {
+	HKXReaderConnector(ByteBuffer file) throws IOException {
 		// Extract the header
 		HeaderInterface headInt = new HeaderInterface();
 		headInt.connect(file);
 		header = headInt.extract();
-		headInt.close();
+		//headInt.close();
 		
 		// Extract the section interfaces
 		SectionInterface sectInt = new SectionInterface();
 		sectInt.connect(file, header);
 		classnamesHead = sectInt.extract(0);
 		dataHead = sectInt.extract(2);
-		sectInt.close();
+		//sectInt.close();
 		
 		// Extract the classnames
 		ClassnamesInterface cnamesInt = new ClassnamesInterface();
 		cnamesInt.connect(file, classnamesHead);
 		classnamesdata = cnamesInt.extract();
-		cnamesInt.close();
+		//cnamesInt.close();
 
 		// Connect the interfaces
 		data1 = new Data1Interface();
@@ -54,5 +54,4 @@ public class HKXReaderConnector {
 		data = new DataInterface();
 		data.connect(file, dataHead);
 	}
-
 }

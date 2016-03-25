@@ -2,6 +2,7 @@ package com.dexesttp.hkxpack.hkxwriter;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +23,7 @@ import com.dexesttp.hkxpack.hkxwriter.utils.PointerResolver;
  * This uses {@link HKXPointersHandler} and {@link HKXObjectHandler} as its main components.
  */
 class HKXDataHandler {
-	private final File outFile;
+	private final ByteBuffer outFile;
 	private final ClassnamesData cnameData;
 	private final HKXEnumResolver enumResolver;
 	private final List<DataInternal> data1queue;
@@ -35,7 +36,7 @@ class HKXDataHandler {
 	 * @param classnamesData the {@link ClassnamesData}.
 	 * @param enumResolver the {@link HKXEnumResolver} to resolve enums with.
 	 */
-	HKXDataHandler(File outFile, ClassnamesData classnamesData, HKXEnumResolver enumResolver) {
+	HKXDataHandler(ByteBuffer outFile, ClassnamesData classnamesData, HKXEnumResolver enumResolver) {
 		this.outFile = outFile;
 		this.cnameData = classnamesData;
 		this.enumResolver = enumResolver;

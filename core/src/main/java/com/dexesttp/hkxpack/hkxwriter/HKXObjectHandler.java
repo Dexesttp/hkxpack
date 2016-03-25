@@ -1,8 +1,8 @@
 package com.dexesttp.hkxpack.hkxwriter;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,13 +24,13 @@ public class HKXObjectHandler {
 	private final ClassnamesData cnameData;
 	private final SectionData section;
 	private final PointerResolver resolver;
-	private final File outFile;
+	private final ByteBuffer outFile;
 	private final HKXEnumResolver enumResolver;
 	private final List<DataInternal> data1List;
 	private final List<PointerObject> data2List;
 	private final List<DataExternal> data3List;
 
-	public HKXObjectHandler(File outFile, ClassnamesData classnamesData, SectionData dataSection,
+	public HKXObjectHandler(ByteBuffer outFile, ClassnamesData classnamesData, SectionData dataSection,
 			HKXEnumResolver enumResolver, List<DataInternal> data1List,
 			List<PointerObject> data2List, List<DataExternal> data3List,
 			PointerResolver resolver)
@@ -66,7 +66,7 @@ public class HKXObjectHandler {
 			HKXMemberCallback callback = memberCallbacks.remove(0);
 			currentPos += callback.process(memberCallbacks, currentPos);
 		}
-		memberHandlerFactory.close();
+		//memberHandlerFactory.close();
 		return currentPos;
 	}
 }
