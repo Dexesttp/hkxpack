@@ -1,31 +1,38 @@
 package com.dexesttp.hkxpack.hkx.classnames;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Map.Entry;
 
+import com.dexesttp.hkxpack.hkx.header.HeaderData;
 import com.dexesttp.hkxpack.hkx.header.SectionData;
 import com.dexesttp.hkxpack.resources.ByteUtils;
 
+/**
+ * Connects to a {@link ByteBuffer}, and allows easy retrieval and writing of {@link ClassnamesData}.
+ */
 public class ClassnamesInterface {
 	private ByteBuffer file;
 	private SectionData section;
 	
-	public void connect(ByteBuffer file, SectionData classnameSection) throws FileNotFoundException {
+	/**
+	 * Connect to a given {@link ByteBuffer}, based on the given {@link SectionData}.
+	 * @param file the {@link ByteBuffer} to connect to.
+	 * @param header the {@link HeaderData} to base the search on.
+	 */
+	public void connect(ByteBuffer file, SectionData classnameSection) {
 		this.file = file;
 		this.section = classnameSection;
 	}
 	
 	/**
 	 * Compress the given classnames into the hkx file "__classname__" section.
-	 * Note taht it will fill the data with all required classnames & positions.
-	 * Please use only negative position identifiers to fill the original dataset values. Otherwise, the fi=unction comprtement will be indetermined.
+	 * Note that it will fill the data with all required classnames & positions.
+	 * Please use only negative position identifiers to fill the original dataset values. 
+	 * Otherwise, the function compartment will be indeterminate.
 	 * @param data the data to find the classnames in.
 	 * @return The position of the end of the dataset (absolute position from the beginning of the file).
-	 * @throws IOException
 	 */
-	public long compress(ClassnamesData data) throws IOException {
+	public long compress(ClassnamesData data) {
 		file.position((int) section.offset);
 		for(Entry<Long, Classname> classData : data.entrySet()) {
 			file.put(classData.getValue().uuid);
@@ -42,7 +49,7 @@ public class ClassnamesInterface {
 		return pos + toDo;
 	}
 	
-	public ClassnamesData extract() throws IOException {
+	public ClassnamesData extract() {
 		final long limit = section.offset + section.data1;
 		ClassnamesData data = new ClassnamesData();
 		byte[] idList = new byte[4];
@@ -61,7 +68,10 @@ public class ClassnamesInterface {
 		return data;
 	}
 
-	/*public void close() throws IOException {
-		file.close();
-	}*/
+	/**
+	 * @deprecated {@link ByteBuffer} usage no longer allows or requires this step
+	 */
+	public void close() {
+
+	}
 }

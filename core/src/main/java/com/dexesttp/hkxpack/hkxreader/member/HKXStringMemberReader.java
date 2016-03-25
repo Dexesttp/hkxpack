@@ -1,6 +1,5 @@
 package com.dexesttp.hkxpack.hkxreader.member;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
 
 import com.dexesttp.hkxpack.data.members.HKXMember;
@@ -25,7 +24,7 @@ class HKXStringMemberReader implements HKXMemberReader {
 	}
 
 	@Override
-	public HKXMember read(long classOffset) throws IOException, InvalidPositionException {
+	public HKXMember read(long classOffset) throws InvalidPositionException {
 		String contents = "";
 		try {
 			DataInternal data = connector.data1.readNext();

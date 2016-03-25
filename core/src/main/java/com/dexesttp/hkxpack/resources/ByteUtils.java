@@ -1,6 +1,5 @@
 package com.dexesttp.hkxpack.resources;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
  
 
@@ -37,7 +36,7 @@ public class ByteUtils {
 		return Float.intBitsToFloat(val);
 	}
 
-	public static String readString(ByteBuffer in) throws IOException {
+	public static String readString(ByteBuffer in) {
 		String s = "";
 		byte b;
 		while((b = in.get()) != 0)

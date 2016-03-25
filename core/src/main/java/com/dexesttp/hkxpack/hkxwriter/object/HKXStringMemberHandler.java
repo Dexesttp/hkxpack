@@ -1,6 +1,5 @@
 package com.dexesttp.hkxpack.hkxwriter.object;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.List;
 
@@ -22,7 +21,7 @@ public class HKXStringMemberHandler implements HKXMemberHandler {
 	}
 
 	@Override
-	public HKXMemberCallback write(HKXMember member, long currentPos) throws IOException {
+	public HKXMemberCallback write(HKXMember member, long currentPos) {
 		final HKXStringMember strMember = (HKXStringMember) member;
 		if(strMember.get() == null || strMember.get().isEmpty())
 			return (callbacks, position) -> {return 0;};

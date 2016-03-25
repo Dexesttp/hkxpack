@@ -1,6 +1,5 @@
 package com.dexesttp.hkxpack.hkxwriter.object;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
 
 import com.dexesttp.hkxpack.data.members.HKXEnumMember;
@@ -22,7 +21,7 @@ public class HKXEnumMemberHandler implements HKXMemberHandler {
 	}
 
 	@Override
-	public HKXMemberCallback write(HKXMember member, long currentPos) throws IOException {
+	public HKXMemberCallback write(HKXMember member, long currentPos) {
 		HKXEnumMember enumMember = (HKXEnumMember) member;
 		if(!enumMember.getEnumName().isEmpty()) {
 			outFile.position((int) (currentPos + offset));

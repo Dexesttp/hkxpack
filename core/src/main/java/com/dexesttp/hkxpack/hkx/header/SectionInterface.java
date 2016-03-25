@@ -1,8 +1,5 @@
 package com.dexesttp.hkxpack.hkx.header;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
@@ -10,19 +7,18 @@ import com.dexesttp.hkxpack.hkx.header.internals.SectionDescriptor;
 import com.dexesttp.hkxpack.resources.ByteUtils;
 
 /**
- * Connects to a {@link File}, and allows easy retrieval and writing of {@link SectionData}.
+ * Connects to a {@link ByteBuffer}, and allows easy retrieval and writing of {@link SectionData}.
  */
 public class SectionInterface {
 	private ByteBuffer file;
 	private HeaderData header;
 
 	/**
-	 * Connect to a given {@link File}, based on the given {@link HeaderData}.
-	 * @param file the {@link File} to connect to.
+	 * Connect to a given {@link ByteBuffer}, based on the given {@link HeaderData}.
+	 * @param file the {@link ByteBuffer} to connect to.
 	 * @param header the {@link HeaderData} to base the search on.
-	 * @throws FileNotFoundException if there was a problem connecting to the given {@link File}.
 	 */
-	public void connect(ByteBuffer file, HeaderData header) throws FileNotFoundException {
+	public void connect(ByteBuffer file, HeaderData header)  {
 		this.file = file;
 		this.header = header;
 	}
@@ -35,9 +31,8 @@ public class SectionInterface {
 	 * 1 to be __types__ and 2 to be __data__
 	 * @param section The {@link SectionData} to write.
 	 * @param sectionID The Section ID to write the {@link SectionData} at.
-	 * @throws IOException if there was a problem writing to the {@link File}
 	 */
-	public void compress(SectionData section, int sectionID) throws IOException {
+	public void compress(SectionData section, int sectionID) {
 		long sectionsize;
 		if(header.version == 11)
 			sectionsize = 0x40;
@@ -66,9 +61,8 @@ public class SectionInterface {
 	 * Supported SectionIDs are 0, 1 and 2.
 	 * @param sectionID the Section ID to read.
 	 * @return the read {@link SectionData}
-	 * @throws IOException if there was a problem while reading the {@link File}.
 	 */
-	public SectionData extract(int sectionID) throws IOException {
+	public SectionData extract(int sectionID) {
 		long sectionsize;
 		if(header.version == 11)
 			sectionsize = 0x40;
@@ -102,10 +96,9 @@ public class SectionInterface {
 	}
 
 	/**
-	 * Close the connection with the given {@link File}
-	 * @throws IOException if there was a problem while closing the {@link File}
+	 * Close the connection with the given {@link ByteBuffer}
+	 * @deprecated {@link ByteBuffer} usage no longer allows or requires this step
 	 */
-/*	public void close() throws IOException {
-		file.close();
-	}*/
+	public void close() {
+	}
 }

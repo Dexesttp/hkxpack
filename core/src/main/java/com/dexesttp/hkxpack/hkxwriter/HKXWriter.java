@@ -1,11 +1,9 @@
 package com.dexesttp.hkxpack.hkxwriter;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel.MapMode;
 
 import com.dexesttp.hkxpack.data.HKXFile;
 import com.dexesttp.hkxpack.descriptor.HKXEnumResolver;
@@ -47,25 +45,47 @@ public class HKXWriter
 		this.enumResolver = enumResolver;
 	}
 
+	/**
+	 * Use this in order to control the temporary write buffer
+	 * For example to set a smaller or larger capacity, or to use a HeapBuffer
+	 * Calling this is not required under normal usage
+	 * @param outputBB the {@link ByteBuffer} to fill on write
+	 */
+	public void setByteBuffer(ByteBuffer outputBB)
+	{
+		this.outputBB = outputBB;
+	}
+
+	/**
+	 * After the write method is called, the return {@link ByteBuffer} will be filled with 
+	 * the written data ready for use.
+	 * This is useful if an outputFile {@link File} is not specified in the constructor. 
+	 * @return A {@link ByteBuffer} filled with {@link HKXFile} data, as would be written to file.
+	 */
 	public ByteBuffer getByteBuffer()
 	{
 		return outputBB;
 	}
 
 	/**
-	 * Writes a {@link HKXFile}'s data inot this {@link HKXReader}'s {@link File}.
+	 * Writes a {@link HKXFile}'s data into this {@link HKXReader}'s {@Link ByteBuffer}
+	 * and then optionally transfers that data to an outputFile {@link File} (if specified in the constructor).
 	 * @param file the {@link HKXFile} to take data from.
 	 * @throws IOException 
 	 * @throws UnsupportedVersionError 
 	 */
 	public void write(HKXFile file) throws IOException, UnsupportedVersionError
 	{
-
-		outputBB = ByteBuffer.allocateDirect(10000000);//10 meg max should be fine, it'll only use what it needs
+		// this should be the normal case
+		if (outputBB == null)
+		{
+			//10 meg capacity should be ok, it'll only use what it needs
+			//1.4 Mb is the biggest Fallout 4 hkx file I can find
+			outputBB = ByteBuffer.allocateDirect(10000000);
+		}
 
 		// Connect to the file.
 		HKXWriterConnector connector = new HKXWriterConnector(outputBB);
-		connector.clean();
 
 		// Create the header.
 		HeaderData header = new HKXHeaderFactory().create(file);
@@ -95,28 +115,34 @@ public class HKXWriter
 		// Write data in the file and store data1/data2/data3 values.
 		PointerResolver resolver = new PointerResolver();
 		HKXDataHandler dataHandler = new HKXDataHandler(outputBB, cnameData, enumResolver);
-		try {
+		try
+		{
 			long endData = dataHandler.fillFile(data, file, resolver) - data.offset;
 			data.data1 = endData % 0x10 == 0 ? endData : (1 + endData / 0x10) * 0x10;
 			dataHandler.fillPointers(data, resolver);
-	
+			outputBB.flip();
+
 			// Write the data section to the file.
 			connector.writeSection(header, HKXSectionHandler.DATA, data);
-		} catch(ClassCastException e) {
+		}
+		catch (ClassCastException e)
+		{
 			LoggerUtil.add(new WrongInputCastException(String.format(SBundle.getString("error.hkx.write.cast")), e));
 		}
+		
+		//prep for use
+		outputBB.position(0);
+		
 		if (outputFile != null)
 		{
 			try (RandomAccessFile out = new RandomAccessFile(outputFile, "rw"))
-			{
-				outputBB.flip();
+			{				
 				byte[] bytes = new byte[outputBB.limit()];
 				outputBB.get(bytes);
 				out.write(bytes);
 				out.close();
 			}
 		}
-
 
 	}
 }

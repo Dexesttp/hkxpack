@@ -1,6 +1,5 @@
 package com.dexesttp.hkxpack.hkxwriter.object;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
 
 import com.dexesttp.hkxpack.data.members.HKXMember;
@@ -17,7 +16,7 @@ public class HKXDirectMemberHandler implements HKXMemberHandler {
 	}
 
 	@Override
-	public HKXMemberCallback write(HKXMember member, long currentPos) throws IOException {
+	public HKXMemberCallback write(HKXMember member, long currentPos) {
 		byte[] value = MemberDataResolver.fromMember(member);
 		outFile.position((int) (currentPos + memberOffset));
 		outFile.put(value);

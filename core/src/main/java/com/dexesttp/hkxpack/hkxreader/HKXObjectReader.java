@@ -1,11 +1,11 @@
 package com.dexesttp.hkxpack.hkxreader;
-
-import java.io.IOException;
+ 
 
 import com.dexesttp.hkxpack.data.HKXObject;
 import com.dexesttp.hkxpack.data.members.HKXFailedMember;
 import com.dexesttp.hkxpack.data.members.HKXMember;
 import com.dexesttp.hkxpack.descriptor.HKXDescriptor;
+import com.dexesttp.hkxpack.descriptor.exceptions.ClassFileReadError;
 import com.dexesttp.hkxpack.descriptor.members.HKXMemberTemplate;
 import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
 import com.dexesttp.hkxpack.hkxreader.member.HKXMemberReader;
@@ -28,7 +28,7 @@ public class HKXObjectReader {
 	 * Creates an HKXObject from a descriptor, a position and the object's name.
 	 * @param objectName the name of the object to create.
 	 * @param position the position to read the object from.
-	 * @param descriptor a descriptor of the {@link HKXObject}'s internal strucure.
+	 * @param descriptor a descriptor of the {@link HKXObject}'s internal structure.
 	 * @return the read {@link HKXObject}
 	 */
 	public HKXObject createHKXObject(String objectName, long position, HKXDescriptor descriptor) {
@@ -38,7 +38,7 @@ public class HKXObjectReader {
 			try {
 				HKXMemberReader memberReader = memberFactory.getMemberReader(memberTemplate);
 				member = memberReader.read(position);
-			} catch (IOException | InvalidPositionException e) {
+			} catch (ClassFileReadError | InvalidPositionException e) {
 				member = new HKXFailedMember(memberTemplate.name, memberTemplate.vtype, e.getClass().getName());
 				LoggerUtil.add(e);
 			}

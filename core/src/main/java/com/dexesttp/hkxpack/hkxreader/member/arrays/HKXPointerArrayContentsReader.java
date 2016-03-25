@@ -1,7 +1,5 @@
 package com.dexesttp.hkxpack.hkxreader.member.arrays;
 
-import java.io.IOException;
-
 import com.dexesttp.hkxpack.data.HKXData;
 import com.dexesttp.hkxpack.data.members.HKXMember;
 import com.dexesttp.hkxpack.data.members.HKXPointerMember;
@@ -21,7 +19,7 @@ public class HKXPointerArrayContentsReader implements HKXArrayContentsReader {
 	}
 
 	@Override
-	public HKXData getContents(long arrayStart, int position) throws IOException, InvalidPositionException {
+	public HKXData getContents(long arrayStart, int position) throws InvalidPositionException {
 		long contentsPosition = arrayStart + position * 0x08;
 		DataExternal data = connector.data2.readNext();
 		String target = "null";

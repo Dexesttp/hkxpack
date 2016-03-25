@@ -1,7 +1,5 @@
 package com.dexesttp.hkxpack.hkx.data;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
@@ -10,7 +8,7 @@ import com.dexesttp.hkxpack.hkx.header.SectionData;
 import com.dexesttp.hkxpack.resources.ByteUtils;
 
 /**
- * Interface on the Data2 section of a HKX file.
+ * Interface on the Data2 section of a HKX file {@link ByteBuffer}.
  */
 public class Data2Interface {
 	private ByteBuffer file;
@@ -18,24 +16,22 @@ public class Data2Interface {
 	private int lastPos = -1;
 
 	/**
-	 * Connect this {@link Data2Interface} to a {@link File}.
-	 * @param file the {@link File} to connect to.
+	 * Connect this {@link Data2Interface} to a {@link ByteBuffer}.
+	 * @param file the {@link ByteBuffer} to connect to.
 	 * @param dataHeader the {@link SectionData} relative to the Data section.
-	 * @throws FileNotFoundException if the {@link File} couldn't be opened.
 	 */
-	public void connect(ByteBuffer file, SectionData data1) throws FileNotFoundException {
+	public void connect(ByteBuffer file, SectionData data1) {
 		this.file = file;
 		this.header = data1;
 	}
 
 	/**
-	 * Read a given External data component from the file.
+	 * Read a given External data component from the file {@link ByteBuffer}.
 	 * @param pos the position of the wanted {@link DataExternal} component.
 	 * @return the read {@link DataExternal}.
-	 * @throws IOException if the file couldn't be read.
 	 * @throws InvalidPositionException if the requested position was outside the Data2 section.
 	 */
-	public DataExternal read(int pos) throws IOException, InvalidPositionException {
+	public DataExternal read(int pos) throws InvalidPositionException {
 		DataExternal data = new DataExternal();
 		long dataPos = header.data2 + pos * 0x0C;
 		if(pos < 0 || dataPos > header.data3)
@@ -61,7 +57,7 @@ public class Data2Interface {
 	 * @return the position as section offset of the end of the written {@link DataExternal}.
 	 * @throws IOException if there was a problem writing to the file.
 	 */
-	public long write(int pos, DataExternal data) throws IOException {
+	public long write(int pos, DataExternal data) {
 		long dataPos = header.data2 + pos * 0x0C;
 		file.position((int) (header.offset + dataPos));
 		file.put(ByteUtils.fromLong(data.from, 4));
@@ -76,7 +72,7 @@ public class Data2Interface {
 	 * @throws IOException if there was a problem reading the file.
 	 * @throws InvalidPositionException If the next element doesn't exist.
 	 */
-	public DataExternal readNext() throws IOException, InvalidPositionException {
+	public DataExternal readNext() throws InvalidPositionException {
 		return read(++lastPos);
 	}
 
@@ -88,10 +84,8 @@ public class Data2Interface {
 	}
 
 	/**
-	 * Close this {@link Data2Interface} connection with the {@link File}.
-	 * @throws IOException
+	 * @deprecated {@link ByteBuffer} usage no longer allows or requires this step
 	 */
-	/*public void close() throws IOException {
-		file.close();
-	}*/
+	public void close() {
+	}
 }

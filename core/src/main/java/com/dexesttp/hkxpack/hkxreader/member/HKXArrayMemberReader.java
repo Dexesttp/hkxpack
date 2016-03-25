@@ -1,6 +1,5 @@
 package com.dexesttp.hkxpack.hkxreader.member;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
 
 import com.dexesttp.hkxpack.data.HKXData;
@@ -31,7 +30,7 @@ public class HKXArrayMemberReader implements HKXMemberReader {
 	}
 
 	@Override
-	public HKXMember read(long classOffset) throws IOException, InvalidPositionException {
+	public HKXMember read(long classOffset) throws InvalidPositionException {
 		final int memberSize = (int) MemberSizeResolver.getSize(HKXType.TYPE_ARRAY);
 		ByteBuffer file = connector.data.setup(classOffset + memberOffset);
 		byte[] b = new byte[memberSize];

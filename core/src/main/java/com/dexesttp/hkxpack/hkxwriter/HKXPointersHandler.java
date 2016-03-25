@@ -1,7 +1,5 @@
 package com.dexesttp.hkxpack.hkxwriter;
 
-import java.io.File;
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.List;
 
@@ -13,7 +11,7 @@ import com.dexesttp.hkxpack.hkx.data.DataInternal;
 import com.dexesttp.hkxpack.hkx.header.SectionData;
 
 /**
- * Write pointers (stored internally as a list of {@link DataInternal} and {@link DataExternal}) into the given file, at the described position.
+ * Write pointers (stored internally as a list of {@link DataInternal} and {@link DataExternal}) into the given file {@link ByteBuffer}, at the described position.
  */
 class HKXPointersHandler {
 	private ByteBuffer outFile;
@@ -21,7 +19,7 @@ class HKXPointersHandler {
 
 	/**
 	 * Create a {@link HKXPointersHandler}.
-	 * @param outFile the {@link File} to write data to.
+	 * @param outFile the {@link ByteBuffer} to write data to.
 	 * @param data the {@link SectionData} describing at least the wanted offset and data1 position.
 	 */
 	HKXPointersHandler(ByteBuffer outFile, SectionData data) {
@@ -30,13 +28,12 @@ class HKXPointersHandler {
 	}
 
 	/**
-	 * Write the pointers list to this handler's {@link File}.
+	 * Write the pointers list to this handler's {@link ByteBuffer}.
 	 * @param data1List the list of {@link DataInternal} to store into data1
 	 * @param data2List the list of {@link DataExternal} to store into data2
 	 * @param data3List the list of {@link DataExternal} to store into data3
-	 * @throws IOException if there was a problem writing data to the file.
 	 */
-	void write(List<DataInternal> data1List, List<DataExternal> data2List, List<DataExternal> data3List) throws IOException {
+	void write(List<DataInternal> data1List, List<DataExternal> data2List, List<DataExternal> data3List) {
 		// handle data1
 		Data1Interface connector1 = new Data1Interface();
 		connector1.connect(outFile, data);
@@ -45,7 +42,6 @@ class HKXPointersHandler {
 		for(DataInternal internal : data1List) {
 			endPos = connector1.write(i++, internal);
 		}
-		//connector1.close();
 		endPos = fillBytes(endPos + data.offset) - data.offset;
 		data.data2 = endPos;
 		
@@ -56,7 +52,6 @@ class HKXPointersHandler {
 		for(DataExternal pointer : data2List) {
 			endPos = connector2.write(j++, pointer);
 		}
-		//connector2.close();
 		endPos = fillBytes(endPos + data.offset) - data.offset;
 		data.data3 = endPos;
 		
@@ -67,7 +62,6 @@ class HKXPointersHandler {
 		for(DataExternal classLink : data3List) {
 			endPos = connector3.write(k++, classLink);
 		}
-		//connector3.close();
 		endPos = fillBytes(endPos + data.offset) - data.offset;
 		
 		// Fill the section header.
@@ -76,16 +70,14 @@ class HKXPointersHandler {
 		data.end = endPos;
 	}
 
-	private long fillBytes(long endPos) throws IOException {
+	private long fillBytes(long endPos) {
 		if(endPos % 0x10 == 0)
 			return endPos;
 		long newEndPos = (1 + endPos / 0x10) * 0x10;
-		//RandomAccessFile file = new RandomAccessFile(outFile, "rw");
 		outFile.position((int) endPos);
 		for(; endPos < newEndPos; endPos++ ) {
 			outFile.put((byte) 0xFF);
 		}
-		//outFile.close();
 		return newEndPos;
 	}
 

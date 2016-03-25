@@ -1,7 +1,5 @@
 package com.dexesttp.hkxpack.hkxwriter.object.array;
 
-import java.io.IOException;
-import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +37,7 @@ public class HKXArrayMemberHandler implements HKXMemberHandler {
 	}
 
 	@Override
-	public HKXMemberCallback write(HKXMember member, long currentPos) throws IOException {
+	public HKXMemberCallback write(HKXMember member, long currentPos) {
 		final HKXArrayMember arrMember = (HKXArrayMember) member;
 		int size = arrMember.contents().size();
 		

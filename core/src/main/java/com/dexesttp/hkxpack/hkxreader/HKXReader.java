@@ -21,7 +21,7 @@ import com.dexesttp.hkxpack.hkxreader.member.HKXMemberReaderFactory;
 import com.dexesttp.hkxpack.resources.LoggerUtil;
 
 /**
- * Reads the content of a {@link File}, containing information in the hkx format, into a DOM-like {@link HKXFile}.
+ * Reads the content of a {@link File} or {@link ByteBuffer}, containing information in the hkx format, into a DOM-like {@link HKXFile}.
  */
 public class HKXReader {
 	private File hkxFile;
@@ -41,6 +41,12 @@ public class HKXReader {
 		this.enumResolver = enumResolver;
 	}
 	
+	/**
+	 * Creates a {@link HKXReader}.
+	 * @param hkxBB the {@link ByteBuffer} to read data from.
+	 * @param descriptorFactory the {@link HKXDescriptorFactory} to use to solve the {@link ByteBuffer}'s classes.
+	 * @param enumResolver the {@link HKXEnumResolver} to store enumerations into.
+	 */
 	public HKXReader(ByteBuffer hkxBB, HKXDescriptorFactory descriptorFactory, HKXEnumResolver enumResolver) {
 		this.hkxBB = hkxBB;
 		this.descriptorFactory = descriptorFactory;
@@ -48,10 +54,10 @@ public class HKXReader {
 	}
 	
 	/**
-	 * Read data from this {@link HKXReader}'s {@link File}.
+	 * Read data from this {@link HKXReader}'s {@link File} or {@link ByteBuffer}.
 	 * @return the read {@link HKXFile}
 	 * @throws IOException if there was a problem accessing the file.
-	 * @throws InvalidPositionException if there was a positionning problem while reading the file.
+	 * @throws InvalidPositionException if there was a positioning problem while reading the file.
 	 */
 	public HKXFile read() throws IOException, InvalidPositionException {
 	

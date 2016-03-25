@@ -1,8 +1,5 @@
 package com.dexesttp.hkxpack.hkx.header;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.nio.ByteBuffer;
 
 import com.dexesttp.hkxpack.hkx.exceptions.UnsupportedVersionError;
@@ -11,27 +8,25 @@ import com.dexesttp.hkxpack.hkx.header.internals.versions.HeaderDescriptor_v11;
 import com.dexesttp.hkxpack.resources.ByteUtils;
 
 /**
- * Connects to a HKX {@link File} and allows direct access to the header contents.
+ * Connects to a HKX {@link ByteBuffer} and allows direct access to the header contents.
  */
 public class HeaderInterface {
 	private ByteBuffer file;
 
 	/**
-	 * Connect to a {@link File}
-	 * @param file the file to connect to.
-	 * @throws FileNotFoundException If the given file could not be found.
+	 * Connect to a {@link ByteBuffer}
+	 * @param file the {@link ByteBuffer} to connect to.
 	 */
-	public void connect(ByteBuffer file) throws FileNotFoundException {
+	public void connect(ByteBuffer file) {
 		this.file = file;
 	}
 
 	/**
 	 * Create a new header based on the given {@link HeaderData}
 	 * @param data the {@link HeaderData} to retrieve the data from.
-	 * @throws IOException if there was an erro while writing the data to the {@link File}
 	 * @throws UnsupportedVersionError if the {@link HeaderData} contains a non-supported version
 	 */
-	public void compress(HeaderData data) throws IOException, UnsupportedVersionError {
+	public void compress(HeaderData data) throws UnsupportedVersionError {
 		if(data.version == 11) {
 			HeaderDescriptor_v11 descriptor = new HeaderDescriptor_v11();
 			file.position(0);
@@ -54,11 +49,10 @@ public class HeaderInterface {
 	}
 
 	/**
-	 * Extract the {@link HeaderData} from the linked {@link File}
+	 * Extract the {@link HeaderData} from the linked {@link ByteBuffer}
 	 * @return the extracted {@link HeaderData}
-	 * @throws IOException if there was a problem while reading the {@link File}
 	 */
-	public HeaderData extract() throws IOException {
+	public HeaderData extract() {
 		HeaderData data = new HeaderData();
 		HeaderDescriptor descriptor = new HeaderDescriptor();
 		file.position(0);
@@ -80,10 +74,8 @@ public class HeaderInterface {
 	}
 
 	/**
-	 * Close the connection with the {@link File}
-	 * @throws IOException if there was a problem while closing the {@link File}
+	 * @deprecated {@link ByteBuffer} usage no longer allows or requires this step
 	 */
-	/*public void close() throws IOException {
-		file.close();
-	}*/
+	public void close() {
+	}
 }

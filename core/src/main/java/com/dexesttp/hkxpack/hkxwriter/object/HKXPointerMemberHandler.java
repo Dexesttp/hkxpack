@@ -1,6 +1,5 @@
 package com.dexesttp.hkxpack.hkxwriter.object;
 
-import java.io.IOException;
 import java.util.List;
 
 import com.dexesttp.hkxpack.data.members.HKXMember;
@@ -18,7 +17,7 @@ public class HKXPointerMemberHandler implements HKXMemberHandler {
 	}
 
 	@Override
-	public HKXMemberCallback write(HKXMember member, long currentPos) throws IOException {
+	public HKXMemberCallback write(HKXMember member, long currentPos) {
 		HKXPointerMember ptrMember = (HKXPointerMember) member;
 		PointerObject ptrObject = new PointerObject();
 		ptrObject.from = currentPos + offset;

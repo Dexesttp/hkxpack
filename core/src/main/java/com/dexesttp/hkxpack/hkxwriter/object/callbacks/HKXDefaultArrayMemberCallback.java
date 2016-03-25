@@ -1,6 +1,5 @@
 package com.dexesttp.hkxpack.hkxwriter.object.callbacks;
 
-import java.io.IOException;
 import java.util.List;
 
 import com.dexesttp.hkxpack.data.HKXData;
@@ -21,7 +20,7 @@ public class HKXDefaultArrayMemberCallback implements HKXArrayMemberCallback {
 	}
 
 	@Override
-	public long process(List<HKXMemberCallback> memberCallbacks, long position) throws IOException {
+	public long process(List<HKXMemberCallback> memberCallbacks, long position) {
 		long newPos = position;
 		long memberSize = MemberSizeResolver.getSize(arrMember.getSubType());
 		for(HKXData data : arrMember.contents()) {

@@ -1,6 +1,5 @@
 package com.dexesttp.hkxpack.hkxreader.member.arrays;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
 
 import com.dexesttp.hkxpack.data.HKXData;
@@ -21,7 +20,7 @@ class HKXDirectArrayContentsReader implements HKXArrayContentsReader {
 	}
 
 	@Override
-	public HKXData getContents(long arrayStart, int position) throws IOException, InvalidPositionException {
+	public HKXData getContents(long arrayStart, int position) throws InvalidPositionException {
 		final int contentSize = (int) MemberSizeResolver.getSize(contentType);
 		byte[] b = new byte[contentSize];
 		ByteBuffer file = connector.data.setup(arrayStart + position * contentSize);
