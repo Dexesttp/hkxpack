@@ -8,13 +8,25 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Help to walk through a directory to retrieve files.
+ */
 public class DirWalker {
-	private String[] extensions;
+	private final String[] extensions;
 
+	/**
+	 * Creates a directory walker.
+	 * @param extensions the extensions to detect
+	 */
 	public DirWalker(String... extensions) {
 		this.extensions = extensions;
 	}
 	
+	/**
+	 * Walk through a directory.
+	 * @param directory the directory to walk through, as a {@link File}.
+	 * @return a list of {@link Entry} detected as suitable files.
+	 */
 	public List<Entry> walk(File directory) {
 		List<Entry> res = new ArrayList<>();
 		walk(directory, directory.getName(), res);
@@ -42,6 +54,9 @@ public class DirWalker {
 		}
 	}
 	
+	/**
+	 * Represents a file.
+	 */
 	public class Entry {
 		private final String fileName;
 		private final String pathName;
@@ -50,10 +65,20 @@ public class DirWalker {
 			this.fileName = fileName;
 		}
 		
+		/**
+		 * Retrieves the {@link Entry} name.
+		 * @return the {@link Entry} name.
+		 */
 		public String getName() {
 			return fileName;
 		}
 		
+		/**
+		 * Retrieves the {@link Entry} path from the given root.<br />
+		 * Note : the given path doesn't end with a {@code /}.
+		 * @param rootPath the root to start the path from.
+		 * @return the {@link Entry} path.
+		 */
 		public String getPath(String rootPath) {
 			String res = rootPath;
 			if(!res.isEmpty() && !pathName.isEmpty())
@@ -62,6 +87,10 @@ public class DirWalker {
 			return res;
 		}
 
+		/**
+		 * Retrieves the {@link Entry} full name. <br />
+		 * @return the full name, meaning the name plus the default path.
+		 */
 		public String getFullName() {
 			String res = pathName;
 			if(!res.isEmpty())

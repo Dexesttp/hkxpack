@@ -1,4 +1,4 @@
-package com.dexesttp.hkxpack.hkxreader.member;
+package com.dexesttp.hkxpack.hkxreader.member.arrays;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -11,19 +11,22 @@ import com.dexesttp.hkxpack.hkx.types.MemberDataResolver;
 import com.dexesttp.hkxpack.hkx.types.MemberSizeResolver;
 import com.dexesttp.hkxpack.hkxreader.HKXReaderConnector;
 
-class HKXDirectArrayMemberReader extends HKXArrayMemberReader {
+class HKXDirectArrayContentsReader implements HKXArrayContentsReader {
+	private final HKXReaderConnector connector;
+	private final HKXType contentType;
 
-	HKXDirectArrayMemberReader(HKXReaderConnector connector, String name, HKXType contentType, long offset) {
-		super(connector, name, contentType, offset);
+	HKXDirectArrayContentsReader(HKXReaderConnector connector, HKXType contentType) {
+		this.connector = connector;
+		this.contentType = contentType;
 	}
 
 	@Override
-	protected HKXData getContents(long arrayStart, int position) throws IOException, InvalidPositionException {
-		final int contentSize = (int) MemberSizeResolver.getSize(subtype);
+	public HKXData getContents(long arrayStart, int position) throws IOException, InvalidPositionException {
+		final int contentSize = (int) MemberSizeResolver.getSize(contentType);
 		byte[] b = new byte[contentSize];
 		ByteBuffer file = connector.data.setup(arrayStart + position * contentSize);
 		file.get(b);
-		HKXMember data = MemberDataResolver.getMember(name, subtype, b);
+		HKXMember data = MemberDataResolver.getMember("", contentType, b);
 		return data;
 	}
 }

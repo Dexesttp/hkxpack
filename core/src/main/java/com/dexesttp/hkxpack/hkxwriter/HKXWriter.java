@@ -15,9 +15,12 @@ import com.dexesttp.hkxpack.hkx.header.HeaderData;
 import com.dexesttp.hkxpack.hkx.header.SectionData;
 import com.dexesttp.hkxpack.hkxreader.HKXReader;
 import com.dexesttp.hkxpack.hkxwriter.classnames.HKXClassnamesHandler;
+import com.dexesttp.hkxpack.hkxwriter.exceptions.WrongInputCastException;
 import com.dexesttp.hkxpack.hkxwriter.header.HKXHeaderFactory;
 import com.dexesttp.hkxpack.hkxwriter.header.HKXSectionHandler;
 import com.dexesttp.hkxpack.hkxwriter.utils.PointerResolver;
+import com.dexesttp.hkxpack.l10n.SBundle;
+import com.dexesttp.hkxpack.resources.LoggerUtil;
 
 /**
  * Handles writing a {@link HKXFile} into a {@link File}, using the binary hkx notation.
@@ -92,13 +95,16 @@ public class HKXWriter
 		// Write data in the file and store data1/data2/data3 values.
 		PointerResolver resolver = new PointerResolver();
 		HKXDataHandler dataHandler = new HKXDataHandler(outputBB, cnameData, enumResolver);
-		long endData = dataHandler.fillFile(data, file, resolver) - data.offset;
-		data.data1 = endData % 0x10 == 0 ? endData : (1 + endData / 0x10) * 0x10;
-		dataHandler.fillPointers(data, resolver);
-
-		// Write the data section to the file.
-		connector.writeSection(header, HKXSectionHandler.DATA, data);
-
+		try {
+			long endData = dataHandler.fillFile(data, file, resolver) - data.offset;
+			data.data1 = endData % 0x10 == 0 ? endData : (1 + endData / 0x10) * 0x10;
+			dataHandler.fillPointers(data, resolver);
+	
+			// Write the data section to the file.
+			connector.writeSection(header, HKXSectionHandler.DATA, data);
+		} catch(ClassCastException e) {
+			LoggerUtil.add(new WrongInputCastException(String.format(SBundle.getString("error.hkx.write.cast")), e));
+		}
 		if (outputFile != null)
 		{
 			try (RandomAccessFile out = new RandomAccessFile(outputFile, "rw"))
@@ -110,6 +116,7 @@ public class HKXWriter
 				out.close();
 			}
 		}
+
 
 	}
 }

@@ -8,22 +8,28 @@ import com.dexesttp.hkxpack.descriptor.HKXEnumResolver;
 import com.dexesttp.hkxpack.hkxreader.HKXReader;
 import com.dexesttp.hkxpack.hkxwriter.HKXWriter;
 import com.dexesttp.hkxpack.resources.DisplayProperties;
+import com.dexesttp.hkxpack.resources.LoggerUtil;
 import com.dexesttp.hkxpack.tagreader.TagXMLReader;
 import com.dexesttp.hkxpack.tagwriter.TagXMLWriter;
 
-public class TestView {
-	private static final String testName = "StaggerLarge";
+/**
+ * Testing interface, used to perform live tests with Eclipse.
+ */
+class TestView {
+	private static final String rootName = "D:\\Documents\\SANDBOX\\FO4\\hkx_files\\";
+	private static final String testName = "skeleton";
+
 	public static void main(String[] args) {
 		read(args, testName);
 		write(args);
 		read(args, testName + "-new");
+		for(Throwable e: LoggerUtil.getList())
+			e.printStackTrace();
 	}
 	
-	public static void read(String[] args, String name) {
-		//String inputFileName = "D:\\Documents\\SANDBOX\\FO4\\hkx_files\\" + name + ".hkx";
-		//String outputFileName =  "D:\\Documents\\SANDBOX\\FO4\\hkx_files\\" + name + ".xml";
-		String inputFileName = "c:\\temp\\hkx\\" + name + ".hkx";
-		String outputFileName =  "c:\\temp\\hkx\\" + name + ".xml";
+	private static void read(String[] args, String name) {
+		String inputFileName = rootName + name + ".hkx";
+		String outputFileName =  rootName + name + ".xml";
 		DisplayProperties.displayDebugInfo = true;
 		DisplayProperties.displayFileDebugInfo = true;
 		DisplayProperties.displayReadTypesInfo = true;
@@ -45,12 +51,10 @@ public class TestView {
 			e.printStackTrace();
 		}
 	}
-	
-	public static void write(String[] args) {
-		//String inputFileName = "D:\\Documents\\SANDBOX\\FO4\\hkx_files\\" + testName + ".xml";
-		//String outputFileName = "D:\\Documents\\SANDBOX\\FO4\\hkx_files\\" + testName + "-new.hkx";
-		String inputFileName = "c:\\temp\\hkx\\" + testName + ".xml";
-		String outputFileName = "c:\\temp\\hkx\\" + testName + "-new.hkx";
+
+	private static void write(String[] args) {
+		String inputFileName = rootName + testName + ".xml";
+		String outputFileName = rootName + testName + "-new.hkx";
 		DisplayProperties.displayDebugInfo = true;
 		DisplayProperties.displayFileDebugInfo = true;
 		DisplayProperties.displayReadTypesInfo = true;
@@ -73,9 +77,10 @@ public class TestView {
 		}
 	}
 	
-	public static void xmlTest(String[] args) {
-		String inputFileName = "c:\\temp\\hkx\\" + testName + ".xml";
-		String outputFileName = "c:\\temp\\hkx\\" + testName + "-new.xml";
+	@SuppressWarnings("unused")
+	private static void xmlTest(String[] args) {
+		String inputFileName = rootName + testName + ".xml";
+		String outputFileName = rootName + testName + "-new.xml";
 		DisplayProperties.displayDebugInfo = true;
 		DisplayProperties.displayFileDebugInfo = true;
 		DisplayProperties.displayReadTypesInfo = true;

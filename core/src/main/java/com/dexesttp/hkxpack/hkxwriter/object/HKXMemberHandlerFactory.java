@@ -10,6 +10,8 @@ import com.dexesttp.hkxpack.descriptor.enums.HKXType;
 import com.dexesttp.hkxpack.descriptor.members.HKXMemberTemplate;
 import com.dexesttp.hkxpack.hkx.data.DataExternal;
 import com.dexesttp.hkxpack.hkx.data.DataInternal;
+import com.dexesttp.hkxpack.hkxwriter.object.array.HKXArrayMemberHandler;
+import com.dexesttp.hkxpack.hkxwriter.object.array.HKXArrayPointerMemberHandler;
 import com.dexesttp.hkxpack.hkxwriter.object.callbacks.HKXMemberCallback;
 import com.dexesttp.hkxpack.hkxwriter.utils.PointerObject;
 
@@ -78,7 +80,7 @@ public class HKXMemberHandlerFactory {
 	 * Creates a APMH to handle pointer stacking at array initialization but the filling of the pointeronly at array writing.
 	 * @return a brand new {@link HKXArrayPointerMemberHandler}.
 	 */
-	HKXArrayPointerMemberHandler createAPMH() {
+	public HKXArrayPointerMemberHandler createAPMH() {
 		return new HKXArrayPointerMemberHandler(data2List);
 	}
 	

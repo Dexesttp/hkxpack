@@ -13,23 +13,19 @@ import com.dexesttp.hkxpack.hkx.HKXUtils;
 import com.dexesttp.hkxpack.hkx.data.DataInternal;
 import com.dexesttp.hkxpack.hkx.types.MemberSizeResolver;
 
-public class HKXStringArrayMemberCallback implements HKXMemberCallback {
+public class HKXStringArrayMemberCallback implements HKXArrayMemberCallback {
 	private final List<DataInternal> data1;
-	private final DataInternal arrData;
 	private final HKXArrayMember arrMember;
 	private ByteBuffer outFile;
 
-	public HKXStringArrayMemberCallback(List<DataInternal> data1, DataInternal arrData, HKXArrayMember arrMember, ByteBuffer outFile) {
+	public HKXStringArrayMemberCallback(List<DataInternal> data1, HKXArrayMember arrMember, ByteBuffer outFile) {
 		this.data1 = data1;
-		this.arrData = arrData;
 		this.arrMember = arrMember;
 		this.outFile = outFile;
 	}
 
 	@Override
 	public long process(List<HKXMemberCallback> memberCallbacks, long position) throws IOException {
-		arrData.to = position;
-		data1.add(arrData);
 		long newPos = position;
 		long memberSize = MemberSizeResolver.getSize(arrMember.getSubType());
 		List<HKXMemberCallback> internalCallbacks = new ArrayList<>();

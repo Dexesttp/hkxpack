@@ -44,14 +44,11 @@ public class ObjectSizeResolver {
 		case TYPE_REAL:
 			return 0X04;
 	// Complex values
-		case TYPE_MATRIX3:
-			return 0x0A;
 		case TYPE_VECTOR4:
 		case TYPE_QUATERNION:
 		case TYPE_TRANSFORM:
-			return 0x04;
 		case TYPE_QSTRANSFORM:
-			return 0x04;
+		case TYPE_MATRIX3:
 		case TYPE_MATRIX4:
 			return 0x04;
 	// Strings and ptrs

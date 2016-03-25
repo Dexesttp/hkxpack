@@ -1,6 +1,7 @@
-package com.dexesttp.hkxpack.hkxwriter.object;
+package com.dexesttp.hkxpack.hkxwriter.object.array;
 
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,11 +10,17 @@ import com.dexesttp.hkxpack.data.HKXData;
 import com.dexesttp.hkxpack.data.members.HKXArrayMember;
 import com.dexesttp.hkxpack.data.members.HKXMember;
 import com.dexesttp.hkxpack.data.members.HKXPointerMember;
+import com.dexesttp.hkxpack.descriptor.enums.HKXType;
 import com.dexesttp.hkxpack.hkx.data.DataInternal;
+import com.dexesttp.hkxpack.hkxwriter.object.HKXMemberHandler;
+import com.dexesttp.hkxpack.hkxwriter.object.HKXMemberHandlerFactory;
+import com.dexesttp.hkxpack.hkxwriter.object.callbacks.HKXArrayMemberCallback;
+import com.dexesttp.hkxpack.hkxwriter.object.callbacks.HKXBaseArrayMemberCallback;
 import com.dexesttp.hkxpack.hkxwriter.object.callbacks.HKXDefaultArrayMemberCallback;
 import com.dexesttp.hkxpack.hkxwriter.object.callbacks.HKXMemberCallback;
 import com.dexesttp.hkxpack.hkxwriter.object.callbacks.HKXObjectArrayMemberCallback;
 import com.dexesttp.hkxpack.hkxwriter.object.callbacks.HKXPointerArrayMemberCallback;
+import com.dexesttp.hkxpack.hkxwriter.object.callbacks.HKXRelArrayMemberCallback;
 import com.dexesttp.hkxpack.hkxwriter.object.callbacks.HKXStringArrayMemberCallback;
 import com.dexesttp.hkxpack.resources.ByteUtils;
 
@@ -35,33 +42,49 @@ public class HKXArrayMemberHandler implements HKXMemberHandler {
 	public HKXMemberCallback write(HKXMember member, long currentPos) throws IOException {
 		final HKXArrayMember arrMember = (HKXArrayMember) member;
 		int size = arrMember.contents().size();
-		byte[] sizeVals = ByteUtils.fromLong(size, 4);
-		byte[] arrayData = new byte[]{
-				0, 0, 0, 0,  0, 0, 0, 0,
-				sizeVals[0], sizeVals[1], sizeVals[2], sizeVals[3],
-				sizeVals[0], sizeVals[1], sizeVals[2], (byte) 0x80
-		};
-		outFile.position((int) (currentPos + offset));
-		outFile.put(arrayData);
-		if(size == 0)
-			return (memberCallbacks, position) -> { return 0; };
 		
-		final DataInternal arrData = new DataInternal();
-		arrData.from = currentPos + offset;
 		
+		HKXArrayMemberCallback arrCallback = null;
 		switch(arrMember.getSubType().getFamily()) {
 			case POINTER:
-				return handlePointer(arrData, arrMember);
+				arrCallback = handlePointer(arrMember);
+				break;
 			case STRING:
-				return new HKXStringArrayMemberCallback(data1, arrData, arrMember, outFile);
+				arrCallback = new HKXStringArrayMemberCallback(data1, arrMember, outFile);
+				break;
 			case OBJECT:
-				return new HKXObjectArrayMemberCallback(data1, arrData, arrMember, memberHandlerFactory);
+				arrCallback = new HKXObjectArrayMemberCallback(arrMember, memberHandlerFactory);
+				break;
 			default:
-				return new HKXDefaultArrayMemberCallback(data1, arrData, arrMember, memberHandlerFactory);
+				arrCallback = new HKXDefaultArrayMemberCallback(arrMember, memberHandlerFactory);
+				break;
+		}
+		
+		if(member.getType() == HKXType.TYPE_ARRAY) {
+			byte[] sizeVals = ByteUtils.fromLong(size, 4);
+			byte[] arrayData = new byte[]{
+					0, 0, 0, 0,  0, 0, 0, 0,
+					sizeVals[0], sizeVals[1], sizeVals[2], sizeVals[3],
+					sizeVals[0], sizeVals[1], sizeVals[2], (byte) 0x80
+			};
+			outFile.position((int) (currentPos + offset));
+			outFile.put(arrayData);
+			if(size == 0)
+				return (memberCallbacks, position) -> { return 0; };
+			
+			final DataInternal arrData = new DataInternal();
+			arrData.from = currentPos + offset;
+			return new HKXBaseArrayMemberCallback(arrCallback, data1, arrData);
+		}
+		else {
+			byte[] sizeVals = ByteUtils.fromLong(size + 1, 2);
+			outFile.position((int) (currentPos + offset));
+			outFile.put(sizeVals);
+			return new HKXRelArrayMemberCallback(arrCallback, outFile, currentPos, offset);
 		}
 	}
 
-	private HKXMemberCallback handlePointer(final DataInternal arrData, final HKXArrayMember arrMember) {
+	private HKXArrayMemberCallback handlePointer(final HKXArrayMember arrMember) {
 		final List<HKXArrayPointerMemberHandler> apmhList = new ArrayList<>(); 
 		for(HKXData data : arrMember.contents()) {
 			if(data instanceof HKXPointerMember) {
@@ -71,6 +94,6 @@ public class HKXArrayMemberHandler implements HKXMemberHandler {
 				apmhList.add(arrayPointerMemberHandler);
 			}
 		}
-		return new HKXPointerArrayMemberCallback(arrData, data1, arrMember, apmhList);
+		return new HKXPointerArrayMemberCallback(arrMember, apmhList);
 	}
 }

@@ -14,7 +14,6 @@ import com.dexesttp.hkxpack.tagreader.exceptions.InvalidTagXMLException;
 public class TagXMLComplexHandler implements TagXMLContentsHandler {
 	private static final String numMatch = "(-?\\d+(?:\\.\\d+)?(?:E-?\\d+)? ?)";
 	private static final String vec4 = "\\("+numMatch+numMatch+numMatch+numMatch+"\\)";
-	private static final Pattern pattern3 = Pattern.compile("\\("+numMatch+numMatch+numMatch+"\\)");
 	private static final Pattern pattern4 = Pattern.compile(vec4);
 	private static final Pattern patternQS = Pattern.compile(vec4 + vec4 + vec4);
 	private static final Pattern patternM4 = Pattern.compile(vec4 + vec4 + vec4 + vec4);
@@ -34,15 +33,14 @@ public class TagXMLComplexHandler implements TagXMLContentsHandler {
 
 	Pattern getPattern(HKXType memberType) {
 		switch(memberType) {
-			case TYPE_MATRIX3:
-				return pattern3;
 			case TYPE_VECTOR4:
-			case TYPE_TRANSFORM:
 			case TYPE_QUATERNION:
 				return pattern4;
+			case TYPE_MATRIX3:
 			case TYPE_QSTRANSFORM:
 				return patternQS;
 			case TYPE_MATRIX4:
+			case TYPE_TRANSFORM:
 				return patternM4;
 			default:
 				throw new IllegalArgumentException();

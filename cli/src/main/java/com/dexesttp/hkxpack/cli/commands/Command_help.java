@@ -2,11 +2,14 @@ package com.dexesttp.hkxpack.cli.commands;
 
 import com.dexesttp.hkxpack.cli.utils.StaticProperties;
 
+/**
+ * Displays the help of the Command Line Interface.
+ */
 public class Command_help implements Command {
 	// TODO prettify help.
 	@Override
 	public int execute(String... parameters) {
-		System.out.println("hkxpack version " + StaticProperties.version_number );
+		System.out.println("HKXPack version " + StaticProperties.version_number );
 		System.out.println("Use : java -jar hkxpack-cli.jar <args>");
 		System.out.println("Arguments :");
 		System.out.println("\t"+"unpack"	+"\t" +"<filename>" + "\t\t" + "Extracts <filename>.hkx into <filename>.xml");

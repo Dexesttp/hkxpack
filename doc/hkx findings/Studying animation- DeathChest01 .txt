@@ -18,3 +18,11 @@ hkaSplineCompressedAnimation [#92]:
 	
 hkaAnimationBinding [#94]:
 	Transform Track To Bone Indice (size) <=> number of Transform Tracks of target animation
+	
+Compressed Spline :
+	http://anarchy.cn/manual/12/HavokSdk_ProgrammersManual/animationcompression.html
+	B-Splines, or NURBS, are a way to store data in "knots". In addition to this storage, there is a way to remove some of the nodes and replace it by extra data less costly in weight. There is also a general compression algorithm.
+	=> see also : http://dsanta.users.ch/research/These-2770-SantaCruz.pdf (thesis on B-Spline compression)
+	=> the algorithm may be protected behind some patent or commercial secret. In this case, it may not be possible to write an open-source converter.
+	=> There is also the posibility that the algorithm is publicly available, through research papers.
+	=> Thanks to Aerisam for his help
