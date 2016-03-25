@@ -3,6 +3,9 @@ package com.dexesttp.hkxpack.cli.commands;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Routes a command line interface into the relevant {@link Command}.
+ */
 public class CommandFactory {
 	@SuppressWarnings("rawtypes")
 	private Map<String, Class> commandParser = new HashMap<>();
@@ -13,9 +16,14 @@ public class CommandFactory {
 		commandParser.put("pack", Command_pack.class);
 		commandParser.put("help", Command_help.class);
 	}
-	
-	@SuppressWarnings("rawtypes")
+
+	/**
+	 * Retrieves the relevant {@link Command}. 
+	 * @param commandName the first argument passed to main.
+	 * @return the relevant {@link Command}.
+	 */
 	public Command newInstance(String commandName) {
+		@SuppressWarnings("rawtypes")
 		Class commandClass = commandParser.get(commandName);
 		try {
 			return (Command) commandClass.newInstance();

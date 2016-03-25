@@ -3,6 +3,7 @@ package com.dexesttp.hkxpack.tagreader;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.dexesttp.hkxpack.data.members.HKXFailedMember;
 import com.dexesttp.hkxpack.data.members.HKXMember;
 import com.dexesttp.hkxpack.descriptor.HKXDescriptor;
 import com.dexesttp.hkxpack.descriptor.HKXDescriptorFactory;
@@ -11,6 +12,7 @@ import com.dexesttp.hkxpack.descriptor.exceptions.ClassFileReadError;
 import com.dexesttp.hkxpack.descriptor.members.HKXMemberTemplate;
 import com.dexesttp.hkxpack.l10n.SBundle;
 import com.dexesttp.hkxpack.resources.DOMUtils;
+import com.dexesttp.hkxpack.resources.LoggerUtil;
 import com.dexesttp.hkxpack.tagreader.exceptions.InvalidTagXMLException;
 import com.dexesttp.hkxpack.tagreader.members.TagXMLContentsHandler;
 import com.dexesttp.hkxpack.tagreader.members.TagXMLContentsHandlerFactory;
@@ -44,10 +46,13 @@ class TagXMLMemberHandler {
 		// Get the right node.
 		Node member = getMemberNode(objectNode, memberTemplate.name);
 		if(member == null) {
-			if(memberTemplate.flag != Flag.SERIALIZE_IGNORED)
-				throw new InvalidTagXMLException(SBundle.getString("error.tag.read.member") + memberTemplate.name);
-			TagXMLSerializedHandler serializedHandler = serializedHandlerFactory.getSerializedHandler(memberTemplate.vtype);
-			return serializedHandler.handleMember(memberTemplate);
+			if(memberTemplate.flag != Flag.SERIALIZE_IGNORED) {
+				LoggerUtil.add(new InvalidTagXMLException(SBundle.getString("error.tag.read.member") + memberTemplate.name));
+				return new HKXFailedMember(memberTemplate.name, memberTemplate.vtype, SBundle.getString("error.tag.read.member") + memberTemplate.name);
+			} else {
+				TagXMLSerializedHandler serializedHandler = serializedHandlerFactory.getSerializedHandler(memberTemplate.vtype);
+				return serializedHandler.handleMember(memberTemplate);
+			}
 		} else {
 			// Get the right handler
 			TagXMLContentsHandler handler = contentsFactory.getHandler(memberTemplate.vtype);

@@ -1,4 +1,4 @@
-package com.dexesttp.hkxpack.hkxreader.member;
+package com.dexesttp.hkxpack.hkxreader.member.arrays;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -11,14 +11,17 @@ import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
 import com.dexesttp.hkxpack.hkxreader.HKXReaderConnector;
 import com.dexesttp.hkxpack.resources.ByteUtils;
 
-class HKXStringArrayMemberReader extends HKXArrayMemberReader {
+class HKXStringArrayContentsReader implements HKXArrayContentsReader {
+	private HKXReaderConnector connector;
+	private HKXType contentsType;
 
-	HKXStringArrayMemberReader(HKXReaderConnector connector, String name, HKXType subtype, long offset) {
-		super(connector, name, subtype, offset);
+	HKXStringArrayContentsReader(HKXReaderConnector connector, HKXType contentsType) {
+		this.connector = connector;
+		this.contentsType = contentsType;
 	}
 
 	@Override
-	protected HKXData getContents(long arrayStart, int position) throws IOException, InvalidPositionException {
+	public HKXData getContents(long arrayStart, int position) throws IOException, InvalidPositionException {
 		long descriptorPosition = arrayStart + position * 0x08;
 		DataInternal data = connector.data1.readNext();
 		String contents = "";
@@ -28,7 +31,7 @@ class HKXStringArrayMemberReader extends HKXArrayMemberReader {
 		} else {
 			connector.data1.backtrack();
 		}
-		HKXStringMember result = new HKXStringMember(name, subtype);
+		HKXStringMember result = new HKXStringMember("", contentsType);
 		result.set(contents);
 		return result;
 	}

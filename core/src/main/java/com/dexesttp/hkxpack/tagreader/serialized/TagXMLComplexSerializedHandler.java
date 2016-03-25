@@ -16,18 +16,16 @@ class TagXMLComplexSerializedHandler implements TagXMLSerializedHandler {
 	private HKXMember emptyMember(HKXMemberTemplate memberTemplate) {
 		HKXDirectMember<Double[]> member = new HKXDirectMember<>(memberTemplate.name, memberTemplate.vtype);
 		switch(memberTemplate.vtype) {
-			case TYPE_MATRIX3:
-				member.set(new Double[]{0., 0., 0.});
-				break;
 			case TYPE_VECTOR4:
-			case TYPE_TRANSFORM:
 			case TYPE_QUATERNION:
 				member.set(new Double[]{0., 0., 0., 0.});
 				break;
+			case TYPE_MATRIX3:
 			case TYPE_QSTRANSFORM:
 				member.set(new Double[]{0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.});
 				break;
 			case TYPE_MATRIX4:
+			case TYPE_TRANSFORM:
 				member.set(new Double[]{0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.});
 			default:
 				break;

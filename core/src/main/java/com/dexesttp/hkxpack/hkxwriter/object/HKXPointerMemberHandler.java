@@ -12,7 +12,7 @@ public class HKXPointerMemberHandler implements HKXMemberHandler {
 	private final long offset;
 	private final List<PointerObject> data2;
 
-	public HKXPointerMemberHandler(long offset, List<PointerObject> data2List) {
+	HKXPointerMemberHandler(long offset, List<PointerObject> data2List) {
 		this.offset = offset;
 		this.data2 = data2List;
 	}

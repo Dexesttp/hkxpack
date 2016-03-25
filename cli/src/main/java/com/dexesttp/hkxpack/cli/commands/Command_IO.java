@@ -6,17 +6,27 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import com.dexesttp.hkxpack.cli.loggers.DirectoryWalkerLoggerFactory;
+import com.dexesttp.hkxpack.cli.loggers.DirectoryWalkerLoggerFactory.DirectoryWalkerLogger;
 import com.dexesttp.hkxpack.cli.utils.ArgsParser;
 import com.dexesttp.hkxpack.cli.utils.CLIProperties;
 import com.dexesttp.hkxpack.cli.utils.DirWalker;
 import com.dexesttp.hkxpack.cli.utils.WrongSizeException;
 import com.dexesttp.hkxpack.descriptor.HKXDescriptorFactory;
 import com.dexesttp.hkxpack.descriptor.HKXEnumResolver;
-import com.dexesttp.hkxpack.resources.LoggerUtil;
+import com.dexesttp.hkxpack.descriptor.exceptions.ClassListReadError;
 
+/**
+ * Abstract command to handle routing between a single file and multiple files from a directory. <br />
+ * <p>
+ * The new entry point is {@link #execution_core(String, String, HKXEnumResolver, HKXDescriptorFactory)}. This should contain the code to handle a single file. <br />
+ * The subclass should also implement {@link #extractFileName(String)}, a routine to convert the input file name to a suitable output one if needed. <br />
+ * Finally, the subclass should implement {@link #getFileExtensions()}, to return a list of accepted extensions for imput file detected when walking through directories.
+ */
 public abstract class Command_IO implements Command {
 	private int nbConcurrentThreads = 32;
-	
+
+	@Override
 	public int execute(String... args) {
 		// Options handling
 		ArgsParser parser = new ArgsParser();
@@ -48,74 +58,128 @@ public abstract class Command_IO implements Command {
 		else
 			return execute_single(fileName, outName);
 	}
-	
-	public int execute_single(String fileName, String outName) {
+
+	/**
+	 * Executes the code for a single imput file to a single output file.
+	 * @param fileName the input file name.
+	 * @param outName the output file name.
+	 * @return the execution result value.
+	 */
+	private int execute_single(String fileName, String outName) {
 		if(outName == "")
 			outName = extractFileName(fileName);
 		HKXEnumResolver enumResolver = new HKXEnumResolver();
 		HKXDescriptorFactory descriptorFactory;
 		try {
 			descriptorFactory = new HKXDescriptorFactory(enumResolver);
-			getThreadLambda(fileName, outName, descriptorFactory, enumResolver).run();
+			execution_core(fileName, outName, enumResolver, descriptorFactory);
 		} catch(Exception e) {
 			e.printStackTrace();
 			return 1;
 		}
 		return 0;
 	}
-	
+
+	/**
+	 * Executes the code for a directory
+	 * @param inDir the input directory {@link File}.
+	 * @param outDir the output directory name.
+	 * @return the execution result value.
+	 * @see DirWalker
+	 */
 	private int execute_multi(File inDir, String outDir) {
+		// Create output directory.
 		if(outDir.isEmpty())
 			outDir = "out";
+		
+		// Walk through the directory
 		DirWalker walker = new DirWalker(getFileExtensions());
 		List<DirWalker.Entry> toConvert = walker.walk(inDir);
 		
-		if(!CLIProperties.quiet)
-			System.out.println("Detected " + toConvert.size() + " files to handle.");
+		// Create logger
+		DirectoryWalkerLogger logger = new DirectoryWalkerLoggerFactory().newLogger(toConvert.size());
 		
+		// Create the thread pool.
 		ThreadPoolExecutor pool = new ThreadPoolExecutor(
 				nbConcurrentThreads, nbConcurrentThreads,
 				0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
+		
+		// Initailize the factorized tools.
 		HKXEnumResolver enumResolver = new HKXEnumResolver();
 		HKXDescriptorFactory descriptorFactory;
 		try {
 			descriptorFactory = new HKXDescriptorFactory(enumResolver);
-		} catch (Exception e) {
+		} catch (ClassListReadError e) {
 			e.printStackTrace();
 			return 1;
 		}
 		
+		// Populate the thread pool using the directory entries.
 		for(DirWalker.Entry fileInDirectory : toConvert) {
 			new File(fileInDirectory.getPath("out")).mkdirs();
 			final String inputFileName = fileInDirectory.getFullName();
 			final String outputFileName = fileInDirectory.getPath("out") + "/" + extractFileName(fileInDirectory.getName());
-			pool.execute(getThreadLambda(inputFileName, outputFileName, descriptorFactory, enumResolver));
+			pool.execute(() -> {
+				execution_catcher(inputFileName, outputFileName, enumResolver, descriptorFactory);
+			});
 		}
+		
+		// Handle pool termination, as well as logging of pool execution progress (every 30 seconds)
 		pool.shutdown();
 		try {
 			long numberOfHandledTasks = 0;
 			while(!pool.awaitTermination(30, TimeUnit.SECONDS)) {
 				if(pool.getCompletedTaskCount() > numberOfHandledTasks)
 					numberOfHandledTasks = pool.getCompletedTaskCount();
-				if(!CLIProperties.quiet) {
-					if(!CLIProperties.verbose)
-						System.out.println("Handled " + numberOfHandledTasks + " files.");
-					while(!LoggerUtil.getList().isEmpty()) {
-						Throwable e = LoggerUtil.getList().remove(0);
-						if(CLIProperties.debug)
-							e.printStackTrace();
-						else
-							System.err.println(e.getMessage());
-					}
-				}
+				logger.log(numberOfHandledTasks);
 			}
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			// Force shutdown of all tasks.
+			pool.shutdownNow();
 		}
 		return 0;
 	}
-	
-	protected abstract Runnable getThreadLambda(String inputFileName, String outputFileName, HKXDescriptorFactory descriptorFactory, HKXEnumResolver enumResolver);
+
+	protected void execution_catcher(String inputFileName, String outputFileName,
+			HKXEnumResolver enumResolver, HKXDescriptorFactory descriptorFactory) {
+		try {
+			execution_core(inputFileName, outputFileName, enumResolver, descriptorFactory);
+		} catch (Exception e) {
+			System.out.println("Error reading file : " + inputFileName);
+			if(CLIProperties.debug)
+				e.printStackTrace();
+			else if(!CLIProperties.quiet)
+				System.err.println(e.getMessage());
+		} finally {
+			if(CLIProperties.verbose) {
+				System.out.println(inputFileName);
+				System.out.println("\t=> " + outputFileName);
+			}
+		}
+	}
+
+	/**
+	 * Handles a single file
+	 * @param inputFileName the input file name
+	 * @param outputFileName the output file name
+	 * @param enumResolver the {@link HKXEnumResolver} to use.
+	 * @param descriptorFactory the {@link HKXDescriptorFactory} to use.
+	 * @throws Exception if there was an issue while handling the file
+	 */
+	protected abstract void execution_core(String inputFileName, String outputFileName,
+			HKXEnumResolver enumResolver, HKXDescriptorFactory descriptorFactory)
+					throws Exception;
+
+	/**
+	 * Extracts a suitable output name from an input file name.
+	 * @param ogName the original input file name
+	 * @return a suitable output name.
+	 */
 	protected abstract String extractFileName(String ogName);
+
+	/**
+	 * Retrieves a list of file extensions to select while crawling through a directory.
+	 * @return the file extensions as a {@link String} list.
+	 */
 	protected abstract String[] getFileExtensions();
 }

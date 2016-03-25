@@ -10,7 +10,6 @@ class TagXMLDirectSerializedHandler implements TagXMLSerializedHandler {
 
 	@Override
 	public HKXMember handleMember(HKXMemberTemplate memberTemplate) throws ClassFileReadError, InvalidTagXMLException {
-		// TODO Auto-generated method stub
 		return emptyMember(memberTemplate);
 	}
 
