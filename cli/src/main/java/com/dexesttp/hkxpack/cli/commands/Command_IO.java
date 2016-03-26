@@ -15,6 +15,7 @@ import com.dexesttp.hkxpack.cli.utils.WrongSizeException;
 import com.dexesttp.hkxpack.descriptor.HKXDescriptorFactory;
 import com.dexesttp.hkxpack.descriptor.HKXEnumResolver;
 import com.dexesttp.hkxpack.descriptor.exceptions.ClassListReadError;
+import com.dexesttp.hkxpack.hkxwriter.HKXWriter;
 
 /**
  * Abstract command to handle routing between a single file and multiple files from a directory. <br />
@@ -25,6 +26,7 @@ import com.dexesttp.hkxpack.descriptor.exceptions.ClassListReadError;
  */
 public abstract class Command_IO implements Command {
 	private int nbConcurrentThreads = 32;
+	protected int bufferSize = HKXWriter.DEFAULT_BUFFER_CAPACITY;
 
 	@Override
 	public int execute(String... args) {
@@ -32,6 +34,7 @@ public abstract class Command_IO implements Command {
 		ArgsParser parser = new ArgsParser();
 		parser.addOption("-o", 1);
 		parser.addOption("-t", 1);
+		parser.addOption("-b", 1);
 		parser.addOption("-d", 0);
 		parser.addOption("-q", 0);
 		parser.addOption("-v", 0);
@@ -46,6 +49,8 @@ public abstract class Command_IO implements Command {
 		String outName = result.get("-o", 0);
 		if(result.exists("-t"))
 			nbConcurrentThreads = Integer.parseInt(result.get("-t", 0));
+		if(result.exists("-b"))
+			bufferSize = Integer.parseInt(result.get("-b", 0));
 		
 		CLIProperties.debug = result.exists("-d");
 		CLIProperties.quiet = result.exists("-q");

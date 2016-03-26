@@ -30,7 +30,7 @@ public class HKXWriter
 	 * <p>
 	 * 10Mo default capacity should be ok, as the buffer will only use what it needs. The biggest found FO4 file was 1.4 Mo.
 	 */
-	private static final int DEFAULT_BUFFER_CAPACITY = 10000000;
+	public static final int DEFAULT_BUFFER_CAPACITY = 10000000;
 	
 	private final HKXEnumResolver enumResolver;
 	private final File outputFile;
