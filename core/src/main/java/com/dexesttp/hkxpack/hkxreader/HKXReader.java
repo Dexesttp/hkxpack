@@ -2,6 +2,9 @@ package com.dexesttp.hkxpack.hkxreader;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel.MapMode;
 
 import com.dexesttp.hkxpack.data.HKXFile;
 import com.dexesttp.hkxpack.data.HKXObject;
@@ -18,10 +21,10 @@ import com.dexesttp.hkxpack.hkxreader.member.HKXMemberReaderFactory;
 import com.dexesttp.hkxpack.resources.LoggerUtil;
 
 /**
- * Reads the content of a {@link File}, containing information in the hkx format, into a DOM-like {@link HKXFile}.
+ * Reads the content of a {@link File} or {@link ByteBuffer}, containing information in the hkx format, into a DOM-like {@link HKXFile}.
  */
 public class HKXReader {
-	private final File hkxFile;
+	private final ByteBuffer hkxBB;
 	private final HKXDescriptorFactory descriptorFactory;
 	private final HKXEnumResolver enumResolver;
 
@@ -30,22 +33,38 @@ public class HKXReader {
 	 * @param hkxFile the {@link File} to read data from.
 	 * @param descriptorFactory the {@link HKXDescriptorFactory} to use to solve the {@link File}'s classes.
 	 * @param enumResolver the {@link HKXEnumResolver} to store enumerations into.
+	 * @throws IOException if there was a problem while reading the {@link File}
 	 */
-	public HKXReader(File hkxFile, HKXDescriptorFactory descriptorFactory, HKXEnumResolver enumResolver) {
-		this.hkxFile = hkxFile;
+	public HKXReader(File hkxFile, HKXDescriptorFactory descriptorFactory, HKXEnumResolver enumResolver) throws IOException {
+		RandomAccessFile raf = new RandomAccessFile(hkxFile, "rw" );
+		this.hkxBB = raf.getChannel().map(MapMode.READ_WRITE, 0, hkxFile.length());
+		raf.close();
 		this.descriptorFactory = descriptorFactory;
 		this.enumResolver = enumResolver;
 	}
 	
 	/**
-	 * Read data from this {@link HKXReader}'s {@link File}.
+	 * Creates a {@link HKXReader}.
+	 * @param hkxBB the {@link ByteBuffer} to read data from.
+	 * @param descriptorFactory the {@link HKXDescriptorFactory} to use to solve the {@link ByteBuffer}'s classes.
+	 * @param enumResolver the {@link HKXEnumResolver} to store enumerations into.
+	 */
+	public HKXReader(ByteBuffer hkxBB, HKXDescriptorFactory descriptorFactory, HKXEnumResolver enumResolver) {
+		this.hkxBB = hkxBB;
+		this.descriptorFactory = descriptorFactory;
+		this.enumResolver = enumResolver;
+	}
+	
+	/**
+	 * Read data from this {@link HKXReader}'s {@link File} or {@link ByteBuffer}.
 	 * @return the read {@link HKXFile}
 	 * @throws IOException if there was a problem accessing the file.
-	 * @throws InvalidPositionException if there was a positionning problem while reading the file.
+	 * @throws InvalidPositionException if there was a positioning problem while reading the file.
 	 */
 	public HKXFile read() throws IOException, InvalidPositionException {
+		
 		// Connect the connector to the file.
-		HKXReaderConnector connector = new HKXReaderConnector(hkxFile);
+		HKXReaderConnector connector= new HKXReaderConnector(hkxBB);
 		
 		// Get a file reader and a pointer name generator
 		PointerNameGenerator generator = new PointerNameGenerator();
@@ -105,6 +124,7 @@ public class HKXReader {
 		}
 		
 		return content;
+	 
 	}
 	
 }

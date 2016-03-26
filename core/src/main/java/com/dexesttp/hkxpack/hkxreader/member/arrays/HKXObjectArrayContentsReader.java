@@ -1,7 +1,5 @@
 package com.dexesttp.hkxpack.hkxreader.member.arrays;
 
-import java.io.IOException;
-
 import com.dexesttp.hkxpack.data.HKXData;
 import com.dexesttp.hkxpack.data.HKXObject;
 import com.dexesttp.hkxpack.descriptor.HKXDescriptor;
@@ -23,7 +21,7 @@ class HKXObjectArrayContentsReader implements HKXArrayContentsReader {
 	}
 
 	@Override
-	public HKXData getContents(long arrayStart, int position) throws IOException, InvalidPositionException {
+	public HKXData getContents(long arrayStart, int position) throws InvalidPositionException {
 		long contentsPos = arrayStart + position * contentSize;
 		HKXObject data = reader.createHKXObject("", contentsPos, descriptor);
 		return data;

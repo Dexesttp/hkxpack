@@ -1,7 +1,5 @@
 package com.dexesttp.hkxpack.hkxwriter.object;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 import com.dexesttp.hkxpack.data.HKXObject;
@@ -10,15 +8,13 @@ import com.dexesttp.hkxpack.descriptor.members.HKXMemberTemplate;
 import com.dexesttp.hkxpack.hkx.types.ObjectSizeResolver;
 import com.dexesttp.hkxpack.hkxwriter.object.callbacks.HKXMemberCallback;
 
-/**
- * Handles writing a {@link HKXObject}'s contents into a {@link File}.
- */
+ 
 public class HKXInternalObjectHandler {
 	private final HKXMemberHandlerFactory memberHandlerFactory;
 	private List<HKXMemberCallback> memberCallbacks;
 
 	/**
-	 * Creates a handler to write an internal object to a {@link File}.
+	 * Associates a handler to a series of callbacks for writing to
 	 * @param factory the {@link HKXMemberHandlerFactory} to use while solving the {@link HKXObject}'s members.
 	 * @param memberCallbacks the list of {@link HKXMemberCallback} to add callbacks into.
 	 */
@@ -27,7 +23,7 @@ public class HKXInternalObjectHandler {
 		this.memberCallbacks = memberCallbacks;
 	}
 	
-	public long write(HKXMember objectAsMember, long currentPos) throws IOException {
+	public long write(HKXMember objectAsMember, long currentPos) {
 		HKXObject object = (HKXObject) objectAsMember;
 		// Prepare the member handlers, and fill the raw structure.
 		List<HKXMember> members = object.members();

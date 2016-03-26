@@ -1,7 +1,7 @@
 package com.dexesttp.hkxpack.resources;
 
-import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
+ 
 
 public class ByteUtils {
 	public static int getSInt(byte[] list) {
@@ -36,10 +36,10 @@ public class ByteUtils {
 		return Float.intBitsToFloat(val);
 	}
 
-	public static String readString(RandomAccessFile in) throws IOException {
+	public static String readString(ByteBuffer in) {
 		String s = "";
 		byte b;
-		while((b = in.readByte()) != 0)
+		while((b = in.get()) != 0)
 			s += (char) b;
 		return s;
 	}

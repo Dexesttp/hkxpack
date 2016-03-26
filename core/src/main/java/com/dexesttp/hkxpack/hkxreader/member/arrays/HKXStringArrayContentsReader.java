@@ -1,7 +1,6 @@
 package com.dexesttp.hkxpack.hkxreader.member.arrays;
 
-import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
 
 import com.dexesttp.hkxpack.data.HKXData;
 import com.dexesttp.hkxpack.data.members.HKXStringMember;
@@ -21,12 +20,12 @@ class HKXStringArrayContentsReader implements HKXArrayContentsReader {
 	}
 
 	@Override
-	public HKXData getContents(long arrayStart, int position) throws IOException, InvalidPositionException {
+	public HKXData getContents(long arrayStart, int position) throws InvalidPositionException {
 		long descriptorPosition = arrayStart + position * 0x08;
 		DataInternal data = connector.data1.readNext();
 		String contents = "";
 		if(data.from == descriptorPosition) {
-			RandomAccessFile file = connector.data.setup(data.to);
+			ByteBuffer file = connector.data.setup(data.to);
 			contents = ByteUtils.readString(file);
 		} else {
 			connector.data1.backtrack();

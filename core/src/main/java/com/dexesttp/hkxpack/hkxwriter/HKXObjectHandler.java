@@ -1,8 +1,6 @@
 package com.dexesttp.hkxpack.hkxwriter;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,17 +22,16 @@ public class HKXObjectHandler {
 	private final ClassnamesData cnameData;
 	private final SectionData section;
 	private final PointerResolver resolver;
-	private final File outFile;
+	private final ByteBuffer outFile;
 	private final HKXEnumResolver enumResolver;
 	private final List<DataInternal> data1List;
 	private final List<PointerObject> data2List;
 	private final List<DataExternal> data3List;
 
-	public HKXObjectHandler(File outFile, ClassnamesData classnamesData, SectionData dataSection,
+	public HKXObjectHandler(ByteBuffer outFile, ClassnamesData classnamesData, SectionData dataSection,
 			HKXEnumResolver enumResolver, List<DataInternal> data1List,
 			List<PointerObject> data2List, List<DataExternal> data3List,
-			PointerResolver resolver)
-					throws FileNotFoundException {
+			PointerResolver resolver) {
 		this.outFile = outFile;
 		this.enumResolver = enumResolver;
 		this.cnameData = classnamesData;
@@ -45,7 +42,7 @@ public class HKXObjectHandler {
 		this.resolver = resolver;
 	}
 
-	public long handle(HKXObject object, long currentPos) throws IOException {
+	public long handle(HKXObject object, long currentPos) {
 		// Add the object into data3 and the resolver
 		DataExternal classEntry = new DataExternal();
 		classEntry.from = currentPos - section.offset;
@@ -66,7 +63,6 @@ public class HKXObjectHandler {
 			HKXMemberCallback callback = memberCallbacks.remove(0);
 			currentPos += callback.process(memberCallbacks, currentPos);
 		}
-		memberHandlerFactory.close();
 		return currentPos;
 	}
 }

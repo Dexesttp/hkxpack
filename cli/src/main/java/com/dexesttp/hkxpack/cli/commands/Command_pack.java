@@ -33,7 +33,7 @@ public class Command_pack extends Command_IO {
 		// Write HKX file
 		File outFile = new File(outputFileName);
 		outFile.createNewFile();
-		HKXWriter writer = new HKXWriter(outFile, enumResolver);
+		HKXWriter writer = new HKXWriter(outFile, enumResolver, bufferSize);
 		writer.write(file);
 	}
 

@@ -1,18 +1,17 @@
 package com.dexesttp.hkxpack.hkxwriter.object.callbacks;
 
-import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
 import java.util.List;
 
 import com.dexesttp.hkxpack.resources.ByteUtils;
 
 public class HKXRelArrayMemberCallback implements HKXMemberCallback {
 	private final HKXArrayMemberCallback callbackProcessor;
-	private final RandomAccessFile outFile;
+	private final ByteBuffer outFile;
 	private final long classPos;
 	private final long argPos;
 
-	public HKXRelArrayMemberCallback(HKXArrayMemberCallback callbackProcessor, RandomAccessFile outFile, long classPos, long argPos) {
+	public HKXRelArrayMemberCallback(HKXArrayMemberCallback callbackProcessor, ByteBuffer outFile, long classPos, long argPos) {
 		this.callbackProcessor = callbackProcessor;
 		this.outFile = outFile;
 		this.classPos = classPos;
@@ -20,10 +19,10 @@ public class HKXRelArrayMemberCallback implements HKXMemberCallback {
 	}
 
 	@Override
-	public long process(List<HKXMemberCallback> memberCallbacks, long position) throws IOException {
+	public long process(List<HKXMemberCallback> memberCallbacks, long position) {
 		byte[] offset = ByteUtils.fromLong(position - classPos, 2);
-		outFile.seek(classPos + argPos + 2);
-		outFile.write(offset);
+		outFile.position((int) (classPos + argPos + 2));
+		outFile.put(offset);
 		return callbackProcessor.process(memberCallbacks, position);
 	}
 
