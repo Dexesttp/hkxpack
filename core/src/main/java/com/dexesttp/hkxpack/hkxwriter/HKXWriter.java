@@ -25,46 +25,50 @@ import com.dexesttp.hkxpack.resources.LoggerUtil;
  */
 public class HKXWriter
 {
-	private HKXEnumResolver enumResolver;
-	private File outputFile;
-	private ByteBuffer outputBB;
+	/**
+	 * Stores the default capacity for an outputted hkx file (currently {@value #DEFAULT_BUFFER_CAPACITY})
+	 * <p>
+	 * 10Mo default capacity should be ok, as the buffer will only use what it needs. The biggest found FO4 file was 1.4 Mo.
+	 */
+	private static final int DEFAULT_BUFFER_CAPACITY = 10000000;
+	
+	private final HKXEnumResolver enumResolver;
+	private final File outputFile;
+	private final ByteBuffer outputBB;
+
+	/**
+	 * Creates a {@link HKXWriter}, with a default capacity of {@value #DEFAULT_BUFFER_CAPACITY}
+	 * @param outputFile the {@link File} to output data into.
+	 * @param enumResolver the {@link HKXEnumResolver} to use.
+	 */
+	public HKXWriter(File outputFile, HKXEnumResolver enumResolver)
+	{
+		this(outputFile, enumResolver, DEFAULT_BUFFER_CAPACITY);
+	}
+
+	/**
+	 * Creates a {@link HKXWriter}.
+	 * @param outputFile the {@link File} to output data into.
+	 * @param enumResolver the {@link HKXEnumResolver} to use.
+	 * @param bufferCapacity the capacity of the buffer to use, in bytes
+	 */
+	public HKXWriter(File outputFile, HKXEnumResolver enumResolver, int bufferCapacity)
+	{
+		this.enumResolver = enumResolver;
+		this.outputFile = outputFile;
+		this.outputBB = ByteBuffer.allocateDirect(bufferCapacity);
+	}
 
 	/**
 	 * Creates a {@link HKXWriter}.
 	 * @param outputFile the {@link File} to output data into.
 	 * @param enumResolver the {@link HKXEnumResolver} to use.
 	 */
-	public HKXWriter(File outputFile, HKXEnumResolver enumResolver)
-	{
-		this.enumResolver = enumResolver;
-		this.outputFile = outputFile;
-	}
-
-	public HKXWriter(HKXEnumResolver enumResolver)
-	{
-		this.enumResolver = enumResolver;
-	}
-
-	/**
-	 * Use this in order to control the temporary write buffer
-	 * For example to set a smaller or larger capacity, or to use a HeapBuffer
-	 * Calling this is not required under normal usage
-	 * @param outputBB the {@link ByteBuffer} to fill on write
-	 */
-	public void setByteBuffer(ByteBuffer outputBB)
+	public HKXWriter(ByteBuffer outputBB, HKXEnumResolver enumResolver)
 	{
 		this.outputBB = outputBB;
-	}
-
-	/**
-	 * After the write method is called, the return {@link ByteBuffer} will be filled with 
-	 * the written data ready for use.
-	 * This is useful if an outputFile {@link File} is not specified in the constructor. 
-	 * @return A {@link ByteBuffer} filled with {@link HKXFile} data, as would be written to file.
-	 */
-	public ByteBuffer getByteBuffer()
-	{
-		return outputBB;
+		this.outputFile = null;
+		this.enumResolver = enumResolver;
 	}
 
 	/**
@@ -76,14 +80,6 @@ public class HKXWriter
 	 */
 	public void write(HKXFile file) throws IOException, UnsupportedVersionError
 	{
-		// this should be the normal case
-		if (outputBB == null)
-		{
-			//10 meg capacity should be ok, it'll only use what it needs
-			//1.4 Mb is the biggest Fallout 4 hkx file I can find
-			outputBB = ByteBuffer.allocateDirect(10000000);
-		}
-
 		// Connect to the file.
 		HKXWriterConnector connector = new HKXWriterConnector(outputBB);
 
@@ -120,8 +116,10 @@ public class HKXWriter
 			long endData = dataHandler.fillFile(data, file, resolver) - data.offset;
 			data.data1 = endData % 0x10 == 0 ? endData : (1 + endData / 0x10) * 0x10;
 			dataHandler.fillPointers(data, resolver);
+			
+			// Flips the ByteBuffer now, to set its limit to the end of the file.
 			outputBB.flip();
-
+			
 			// Write the data section to the file.
 			connector.writeSection(header, HKXSectionHandler.DATA, data);
 		}
@@ -130,19 +128,19 @@ public class HKXWriter
 			LoggerUtil.add(new WrongInputCastException(String.format(SBundle.getString("error.hkx.write.cast")), e));
 		}
 		
-		//prep for use
+		// Prepare the output ByteBuffer for use.
 		outputBB.position(0);
 		
+		// If needed, write the output ByteBuffer back to the file.
 		if (outputFile != null)
 		{
 			try (RandomAccessFile out = new RandomAccessFile(outputFile, "rw"))
-			{				
+			{
 				byte[] bytes = new byte[outputBB.limit()];
 				outputBB.get(bytes);
 				out.write(bytes);
 				out.close();
 			}
 		}
-
 	}
 }

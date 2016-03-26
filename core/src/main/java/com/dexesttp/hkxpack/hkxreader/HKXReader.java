@@ -24,8 +24,7 @@ import com.dexesttp.hkxpack.resources.LoggerUtil;
  * Reads the content of a {@link File} or {@link ByteBuffer}, containing information in the hkx format, into a DOM-like {@link HKXFile}.
  */
 public class HKXReader {
-	private File hkxFile;
-	private ByteBuffer hkxBB;
+	private final ByteBuffer hkxBB;
 	private final HKXDescriptorFactory descriptorFactory;
 	private final HKXEnumResolver enumResolver;
 
@@ -34,9 +33,12 @@ public class HKXReader {
 	 * @param hkxFile the {@link File} to read data from.
 	 * @param descriptorFactory the {@link HKXDescriptorFactory} to use to solve the {@link File}'s classes.
 	 * @param enumResolver the {@link HKXEnumResolver} to store enumerations into.
+	 * @throws IOException if there was a problem while reading the {@link file}
 	 */
-	public HKXReader(File hkxFile, HKXDescriptorFactory descriptorFactory, HKXEnumResolver enumResolver) {
-		this.hkxFile = hkxFile;
+	public HKXReader(File hkxFile, HKXDescriptorFactory descriptorFactory, HKXEnumResolver enumResolver) throws IOException {
+		RandomAccessFile raf = new RandomAccessFile(hkxFile, "rw" );
+		this.hkxBB = raf.getChannel().map(MapMode.READ_WRITE, 0, hkxFile.length());
+		raf.close();
 		this.descriptorFactory = descriptorFactory;
 		this.enumResolver = enumResolver;
 	}
@@ -60,13 +62,6 @@ public class HKXReader {
 	 * @throws InvalidPositionException if there was a positioning problem while reading the file.
 	 */
 	public HKXFile read() throws IOException, InvalidPositionException {
-	
-		if(hkxFile != null)
-		{
-			RandomAccessFile raf =new RandomAccessFile(hkxFile, "rw" );
-			this.hkxBB = raf.getChannel().map(MapMode.READ_WRITE, 0, hkxFile.length());
-			raf.close();
-		}
 		
 		// Connect the connector to the file.
 		HKXReaderConnector connector= new HKXReaderConnector(hkxBB);
