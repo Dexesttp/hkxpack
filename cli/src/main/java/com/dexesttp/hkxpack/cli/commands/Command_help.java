@@ -9,7 +9,7 @@ public class Command_help implements Command {
 	// TODO prettify help.
 	@Override
 	public int execute(String... parameters) {
-		System.out.println("HKXPack version " + StaticProperties.version_number );
+		System.out.println("HKXPack version " + StaticProperties.getVersionNumber() );
 		System.out.println("Use : java -jar hkxpack-cli.jar <args>");
 		System.out.println("Arguments :");
 		System.out.println("\t"+"unpack"	+"\t" +"<filename>" + "\t\t" + "Extracts <filename>.hkx into <filename>.xml");

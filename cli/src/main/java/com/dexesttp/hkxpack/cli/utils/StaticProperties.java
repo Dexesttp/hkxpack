@@ -1,5 +1,8 @@
 package com.dexesttp.hkxpack.cli.utils;
 
+import java.io.InputStream;
+import java.util.Properties;
+
 /**
  * Contains a list of static final properties.
  */
@@ -24,5 +27,15 @@ public class StaticProperties {
 	 * * Doesn't exist with stable releases (no -HOTFIX or similar, this goes into the merge data or changelog !)
 	 * </pre>
 	 */
-	public static String version_number = "0.1.2-beta";
+	public static String getVersionNumber() {
+		Properties prop = new Properties();
+		try {
+			InputStream in = StaticProperties.class.getResourceAsStream("/META-INF/maven/com.dexesttp.hkxpack/cli/pom.properties");
+			prop.load(in);
+			in.close();
+			return prop.getProperty("version");
+		} catch (Exception e) {
+			return "error loading version number";
+		}
+	}
 }
