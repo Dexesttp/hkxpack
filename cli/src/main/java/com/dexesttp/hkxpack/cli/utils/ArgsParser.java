@@ -37,9 +37,11 @@ public class ArgsParser {
 		
 		/**
 		 * Retrieve the option-catched argument described by {@code position}.
+		 * <p>
+		 * If there's no argument or the option doesn't exist, return {@literal ""}.
 		 * @param optionName the option name to retrieve from
-		 * @param position the position of the arg to retrieve. 
-		 * @return the given arg
+		 * @param position the position of the argument to retrieve
+		 * @return the relevant argument, or {@literal ""}
 		 */
 		public String get(String optionName, int position) {
 			try {
@@ -103,6 +105,8 @@ public class ArgsParser {
 				res.get(optionName).add(arg);
 			}
 		}
+		if(countdown >= 0)
+			throw new WrongSizeException();
 		return res;
 	}
 }
