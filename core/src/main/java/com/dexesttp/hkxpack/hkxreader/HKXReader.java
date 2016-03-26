@@ -33,7 +33,7 @@ public class HKXReader {
 	 * @param hkxFile the {@link File} to read data from.
 	 * @param descriptorFactory the {@link HKXDescriptorFactory} to use to solve the {@link File}'s classes.
 	 * @param enumResolver the {@link HKXEnumResolver} to store enumerations into.
-	 * @throws IOException if there was a problem while reading the {@link file}
+	 * @throws IOException if there was a problem while reading the {@link File}
 	 */
 	public HKXReader(File hkxFile, HKXDescriptorFactory descriptorFactory, HKXEnumResolver enumResolver) throws IOException {
 		RandomAccessFile raf = new RandomAccessFile(hkxFile, "rw" );
