@@ -20,7 +20,7 @@ import com.dexesttp.hkxpack.hkxwriter.object.callbacks.HKXObjectArrayMemberCallb
 import com.dexesttp.hkxpack.hkxwriter.object.callbacks.HKXPointerArrayMemberCallback;
 import com.dexesttp.hkxpack.hkxwriter.object.callbacks.HKXRelArrayMemberCallback;
 import com.dexesttp.hkxpack.hkxwriter.object.callbacks.HKXStringArrayMemberCallback;
-import com.dexesttp.hkxpack.resources.ByteUtils;
+import com.dexesttp.hkxpack.resources.byteutils.ByteUtils;
 
 public class HKXArrayMemberHandler implements HKXMemberHandler {
 	private final ByteBuffer outFile;
@@ -59,7 +59,7 @@ public class HKXArrayMemberHandler implements HKXMemberHandler {
 		}
 		
 		if(member.getType() == HKXType.TYPE_ARRAY) {
-			byte[] sizeVals = ByteUtils.fromLong(size, 4);
+			byte[] sizeVals = ByteUtils.fromULong(size, 4);
 			byte[] arrayData = new byte[]{
 					0, 0, 0, 0,  0, 0, 0, 0,
 					sizeVals[0], sizeVals[1], sizeVals[2], sizeVals[3],
@@ -75,7 +75,7 @@ public class HKXArrayMemberHandler implements HKXMemberHandler {
 			return new HKXBaseArrayMemberCallback(arrCallback, data1, arrData);
 		}
 		else {
-			byte[] sizeVals = ByteUtils.fromLong(size + 1, 2);
+			byte[] sizeVals = ByteUtils.fromULong(size + 1, 2);
 			outFile.position((int) (currentPos + offset));
 			outFile.put(sizeVals);
 			return new HKXRelArrayMemberCallback(arrCallback, outFile, currentPos, offset);

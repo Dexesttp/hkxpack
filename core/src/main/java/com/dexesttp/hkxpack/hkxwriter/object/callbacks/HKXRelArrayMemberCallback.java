@@ -3,7 +3,7 @@ package com.dexesttp.hkxpack.hkxwriter.object.callbacks;
 import java.nio.ByteBuffer;
 import java.util.List;
 
-import com.dexesttp.hkxpack.resources.ByteUtils;
+import com.dexesttp.hkxpack.resources.byteutils.ByteUtils;
 
 public class HKXRelArrayMemberCallback implements HKXMemberCallback {
 	private final HKXArrayMemberCallback callbackProcessor;
@@ -20,7 +20,7 @@ public class HKXRelArrayMemberCallback implements HKXMemberCallback {
 
 	@Override
 	public long process(List<HKXMemberCallback> memberCallbacks, long position) {
-		byte[] offset = ByteUtils.fromLong(position - classPos, 2);
+		byte[] offset = ByteUtils.fromULong(position - classPos, 2);
 		outFile.position((int) (classPos + argPos + 2));
 		outFile.put(offset);
 		return callbackProcessor.process(memberCallbacks, position);

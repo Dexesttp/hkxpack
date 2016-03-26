@@ -5,7 +5,7 @@ import java.nio.ByteBuffer;
 
 import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
 import com.dexesttp.hkxpack.hkx.header.SectionData;
-import com.dexesttp.hkxpack.resources.ByteUtils;
+import com.dexesttp.hkxpack.resources.byteutils.ByteUtils;
 
 /**
  * Interface on the Data1 section of a HKX File {@link ByteBuffer}.
@@ -39,11 +39,11 @@ public class Data1Interface {
 		file.position((int) (header.offset + dataPos));
 		byte[] dataLine = new byte[4];
 		file.get(dataLine);
-		data.from = ByteUtils.getLong(dataLine);
+		data.from = ByteUtils.getULong(dataLine);
 		if(data.from > header.offset + header.data1)
 			throw new InvalidPositionException("DATA_1", pos );
 		file.get(dataLine);
-		data.to = ByteUtils.getLong(dataLine);
+		data.to = ByteUtils.getULong(dataLine);
 		this.lastPos  = pos;
 		return data;
 	}
@@ -57,8 +57,8 @@ public class Data1Interface {
 	public long write(int pos, DataInternal internal) {
 		long dataPos = header.data1 + pos * 0x08;
 		file.position((int) (header.offset + dataPos));
-		file.put(ByteUtils.fromLong(internal.from, 4));
-		file.put(ByteUtils.fromLong(internal.to, 4));
+		file.put(ByteUtils.fromULong(internal.from, 4));
+		file.put(ByteUtils.fromULong(internal.to, 4));
 		return dataPos + 0x08;
 	}
 

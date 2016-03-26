@@ -7,11 +7,19 @@ import com.dexesttp.hkxpack.data.members.HKXMember;
 import com.dexesttp.hkxpack.descriptor.HKXDescriptor;
 import com.dexesttp.hkxpack.descriptor.enums.HKXType;
 
+/**
+ * Represents a HKX object instantiating a class, stored in memory.
+ */
 public class HKXObject implements HKXMember {
 	private final String name;
 	private final HKXDescriptor descriptor;
 	private final List<HKXMember> members;
 	
+	/**
+	 * Creates a HKXObject
+	 * @param name the name of the object to create
+	 * @param template the template to create the object from.
+	 */
 	public HKXObject(String name, HKXDescriptor template) {
 		this(name, template, new ArrayList<HKXMember>());
 	}

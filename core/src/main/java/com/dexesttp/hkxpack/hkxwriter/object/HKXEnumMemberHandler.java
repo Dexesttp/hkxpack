@@ -7,7 +7,7 @@ import com.dexesttp.hkxpack.data.members.HKXMember;
 import com.dexesttp.hkxpack.descriptor.HKXEnumResolver;
 import com.dexesttp.hkxpack.hkx.types.MemberSizeResolver;
 import com.dexesttp.hkxpack.hkxwriter.object.callbacks.HKXMemberCallback;
-import com.dexesttp.hkxpack.resources.ByteUtils;
+import com.dexesttp.hkxpack.resources.byteutils.ByteUtils;
 
 public class HKXEnumMemberHandler implements HKXMemberHandler {
 	private final ByteBuffer outFile;
@@ -26,7 +26,7 @@ public class HKXEnumMemberHandler implements HKXMemberHandler {
 		if(!enumMember.getEnumName().isEmpty()) {
 			outFile.position((int) (currentPos + offset));
 			long enumVal = enumResolver.resolve(enumMember.getEnumName(), enumMember.get());
-			byte[] res = ByteUtils.fromLong(enumVal, (int) MemberSizeResolver.getSize(enumMember.getSubtype()));
+			byte[] res = ByteUtils.fromULong(enumVal, (int) MemberSizeResolver.getSize(enumMember.getSubtype()));
 			outFile.put(res);
 		}
 		return (memberCallbacks, position) -> { return 0; };

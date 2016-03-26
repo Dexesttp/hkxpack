@@ -5,7 +5,7 @@ import java.nio.ByteBuffer;
 import com.dexesttp.hkxpack.hkx.exceptions.UnsupportedVersionError;
 import com.dexesttp.hkxpack.hkx.header.internals.HeaderDescriptor;
 import com.dexesttp.hkxpack.hkx.header.internals.versions.HeaderDescriptor_v11;
-import com.dexesttp.hkxpack.resources.ByteUtils;
+import com.dexesttp.hkxpack.resources.byteutils.ByteUtils;
 
 /**
  * Connects to a HKX {@link ByteBuffer} and allows direct access to the header contents.
@@ -64,10 +64,10 @@ public class HeaderInterface {
 		file.get(descriptor.constants_2);
 		file.get(descriptor.extras_v11);
 		file.get(descriptor.padding_v11);
-		data.version = ByteUtils.getInt(descriptor.version);
+		data.version = ByteUtils.getUInt(descriptor.version);
 		data.versionName = new String(descriptor.verName);
 		if(data.version == 11)
-			data.padding_after = ByteUtils.getLong(descriptor.padding_v11);
+			data.padding_after = ByteUtils.getULong(descriptor.padding_v11);
 		else
 			data.padding_after = 0;
 		return data;

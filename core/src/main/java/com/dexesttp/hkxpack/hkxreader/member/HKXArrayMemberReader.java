@@ -12,7 +12,7 @@ import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
 import com.dexesttp.hkxpack.hkx.types.MemberSizeResolver;
 import com.dexesttp.hkxpack.hkxreader.HKXReaderConnector;
 import com.dexesttp.hkxpack.hkxreader.member.arrays.HKXArrayContentsReader;
-import com.dexesttp.hkxpack.resources.ByteUtils;
+import com.dexesttp.hkxpack.resources.byteutils.ByteUtils;
 
 public class HKXArrayMemberReader implements HKXMemberReader {
 	private final HKXReaderConnector connector;
@@ -51,7 +51,7 @@ public class HKXArrayMemberReader implements HKXMemberReader {
 
 	private int getSizeComponent(byte[] b) {
 		byte[] newB = new byte[]{b[8], b[9], b[10], b[11]};
-		return ByteUtils.getInt(newB);
+		return ByteUtils.getUInt(newB);
 	}
 }
 
