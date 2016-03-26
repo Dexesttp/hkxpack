@@ -1,36 +1,22 @@
-package com.dexesttp.hkxpack.hkxreader;
+package com.dexesttp.hkxpack.files;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import java.nio.ByteBuffer;
-
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.dexesttp.hkxpack.data.HKXFile;
 import com.dexesttp.hkxpack.data.HKXObject;
-import com.dexesttp.hkxpack.descriptor.HKXDescriptorFactory;
-import com.dexesttp.hkxpack.descriptor.HKXEnumResolver;
 import com.dexesttp.hkxpack.descriptor.enums.HKXType;
-import com.dexesttp.hkxpack.utils.FileUtils;
 
-public class HKXBaseReaderTest {
-	private static final String baseFileResourceName = "/test-base.hkx";
+public abstract class TestBase {
+	protected final static String baseFileResourceName = "/test-base";
+	protected final HKXFile file;
 
-	private static HKXEnumResolver enumResolver;
-	private static HKXDescriptorFactory descriptorFactory;
-	private static HKXFile file;
-
-	@BeforeClass
-	public static void setup() throws Exception {
-		ByteBuffer buffer = FileUtils.resourceToHKXByteBuffer(baseFileResourceName);
-		enumResolver = new HKXEnumResolver();
-		descriptorFactory = new HKXDescriptorFactory(enumResolver);
-		HKXReader reader = new HKXReader(buffer, descriptorFactory, enumResolver);
-		file = reader.read();
+	public TestBase(HKXFile file) {
+		this.file = file;
 	}
-
+	
 	@Test
 	public void testIfThereIsTheRightNumberOfObjects() {
 		assertEquals(1, file.content().size());
