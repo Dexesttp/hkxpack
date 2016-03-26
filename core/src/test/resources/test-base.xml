@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="ASCII" standalone="no"?>
-<hkpackfile classversion="11" contentsversion="hk_2014.1.0-r1">
+<hkpackfile classversion="11" contentsversion="hk-2014.1.0-r1">
     <hksection name="__data__">
-        <hkobject class="hkBaseObject" name="#testBase" signature="0xe0708a00">
-        </hkobject>
+        <hkobject class="hkBaseObject" name="#test" signature="0xe0708a00"/>
     </hksection>
 </hkpackfile>
