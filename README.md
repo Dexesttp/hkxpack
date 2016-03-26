@@ -30,6 +30,7 @@ Common options are :
 
 Advanced options are :
 - `-t` to set the maximum number of threads to use while walking directories. The default is 32.
+- `-b` to set the output buffer size on packing.
 - `-d` for debug output, mostly prints stacks on error.
 
 # Known bugs
@@ -64,4 +65,5 @@ Thanks to Figment for his help to obtain information about the hkx classes. With
 Thanks to Fore for his FNIS tool that allowed slight modifications of old files, and for sharing his knowledge of behaviours with me.  
 Thanks to Neomonkeus for making the Maven integration.  
 Thanks to Orvid for his advice about how to make both working and clean code.  
+Thanks to Philjord for adapting data handling from files to buffers.  
 Thanks to the people from the NifTools IRC for helping with making this project and their overall support.
