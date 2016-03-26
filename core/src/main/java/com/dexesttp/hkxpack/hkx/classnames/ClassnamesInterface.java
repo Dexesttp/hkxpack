@@ -5,7 +5,7 @@ import java.util.Map.Entry;
 
 import com.dexesttp.hkxpack.hkx.header.HeaderData;
 import com.dexesttp.hkxpack.hkx.header.SectionData;
-import com.dexesttp.hkxpack.resources.ByteUtils;
+import com.dexesttp.hkxpack.resources.byteutils.ByteUtils;
 
 /**
  * Connects to a {@link ByteBuffer}, and allows easy retrieval and writing of {@link ClassnamesData}.

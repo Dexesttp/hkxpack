@@ -9,7 +9,7 @@ import com.dexesttp.hkxpack.descriptor.enums.HKXType;
 import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
 import com.dexesttp.hkxpack.hkx.types.MemberSizeResolver;
 import com.dexesttp.hkxpack.hkxreader.HKXReaderConnector;
-import com.dexesttp.hkxpack.resources.ByteUtils;
+import com.dexesttp.hkxpack.resources.byteutils.ByteUtils;
 
 public class HKXEnumMemberReader implements HKXMemberReader {
 	private final HKXReaderConnector connector;
@@ -36,7 +36,7 @@ public class HKXEnumMemberReader implements HKXMemberReader {
 		ByteBuffer file = connector.data.setup(classOffset + memberOffset);
 		byte[] b = new byte[memberSize];
 		file.get(b);
-		int contents = ByteUtils.getInt(b);
+		int contents = ByteUtils.getUInt(b);
 		HKXEnumMember result = new HKXEnumMember(name, vtype, vsubtype, etype);
 		result.set(enumResolver.resolve(etype, contents));
 		return result;

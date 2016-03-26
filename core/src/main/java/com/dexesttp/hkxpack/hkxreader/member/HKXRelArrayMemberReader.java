@@ -8,7 +8,7 @@ import com.dexesttp.hkxpack.descriptor.enums.HKXType;
 import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
 import com.dexesttp.hkxpack.hkxreader.HKXReaderConnector;
 import com.dexesttp.hkxpack.hkxreader.member.arrays.HKXArrayContentsReader;
-import com.dexesttp.hkxpack.resources.ByteUtils;
+import com.dexesttp.hkxpack.resources.byteutils.ByteUtils;
 
 public class HKXRelArrayMemberReader implements HKXMemberReader {
 	private final HKXReaderConnector connector;
@@ -32,8 +32,8 @@ public class HKXRelArrayMemberReader implements HKXMemberReader {
 		byte[] bOff = new byte[2];
 		file.get(bSize);
 		file.get(bOff);
-		int size = ByteUtils.getInt(bSize)-1;
-		int offset = ByteUtils.getInt(bOff);
+		int size = ByteUtils.getUInt(bSize)-1;
+		int offset = ByteUtils.getUInt(bOff);
 		HKXArrayMember res = new HKXArrayMember(name, HKXType.TYPE_RELARRAY, subtype);
 		for(int i = 0; i < size; i++)
 			res.add(internals.getContents(classOffset + offset, i));

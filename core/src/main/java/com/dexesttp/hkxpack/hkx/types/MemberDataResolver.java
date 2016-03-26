@@ -3,7 +3,7 @@ package com.dexesttp.hkxpack.hkx.types;
 import com.dexesttp.hkxpack.data.members.HKXDirectMember;
 import com.dexesttp.hkxpack.data.members.HKXMember;
 import com.dexesttp.hkxpack.descriptor.enums.HKXType;
-import com.dexesttp.hkxpack.resources.ByteUtils;
+import com.dexesttp.hkxpack.resources.byteutils.ByteUtils;
 
 /**
  * Intended to retrieve {@link HKXType}-specific data.
@@ -24,20 +24,20 @@ public class MemberDataResolver {
 		// Base values
 			case TYPE_BOOL:
 				HKXDirectMember<Boolean> member1 = new HKXDirectMember<>(name, type);
-				member1.set(ByteUtils.getInt(byteArray) > 0);
+				member1.set(ByteUtils.getUInt(byteArray) > 0);
 				return member1;
 			case TYPE_CHAR:
 			case TYPE_UINT8:
 			case TYPE_INT8:
 				HKXDirectMember<Character> member2 = new HKXDirectMember<>(name, type);
-				member2.set((char) ByteUtils.getInt(byteArray));
+				member2.set((char) ByteUtils.getUInt(byteArray));
 				return member2;
 			case TYPE_UINT16:
 			case TYPE_ULONG:
 			case TYPE_UINT32:
 			case TYPE_UINT64:
 				HKXDirectMember<Integer> member3 = new HKXDirectMember<>(name, type);
-				member3.set((int) ByteUtils.getInt(byteArray));
+				member3.set((int) ByteUtils.getUInt(byteArray));
 				return member3;
 			case TYPE_INT16:
 			case TYPE_INT32:
@@ -156,29 +156,29 @@ public class MemberDataResolver {
 			case TYPE_CHAR:
 			case TYPE_UINT8:
 				HKXDirectMember<Character> memberUInt8 = (HKXDirectMember<Character>) member;
-				return ByteUtils.fromLong(memberUInt8.get(), 1);
+				return ByteUtils.fromULong(memberUInt8.get(), 1);
 			case TYPE_INT8:
 				HKXDirectMember<Character> memberInt8 = (HKXDirectMember<Character>) member;
 				return ByteUtils.fromSLong(memberInt8.get(), 1);
 			case TYPE_UINT16:
 				HKXDirectMember<Integer> memberUInt16 = (HKXDirectMember<Integer>) member;
-				return ByteUtils.fromLong(memberUInt16.get(), 2);
+				return ByteUtils.fromULong(memberUInt16.get(), 2);
 			case TYPE_INT16:
 				HKXDirectMember<Integer> memberInt16 = (HKXDirectMember<Integer>) member;
 				return ByteUtils.fromSLong(memberInt16.get(), 2);
 			case TYPE_UINT32:
 				HKXDirectMember<Integer> memberUInt32 = (HKXDirectMember<Integer>) member;
-				return ByteUtils.fromLong(memberUInt32.get(), 4);
+				return ByteUtils.fromULong(memberUInt32.get(), 4);
 			case TYPE_INT32:
 				HKXDirectMember<Integer> memberInt32 = (HKXDirectMember<Integer>) member;
 				return ByteUtils.fromSLong(memberInt32.get(), 4);
 			case TYPE_ULONG:
 			case TYPE_UINT64:
 				HKXDirectMember<Integer> memberUInt64 = (HKXDirectMember<Integer>) member;
-				return ByteUtils.fromLong(memberUInt64.get(), 8);
+				return ByteUtils.fromULong(memberUInt64.get(), 8);
 			case TYPE_INT64:
 				HKXDirectMember<Integer> memberInt64 = (HKXDirectMember<Integer>) member;
-				return ByteUtils.fromLong(memberInt64.get(), 8);
+				return ByteUtils.fromULong(memberInt64.get(), 8);
 			case TYPE_HALF:
 				HKXDirectMember<Double> memberHalf = (HKXDirectMember<Double>) member;
 				return ByteUtils.fromFloat(memberHalf.get(), 2);

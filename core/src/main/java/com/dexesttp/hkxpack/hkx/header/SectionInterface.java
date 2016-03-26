@@ -4,7 +4,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
 import com.dexesttp.hkxpack.hkx.header.internals.SectionDescriptor;
-import com.dexesttp.hkxpack.resources.ByteUtils;
+import com.dexesttp.hkxpack.resources.byteutils.ByteUtils;
 
 /**
  * Connects to a {@link ByteBuffer}, and allows easy retrieval and writing of {@link SectionData}.
@@ -43,13 +43,13 @@ public class SectionInterface {
 		file.put(section.name.getBytes());
 		file.position(file.position() + (0x10 - section.name.length()));
 		file.put(descriptor.constant);
-		file.put(ByteUtils.fromLong(section.offset, 4));
-		file.put(ByteUtils.fromLong(section.data1, 4));
-		file.put(ByteUtils.fromLong(section.data2, 4));
-		file.put(ByteUtils.fromLong(section.data3, 4));
-		file.put(ByteUtils.fromLong(section.data4, 4));
-		file.put(ByteUtils.fromLong(section.data5, 4));
-		file.put(ByteUtils.fromLong(section.end, 4));
+		file.put(ByteUtils.fromULong(section.offset, 4));
+		file.put(ByteUtils.fromULong(section.data1, 4));
+		file.put(ByteUtils.fromULong(section.data2, 4));
+		file.put(ByteUtils.fromULong(section.data3, 4));
+		file.put(ByteUtils.fromULong(section.data4, 4));
+		file.put(ByteUtils.fromULong(section.data5, 4));
+		file.put(ByteUtils.fromULong(section.end, 4));
 		if(header.version == 11)
 			for(int i = 0; i < 0x10; i++)
 				file.put((byte) 0xFF);
@@ -85,13 +85,13 @@ public class SectionInterface {
 		int last0 = data.name.indexOf(0);
 		data.name = last0 == -1 ? data.name : data.name.substring(0, last0);
 		// Convert offsets 
-		data.offset = ByteUtils.getLong(descriptor.offset);
-		data.data1 = ByteUtils.getLong(descriptor.data1);
-		data.data2 = ByteUtils.getLong(descriptor.data2);
-		data.data3 = ByteUtils.getLong(descriptor.data3);
-		data.data4 = ByteUtils.getLong(descriptor.data4);
-		data.data5 = ByteUtils.getLong(descriptor.data5);
-		data.end = ByteUtils.getLong(descriptor.end);
+		data.offset = ByteUtils.getULong(descriptor.offset);
+		data.data1 = ByteUtils.getULong(descriptor.data1);
+		data.data2 = ByteUtils.getULong(descriptor.data2);
+		data.data3 = ByteUtils.getULong(descriptor.data3);
+		data.data4 = ByteUtils.getULong(descriptor.data4);
+		data.data5 = ByteUtils.getULong(descriptor.data5);
+		data.end = ByteUtils.getULong(descriptor.end);
 		return data;
 	}
 
