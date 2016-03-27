@@ -96,7 +96,7 @@ public class ArgsParser {
 			countdown--;
 			if(optionList.containsKey(arg)) {
 				if(countdown >= 0)
-					throw new WrongSizeException();
+					throw new WrongSizeException(optionName);
 				optionName = arg;
 				countdown = optionList.get(arg);
 				if(!res.containsKey(optionName))
@@ -106,7 +106,7 @@ public class ArgsParser {
 			}
 		}
 		if(countdown >= 0)
-			throw new WrongSizeException();
+			throw new WrongSizeException(optionName);
 		return res;
 	}
 }

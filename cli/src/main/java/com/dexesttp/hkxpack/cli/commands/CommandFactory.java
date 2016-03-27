@@ -7,8 +7,11 @@ import java.util.Map;
  * Routes a command line interface into the relevant {@link Command}.
  */
 public class CommandFactory {
+	/**
+	 * List of commands associated with the class to execute on read
+	 */
 	@SuppressWarnings("rawtypes")
-	private Map<String, Class> commandParser = new HashMap<>();
+	public Map<String, Class> commandParser = new HashMap<>();
 	{
 		commandParser.put("extract", Command_unpack.class);
 		commandParser.put("unpack", Command_unpack.class);

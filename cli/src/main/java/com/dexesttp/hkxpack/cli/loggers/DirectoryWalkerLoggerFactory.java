@@ -32,6 +32,9 @@ public class DirectoryWalkerLoggerFactory {
 		return (done) -> {};
 	}
 
+	/**
+	 * Handles the {@link LoggerUtil} logging.
+	 */
 	private void handleErrors() {
 		while(!LoggerUtil.getList().isEmpty()) {
 			Throwable e = LoggerUtil.getList().remove(0);

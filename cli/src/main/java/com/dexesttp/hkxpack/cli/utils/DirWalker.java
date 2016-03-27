@@ -6,20 +6,22 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * Help to walk through a directory to retrieve files.
  */
 public class DirWalker {
-	private final String[] extensions;
+	private final Stream<String> extensions;
 
 	/**
 	 * Creates a directory walker.
 	 * @param extensions the extensions to detect
 	 */
 	public DirWalker(String... extensions) {
-		this.extensions = extensions;
+		this.extensions = Arrays.stream(extensions);
 	}
 	
 	/**
@@ -33,21 +35,25 @@ public class DirWalker {
 		return res;
 	}
 	
-	private void walk(File directory, String accumulatedPath, List<Entry> res) {
+	/**
+	 * Recursive walk function
+	 * @param directory the current directory {@link File} 
+	 * @param accumulatedPath the accumulated path of the directory
+	 * @param outputFiles the files detected by the walk
+	 */
+	private void walk(File directory, String accumulatedPath, List<Entry> outputFiles) {
 		try {
 			DirectoryStream<Path> files = Files.newDirectoryStream(directory.toPath());
 			for(Path directoryComponent : files) {
 				File element = new File(directoryComponent.toUri());
 				if(element.isFile()) {
-					boolean isValid = false;
-					for(String ext : extensions) {
-						if(directoryComponent.getFileName().toString().endsWith(ext))
-							isValid = true;
-					}
-					if(isValid)
-						res.add(new Entry(accumulatedPath, element.getName()));
+					if(extensions.anyMatch(
+							(ext) -> {
+								return directoryComponent.getFileName().toString().endsWith(ext);
+							}))
+						outputFiles.add(new Entry(accumulatedPath, element.getName()));
 				} else if(element.isDirectory())
-					walk(element, accumulatedPath + "/" + element.getName(), res);
+					walk(element, accumulatedPath + "/" + element.getName(), outputFiles);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

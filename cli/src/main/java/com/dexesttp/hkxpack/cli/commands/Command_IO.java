@@ -145,6 +145,14 @@ public abstract class Command_IO implements Command {
 		return 0;
 	}
 
+	/**
+	 * Wrapper for the subclass' {@link #execution_core(String, String, HKXEnumResolver, HKXDescriptorFactory)} method.<br />
+	 * Cathes all errors and displays them to the out and err streams.
+	 * @param inputFileName passed to the execution core
+	 * @param outputFileName passed to the execution core
+	 * @param enumResolver passed to the execution core
+	 * @param descriptorFactory pased to the execution core
+	 */
 	protected void execution_catcher(String inputFileName, String outputFileName,
 			HKXEnumResolver enumResolver, HKXDescriptorFactory descriptorFactory) {
 		try {

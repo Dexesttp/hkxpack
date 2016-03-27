@@ -23,7 +23,7 @@ public class StaticProperties {
 	 * 
 	 * Hyphen : state identifier
 	 * * Either alpha|beta|theta|gamma or any state identifier (unstable, snapshot, etc.. works)
-	 * * Linguistic representation of the 1st, second and 3rd digit.
+	 * * Linguistic representation of the 1st, 2nd and 3rd digit.
 	 * * Doesn't exist with stable releases (no -HOTFIX or similar, this goes into the merge data or changelog !)
 	 * </pre>
 	 */
