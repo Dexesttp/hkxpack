@@ -49,6 +49,10 @@ The compiled jar will then be available under /cli/target/hkxpack-cli.jar
 
 Import this project as a standard Maven project.
 
+## Contribution rules
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for a list of contribution rules.
+
 ## General information
 
 The tool was written for Java 8 using the Oracle JavaSE JDK (jdk1.8.0_66), and was originally intended to be a proof of concept.
