@@ -93,19 +93,21 @@ public class ArgsParser {
 		for(String arg : args) {
 			if(countdown == 0)
 				optionName = "";
-			countdown--;
 			if(optionList.containsKey(arg)) {
-				if(countdown >= 0)
-					throw new WrongSizeException(optionName);
 				optionName = arg;
-				countdown = optionList.get(arg);
-				if(!res.containsKey(optionName))
+				if(countdown > 0)
+					throw new WrongSizeException(optionName);
+				else if(!res.containsKey(optionName))
 					res.put(optionName, new ArrayList<>());
+				else if(res.get(optionName).size() == optionList.get(arg))
+					throw new WrongSizeException(optionName);
+				countdown = optionList.get(arg) - res.get(optionName).size();
 			} else {
+				countdown--;
 				res.get(optionName).add(arg);
 			}
 		}
-		if(countdown >= 0)
+		if(countdown > 0)
 			throw new WrongSizeException(optionName);
 		return res;
 	}

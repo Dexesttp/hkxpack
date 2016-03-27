@@ -125,6 +125,12 @@ public class ArgsParserTest {
 	}
 
 	@Test
+	public void itShouldHandleZeroSizedOptionsAtTheEndOfTheArgumentArray() throws Exception {
+		Options result = argsParser.parse("test", "-b");
+		assertEquals(0, result.get("-b").size());
+	}
+
+	@Test
 	public void itShouldCatchTheRightNumberOfArgumentsForASizedOption() throws Exception {
 		Options result = argsParser.parse("test", "-c", "test2", "test3");
 		assertEquals(1, result.get("-c").size());
