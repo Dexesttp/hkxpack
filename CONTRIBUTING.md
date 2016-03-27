@@ -21,12 +21,12 @@ A pull request should be written in the following format :
 <Description of the Pull Request changes>
 
 ## Additions
- - <Added item>
+ - <Added item>  
 <Eventual addition description>
  - <Added item>
  
 ## Fixes
- - <Fixed item>
+ - <Fixed item>  
 <Eventual fix description>
  - <Fixed item>
 
@@ -45,11 +45,15 @@ The Pull Request should be directed either towards the "dev" branch or any relev
 There is a number of conditions the contributed code should respect.
 
 #### Unit and integration tests
+Unit and integration tests are integral parts of the code, and should be stored under `/src/tests` for each module.
+
+There is no separation between unit and integration tests.
+
 If you change the behavior of part of the code, you should try to change the relevant tests to adapt to the new behavior.
 
-When possible, for evey addition add tests.
-
 If a test fail, **don't** add the `@Ignore` annotation or delete/comment the test. Try to fix either the test or the code.
+
+When possible, for evey API additions add either unit or integration tests.
 
 Document any tests changes in the Pull Request, and be prepared to answer questions about why the test changed or was deleted.
 
@@ -61,24 +65,28 @@ Don't comment out a deprecated method. Either add a `@deprecated` tag or delete 
 #### JavaDoc and other documentation
 Try to document your code. If you don't want to document your additions, at least change the documentation of any modified items.
 
-If your method requires excessive JavaDoc reading to be understood, consider changing its name. JavaDoc should assist understanding the method, not be required.
+If your method requires excessive JavaDoc reading to be understood, consider changing its name.
+JavaDoc should assist understanding the method, not be required to understand it.
 
 
 ## Release process
 
-A release should be done from the dev branch to master. It should be done via a Pull Request, named as the new version and following the Pull Request format.
+A release should be done from the `dev` branch to `master`.  
+It should be done via a Pull Request, named as the new version and following the Pull Request format.  
+A release whould always be accompanied with a version change, but the reverse is not true : the version can change without a release.
 
-After being merged, a release can be done using the GitHub release option.
+After being merged, a release should be officially released using the GitHub release option.
 
 #### Version name
 
-The version name convention is as follows : <d1>.<d2>.<n3>[-<indicator>]
+The version name convention is as follows : \<n1\>.\<n2\>.\<n3\>[-\<indicator\>]
 
  - First number : major version  
-Represents a major version. If this version change, the API is expected to break. While this value is 0, the version is considered "tentative" and the API is expected to break between minor versions.
+Represents a major version. If this version change, the API is expected to break.  
+While this value is 0, the version is considered "tentative" and the API is expected to break between minor or state versions.
 
  - Second number : minor version  
-Represents a minor version. A chnage of minor version should represent additions to the API, but no behavior changes to the existing API.
+Represents a minor version. A change of minor version should represent additions to the API, but no behavior changes to the existing API.
 
  - Third number : version state  
 Represents both the state of the release and eventual changes.  
@@ -87,7 +95,7 @@ Represents both the state of the release and eventual changes.
 
  - (optional) linguistic indicator  
 Liguistic representation of the software state. Is mostly used either in odd third numbers or when the first number is 0.  
-This value can be `alpha`, `beta`, `indev`, `gold` or any state indicator.
+This value can be `alpha`, `beta`, `indev`, `gold` or any state indicator.  
 This value **can't** be `hotfix` or `revert`, as these are version changes indicator. This information goes in the pull request.
 
 #### Releases
