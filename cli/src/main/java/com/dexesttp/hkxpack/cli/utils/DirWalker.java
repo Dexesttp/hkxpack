@@ -14,14 +14,14 @@ import java.util.stream.Stream;
  * Help to walk through a directory to retrieve files.
  */
 public class DirWalker {
-	private final Stream<String> extensions;
+	private final String[] extensions;
 
 	/**
 	 * Creates a directory walker.
 	 * @param extensions the extensions to detect
 	 */
 	public DirWalker(String... extensions) {
-		this.extensions = Arrays.stream(extensions);
+		this.extensions = extensions;
 	}
 	
 	/**
@@ -47,11 +47,13 @@ public class DirWalker {
 			for(Path directoryComponent : files) {
 				File element = new File(directoryComponent.toUri());
 				if(element.isFile()) {
-					if(extensions.anyMatch(
+					Stream<String> extensionStream = Arrays.stream(extensions);
+					if(extensionStream.anyMatch(
 							(ext) -> {
 								return directoryComponent.getFileName().toString().endsWith(ext);
 							}))
 						outputFiles.add(new Entry(accumulatedPath, element.getName()));
+					extensionStream.close();
 				} else if(element.isDirectory())
 					walk(element, accumulatedPath + "/" + element.getName(), outputFiles);
 			}
