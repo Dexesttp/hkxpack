@@ -1,55 +1,57 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>com.dexesttp</groupId>
-    <artifactId>hkxpack</artifactId>
-    <version>${project.version}</version>
-  </parent>
-  
-  <groupId>com.dexesttp.hkxpack</groupId>
-  <artifactId>cli</artifactId>
-  
-  <name>HKXPack Command Line Interface</name>
-  <description>Command Line interface for HKX Pack</description>
-  
-  <dependencies>
-  	<dependency>
-  		<groupId>com.dexesttp.hkxpack</groupId>
-  		<artifactId>core</artifactId>
-  		<version>${project.version}</version>
-  	</dependency>
-  	<dependency>
-  		<groupId>junit</groupId>
-  		<artifactId>junit</artifactId>
-  		<version>4.12</version>
-  		<scope>test</scope>
-  	</dependency>
-  </dependencies>
-  
-  <build>
-  	<plugins>
-  		<plugin>
-  			<groupId>org.apache.maven.plugins</groupId>
-  			<artifactId>maven-shade-plugin</artifactId>
-  			<version>2.4.3</version>
-  			<configuration>
-  				<transformers>
-  					<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-  						<mainClass>com.dexesttp.hkxpack.cli.ConsoleView</mainClass>
-  					</transformer>
-  				</transformers>
-  				<createDependencyReducedPom>false</createDependencyReducedPom>
-  			</configuration>
-  			<executions>
-  				<execution>
-  					<phase>package</phase>
-  					<goals>
-  						<goal>shade</goal>
-  					</goals>
-  				</execution>
-  			</executions>
-  		</plugin>
-  	</plugins>
-  </build>
-  
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.dexesttp</groupId>
+		<artifactId>hkxpack</artifactId>
+		<version>${project.version}</version>
+	</parent>
+	
+	<groupId>com.dexesttp.hkxpack</groupId>
+	<artifactId>cli</artifactId>
+	
+	<name>HKXPack Command Line Interface</name>
+	<description>Command Line interface for HKX Pack</description>
+	
+	<dependencies>
+		<dependency>
+			<groupId>com.dexesttp.hkxpack</groupId>
+			<artifactId>core</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>2.4.3</version>
+				<configuration>
+					<transformers>
+						<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+							<mainClass>com.dexesttp.hkxpack.cli.ConsoleView</mainClass>
+						</transformer>
+					</transformers>
+					<createDependencyReducedPom>false</createDependencyReducedPom>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>
