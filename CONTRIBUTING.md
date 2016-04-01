@@ -53,7 +53,7 @@ If you change the behavior of part of the code, you should try to change the rel
 
 If a test fail, **don't** add the `@Ignore` annotation or delete/comment the test. Try to fix either the test or the code.
 
-When possible, for evey API additions add either unit or integration tests.
+When possible, for every API additions add either unit or integration tests.
 
 Document any tests changes in the Pull Request, and be prepared to answer questions about why the test changed or was deleted.
 
@@ -82,7 +82,7 @@ After being merged, a release should be officially released using the GitHub rel
 The version name convention is as follows : \<n1\>.\<n2\>.\<n3\>[-\<indicator\>]
 
  - First number : major version  
-Represents a major version. If this version change, the API is expected to break.  
+Represents a major version. If this number changes, the API is expected to break.  
 While this value is 0, the version is considered "tentative" and the API is expected to break between minor or state versions.
 
  - Second number : minor version  
