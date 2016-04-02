@@ -39,7 +39,7 @@ public class HKXArrayMemberHandler implements HKXMemberHandler {
 	@Override
 	public HKXMemberCallback write(HKXMember member, long currentPos) {
 		final HKXArrayMember arrMember = (HKXArrayMember) member;
-		int size = arrMember.contents().size();
+		int size = arrMember.getContentsList().size();
 		
 		
 		HKXArrayMemberCallback arrCallback = null;
@@ -84,7 +84,7 @@ public class HKXArrayMemberHandler implements HKXMemberHandler {
 
 	private HKXArrayMemberCallback handlePointer(final HKXArrayMember arrMember) {
 		final List<HKXArrayPointerMemberHandler> apmhList = new ArrayList<>(); 
-		for(HKXData data : arrMember.contents()) {
+		for(HKXData data : arrMember.getContentsList()) {
 			if(data instanceof HKXPointerMember) {
 				HKXPointerMember internalPointer = (HKXPointerMember) data;
 				HKXArrayPointerMemberHandler arrayPointerMemberHandler = memberHandlerFactory.createAPMH();

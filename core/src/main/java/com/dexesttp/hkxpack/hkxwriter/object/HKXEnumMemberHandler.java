@@ -23,9 +23,9 @@ public class HKXEnumMemberHandler implements HKXMemberHandler {
 	@Override
 	public HKXMemberCallback write(HKXMember member, long currentPos) {
 		HKXEnumMember enumMember = (HKXEnumMember) member;
-		if(!enumMember.getEnumName().isEmpty()) {
+		if(!enumMember.getEnumerationName().isEmpty()) {
 			outFile.position((int) (currentPos + offset));
-			long enumVal = enumResolver.resolve(enumMember.getEnumName(), enumMember.get());
+			long enumVal = enumResolver.resolve(enumMember.getEnumerationName(), enumMember.get());
 			byte[] res = ByteUtils.fromULong(enumVal, (int) MemberSizeResolver.getSize(enumMember.getSubtype()));
 			outFile.put(res);
 		}

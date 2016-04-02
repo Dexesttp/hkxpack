@@ -7,17 +7,20 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.dexesttp.hkxpack.descriptor.exceptions.ClassListReadError;
+import com.dexesttp.hkxpack.descriptor.exceptions.ClassListReadException;
 
+/**
+ * List of all the available ClassXML resources.
+ */
 class ClassXMLList {
 	private static final String classResourcesList = "/properties/classxmllist.txt";
-	public final Map<String, String> filenameConverter = new HashMap<String, String>();
+	public final transient Map<String, String> filenameConverter = new HashMap<String, String>();
 	
-	ClassXMLList() throws ClassListReadError {
+	ClassXMLList() throws ClassListReadException {
 		try {
 			readEntries();
 		} catch(IOException e) {
-			throw new ClassListReadError(e);
+			throw new ClassListReadException(e);
 		}
 	}
 	
@@ -36,11 +39,11 @@ class ClassXMLList {
 	 * @param classname the class name
 	 * @return the file name to retrieve data from
 	 */
-	String getFileName(String classname) {
+	String getFileName(final String classname) {
 		return filenameConverter.get(classname);
 	}
 	
-	private String extractName(String fullName) {
-		return fullName.substring(0, fullName.indexOf("_"));
+	private String extractName(final String fullName) {
+		return fullName.substring(0, fullName.indexOf('_'));
 	}
 }

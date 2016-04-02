@@ -11,7 +11,7 @@ import com.dexesttp.hkxpack.data.members.HKXMember;
 import com.dexesttp.hkxpack.data.members.HKXPointerMember;
 import com.dexesttp.hkxpack.data.members.HKXStringMember;
 import com.dexesttp.hkxpack.descriptor.enums.HKXType;
-import com.dexesttp.hkxpack.descriptor.exceptions.ClassFileReadError;
+import com.dexesttp.hkxpack.descriptor.exceptions.ClassFileReadException;
 import com.dexesttp.hkxpack.descriptor.members.HKXMemberTemplate;
 import com.dexesttp.hkxpack.tagreader.TagXMLNodeHandler;
 import com.dexesttp.hkxpack.tagreader.exceptions.InvalidTagXMLException;
@@ -29,7 +29,7 @@ class TagXMLArrayHandler implements TagXMLContentsHandler {
 	}
 
 	@Override
-	public HKXMember handleNode(Node member, HKXMemberTemplate memberTemplate) throws ClassFileReadError, InvalidTagXMLException {
+	public HKXMember handleNode(Node member, HKXMemberTemplate memberTemplate) throws ClassFileReadException, InvalidTagXMLException {
 		HKXArrayMember result = new HKXArrayMember(memberTemplate.name, memberTemplate.vtype, memberTemplate.vsubtype);
 		// Change behavior based on internal content type's family
 		switch (memberTemplate.vsubtype.getFamily()) {
@@ -91,7 +91,7 @@ class TagXMLArrayHandler implements TagXMLContentsHandler {
 		}
 	}
 
-	private void handleObject(HKXArrayMember root, Node member, String target) throws ClassFileReadError, InvalidTagXMLException {
+	private void handleObject(HKXArrayMember root, Node member, String target) throws ClassFileReadException, InvalidTagXMLException {
 		NodeList children = member.getChildNodes();
 		for(int i = 0; i < children.getLength(); i++) {
 			Node child = children.item(i);

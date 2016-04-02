@@ -3,7 +3,7 @@ package com.dexesttp.hkxpack.tagreader.members;
 import org.w3c.dom.Node;
 
 import com.dexesttp.hkxpack.data.members.HKXMember;
-import com.dexesttp.hkxpack.descriptor.exceptions.ClassFileReadError;
+import com.dexesttp.hkxpack.descriptor.exceptions.ClassFileReadException;
 import com.dexesttp.hkxpack.descriptor.members.HKXMemberTemplate;
 import com.dexesttp.hkxpack.tagreader.exceptions.InvalidTagXMLException;
 
@@ -17,7 +17,7 @@ public interface TagXMLContentsHandler {
 	 * @param memberTemplate the {@link HKXMemberTemplate} describing the {@link Node}'s contents
 	 * @return a {@link HKXMember} containing all relevant data.
 	 * @throws InvalidTagXMLException 
-	 * @throws ClassFileReadError 
+	 * @throws ClassFileReadException 
 	 */
-	public HKXMember handleNode(Node member, HKXMemberTemplate memberTemplate) throws ClassFileReadError, InvalidTagXMLException;
+	public HKXMember handleNode(Node member, HKXMemberTemplate memberTemplate) throws ClassFileReadException, InvalidTagXMLException;
 }

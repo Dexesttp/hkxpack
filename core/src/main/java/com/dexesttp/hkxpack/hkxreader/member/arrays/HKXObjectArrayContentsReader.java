@@ -4,7 +4,7 @@ import com.dexesttp.hkxpack.data.HKXData;
 import com.dexesttp.hkxpack.data.HKXObject;
 import com.dexesttp.hkxpack.descriptor.HKXDescriptor;
 import com.dexesttp.hkxpack.descriptor.HKXDescriptorFactory;
-import com.dexesttp.hkxpack.descriptor.exceptions.ClassFileReadError;
+import com.dexesttp.hkxpack.descriptor.exceptions.ClassFileReadException;
 import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
 import com.dexesttp.hkxpack.hkx.types.ObjectSizeResolver;
 import com.dexesttp.hkxpack.hkxreader.HKXObjectReader;
@@ -14,7 +14,7 @@ class HKXObjectArrayContentsReader implements HKXArrayContentsReader {
 	private final HKXDescriptor descriptor;
 	private final int contentSize;
 
-	HKXObjectArrayContentsReader(HKXObjectReader reader, HKXDescriptorFactory descriptorFactory, HKXDescriptor descriptor) throws ClassFileReadError {
+	HKXObjectArrayContentsReader(HKXObjectReader reader, HKXDescriptorFactory descriptorFactory, HKXDescriptor descriptor) throws ClassFileReadException {
 		this.reader = reader;
 		this.descriptor = descriptor;
 		this.contentSize = (int) ObjectSizeResolver.getSize(descriptor, descriptorFactory);

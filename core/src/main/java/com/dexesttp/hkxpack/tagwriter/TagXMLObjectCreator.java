@@ -45,7 +45,7 @@ class TagXMLObjectCreator {
 			res.setAttribute("name", object.getName());
 			res.setAttribute("signature","0x" + Long.toHexString(object.getDescriptor().getSignature()));
 		}
-		List<HKXMember> members = object.members();
+		List<HKXMember> members = object.getMembersList();
 		List<HKXMemberTemplate> memberTemplates = object.getDescriptor().getMemberTemplates();
 		for(int i = 0; i < members.size(); i++) {
 			HKXMember member = members.get(i);

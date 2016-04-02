@@ -53,7 +53,7 @@ class HKXDataHandler {
 	long fillFile(SectionData data, HKXFile file, PointerResolver resolver) {
 		long currentPos = data.offset;
 		HKXObjectHandler objectHandler = new HKXObjectHandler(outFile, cnameData, data, enumResolver, data1queue, data2queue, data3queue, resolver);
-		for(HKXObject object : file.content()) {
+		for(HKXObject object : file.getContentCollection()) {
 			currentPos = objectHandler.handle(object, currentPos);
 			currentPos = HKXUtils.snapLine(currentPos);
 		}

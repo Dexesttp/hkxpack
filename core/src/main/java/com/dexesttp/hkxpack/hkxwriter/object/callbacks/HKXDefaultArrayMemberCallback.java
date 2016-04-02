@@ -23,7 +23,7 @@ public class HKXDefaultArrayMemberCallback implements HKXArrayMemberCallback {
 	public long process(List<HKXMemberCallback> memberCallbacks, long position) {
 		long newPos = position;
 		long memberSize = MemberSizeResolver.getSize(arrMember.getSubType());
-		for(HKXData data : arrMember.contents()) {
+		for(HKXData data : arrMember.getContentsList()) {
 			if(data instanceof HKXMember) {
 				HKXMember internalMember = (HKXMember) data;
 				HKXMemberHandler memberHandler = memberHandlerFactory.create(internalMember.getType(), 0);

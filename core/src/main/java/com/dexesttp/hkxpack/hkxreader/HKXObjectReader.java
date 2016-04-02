@@ -5,7 +5,7 @@ import com.dexesttp.hkxpack.data.HKXObject;
 import com.dexesttp.hkxpack.data.members.HKXFailedMember;
 import com.dexesttp.hkxpack.data.members.HKXMember;
 import com.dexesttp.hkxpack.descriptor.HKXDescriptor;
-import com.dexesttp.hkxpack.descriptor.exceptions.ClassFileReadError;
+import com.dexesttp.hkxpack.descriptor.exceptions.ClassFileReadException;
 import com.dexesttp.hkxpack.descriptor.members.HKXMemberTemplate;
 import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
 import com.dexesttp.hkxpack.hkxreader.member.HKXMemberReader;
@@ -38,11 +38,11 @@ public class HKXObjectReader {
 			try {
 				HKXMemberReader memberReader = memberFactory.getMemberReader(memberTemplate);
 				member = memberReader.read(position);
-			} catch (ClassFileReadError | InvalidPositionException e) {
+			} catch (ClassFileReadException | InvalidPositionException e) {
 				member = new HKXFailedMember(memberTemplate.name, memberTemplate.vtype, e.getClass().getName());
 				LoggerUtil.add(e);
 			}
-			result.members().add(member);
+			result.getMembersList().add(member);
 		}
 		return result;
 	}

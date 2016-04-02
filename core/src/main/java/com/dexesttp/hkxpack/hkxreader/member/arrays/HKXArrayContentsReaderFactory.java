@@ -2,7 +2,7 @@ package com.dexesttp.hkxpack.hkxreader.member.arrays;
 
 import com.dexesttp.hkxpack.descriptor.HKXDescriptor;
 import com.dexesttp.hkxpack.descriptor.HKXDescriptorFactory;
-import com.dexesttp.hkxpack.descriptor.exceptions.ClassFileReadError;
+import com.dexesttp.hkxpack.descriptor.exceptions.ClassFileReadException;
 import com.dexesttp.hkxpack.descriptor.members.HKXMemberTemplate;
 import com.dexesttp.hkxpack.hkxreader.HKXObjectReader;
 import com.dexesttp.hkxpack.hkxreader.HKXReaderConnector;
@@ -22,7 +22,7 @@ public class HKXArrayContentsReaderFactory {
 		this.pointerNameGenerator = pointerNameGenerator;
 	}
 	
-	public HKXArrayContentsReader get(HKXMemberTemplate template) throws ClassFileReadError {
+	public HKXArrayContentsReader get(HKXMemberTemplate template) throws ClassFileReadException {
 		switch(template.vsubtype.getFamily()) {
 			case DIRECT:
 			case COMPLEX:

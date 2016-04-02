@@ -1,7 +1,7 @@
 package com.dexesttp.hkxpack.tagreader.serialized;
 
 import com.dexesttp.hkxpack.data.members.HKXMember;
-import com.dexesttp.hkxpack.descriptor.exceptions.ClassFileReadError;
+import com.dexesttp.hkxpack.descriptor.exceptions.ClassFileReadException;
 import com.dexesttp.hkxpack.descriptor.members.HKXMemberTemplate;
 import com.dexesttp.hkxpack.tagreader.exceptions.InvalidTagXMLException;
 
@@ -14,7 +14,7 @@ public interface TagXMLSerializedHandler {
 	 * @param memberTemplate the {@link HKXMemberTemplate} to build
 	 * @return an empty {@link HKXMember}
 	 * @throws InvalidTagXMLException 
-	 * @throws ClassFileReadError 
+	 * @throws ClassFileReadException 
 	 */
-	public HKXMember handleMember(HKXMemberTemplate memberTemplate) throws ClassFileReadError, InvalidTagXMLException;
+	public HKXMember handleMember(HKXMemberTemplate memberTemplate) throws ClassFileReadException, InvalidTagXMLException;
 }

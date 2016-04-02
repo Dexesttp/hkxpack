@@ -8,7 +8,7 @@ import com.dexesttp.hkxpack.data.members.HKXMember;
 import com.dexesttp.hkxpack.descriptor.HKXDescriptor;
 import com.dexesttp.hkxpack.descriptor.HKXDescriptorFactory;
 import com.dexesttp.hkxpack.descriptor.enums.Flag;
-import com.dexesttp.hkxpack.descriptor.exceptions.ClassFileReadError;
+import com.dexesttp.hkxpack.descriptor.exceptions.ClassFileReadException;
 import com.dexesttp.hkxpack.descriptor.members.HKXMemberTemplate;
 import com.dexesttp.hkxpack.l10n.SBundle;
 import com.dexesttp.hkxpack.resources.DOMUtils;
@@ -40,9 +40,9 @@ class TagXMLMemberHandler {
 	 * @param memberTemplate the {@link Node}'s description, as a {@link HKXMemberTemplate}.
 	 * @return the resulting {@link HKXMember}.
 	 * @throws InvalidTagXMLException if there was an error in the given TagXML.
-	 * @throws ClassFileReadError if there was an error retrieving a ClassFile.
+	 * @throws ClassFileReadException if there was an error retrieving a ClassFile.
 	 */
-	HKXMember getMember(Node objectNode, HKXMemberTemplate memberTemplate) throws InvalidTagXMLException, ClassFileReadError {
+	HKXMember getMember(Node objectNode, HKXMemberTemplate memberTemplate) throws InvalidTagXMLException, ClassFileReadException {
 		// Get the right node.
 		Node member = getMemberNode(objectNode, memberTemplate.name);
 		if(member == null) {

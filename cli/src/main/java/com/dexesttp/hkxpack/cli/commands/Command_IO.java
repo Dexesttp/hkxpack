@@ -14,7 +14,7 @@ import com.dexesttp.hkxpack.cli.utils.DirWalker;
 import com.dexesttp.hkxpack.cli.utils.WrongSizeException;
 import com.dexesttp.hkxpack.descriptor.HKXDescriptorFactory;
 import com.dexesttp.hkxpack.descriptor.HKXEnumResolver;
-import com.dexesttp.hkxpack.descriptor.exceptions.ClassListReadError;
+import com.dexesttp.hkxpack.descriptor.exceptions.ClassListReadException;
 import com.dexesttp.hkxpack.hkxwriter.HKXWriter;
 
 /**
@@ -114,7 +114,7 @@ public abstract class Command_IO implements Command {
 		HKXDescriptorFactory descriptorFactory;
 		try {
 			descriptorFactory = new HKXDescriptorFactory(enumResolver);
-		} catch (ClassListReadError e) {
+		} catch (ClassListReadException e) {
 			e.printStackTrace();
 			return 1;
 		}

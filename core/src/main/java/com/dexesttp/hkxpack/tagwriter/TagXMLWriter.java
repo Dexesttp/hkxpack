@@ -44,7 +44,7 @@ public class TagXMLWriter {
 		
 		TagXMLDataCreator creator = new TagXMLDataCreator(document);
 		
-		for(HKXObject content : hkxFile.content()) {
+		for(HKXObject content : hkxFile.getContentCollection()) {
 			Node contentXML = creator.create(content);
 			root.appendChild(contentXML);
 		}

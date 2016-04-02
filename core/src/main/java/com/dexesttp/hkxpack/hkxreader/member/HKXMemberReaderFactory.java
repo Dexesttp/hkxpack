@@ -4,7 +4,7 @@ import com.dexesttp.hkxpack.descriptor.HKXDescriptor;
 import com.dexesttp.hkxpack.descriptor.HKXDescriptorFactory;
 import com.dexesttp.hkxpack.descriptor.HKXEnumResolver;
 import com.dexesttp.hkxpack.descriptor.enums.HKXType;
-import com.dexesttp.hkxpack.descriptor.exceptions.ClassFileReadError;
+import com.dexesttp.hkxpack.descriptor.exceptions.ClassFileReadException;
 import com.dexesttp.hkxpack.descriptor.members.HKXMemberTemplate;
 import com.dexesttp.hkxpack.hkxreader.HKXObjectReader;
 import com.dexesttp.hkxpack.hkxreader.HKXReaderConnector;
@@ -33,7 +33,7 @@ public class HKXMemberReaderFactory {
 		this.acrFactory = new HKXArrayContentsReaderFactory(connector, descriptorFactory, objectCreator, generator);
 	}
 
-	public HKXMemberReader getMemberReader(HKXMemberTemplate template) throws ClassFileReadError {
+	public HKXMemberReader getMemberReader(HKXMemberTemplate template) throws ClassFileReadException {
 		switch(template.vtype.getFamily()) {
 			case DIRECT:
 			case COMPLEX:

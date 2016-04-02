@@ -24,7 +24,7 @@ public class TagXMLWriterTest {
 		HKXEnumResolver enumResolver = new HKXEnumResolver();
 		HKXDescriptorFactory descriptorFactory = new HKXDescriptorFactory(enumResolver);
 		file = new HKXFile("hk-2014.1.0-r1", 11);
-		file.content().add(new HKXObject("#test", descriptorFactory.get("hkBaseObject")));
+		file.getContentCollection().add(new HKXObject("#test", descriptorFactory.get("hkBaseObject")));
 	}
 	
 	@Test

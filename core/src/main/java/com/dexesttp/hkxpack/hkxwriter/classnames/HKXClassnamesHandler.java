@@ -26,7 +26,7 @@ public class HKXClassnamesHandler {
 		data.put(37, "hkClassEnum", ByteUtils.fromULong(hkClassEnumID, 4));
 		data.put(54, "hkClassEnumItem", ByteUtils.fromULong(hkClassEnumItemID, 4));
 		int i = 75;
-		for(HKXObject object : file.content()) {
+		for(HKXObject object : file.getContentCollection()) {
 			if(!data.containsClass(object.getDescriptor().getName())) {
 				data.put(i,
 						object.getDescriptor().getName(),

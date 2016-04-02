@@ -1,17 +1,34 @@
 package com.dexesttp.hkxpack.hkxwriter.exceptions;
 
+/**
+ * Throwed when an object content doesn't match with its template.
+ */
 public class WrongInputCastException extends Exception {
 	private static final long serialVersionUID = 6483999356904172141L;
 
-	public WrongInputCastException(String message) {
+	/**
+	 * Creates a {@link WrongInputCastException}.
+	 * @param message the error message
+	 */
+	public WrongInputCastException(final String message) {
 		super(message);
 	}
 
-	public WrongInputCastException(Throwable e) {
-		super(e);
+	/**
+	 * Creates a {@link WrongInputCastException}.
+	 * @param previousException the exception that caused the {@link WrongInputCastException}.
+	 */
+
+	public WrongInputCastException(final Throwable previousException) {
+		super(previousException);
 	}
 
-	public WrongInputCastException(String message, Throwable e) {
-		super(message, e);
+	/**
+	 * Creates a {@link WrongInputCastException}.
+	 * @param message the error message
+	 * @param previousException the exception that caused the {@link WrongInputCastException}.
+	 */
+	public WrongInputCastException(final String message, final Throwable previousException) {
+		super(message, previousException);
 	}
 }

@@ -26,7 +26,7 @@ public class HKXInternalObjectHandler {
 	public long write(HKXMember objectAsMember, long currentPos) {
 		HKXObject object = (HKXObject) objectAsMember;
 		// Prepare the member handlers, and fill the raw structure.
-		List<HKXMember> members = object.members();
+		List<HKXMember> members = object.getMembersList();
 		List<HKXMemberTemplate> memberTemplates = object.getDescriptor().getMemberTemplates();
 		for(int i = 0; i < memberTemplates.size(); i++) {
 			HKXMember member = members.get(i);

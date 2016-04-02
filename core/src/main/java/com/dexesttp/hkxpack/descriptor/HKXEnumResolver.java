@@ -10,25 +10,30 @@ import com.google.common.collect.BiMap;
  * An HKXEnumResolver stores all read enumerations as accessible values.
  */
 public class HKXEnumResolver {
-	private Map<String, HKXEnum> contents = new HashMap<>();
+	private final transient Map<String, HKXEnum> contents = new HashMap<>();
 	
+	/**
+	 * An enumeration extracted from a classXML file.
+	 */
 	private class HKXEnum {
-		private BiMap<String, Integer> contents;
-		HKXEnum(BiMap<String, Integer> contents) {
+		private final transient BiMap<String, Integer> contents;
+		HKXEnum(final BiMap<String, Integer> contents) {
 			this.contents = contents;
 		}
 		
-		String get(int i) {
-			if(contents.containsValue(i))
-				return contents.inverse().get(i);
-			return "" + i;
+		String get(final int index) {
+			if(contents.containsValue(index)) {
+				return contents.inverse().get(index);
+			}
+			return Integer.toString(index);
 		}
 		
-		int get(String str) {
-			if(contents.containsKey(str))
-				return contents.get(str);
+		int get(final String enumName) {
+			if(contents.containsKey(enumName)) {
+				return contents.get(enumName);
+			}
 			try {
-				return Integer.parseInt(str);
+				return Integer.parseInt(enumName);
 			} catch(NumberFormatException e) {
 				return 0;
 			}
@@ -42,7 +47,7 @@ public class HKXEnumResolver {
 	 * @param name
 	 * @param contents
 	 */
-	public void add(String name, BiMap<String, Integer> contents) {
+	public void add(final String name, final BiMap<String, Integer> contents) {
 		this.contents.put(name, new HKXEnum(contents));
 	}
 	
@@ -52,11 +57,12 @@ public class HKXEnumResolver {
 	 * @param value
 	 * @return
 	 */
-	public String resolve(String enumName, int value) {
+	public String resolve(final String enumName, final int value) {
 		HKXEnum enumContainer = contents.get(enumName);
-		if(enumContainer != null)
+		if(enumContainer != null) {
 			return enumContainer.get(value);
-		return "" + value;
+		}
+		return Integer.toString(value);
 	}
 	
 	/**
@@ -65,7 +71,7 @@ public class HKXEnumResolver {
 	 * @param value
 	 * @return
 	 */
-	public int resolve(String enumName, String value) {
+	public int resolve(final String enumName, final String value) {
 		HKXEnum enumContainer = contents.get(enumName);
 		if(enumContainer == null) {
 			try {

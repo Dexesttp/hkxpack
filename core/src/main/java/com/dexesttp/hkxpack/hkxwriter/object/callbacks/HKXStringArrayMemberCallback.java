@@ -28,7 +28,7 @@ public class HKXStringArrayMemberCallback implements HKXArrayMemberCallback {
 		long newPos = position;
 		long memberSize = MemberSizeResolver.getSize(arrMember.getSubType());
 		List<HKXMemberCallback> internalCallbacks = new ArrayList<>();
-		for(HKXData data : arrMember.contents()) {
+		for(HKXData data : arrMember.getContentsList()) {
 			if(data instanceof HKXMember) {
 				HKXMember internalMember = (HKXMember) data;
 				internalCallbacks.add(stringHandler((HKXStringMember) internalMember, newPos));

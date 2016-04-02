@@ -26,7 +26,7 @@ class TagXMLArrayMemberHandler {
 	 * @param member the {@link HKXArrayMember} to get the data from.
 	 */
 	void fillArray(Element memberNode, HKXArrayMember member) {
-		memberNode.setAttribute("numelements", "" + ((HKXArrayMember) member).contents().size());
+		memberNode.setAttribute("numelements", "" + ((HKXArrayMember) member).getContentsList().size());
 		switch(member.getSubType().getFamily()) {
 			case DIRECT:
 			case COMPLEX:
@@ -46,7 +46,7 @@ class TagXMLArrayMemberHandler {
 	}
 
 	private void handleStringOutType(Element memberNode, HKXArrayMember member) {
-		for(HKXData data : member.contents()) {
+		for(HKXData data : member.getContentsList()) {
 			HKXStringMember subMember = (HKXStringMember) data;
 			String subMemberString = subMember.get();
 			Element stringNode = dataCreator.document().createElement("hkcstring");
@@ -56,7 +56,7 @@ class TagXMLArrayMemberHandler {
 	}
 
 	private void handleNodeOutType(Element memberNode, HKXArrayMember member) {
-		for(HKXData data : member.contents()) {
+		for(HKXData data : member.getContentsList()) {
 			Node newChild = dataCreator.create(data);
 			memberNode.appendChild(newChild);
 		}
@@ -66,7 +66,7 @@ class TagXMLArrayMemberHandler {
 		TagXMLDirectMemberHandler directMemberHandler = new TagXMLDirectMemberHandler();
 		String accu = "";
 		String contents = "";
-		for(HKXData data : member.contents()) {
+		for(HKXData data : member.getContentsList()) {
 			HKXDirectMember<?> subMember = (HKXDirectMember<?>) data;
 			String subMemberString = directMemberHandler.getStringValue(subMember);
 			if((contents + subMemberString).length() > MAX_LENGTH_PER_LINE ) {
@@ -89,7 +89,7 @@ class TagXMLArrayMemberHandler {
 
 	private void handlePtrOutType(Element memberNode, HKXArrayMember member) {
 		String accu = "\n";
-		for(HKXData data : member.contents()) {
+		for(HKXData data : member.getContentsList()) {
 			HKXPointerMember subMember = (HKXPointerMember) data;
 			String subMemberString = subMember.get();
 			accu += subMemberString + "\n";

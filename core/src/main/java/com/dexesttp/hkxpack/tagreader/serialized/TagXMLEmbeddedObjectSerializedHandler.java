@@ -4,7 +4,7 @@ import com.dexesttp.hkxpack.data.HKXObject;
 import com.dexesttp.hkxpack.data.members.HKXMember;
 import com.dexesttp.hkxpack.descriptor.HKXDescriptor;
 import com.dexesttp.hkxpack.descriptor.HKXDescriptorFactory;
-import com.dexesttp.hkxpack.descriptor.exceptions.ClassFileReadError;
+import com.dexesttp.hkxpack.descriptor.exceptions.ClassFileReadException;
 import com.dexesttp.hkxpack.descriptor.members.HKXMemberTemplate;
 import com.dexesttp.hkxpack.tagreader.exceptions.InvalidTagXMLException;
 
@@ -19,7 +19,7 @@ class TagXMLEmbeddedObjectSerializedHandler implements TagXMLSerializedHandler {
 	}
 
 	@Override
-	public HKXMember handleMember(HKXMemberTemplate objectTemplate) throws ClassFileReadError, InvalidTagXMLException {
+	public HKXMember handleMember(HKXMemberTemplate objectTemplate) throws ClassFileReadException, InvalidTagXMLException {
 		HKXDescriptor classDescriptor = descriptorFactory.get(objectTemplate.target);
 		// Create object 
 		HKXObject result = new HKXObject("", classDescriptor);	
@@ -27,7 +27,7 @@ class TagXMLEmbeddedObjectSerializedHandler implements TagXMLSerializedHandler {
 		// Fill object
 		for(HKXMemberTemplate memberTemplate : classDescriptor.getMemberTemplates()) {
 			TagXMLSerializedHandler memberHandler = serializedHandlerFactory.getSerializedHandler(memberTemplate.vtype);
-			result.members().add(memberHandler.handleMember(memberTemplate));
+			result.getMembersList().add(memberHandler.handleMember(memberTemplate));
 		}
 		
 		return result;

@@ -25,7 +25,7 @@ public class HKXObjectArrayMemberCallback implements HKXArrayMemberCallback {
 	public long process(List<HKXMemberCallback> memberCallbacks, long position) {
 		long newPos = position;
 		List<HKXMemberCallback> internalCallbacks = new ArrayList<>();
-		for(HKXData data : arrMember.contents()) {
+		for(HKXData data : arrMember.getContentsList()) {
 			if(data instanceof HKXObject) {
 				HKXObject internalObject = (HKXObject) data;
 				long objectSize = ObjectSizeResolver.getSize(internalObject);

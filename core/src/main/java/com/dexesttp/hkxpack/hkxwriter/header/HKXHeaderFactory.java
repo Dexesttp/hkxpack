@@ -28,7 +28,7 @@ public class HKXHeaderFactory {
 	 */
 	public HeaderData create(HKXFile file) {
 		boolean isAnim = false;
-		for(HKXObject object : file.content()) {
+		for(HKXObject object : file.getContentCollection()) {
 			if(animClassesList.contains(object.getDescriptor().getName()))
 					isAnim = true;
 		}
