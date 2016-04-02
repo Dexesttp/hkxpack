@@ -1,5 +1,8 @@
 package com.dexesttp.hkxpack.hkx.header.internals;
 
+/**
+ * A general purpose Section descriptor, designed on the v8 and v11 sections.
+ */
 public class SectionDescriptor {
 	/**
 	 * Name of the section, null-terminated

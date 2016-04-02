@@ -4,21 +4,22 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
 import com.dexesttp.hkxpack.hkx.header.internals.SectionDescriptor;
+import com.dexesttp.hkxpack.hkx.header.internals.versions.HeaderDescriptor_v11;
 import com.dexesttp.hkxpack.resources.byteutils.ByteUtils;
 
 /**
  * Connects to a {@link ByteBuffer}, and allows easy retrieval and writing of {@link SectionData}.
  */
 public class SectionInterface {
-	private ByteBuffer file;
-	private HeaderData header;
+	private transient ByteBuffer file;
+	private transient HeaderData header;
 
 	/**
 	 * Connect to a given {@link ByteBuffer}, based on the given {@link HeaderData}.
 	 * @param file the {@link ByteBuffer} to connect to.
 	 * @param header the {@link HeaderData} to base the search on.
 	 */
-	public void connect(ByteBuffer file, HeaderData header)  {
+	public void connect(final ByteBuffer file, final HeaderData header)  {
 		this.file = file;
 		this.header = header;
 	}
@@ -32,9 +33,9 @@ public class SectionInterface {
 	 * @param section The {@link SectionData} to write.
 	 * @param sectionID The Section ID to write the {@link SectionData} at.
 	 */
-	public void compress(SectionData section, int sectionID) {
+	public void compress(final SectionData section, final int sectionID) {
 		long sectionsize;
-		if(header.version == 11)
+		if(header.version == HeaderDescriptor_v11.VERSION_11)
 			sectionsize = 0x40;
 		else
 			sectionsize = 0x30;
@@ -50,7 +51,7 @@ public class SectionInterface {
 		file.put(ByteUtils.fromULong(section.data4, 4));
 		file.put(ByteUtils.fromULong(section.data5, 4));
 		file.put(ByteUtils.fromULong(section.end, 4));
-		if(header.version == 11)
+		if(header.version == HeaderDescriptor_v11.VERSION_11)
 			for(int i = 0; i < 0x10; i++)
 				file.put((byte) 0xFF);
 	}
@@ -62,9 +63,9 @@ public class SectionInterface {
 	 * @param sectionID the Section ID to read.
 	 * @return the read {@link SectionData}
 	 */
-	public SectionData extract(int sectionID) {
+	public SectionData extract(final int sectionID) {
 		long sectionsize;
-		if(header.version == 11)
+		if(header.version == HeaderDescriptor_v11.VERSION_11)
 			sectionsize = 0x40;
 		else
 			sectionsize = 0x30;
@@ -97,8 +98,9 @@ public class SectionInterface {
 
 	/**
 	 * Close the connection with the given {@link ByteBuffer}
-	 * @deprecated {@link ByteBuffer} usage no longer allows or requires this step
+	 * @deprecated {@link ByteBuffer} usage no longer allows nor requires this step
 	 */
 	public void close() {
+		// Deprecated
 	}
 }

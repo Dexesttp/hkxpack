@@ -11,16 +11,16 @@ import com.dexesttp.hkxpack.resources.byteutils.ByteUtils;
  * Interface on the Data1 section of a HKX File {@link ByteBuffer}.
  */
 public class Data1Interface {
-	private ByteBuffer file;
-	private SectionData header;
-	private int lastPos = -1;
+	private transient ByteBuffer file;
+	private transient SectionData header;
+	private transient int lastPos = -1;
 
 	/**
 	 * Connect this {@link Data1Interface} to a {@link ByteBuffer}.
 	 * @param file the {@link ByteBuffer} to connect to.
 	 * @param dataHeader the {@link SectionData} relative to the Data section.
 	 */
-	public void connect(ByteBuffer file, SectionData dataHeader) {
+	public void connect(final ByteBuffer file, final SectionData dataHeader) {
 		this.file = file;
 		this.header = dataHeader;
 	}
@@ -31,11 +31,11 @@ public class Data1Interface {
 	 * @return the read {@link DataInternal}.
 	 * @throws InvalidPositionException if the requested position was outside the Data1 section.
 	 */
-	public DataInternal read(int pos) throws InvalidPositionException {
-		DataInternal data = new DataInternal();
+	public DataInternal read(final int pos) throws InvalidPositionException {
 		long dataPos = header.data1 + pos * 0x08;
 		if(pos < 0 || dataPos > header.data2)
 			throw new InvalidPositionException("DATA_1", pos );
+		DataInternal data = new DataInternal();
 		file.position((int) (header.offset + dataPos));
 		byte[] dataLine = new byte[4];
 		file.get(dataLine);
@@ -54,7 +54,7 @@ public class Data1Interface {
 	 * @param internal the {@link DataInternal} to write.
 	 * @return the position of the end of the {@link DataInternal}.
 	 */
-	public long write(int pos, DataInternal internal) {
+	public long write(final int pos, final DataInternal internal) {
 		long dataPos = header.data1 + pos * 0x08;
 		file.position((int) (header.offset + dataPos));
 		file.put(ByteUtils.fromULong(internal.from, 4));
@@ -79,8 +79,9 @@ public class Data1Interface {
 	}
 
 	/**
-	 * @deprecated {@link ByteBuffer} usage no longer allows or requires this step
+	 * @deprecated {@link ByteBuffer} usage no longer allows nor requires this step
 	 */
 	public void close() throws IOException {
+		// Deprecated
 	}
 }

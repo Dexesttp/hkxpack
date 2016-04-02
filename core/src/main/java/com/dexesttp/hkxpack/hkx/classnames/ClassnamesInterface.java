@@ -11,15 +11,16 @@ import com.dexesttp.hkxpack.resources.byteutils.ByteUtils;
  * Connects to a {@link ByteBuffer}, and allows easy retrieval and writing of {@link ClassnamesData}.
  */
 public class ClassnamesInterface {
-	private ByteBuffer file;
-	private SectionData section;
+	private static final char CLASSNAME_BREAKER = 0x09;
+	private transient ByteBuffer file;
+	private transient SectionData section;
 	
 	/**
 	 * Connect to a given {@link ByteBuffer}, based on the given {@link SectionData}.
 	 * @param file the {@link ByteBuffer} to connect to.
 	 * @param header the {@link HeaderData} to base the search on.
 	 */
-	public void connect(ByteBuffer file, SectionData classnameSection) {
+	public void connect(final ByteBuffer file, final SectionData classnameSection) {
 		this.file = file;
 		this.section = classnameSection;
 	}
@@ -32,7 +33,7 @@ public class ClassnamesInterface {
 	 * @param data the data to find the classnames in.
 	 * @return The position of the end of the dataset (absolute position from the beginning of the file).
 	 */
-	public long compress(ClassnamesData data) {
+	public long compress(final ClassnamesData data) {
 		file.position((int) section.offset);
 		for(Entry<Long, Classname> classData : data.entrySet()) {
 			file.put(classData.getValue().uuid);
@@ -49,6 +50,10 @@ public class ClassnamesInterface {
 		return pos + toDo;
 	}
 	
+	/**
+	 * Extract all the classnames from a file's {@literal __classnames__} section.
+	 * @return the relevant, filled {@link ClassnamesData}.
+	 */
 	public ClassnamesData extract() {
 		final long limit = section.offset + section.data1;
 		ClassnamesData data = new ClassnamesData();
@@ -56,7 +61,7 @@ public class ClassnamesInterface {
 		file.position((int) section.offset);
 		while(file.position() < limit) {
 			file.get(idList);
-			if(file.get() != 0x09)
+			if(file.get() != CLASSNAME_BREAKER)
 				break;
 			long position = file.position();
 			if(position > limit)
@@ -69,9 +74,9 @@ public class ClassnamesInterface {
 	}
 
 	/**
-	 * @deprecated {@link ByteBuffer} usage no longer allows or requires this step
+	 * @deprecated {@link ByteBuffer} usage no longer allows nor requires this step
 	 */
 	public void close() {
-
+		// Deprecated
 	}
 }

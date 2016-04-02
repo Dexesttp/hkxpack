@@ -11,13 +11,14 @@ import com.dexesttp.hkxpack.resources.byteutils.ByteUtils;
  * Connects to a HKX {@link ByteBuffer} and allows direct access to the header contents.
  */
 public class HeaderInterface {
-	private ByteBuffer file;
+	private static final long ONE_LINE_PADDING = 0x10;
+	private transient ByteBuffer file;
 
 	/**
 	 * Connect to a {@link ByteBuffer}
 	 * @param file the {@link ByteBuffer} to connect to.
 	 */
-	public void connect(ByteBuffer file) {
+	public void connect(final ByteBuffer file) {
 		this.file = file;
 	}
 
@@ -26,8 +27,8 @@ public class HeaderInterface {
 	 * @param data the {@link HeaderData} to retrieve the data from.
 	 * @throws UnsupportedVersionError if the {@link HeaderData} contains a non-supported version
 	 */
-	public void compress(HeaderData data) throws UnsupportedVersionError {
-		if(data.version == 11) {
+	public void compress(final HeaderData data) throws UnsupportedVersionError {
+		if(data.version == HeaderDescriptor_v11.VERSION_11 ) {
 			HeaderDescriptor_v11 descriptor = new HeaderDescriptor_v11();
 			file.position(0);
 			file.put(descriptor.file_id);
@@ -37,7 +38,7 @@ public class HeaderInterface {
 			file.put(descriptor.verName);
 			file.put(descriptor.constants_2);
 			file.put(descriptor.extras_v11);
-			if(data.padding_after == 16) {
+			if(data.padding_after == ONE_LINE_PADDING ) {
 				file.put(descriptor.padding_v11);
 				file.put(descriptor.padding);	
 			} else {
@@ -66,7 +67,7 @@ public class HeaderInterface {
 		file.get(descriptor.padding_v11);
 		data.version = ByteUtils.getUInt(descriptor.version);
 		data.versionName = new String(descriptor.verName);
-		if(data.version == 11)
+		if(data.version == HeaderDescriptor_v11.VERSION_11)
 			data.padding_after = ByteUtils.getULong(descriptor.padding_v11);
 		else
 			data.padding_after = 0;
@@ -74,8 +75,9 @@ public class HeaderInterface {
 	}
 
 	/**
-	 * @deprecated {@link ByteBuffer} usage no longer allows or requires this step
+	 * @deprecated {@link ByteBuffer} usage no longer allows nor requires this step
 	 */
 	public void close() {
+		// Deprecated
 	}
 }

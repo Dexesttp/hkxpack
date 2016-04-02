@@ -10,7 +10,11 @@ import com.dexesttp.hkxpack.resources.byteutils.ByteUtils;
  * {@link #getMember(String, HKXType, byte[])} converts a {@link byte} array to a {@link HKXMember},
  * 		given the {@link HKXType} of the member is standard.
  */
-public class MemberDataResolver {
+public final class MemberDataResolver {
+	private MemberDataResolver() {
+		// NO OP
+	}
+	
 	/**
 	 * Read a simple / defined member from a byte array.
 	 * @param name the name of the member to create.
@@ -19,7 +23,7 @@ public class MemberDataResolver {
 	 * @return the {@link HKXMember} containing the data.
 	 * @throws IllegalArgumentException if the given {@link HKXType} isn't standard.
 	 */
-	public static HKXMember getMember(String name, HKXType type, byte[] byteArray) {
+	public static HKXMember getMember(final String name, final HKXType type, final byte[] byteArray) {
 		switch(type) {
 		// Base values
 			case TYPE_BOOL:
@@ -147,7 +151,7 @@ public class MemberDataResolver {
 	 * @throws IllegalArgumentException if the given {@link HKXMember} isn't standard.
 	 */
 	@SuppressWarnings("unchecked")
-	public static byte[] fromMember(HKXMember member) {
+	public static byte[] fromMember(final HKXMember member) {
 		switch(member.getType()) {
 		// Base values
 			case TYPE_BOOL:

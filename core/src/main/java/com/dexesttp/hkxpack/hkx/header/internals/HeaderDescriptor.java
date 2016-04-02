@@ -1,5 +1,8 @@
 package com.dexesttp.hkxpack.hkx.header.internals;
 
+/**
+ * A general purpose Header descriptor, designed based on the v8 and v11 headers.
+ */
 public class HeaderDescriptor {
 	/**
 	 * The file id, same for all hkx files (I assume says that it's a hkx file)

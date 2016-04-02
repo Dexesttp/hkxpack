@@ -14,10 +14,14 @@ import com.dexesttp.hkxpack.hkx.HKXUtils;
 /**
  * Resolve the size of a {@link HKXObject} or a {@link HKXDescriptor}.
  */
-public class ObjectSizeResolver {
+public final class ObjectSizeResolver {
 	private static final long PTR_SIZE = 0x08;
+	
+	private ObjectSizeResolver() {
+		// NO OP
+	}
 
-	private static long primitiveSnap(HKXType type) {
+	private static long primitiveSnap(final HKXType type) {
 		switch(type) {
 		case TYPE_NONE:
 		case TYPE_VOID:
@@ -75,7 +79,7 @@ public class ObjectSizeResolver {
 	 * @return the {@link HKXDescriptor}'s size, in bytes.
 	 * @throws ClassFileReadException if there was an error resolving this {@link HKXDescriptor}'s subclass 
 	 */
-	public static long getSize(HKXDescriptor descriptor, HKXDescriptorFactory descriptorFactory) throws ClassFileReadException {
+	public static long getSize(final HKXDescriptor descriptor, final HKXDescriptorFactory descriptorFactory) throws ClassFileReadException {
 		List<HKXMemberTemplate> templates = descriptor.getMemberTemplates();
 		if(templates.isEmpty())
 			return 0;
@@ -89,19 +93,21 @@ public class ObjectSizeResolver {
 		return HKXUtils.snapSize(lastTemplate.offset + getSize(internalDescriptor, descriptorFactory), bestSnap);
 	}
 
-	private static long getSnap(HKXDescriptor descriptor, HKXDescriptorFactory descriptorFactory) throws ClassFileReadException {
+	private static long getSnap(final HKXDescriptor descriptor, final HKXDescriptorFactory descriptorFactory) throws ClassFileReadException {
 		long bestSnap = 0;
 		List<HKXMemberTemplate> list = descriptor.getMemberTemplates();
 		for(int i = 0; i < list.size(); i++) {
 			HKXMemberTemplate template = list.get(i);
 			long currSnap = 0;
-			if(template.vtype.getFamily() == HKXTypeFamily.ENUM)
+			if(template.vtype.getFamily() == HKXTypeFamily.ENUM) {
 				currSnap = primitiveSnap(template.vsubtype);
-			else if(template.vtype != HKXType.TYPE_STRUCT)
-				currSnap = primitiveSnap(template.vtype);
-			else {
+			}
+			else if(template.vtype == HKXType.TYPE_STRUCT) {
 				HKXDescriptor internalDescriptor = descriptorFactory.get(template.target);
 				currSnap = getSnap(internalDescriptor, descriptorFactory);
+			}
+			else {
+				currSnap = primitiveSnap(template.vtype);
 			}
 			bestSnap = currSnap > bestSnap ? currSnap : bestSnap;
 		}
@@ -113,7 +119,7 @@ public class ObjectSizeResolver {
 	 * @param object the {@link HKXObject} to retrieve the size from.
 	 * @return the {@link HKXObject}'s size, in bytes.
 	 */
-	public static long getSize(HKXObject object) {
+	public static long getSize(final HKXObject object) {
 		List<HKXMemberTemplate> templates = object.getDescriptor().getMemberTemplates();
 		if(templates.isEmpty())
 			return 0;
@@ -127,19 +133,21 @@ public class ObjectSizeResolver {
 		return HKXUtils.snapSize(lastTemplate.offset + getSize(internalObject), bestSnap);
 	}
 
-	private static long getSnap(HKXObject object) {
+	private static long getSnap(final HKXObject object) {
 		long bestSnap = 0;
 		List<HKXMemberTemplate> list = object.getDescriptor().getMemberTemplates();
 		for(int i = 0; i < list.size(); i++) {
 			HKXMemberTemplate template = list.get(i);
 			long currSnap = 0;
-			if(template.vtype.getFamily() == HKXTypeFamily.ENUM)
+			if(template.vtype.getFamily() == HKXTypeFamily.ENUM) {
 				currSnap = primitiveSnap(template.vsubtype);
-			else if(template.vtype != HKXType.TYPE_STRUCT)
-				currSnap = primitiveSnap(template.vtype);
-			else {
+			}
+			else if(template.vtype == HKXType.TYPE_STRUCT) {
 				HKXObject internalObject = (HKXObject) object.getMembersList().get(i);
 				currSnap = getSnap(internalObject);
+			}
+			else {
+				currSnap = primitiveSnap(template.vtype);
 			}
 			bestSnap = currSnap > bestSnap ? currSnap : bestSnap;
 		}
