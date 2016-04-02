@@ -24,9 +24,9 @@ import com.dexesttp.hkxpack.resources.LoggerUtil;
  * Reads the content of a {@link File} or {@link ByteBuffer}, containing information in the hkx format, into a DOM-like {@link HKXFile}.
  */
 public class HKXReader {
-	private final ByteBuffer hkxBB;
-	private final HKXDescriptorFactory descriptorFactory;
-	private final HKXEnumResolver enumResolver;
+	private final transient ByteBuffer hkxBB;
+	private final transient HKXDescriptorFactory descriptorFactory;
+	private final transient HKXEnumResolver enumResolver;
 
 	/**
 	 * Creates a {@link HKXReader}.
@@ -35,7 +35,7 @@ public class HKXReader {
 	 * @param enumResolver the {@link HKXEnumResolver} to store enumerations into.
 	 * @throws IOException if there was a problem while reading the {@link File}
 	 */
-	public HKXReader(File hkxFile, HKXDescriptorFactory descriptorFactory, HKXEnumResolver enumResolver) throws IOException {
+	public HKXReader(final File hkxFile, final HKXDescriptorFactory descriptorFactory, final HKXEnumResolver enumResolver) throws IOException {
 		RandomAccessFile raf = new RandomAccessFile(hkxFile, "rw" );
 		this.hkxBB = raf.getChannel().map(MapMode.READ_WRITE, 0, hkxFile.length());
 		raf.close();
@@ -45,12 +45,12 @@ public class HKXReader {
 	
 	/**
 	 * Creates a {@link HKXReader}.
-	 * @param hkxBB the {@link ByteBuffer} to read data from.
+	 * @param hkxByteBuffer the {@link ByteBuffer} to read data from.
 	 * @param descriptorFactory the {@link HKXDescriptorFactory} to use to solve the {@link ByteBuffer}'s classes.
 	 * @param enumResolver the {@link HKXEnumResolver} to store enumerations into.
 	 */
-	public HKXReader(ByteBuffer hkxBB, HKXDescriptorFactory descriptorFactory, HKXEnumResolver enumResolver) {
-		this.hkxBB = hkxBB;
+	public HKXReader(final ByteBuffer hkxByteBuffer, final HKXDescriptorFactory descriptorFactory, final HKXEnumResolver enumResolver) {
+		this.hkxBB = hkxByteBuffer;
 		this.descriptorFactory = descriptorFactory;
 		this.enumResolver = enumResolver;
 	}
@@ -71,15 +71,9 @@ public class HKXReader {
 		HKXMemberReaderFactory memberFactory = new HKXMemberReaderFactory(descriptorFactory, connector, generator, enumResolver);
 		HKXObjectReader creator = new HKXObjectReader(memberFactory);
 		memberFactory.connectObjectCreator(creator);
-		HKXDescriptorReader fileReader = new HKXDescriptorReader(creator, generator);
 		
 		// Retrieve useful data and interfaces from the header
-		HeaderData header = connector.header;
-		ClassnamesData classConverter = connector.classnamesdata;
 		Data3Interface data3 = connector.data3;
-		
-		// Create the return object
-		HKXFile content = new HKXFile(header.versionName, header.version);
 		
 
 		// Create all default names for hkobjects
@@ -92,10 +86,19 @@ public class HKXReader {
 				generator.get(currentClass.from);
 			}
 		} catch (InvalidPositionException e) {
-			// NO OP
+			if(!e.getSection().equals("DATA_3"))
+				throw e;
 		}
 		// Reset position to the beginning of data3.
 		pos = 0;
+		
+		// Create additional connectors.
+		HeaderData header = connector.header;
+		ClassnamesData classConverter = connector.classnamesdata;
+		HKXDescriptorReader fileReader = new HKXDescriptorReader(creator, generator);
+		
+		// Create the return object
+		HKXFile content = new HKXFile(header.versionName, header.version);
 		
 		// Retrieve the actual data
 		try {
@@ -105,7 +108,9 @@ public class HKXReader {
 				
 				// Resolve the object's class into a HKXDescriptor
 				Classname classObj = classConverter.get(currentClass.to);
-				if(classObj != null) {
+				if(classObj == null){
+					LoggerUtil.addNewException("Illegal linked Classname position (" + currentClass.from + "//" + currentClass.to + "). Ignoring.");
+				} else {
 					String className = classObj.name;
 					HKXDescriptor descriptor = descriptorFactory.get(className);
 					
@@ -114,8 +119,6 @@ public class HKXReader {
 					
 					// Store the resulting class
 					content.add(result);
-				} else {
-					LoggerUtil.add(new Exception("Illegal linked Classname position (" + currentClass.from + "//" + currentClass.to + "). Ignoring."));
 				}
 			}
 		} catch (InvalidPositionException e) {

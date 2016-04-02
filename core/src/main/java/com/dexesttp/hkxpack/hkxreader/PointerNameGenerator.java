@@ -7,16 +7,23 @@ import java.util.Map;
  * Generate a name based on a file position
  */
 public class PointerNameGenerator {
-	private static int START_VALUE = 90;
-	private static int INCREMENT = 1;
-	private int position;
-	private Map<Long, String> contents = new HashMap<>();
+	private static final int START_VALUE = 90;
+	private static final int INCREMENT = 1;
+	private transient int position;
+	private final transient Map<Long, String> contents = new HashMap<>();
 
+	/**
+	 * Create a new {@link PointerNameGenerator}, starting at the {@value #START_VALUE} value.
+	 */
 	PointerNameGenerator() {
 		this(START_VALUE);
 	}
 
-	public PointerNameGenerator(int startValue) {
+	/**
+	 * Create a new {@link PointerNameGenerator}, with names starting at the given value.
+	 * @param startValue the starting values for names.
+	 */
+	public PointerNameGenerator(final int startValue) {
 		this.position = startValue;
 	}
 
@@ -27,8 +34,7 @@ public class PointerNameGenerator {
 	private String createName() {
 		int nameID = position;
 		position += INCREMENT;
-		String name = "#" + nameID;
-		return name;
+		return "#" + nameID;
 	}
 
 	/**
@@ -36,7 +42,7 @@ public class PointerNameGenerator {
 	 * @param position
 	 * @return
 	 */
-	public String get(long position) {
+	public String get(final long position) {
 		if(contents.containsKey(position))
 			return contents.get(position);
 		String name = createName();

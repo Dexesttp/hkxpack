@@ -9,21 +9,27 @@ import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
 import com.dexesttp.hkxpack.hkx.types.ObjectSizeResolver;
 import com.dexesttp.hkxpack.hkxreader.HKXObjectReader;
 
+/**
+ * Reads an {@link HKXObject} from an array.
+ */
 class HKXObjectArrayContentsReader implements HKXArrayContentsReader {
-	private final HKXObjectReader reader;
-	private final HKXDescriptor descriptor;
-	private final int contentSize;
+	private final transient HKXObjectReader reader;
+	private final transient HKXDescriptor descriptor;
+	private final transient int contentSize;
 
-	HKXObjectArrayContentsReader(HKXObjectReader reader, HKXDescriptorFactory descriptorFactory, HKXDescriptor descriptor) throws ClassFileReadException {
+	HKXObjectArrayContentsReader(final HKXObjectReader reader, final HKXDescriptorFactory descriptorFactory,
+			final HKXDescriptor descriptor) throws ClassFileReadException {
 		this.reader = reader;
 		this.descriptor = descriptor;
 		this.contentSize = (int) ObjectSizeResolver.getSize(descriptor, descriptorFactory);
 	}
 
 	@Override
-	public HKXData getContents(long arrayStart, int position) throws InvalidPositionException {
+	/**
+	 * {@inheritDoc}
+	 */
+	public HKXData getContents(final long arrayStart, final int position) throws InvalidPositionException {
 		long contentsPos = arrayStart + position * contentSize;
-		HKXObject data = reader.createHKXObject("", contentsPos, descriptor);
-		return data;
+		return reader.createHKXObject("", contentsPos, descriptor);
 	}
 }
