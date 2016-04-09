@@ -43,6 +43,11 @@
 		<exclude name="JUnitTestsShouldIncludeAssert" />
 		<exclude name="JUnitAssertionsShouldIncludeMessage" />
 	</rule>
+	<rule ref="rulesets/java/junit.xml/JUnitTestContainsTooManyAsserts">
+		<properties>
+			<property name="maximumAsserts" value="3"/>
+		</properties>
+	</rule>
 	<rule ref="rulesets/java/logging-java.xml"/>
 	<rule ref="rulesets/java/javabeans.xml"/>
 	<rule ref="rulesets/java/migrating.xml"/>
