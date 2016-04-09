@@ -26,9 +26,10 @@ import com.dexesttp.hkxpack.tagreader.exceptions.InvalidTagXMLException;
  * {@link TagXMLFileHandler#getSectionNode(Document, String)} returns the asked section node.
  */
 class TagXMLFileHandler {
-	private File tagFile;
+	private static final int MAX_ROOT_NODE_COUNT = 1;
+	private final transient File tagFile;
 
-	TagXMLFileHandler(File tagFile) {
+	TagXMLFileHandler(final File tagFile) {
 		this.tagFile = tagFile;
 	}
 
@@ -42,8 +43,7 @@ class TagXMLFileHandler {
 	Document getDocument() throws ParserConfigurationException, SAXException, IOException {
 		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder = builderFactory.newDocumentBuilder();
-		Document result = builder.parse(tagFile);
-		return result;
+		return builder.parse(tagFile);
 	}
 	
 	/**
@@ -54,8 +54,9 @@ class TagXMLFileHandler {
 	 */
 	Node getRootNode(final Document document) throws InvalidTagXMLException {
 		NodeList nodeList = document.getElementsByTagName("hkpackfile");
-		if(nodeList.getLength() != 1)
+		if(nodeList.getLength() != MAX_ROOT_NODE_COUNT) {
 			throw new InvalidTagXMLException(SBundle.getString("error.tag.read.hkpackfile") + nodeList.getLength());
+		}
 		return nodeList.item(0);
 	}
 
@@ -64,11 +65,10 @@ class TagXMLFileHandler {
 	 * @param root the Root node, may be obtained with {@link TagXMLFileHandler#getRootNode(Document)}.
 	 * @return the empty {@link HKXFile}, properly initialized.
 	 */
-	HKXFile getHKXFile(Node root) {
+	HKXFile getHKXFile(final Node root) {
 		int classVersion = Integer.parseInt(DOMUtils.getNodeAttr("classversion", root));
 		String contentsVersion = DOMUtils.getNodeAttr("contentsversion", root);
-		HKXFile result = new HKXFile(contentsVersion, classVersion);
-		return result;
+		return new HKXFile(contentsVersion, classVersion);
 	}
 
 	/**
@@ -77,12 +77,13 @@ class TagXMLFileHandler {
 	 * @param name the name of the Section node to retrieve.
 	 * @return the section {@link Node}, or null if no section node could be found.
 	 */
-	Node getSectionNode(Document document, String name) {
+	Node getSectionNode(final Document document, final String name) {
 		NodeList sectionList = document.getElementsByTagName("hksection");
 		for(int i = 0; i < sectionList.getLength(); i++) {
 			Node section = sectionList.item(i);
-			if(DOMUtils.getNodeAttr("name", section).equals(name))
+			if(DOMUtils.getNodeAttr("name", section).equals(name)) {
 				return section;
+			}
 		}
 		return null;
 	}

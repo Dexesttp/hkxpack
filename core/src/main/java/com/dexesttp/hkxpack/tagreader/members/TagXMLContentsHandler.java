@@ -19,5 +19,5 @@ public interface TagXMLContentsHandler {
 	 * @throws InvalidTagXMLException 
 	 * @throws ClassFileReadException 
 	 */
-	public HKXMember handleNode(Node member, HKXMemberTemplate memberTemplate) throws ClassFileReadException, InvalidTagXMLException;
+	HKXMember handleNode(Node member, HKXMemberTemplate memberTemplate) throws ClassFileReadException, InvalidTagXMLException;
 }

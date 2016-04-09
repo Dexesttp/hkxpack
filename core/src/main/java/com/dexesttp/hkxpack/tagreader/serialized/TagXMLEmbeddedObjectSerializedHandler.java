@@ -8,18 +8,25 @@ import com.dexesttp.hkxpack.descriptor.exceptions.ClassFileReadException;
 import com.dexesttp.hkxpack.descriptor.members.HKXMemberTemplate;
 import com.dexesttp.hkxpack.tagreader.exceptions.InvalidTagXMLException;
 
+/**
+ * Handles embedded {@link HKXObject} members in TagXML files.
+ */
 class TagXMLEmbeddedObjectSerializedHandler implements TagXMLSerializedHandler {
-	private final HKXDescriptorFactory descriptorFactory;
-	private final TagXMLSerializedHandlerFactory serializedHandlerFactory;
+	private final transient HKXDescriptorFactory descriptorFactory;
+	private final transient TagXMLSerializedHandlerFactory serializedHandlerFactory;
 
-	TagXMLEmbeddedObjectSerializedHandler(TagXMLSerializedHandlerFactory tagXMLSerializedHandlerFactory, HKXDescriptorFactory descriptorFactory) {
+	TagXMLEmbeddedObjectSerializedHandler(final TagXMLSerializedHandlerFactory tagXMLSerializedHandlerFactory,
+			final HKXDescriptorFactory descriptorFactory) {
 		this.serializedHandlerFactory = tagXMLSerializedHandlerFactory;
 		this.descriptorFactory = descriptorFactory;
 		
 	}
 
 	@Override
-	public HKXMember handleMember(HKXMemberTemplate objectTemplate) throws ClassFileReadException, InvalidTagXMLException {
+	/**
+	 * {@inheritDoc}
+	 */
+	public HKXMember handleMember(final HKXMemberTemplate objectTemplate) throws ClassFileReadException, InvalidTagXMLException {
 		HKXDescriptor classDescriptor = descriptorFactory.get(objectTemplate.target);
 		// Create object 
 		HKXObject result = new HKXObject("", classDescriptor);	

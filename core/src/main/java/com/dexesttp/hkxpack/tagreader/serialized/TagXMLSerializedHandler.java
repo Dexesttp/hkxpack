@@ -16,5 +16,5 @@ public interface TagXMLSerializedHandler {
 	 * @throws InvalidTagXMLException 
 	 * @throws ClassFileReadException 
 	 */
-	public HKXMember handleMember(HKXMemberTemplate memberTemplate) throws ClassFileReadException, InvalidTagXMLException;
+	HKXMember handleMember(HKXMemberTemplate memberTemplate) throws ClassFileReadException, InvalidTagXMLException;
 }

@@ -26,12 +26,12 @@ class TagXMLHandler {
 	 * @return
 	 * @throws ParserConfigurationException if there was an error while handling the Document creation.
 	 */
-	Document createDOM(String verName, int version) throws ParserConfigurationException {
+	Document createDOM(final String verName, final int version) throws ParserConfigurationException {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder = factory.newDocumentBuilder();
 		Document doc = builder.newDocument();
 		Element root = doc.createElement("hkpackfile");
-		root.setAttribute("classversion", ""+version);
+		root.setAttribute("classversion", Integer.toString(version));
 		root.setAttribute("contentsversion", verName);
 		doc.appendChild(root);
 		return doc;
@@ -43,7 +43,7 @@ class TagXMLHandler {
 	 * @param name the name of the section.
 	 * @return the hksection's {@link Element}
 	 */
-	Element createSection(Document document, String name) {
+	Element createSection(final Document document, final String name) {
 		Element section = document.createElement("hksection");
 		section.setAttribute("name", name);
 		document.getChildNodes().item(0).appendChild(section);

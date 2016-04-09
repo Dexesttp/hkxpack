@@ -6,9 +6,15 @@ import com.dexesttp.hkxpack.descriptor.exceptions.ClassFileReadException;
 import com.dexesttp.hkxpack.descriptor.members.HKXMemberTemplate;
 import com.dexesttp.hkxpack.tagreader.exceptions.InvalidTagXMLException;
 
+/**
+ * Handles direct serialized members generation.
+ */
 class TagXMLDirectSerializedHandler implements TagXMLSerializedHandler {
 
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public HKXMember handleMember(final HKXMemberTemplate memberTemplate) throws ClassFileReadException, InvalidTagXMLException {
 		return emptyMember(memberTemplate);
 	}

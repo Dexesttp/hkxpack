@@ -81,14 +81,17 @@ public final class ObjectSizeResolver {
 	 */
 	public static long getSize(final HKXDescriptor descriptor, final HKXDescriptorFactory descriptorFactory) throws ClassFileReadException {
 		List<HKXMemberTemplate> templates = descriptor.getMemberTemplates();
-		if(templates.isEmpty())
+		if(templates.isEmpty()) {
 			return 0;
+		}
 		long bestSnap = getSnap(descriptor, descriptorFactory);
 		HKXMemberTemplate lastTemplate = templates.get(templates.size() - 1);
-		if(lastTemplate.vtype.getFamily() == HKXTypeFamily.ENUM)
+		if(lastTemplate.vtype.getFamily() == HKXTypeFamily.ENUM) {
 			return HKXUtils.snapSize(lastTemplate.offset + MemberSizeResolver.getSize(lastTemplate.vsubtype), bestSnap);
-		if(lastTemplate.vtype != HKXType.TYPE_STRUCT)
+		}
+		if(lastTemplate.vtype != HKXType.TYPE_STRUCT) {
 			return HKXUtils.snapSize(lastTemplate.offset + MemberSizeResolver.getSize(lastTemplate.vtype), bestSnap);
+		}
 		HKXDescriptor internalDescriptor = descriptorFactory.get(lastTemplate.target);
 		return HKXUtils.snapSize(lastTemplate.offset + getSize(internalDescriptor, descriptorFactory), bestSnap);
 	}
@@ -121,14 +124,17 @@ public final class ObjectSizeResolver {
 	 */
 	public static long getSize(final HKXObject object) {
 		List<HKXMemberTemplate> templates = object.getDescriptor().getMemberTemplates();
-		if(templates.isEmpty())
+		if(templates.isEmpty()) {
 			return 0;
+		}
 		long bestSnap = getSnap(object);
 		HKXMemberTemplate lastTemplate = templates.get(templates.size() - 1);
-		if(lastTemplate.vtype.getFamily() == HKXTypeFamily.ENUM)
+		if(lastTemplate.vtype.getFamily() == HKXTypeFamily.ENUM) {
 			return HKXUtils.snapSize(lastTemplate.offset + MemberSizeResolver.getSize(lastTemplate.vsubtype), bestSnap);
-		if(lastTemplate.vtype != HKXType.TYPE_STRUCT)
+		}
+		if(lastTemplate.vtype != HKXType.TYPE_STRUCT) {
 			return HKXUtils.snapSize(lastTemplate.offset + MemberSizeResolver.getSize(lastTemplate.vtype), bestSnap);
+		}
 		HKXObject internalObject = (HKXObject) object.getMembersList().get(templates.size() - 1);
 		return HKXUtils.snapSize(lastTemplate.offset + getSize(internalObject), bestSnap);
 	}

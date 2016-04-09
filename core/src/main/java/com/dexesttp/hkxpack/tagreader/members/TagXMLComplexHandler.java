@@ -11,43 +11,51 @@ import com.dexesttp.hkxpack.descriptor.enums.HKXType;
 import com.dexesttp.hkxpack.descriptor.members.HKXMemberTemplate;
 import com.dexesttp.hkxpack.tagreader.exceptions.InvalidTagXMLException;
 
+/**
+ * Handles a complex TagXML member.
+ */
 public class TagXMLComplexHandler implements TagXMLContentsHandler {
-	private static final String numMatch = "(-?\\d+(?:\\.\\d+)?(?:E-?\\d+)? ?)";
-	private static final String vec4 = "\\("+numMatch+numMatch+numMatch+numMatch+"\\)";
-	private static final Pattern pattern4 = Pattern.compile(vec4);
-	private static final Pattern patternQS = Pattern.compile(vec4 + vec4 + vec4);
-	private static final Pattern patternM4 = Pattern.compile(vec4 + vec4 + vec4 + vec4);
+	private static final String NUMBER_MATCHER = "(-?\\d+(?:\\.\\d+)?(?:E-?\\d+)? ?)";
+	private static final String VECTOR4_MATCHER = "\\("+NUMBER_MATCHER+NUMBER_MATCHER+NUMBER_MATCHER+NUMBER_MATCHER+"\\)";
+	private static final Pattern PATTERN_FOR_VEC4 = Pattern.compile(VECTOR4_MATCHER);
+	private static final Pattern PATTERN_FOR_QS = Pattern.compile(VECTOR4_MATCHER + VECTOR4_MATCHER + VECTOR4_MATCHER);
+	private static final Pattern PATTERN_FOR_M4 = Pattern.compile(VECTOR4_MATCHER + VECTOR4_MATCHER + VECTOR4_MATCHER + VECTOR4_MATCHER);
+	
 	
 	@Override
-	public HKXMember handleNode(Node member, HKXMemberTemplate memberTemplate) throws InvalidTagXMLException {
+	/**
+	 * {@inheritDoc}
+	 */
+	public HKXMember handleNode(final Node member, final HKXMemberTemplate memberTemplate) throws InvalidTagXMLException {
 		return handleString(member.getTextContent(), memberTemplate.name, memberTemplate.vtype);
 	}
 
-	HKXMember handleString(String contents, String memberName, HKXType memberType) {
+	HKXMember handleString(final String contents, final String memberName, final HKXType memberType) {
 		Pattern pattern = getPattern(memberType);
 		Matcher m = pattern.matcher(contents);
-		if(!m.find())
+		if(!m.find()) {
 			throw new IllegalArgumentException("memberName : " + memberName);
+		}
 		return handleMatcher(m, memberName, memberType);
 	}
 
-	Pattern getPattern(HKXType memberType) {
+	Pattern getPattern(final HKXType memberType) {
 		switch(memberType) {
 			case TYPE_VECTOR4:
 			case TYPE_QUATERNION:
-				return pattern4;
+				return PATTERN_FOR_VEC4;
 			case TYPE_MATRIX3:
 			case TYPE_QSTRANSFORM:
-				return patternQS;
+				return PATTERN_FOR_QS;
 			case TYPE_MATRIX4:
 			case TYPE_TRANSFORM:
-				return patternM4;
+				return PATTERN_FOR_M4;
 			default:
 				throw new IllegalArgumentException();
 		}
 	}
 	
-	HKXMember handleMatcher(Matcher m, String memberName, HKXType memberType) {
+	HKXMember handleMatcher(final Matcher m, final String memberName, final HKXType memberType) {
 		HKXDirectMember<Double[]> member = new HKXDirectMember<>(memberName, memberType);
 		switch(m.groupCount()) {
 			case 3 :
@@ -100,6 +108,8 @@ public class TagXMLComplexHandler implements TagXMLContentsHandler {
 					Double.parseDouble(m.group(15)),
 					Double.parseDouble(m.group(16))
 				});
+				break;
+			default:
 				break;
 		}
 		return member;

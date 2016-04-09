@@ -15,15 +15,15 @@ import com.dexesttp.hkxpack.tagreader.exceptions.InvalidTagXMLException;
  * Handles a {@link Node} into a {@link HKXObject}.
  */
 class TagXMLObjectHandler {
-	private final HKXDescriptorFactory descriptorFactory;
-	private final TagXMLMemberHandler memberHandler;
+	private final transient HKXDescriptorFactory descriptorFactory;
+	private final transient TagXMLMemberHandler memberHandler;
 
 	/**
 	 * Creates a {@link TagXMLObjectHandler}.
 	 * @param descriptorFactory the {@link HKXDescriptorFactory} used to retrieve a hkclass descriptor.
 	 * @param memberHandler the {@link TagXMLMemberHandler} used while parsing members.
 	 */
-	TagXMLObjectHandler(HKXDescriptorFactory descriptorFactory, TagXMLMemberHandler memberHandler) {
+	TagXMLObjectHandler(final HKXDescriptorFactory descriptorFactory, final TagXMLMemberHandler memberHandler) {
 		this.descriptorFactory = descriptorFactory;
 		this.memberHandler = memberHandler;
 	}
@@ -36,7 +36,7 @@ class TagXMLObjectHandler {
 	 * @throws ClassFileReadException if there was a problem reading the Class data from the program's resources.
 	 * @throws InvalidTagXMLException if there was an error parsing the TagXML file.
 	 */
-	HKXObject handleObject(Node objectNode, String className) throws ClassFileReadException, InvalidTagXMLException {
+	HKXObject handleObject(final Node objectNode, final String className) throws ClassFileReadException, InvalidTagXMLException {
 		HKXDescriptor classDescriptor = descriptorFactory.get(className);
 		// Create object 
 		String objectName = DOMUtils.getNodeAttr("name", objectNode);

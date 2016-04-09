@@ -11,7 +11,7 @@ import com.dexesttp.hkxpack.hkx.header.HeaderData;
  * Creates a {@link HeaderData} object from the given {@link HKXFile}.
  */
 public class HKXHeaderFactory {
-	private List<String> animClassesList = new ArrayList<>();
+	private final transient List<String> animClassesList = new ArrayList<>();
 
 	/**
 	 * Creates a {@link HKXHeaderFactory}
@@ -26,11 +26,12 @@ public class HKXHeaderFactory {
 	 * @param file the {@link HKXFile} to get the header from.
 	 * @return the relevant {@link HeaderData}.
 	 */
-	public HeaderData create(HKXFile file) {
+	public HeaderData create(final HKXFile file) {
 		boolean isAnim = false;
 		for(HKXObject object : file.getContentCollection()) {
-			if(animClassesList.contains(object.getDescriptor().getName()))
-					isAnim = true;
+			if(animClassesList.contains(object.getDescriptor().getName())) {
+				isAnim = true;
+			}
 		}
 		
 		HeaderData header = new HeaderData();

@@ -13,11 +13,10 @@ import com.dexesttp.hkxpack.tagreader.exceptions.InvalidTagXMLException;
  * Handles general node data retrieval, discrimining between root {@link HKXObject}, embedded {@link HKXObject} and {@link HKXMember}s.
  */
 public class TagXMLNodeHandler {
-	private final TagXMLMemberHandler memberHandler;
-	private final TagXMLObjectHandler objectHandler;
+	private final transient TagXMLObjectHandler objectHandler;
 
-	TagXMLNodeHandler(HKXDescriptorFactory descriptorFactory) {
-		this.memberHandler = new TagXMLMemberHandler(this, descriptorFactory);
+	TagXMLNodeHandler(final HKXDescriptorFactory descriptorFactory) {
+		TagXMLMemberHandler memberHandler = new TagXMLMemberHandler(this, descriptorFactory);
 		this.objectHandler = new TagXMLObjectHandler(descriptorFactory, memberHandler);
 	}
 
@@ -28,7 +27,7 @@ public class TagXMLNodeHandler {
 	 * @throws ClassFileReadException if there was a problem reading the Class data from the program's resources.
 	 * @throws InvalidTagXMLException if there was an error parsing the TagXML file.
 	 */
-	HKXObject handleObject(Node objectNode) throws ClassFileReadException, InvalidTagXMLException {
+	HKXObject handleObject(final Node objectNode) throws ClassFileReadException, InvalidTagXMLException {
 		// Retrieve descriptor
 		String className = DOMUtils.getNodeAttr("class", objectNode);
 		return objectHandler.handleObject(objectNode, className);
@@ -42,7 +41,7 @@ public class TagXMLNodeHandler {
 	 * @throws ClassFileReadException if there was a problem reading the Class data from the program's resources.
 	 * @throws InvalidTagXMLException if there was an error parsing the TagXML file.
 	 */
-	public HKXObject handleSubObject(Node objectNode, String className) throws ClassFileReadException, InvalidTagXMLException {
+	public HKXObject handleSubObject(final Node objectNode, final String className) throws ClassFileReadException, InvalidTagXMLException {
 		return objectHandler.handleObject(objectNode, className);
 	}
 }

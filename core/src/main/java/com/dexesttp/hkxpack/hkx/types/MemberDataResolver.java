@@ -193,100 +193,100 @@ public final class MemberDataResolver {
 			case TYPE_VECTOR4:
 			case TYPE_QUATERNION:
 				HKXDirectMember<Double[]> memberTransform = (HKXDirectMember<Double[]>) member;
-				byte[] memberTr_1 = ByteUtils.fromFloat(memberTransform.get()[0], 4);
-				byte[] memberTr_2 = ByteUtils.fromFloat(memberTransform.get()[1], 4);
-				byte[] memberTr_3 = ByteUtils.fromFloat(memberTransform.get()[2], 4);
-				byte[] memberTr_4 = ByteUtils.fromFloat(memberTransform.get()[3], 4);
+				byte[] memberTr1 = ByteUtils.fromFloat(memberTransform.get()[0], 4);
+				byte[] memberTr2 = ByteUtils.fromFloat(memberTransform.get()[1], 4);
+				byte[] memberTr3 = ByteUtils.fromFloat(memberTransform.get()[2], 4);
+				byte[] memberTr4 = ByteUtils.fromFloat(memberTransform.get()[3], 4);
 				return new byte[]{
-						memberTr_1[0], memberTr_1[1], memberTr_1[2], memberTr_1[3],
-						memberTr_2[0], memberTr_2[1], memberTr_2[2], memberTr_2[3],
-						memberTr_3[0], memberTr_3[1], memberTr_3[2], memberTr_3[3],
-						memberTr_4[0], memberTr_4[1], memberTr_4[2], memberTr_4[3]
+						memberTr1[0], memberTr1[1], memberTr1[2], memberTr1[3],
+						memberTr2[0], memberTr2[1], memberTr2[2], memberTr2[3],
+						memberTr3[0], memberTr3[1], memberTr3[2], memberTr3[3],
+						memberTr4[0], memberTr4[1], memberTr4[2], memberTr4[3]
 				};
 			case TYPE_MATRIX3:
 			case TYPE_QSTRANSFORM:
 				HKXDirectMember<Double[]> memberQs = (HKXDirectMember<Double[]>) member;
-				byte[][] memberQs_1 = new byte[][] {
+				byte[][] memberQs1 = new byte[][] {
 					ByteUtils.fromFloat(memberQs.get()[0], 4),
 					ByteUtils.fromFloat(memberQs.get()[1], 4),
 					ByteUtils.fromFloat(memberQs.get()[2], 4),
 					ByteUtils.fromFloat(memberQs.get()[3], 4),
 				};
-				byte[][] memberQs_2 = new byte[][] {
+				byte[][] memberQs2 = new byte[][] {
 					ByteUtils.fromFloat(memberQs.get()[4], 4),
 					ByteUtils.fromFloat(memberQs.get()[5], 4),
 					ByteUtils.fromFloat(memberQs.get()[6], 4),
 					ByteUtils.fromFloat(memberQs.get()[7], 4),
 				};
-				byte[][] memberQs_3 = new byte[][] {
+				byte[][] memberQs3 = new byte[][] {
 					ByteUtils.fromFloat(memberQs.get()[8], 4),
 					ByteUtils.fromFloat(memberQs.get()[9], 4),
 					ByteUtils.fromFloat(memberQs.get()[10], 4),
 					ByteUtils.fromFloat(memberQs.get()[11], 4),
 				};
 				return new byte[]{
-						memberQs_1[0][0], memberQs_1[0][1], memberQs_1[0][2], memberQs_1[0][3],
-						memberQs_1[1][0], memberQs_1[1][1], memberQs_1[1][2], memberQs_1[1][3],
-						memberQs_1[2][0], memberQs_1[2][1], memberQs_1[2][2], memberQs_1[2][3],
-						memberQs_1[3][0], memberQs_1[3][1], memberQs_1[3][2], memberQs_1[3][3],
+						memberQs1[0][0], memberQs1[0][1], memberQs1[0][2], memberQs1[0][3],
+						memberQs1[1][0], memberQs1[1][1], memberQs1[1][2], memberQs1[1][3],
+						memberQs1[2][0], memberQs1[2][1], memberQs1[2][2], memberQs1[2][3],
+						memberQs1[3][0], memberQs1[3][1], memberQs1[3][2], memberQs1[3][3],
 
-						memberQs_2[0][0], memberQs_2[0][1], memberQs_2[0][2], memberQs_2[0][3],
-						memberQs_2[1][0], memberQs_2[1][1], memberQs_2[1][2], memberQs_2[1][3],
-						memberQs_2[2][0], memberQs_2[2][1], memberQs_2[2][2], memberQs_2[2][3],
-						memberQs_2[3][0], memberQs_2[3][1], memberQs_2[3][2], memberQs_2[3][3],
+						memberQs2[0][0], memberQs2[0][1], memberQs2[0][2], memberQs2[0][3],
+						memberQs2[1][0], memberQs2[1][1], memberQs2[1][2], memberQs2[1][3],
+						memberQs2[2][0], memberQs2[2][1], memberQs2[2][2], memberQs2[2][3],
+						memberQs2[3][0], memberQs2[3][1], memberQs2[3][2], memberQs2[3][3],
 
-						memberQs_3[0][0], memberQs_3[0][1], memberQs_3[0][2], memberQs_3[0][3],
-						memberQs_3[1][0], memberQs_3[1][1], memberQs_3[1][2], memberQs_3[1][3],
-						memberQs_3[2][0], memberQs_3[2][1], memberQs_3[2][2], memberQs_3[2][3],
-						memberQs_3[3][0], memberQs_3[3][1], memberQs_3[3][2], memberQs_3[3][3]
+						memberQs3[0][0], memberQs3[0][1], memberQs3[0][2], memberQs3[0][3],
+						memberQs3[1][0], memberQs3[1][1], memberQs3[1][2], memberQs3[1][3],
+						memberQs3[2][0], memberQs3[2][1], memberQs3[2][2], memberQs3[2][3],
+						memberQs3[3][0], memberQs3[3][1], memberQs3[3][2], memberQs3[3][3]
 				};
 			case TYPE_MATRIX4:
 			case TYPE_TRANSFORM:
 				HKXDirectMember<Double[]> memberM4 = (HKXDirectMember<Double[]>) member;
-				byte[][] memberM4_1 = new byte[][] {
+				byte[][] memberM41 = new byte[][] {
 					ByteUtils.fromFloat(memberM4.get()[0], 4),
 					ByteUtils.fromFloat(memberM4.get()[1], 4),
 					ByteUtils.fromFloat(memberM4.get()[2], 4),
 					ByteUtils.fromFloat(memberM4.get()[3], 4)
 				};
-				byte[][] memberM4_2 = new byte[][] {
+				byte[][] memberM42 = new byte[][] {
 					ByteUtils.fromFloat(memberM4.get()[4], 4),
 					ByteUtils.fromFloat(memberM4.get()[5], 4),
 					ByteUtils.fromFloat(memberM4.get()[6], 4),
 					ByteUtils.fromFloat(memberM4.get()[7], 4)
 				};
-				byte[][] memberM4_3 = new byte[][] {
+				byte[][] memberM43 = new byte[][] {
 					ByteUtils.fromFloat(memberM4.get()[8], 4),
 					ByteUtils.fromFloat(memberM4.get()[9], 4),
 					ByteUtils.fromFloat(memberM4.get()[10], 4),
 					ByteUtils.fromFloat(memberM4.get()[11], 4)
 				};
-				byte[][] memberM4_4 = new byte[][] {
+				byte[][] memberM44 = new byte[][] {
 					ByteUtils.fromFloat(memberM4.get()[12], 4),
 					ByteUtils.fromFloat(memberM4.get()[13], 4),
 					ByteUtils.fromFloat(memberM4.get()[14], 4),
 					ByteUtils.fromFloat(memberM4.get()[15], 4)
 				};
 				return new byte[]{
-						memberM4_1[0][0], memberM4_1[0][1], memberM4_1[0][2], memberM4_1[0][3],
-						memberM4_1[1][0], memberM4_1[1][1], memberM4_1[1][2], memberM4_1[1][3],
-						memberM4_1[2][0], memberM4_1[2][1], memberM4_1[2][2], memberM4_1[2][3],
-						memberM4_1[3][0], memberM4_1[3][1], memberM4_1[3][2], memberM4_1[3][3],
+						memberM41[0][0], memberM41[0][1], memberM41[0][2], memberM41[0][3],
+						memberM41[1][0], memberM41[1][1], memberM41[1][2], memberM41[1][3],
+						memberM41[2][0], memberM41[2][1], memberM41[2][2], memberM41[2][3],
+						memberM41[3][0], memberM41[3][1], memberM41[3][2], memberM41[3][3],
 
-						memberM4_2[0][0], memberM4_2[0][1], memberM4_2[0][2], memberM4_2[0][3],
-						memberM4_2[1][0], memberM4_2[1][1], memberM4_2[1][2], memberM4_2[1][3],
-						memberM4_2[2][0], memberM4_2[2][1], memberM4_2[2][2], memberM4_2[2][3],
-						memberM4_2[3][0], memberM4_2[3][1], memberM4_2[3][2], memberM4_2[3][3],
+						memberM42[0][0], memberM42[0][1], memberM42[0][2], memberM42[0][3],
+						memberM42[1][0], memberM42[1][1], memberM42[1][2], memberM42[1][3],
+						memberM42[2][0], memberM42[2][1], memberM42[2][2], memberM42[2][3],
+						memberM42[3][0], memberM42[3][1], memberM42[3][2], memberM42[3][3],
 
-						memberM4_3[0][0], memberM4_3[0][1], memberM4_3[0][2], memberM4_3[0][3],
-						memberM4_3[1][0], memberM4_3[1][1], memberM4_3[1][2], memberM4_3[1][3],
-						memberM4_3[2][0], memberM4_3[2][1], memberM4_3[2][2], memberM4_3[2][3],
-						memberM4_3[3][0], memberM4_3[3][1], memberM4_3[3][2], memberM4_3[3][3],
+						memberM43[0][0], memberM43[0][1], memberM43[0][2], memberM43[0][3],
+						memberM43[1][0], memberM43[1][1], memberM43[1][2], memberM43[1][3],
+						memberM43[2][0], memberM43[2][1], memberM43[2][2], memberM43[2][3],
+						memberM43[3][0], memberM43[3][1], memberM43[3][2], memberM43[3][3],
 
-						memberM4_4[0][0], memberM4_4[0][1], memberM4_4[0][2], memberM4_4[0][3],
-						memberM4_4[1][0], memberM4_4[1][1], memberM4_4[1][2], memberM4_4[1][3],
-						memberM4_4[2][0], memberM4_4[2][1], memberM4_4[2][2], memberM4_4[2][3],
-						memberM4_4[3][0], memberM4_4[3][1], memberM4_4[3][2], memberM4_4[3][3]
+						memberM44[0][0], memberM44[0][1], memberM44[0][2], memberM44[0][3],
+						memberM44[1][0], memberM44[1][1], memberM44[1][2], memberM44[1][3],
+						memberM44[2][0], memberM44[2][1], memberM44[2][2], memberM44[2][3],
+						memberM44[3][0], memberM44[3][1], memberM44[3][2], memberM44[3][3]
 				};
 		// Default
 			default:
