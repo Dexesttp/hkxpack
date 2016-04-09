@@ -7,15 +7,15 @@ public class CLIProperties {
 	/**
 	 * Debug option
 	 */
-	public static boolean debug = false;
+	public static boolean debug;
 
 	/**
 	 * Verbose (lots of text) option
 	 */
-	public static boolean verbose = false;
+	public static boolean verbose;
 
 	/**
 	 * Quiet (no text) option.
 	 */
-	public static boolean quiet = false;
+	public static boolean quiet;
 }

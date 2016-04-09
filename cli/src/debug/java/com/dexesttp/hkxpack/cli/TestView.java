@@ -1,5 +1,7 @@
 package com.dexesttp.hkxpack.cli;
 
+import java.util.logging.Logger;
+
 import com.dexesttp.hkxpack.cli.components.HKXTest;
 import com.dexesttp.hkxpack.cli.components.Read;
 import com.dexesttp.hkxpack.cli.components.Write;
@@ -14,15 +16,25 @@ import com.dexesttp.hkxpack.resources.LoggerUtil;
  * @see Read#exec(String, String)
  * @see Write#exec(String, String)
  */
-class TestView {
-	private static final String rootName = "D:\\Documents\\SANDBOX\\FO4\\hkx_files\\";
-	private static final String testName = "skeleton";
+final class TestView {
+	public static final Logger LOGGER = Logger.getLogger(TestView.class.getName());
+	private static final String ROOT_NAME = "D:\\Documents\\SANDBOX\\FO4\\hkx_files\\";
+	private static final String TEST_FILE_NAME = "skeleton";
 
-	public static void main(String[] args) {
-		Read.exec(rootName, testName);
-		Write.exec(rootName, testName);
-		Read.exec(rootName, testName + "-new");
-		for(Throwable e: LoggerUtil.getList())
-			e.printStackTrace();
+	/**
+	 * Testing entry point
+	 * @param args
+	 */
+	public static void main(final String... args) {
+		Read.exec(ROOT_NAME, TEST_FILE_NAME);
+		Write.exec(ROOT_NAME, TEST_FILE_NAME);
+		Read.exec(ROOT_NAME, TEST_FILE_NAME + "-new");
+		for(Throwable e: LoggerUtil.getList()) {
+			LOGGER.throwing(TestView.class.getName(), "main", e);
+		}
+	}
+
+	private TestView() {
+		// NO OP
 	}
 }

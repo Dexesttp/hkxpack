@@ -9,5 +9,5 @@ public interface Command {
 	 * @param parameters all the command-line arguments
 	 * @return the execution result value
 	 */
-	public int execute(String... parameters);
+	int execute(String... parameters);
 }

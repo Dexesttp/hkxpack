@@ -11,6 +11,7 @@ import java.util.List;
  * {@link #parse(String...)} parse arguments into {@link Options}.
  */
 public class ArgsParser {
+	private final transient OptionList optionList = new OptionList();
 
 	/**
 	 * Contains a list of {@link Options} associated with their argument catcher size.
@@ -18,11 +19,11 @@ public class ArgsParser {
 	private class OptionList extends HashMap<String, Integer> {
 		private static final long serialVersionUID = 7529991519923957630L;
 		
-		void add(String option, int numberOfArgs) {
+		void add(final String option, final int numberOfArgs) {
 			this.put(option, numberOfArgs);
 		}
 		
-		void add(String option) {
+		void add(final String option) {
 			this.put(option, -1);
 		}
 	}
@@ -43,11 +44,18 @@ public class ArgsParser {
 		 * @param position the position of the argument to retrieve
 		 * @return the relevant argument, or {@literal ""}
 		 */
-		public String get(String optionName, int position) {
-			try {
-				return this.get(optionName).get(position);
-			} catch(Exception e) {
+		public String get(final String optionName, final int position) {
+			List<String> list = this.get(optionName);
+			if(list == null) {
 				return "";
+			}
+			else {
+				if(list.size() > position) {
+					return list.get(position);
+				}
+				else {
+					return "";
+				}
 			}
 		}
 		
@@ -55,18 +63,16 @@ public class ArgsParser {
 		 * Returns true if the given {@code optionName} exists.
 		 * @param optionName the option to test the existence of.
 		 */
-		public boolean exists(String optionName) {
+		public boolean exists(final String optionName) {
 			return this.containsKey(optionName);
 		}
 	}
-	
-	private OptionList optionList = new OptionList();
 	
 	/**
 	 * Adds an option catching an unlimited number of arguments.
 	 * @param optionName the name of the argument to add.
 	 */
-	public void addOption(String optionName) {
+	public void addOption(final String optionName) {
 		optionList.add(optionName);
 	}
 	
@@ -75,7 +81,7 @@ public class ArgsParser {
 	 * @param optionName the name of the option to add
 	 * @param optionSize the number of arguments to catch
 	 */
-	public void addOption(String optionName, int optionSize) {
+	public void addOption(final String optionName, final int optionSize) {
 		optionList.add(optionName, optionSize);
 	}
 	
@@ -85,30 +91,41 @@ public class ArgsParser {
 	 * @return the {@link Options} object.
 	 * @throws WrongSizeException
 	 */
-	public Options parse(String... args) throws WrongSizeException {
+	public Options parse(final String... args) throws WrongSizeException {
 		Options res = new Options();
 		String optionName = "";
 		res.put(optionName, new ArrayList<>());
 		int countdown = -1;
 		for(String arg : args) {
-			if(countdown == 0)
+			if(countdown == 0) {
 				optionName = "";
+			}
 			if(optionList.containsKey(arg)) {
 				optionName = arg;
-				if(countdown > 0)
+				if(countdown > 0) {
 					throw new WrongSizeException(optionName);
-				else if(!res.containsKey(optionName))
-					res.put(optionName, new ArrayList<>());
-				else if(res.get(optionName).size() == optionList.get(arg))
-					throw new WrongSizeException(optionName);
+				}
+				else if(res.containsKey(optionName)) {
+					if(res.get(optionName).size() == optionList.get(arg)) {
+						throw new WrongSizeException(optionName);
+					}
+				}
+				else {
+					res.put(optionName, createList());
+				}
 				countdown = optionList.get(arg) - res.get(optionName).size();
 			} else {
 				countdown--;
 				res.get(optionName).add(arg);
 			}
 		}
-		if(countdown > 0)
+		if(countdown > 0) {
 			throw new WrongSizeException(optionName);
+		}
 		return res;
+	}
+
+	private List<String> createList() {
+		return new ArrayList<>();
 	}
 }

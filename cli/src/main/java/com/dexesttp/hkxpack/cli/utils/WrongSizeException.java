@@ -5,7 +5,11 @@ package com.dexesttp.hkxpack.cli.utils;
  */
 public class WrongSizeException extends Exception {
 	private static final long serialVersionUID = -4241588440572992978L;
-	public WrongSizeException(String option) {
+	/**
+	 * Create a {@link WrongSizeException}.
+	 * @param option the option that had the wrong size.
+	 */
+	public WrongSizeException(final String option) {
 		super(option);
 	}
 }
