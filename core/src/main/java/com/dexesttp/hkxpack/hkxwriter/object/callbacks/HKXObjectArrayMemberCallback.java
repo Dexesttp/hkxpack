@@ -40,7 +40,7 @@ public class HKXObjectArrayMemberCallback implements HKXArrayMemberCallback {
 			if(data instanceof HKXObject) {
 				HKXObject internalObject = (HKXObject) data;
 				long objectSize = ObjectSizeResolver.getSize(internalObject);
-				HKXMemberHandler memberHandler = new HKXObjectMemberHandler(0, memberHandlerFactory.clone(internalCallbacks), internalCallbacks);
+				HKXMemberHandler memberHandler = createObjectHandler(internalCallbacks);
 				internalCallbacks.add(memberHandler.write(internalObject, newPos));
 				newPos += objectSize;
 			}
@@ -48,6 +48,10 @@ public class HKXObjectArrayMemberCallback implements HKXArrayMemberCallback {
 		internalCallbacks.add((callbacks, newPosition) -> {return HKXUtils.snapLine(newPosition) - newPosition;});
 		memberCallbacks.addAll(0, internalCallbacks);
 		return newPos - position;
+	}
+
+	private HKXMemberHandler createObjectHandler(final List<HKXMemberCallback> internalCallbacks) {
+		return new HKXObjectMemberHandler(0, memberHandlerFactory.clone(internalCallbacks), internalCallbacks);
 	}
 
 }

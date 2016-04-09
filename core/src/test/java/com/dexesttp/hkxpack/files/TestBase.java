@@ -11,7 +11,7 @@ import com.dexesttp.hkxpack.descriptor.enums.HKXType;
 
 /**
  * The content reading tests for all files based on the "base" file.
- * Will throw a {@link NullPointerException} if there is no extension nor initialization of {@link #file}.
+ * JUnit will throw a {@link Exception} if there is no extension because of the TestBase constructor.
  */
 public abstract class TestBase {
 	protected final static String BASE_FILE_RESOURCE_NAME = "/test-base";
@@ -27,7 +27,7 @@ public abstract class TestBase {
 	
 	@Test
 	/**
-	 * Tests if there is the riht number of objects in the base file (1)
+	 * Tests if there is the right number of objects in the base file (1)
 	 */
 	public void testIfThereIsTheRightNumberOfObjects() {
 		assertEquals(1, file.getContentCollection().size());

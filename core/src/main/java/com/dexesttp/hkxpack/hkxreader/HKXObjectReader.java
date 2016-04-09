@@ -41,12 +41,16 @@ public class HKXObjectReader {
 				HKXMemberReader memberReader = memberFactory.getMemberReader(memberTemplate);
 				member = memberReader.read(position);
 			} catch (ClassFileReadException | InvalidPositionException e) {
-				member = new HKXFailedMember(memberTemplate.name, memberTemplate.vtype, e.getClass().getName());
+				member = createFailedMember(memberTemplate, e);
 				LoggerUtil.add(e);
 			}
 			result.getMembersList().add(member);
 		}
 		return result;
+	}
+
+	private HKXMember createFailedMember(final HKXMemberTemplate memberTemplate, final Exception e) {
+		return new HKXFailedMember(memberTemplate.name, memberTemplate.vtype, e.getClass().getName());
 	}
 
 }
