@@ -1,5 +1,4 @@
 package com.dexesttp.hkxpack.tagreader;
-
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -8,7 +7,7 @@ import com.dexesttp.hkxpack.data.members.HKXMember;
 import com.dexesttp.hkxpack.descriptor.HKXDescriptor;
 import com.dexesttp.hkxpack.descriptor.HKXDescriptorFactory;
 import com.dexesttp.hkxpack.descriptor.enums.Flag;
-import com.dexesttp.hkxpack.descriptor.exceptions.ClassFileReadError;
+import com.dexesttp.hkxpack.descriptor.exceptions.ClassFileReadException;
 import com.dexesttp.hkxpack.descriptor.members.HKXMemberTemplate;
 import com.dexesttp.hkxpack.l10n.SBundle;
 import com.dexesttp.hkxpack.resources.DOMUtils;
@@ -23,13 +22,16 @@ import com.dexesttp.hkxpack.tagreader.serialized.TagXMLSerializedHandlerFactory;
  * Handle a {@link Node} described by a {@link HKXDescriptor}'s {@link HKXMemberTemplate} into a full {@link HKXMember}.
  */
 class TagXMLMemberHandler {
+	private final transient TagXMLContentsHandlerFactory contentsFactory;
+	private final transient TagXMLSerializedHandlerFactory serializedHandlerFactory;
 
-	private final TagXMLNodeHandler nodeHandler;
-	private final TagXMLContentsHandlerFactory contentsFactory;
-	private final TagXMLSerializedHandlerFactory serializedHandlerFactory;
-
-	public TagXMLMemberHandler(TagXMLNodeHandler tagXMLNodeHandler, HKXDescriptorFactory descriptorFactory) {
-		this.nodeHandler = tagXMLNodeHandler;
+	/**
+	 * Creates a {@link TagXMLMemberHandler}.
+	 * @param tagXMLNodeHandler the node handler to use.
+	 * @param descriptorFactory the descriptor factory to use.
+	 */
+	public TagXMLMemberHandler(final TagXMLNodeHandler tagXMLNodeHandler, final HKXDescriptorFactory descriptorFactory) {
+		TagXMLNodeHandler nodeHandler = tagXMLNodeHandler;
 		this.contentsFactory = new TagXMLContentsHandlerFactory(nodeHandler);
 		this.serializedHandlerFactory = new TagXMLSerializedHandlerFactory(descriptorFactory);
 	}
@@ -40,18 +42,18 @@ class TagXMLMemberHandler {
 	 * @param memberTemplate the {@link Node}'s description, as a {@link HKXMemberTemplate}.
 	 * @return the resulting {@link HKXMember}.
 	 * @throws InvalidTagXMLException if there was an error in the given TagXML.
-	 * @throws ClassFileReadError if there was an error retrieving a ClassFile.
+	 * @throws ClassFileReadException if there was an error retrieving a ClassFile.
 	 */
-	HKXMember getMember(Node objectNode, HKXMemberTemplate memberTemplate) throws InvalidTagXMLException, ClassFileReadError {
+	HKXMember getMember(final Node objectNode, final HKXMemberTemplate memberTemplate) throws InvalidTagXMLException, ClassFileReadException {
 		// Get the right node.
 		Node member = getMemberNode(objectNode, memberTemplate.name);
 		if(member == null) {
-			if(memberTemplate.flag != Flag.SERIALIZE_IGNORED) {
-				LoggerUtil.add(new InvalidTagXMLException(SBundle.getString("error.tag.read.member") + memberTemplate.name));
-				return new HKXFailedMember(memberTemplate.name, memberTemplate.vtype, SBundle.getString("error.tag.read.member") + memberTemplate.name);
-			} else {
+			if(memberTemplate.flag == Flag.SERIALIZE_IGNORED) {
 				TagXMLSerializedHandler serializedHandler = serializedHandlerFactory.getSerializedHandler(memberTemplate.vtype);
 				return serializedHandler.handleMember(memberTemplate);
+			} else {
+				LoggerUtil.add(new InvalidTagXMLException(SBundle.getString("error.tag.read.member") + memberTemplate.name));
+				return new HKXFailedMember(memberTemplate.name, memberTemplate.vtype, SBundle.getString("error.tag.read.member") + memberTemplate.name);
 			}
 		} else {
 			// Get the right handler
@@ -61,13 +63,12 @@ class TagXMLMemberHandler {
 		}
 	}
 
-	private Node getMemberNode(Node objectNode, String name) throws InvalidTagXMLException {
+	private Node getMemberNode(final Node objectNode, final String name) throws InvalidTagXMLException {
 		NodeList children = objectNode.getChildNodes();
 		for(int i = 0; i < children.getLength(); i++) {
 			Node child = children.item(i);
-			if(child.getNodeName().equals("hkparam")) {
-				if(DOMUtils.getNodeAttr("name", child).equals(name))
-					return child;
+			if(child.getNodeName().equals("hkparam") && DOMUtils.getNodeAttr("name", child).equals(name)) {
+				return child;
 			}
 		}
 		return null;

@@ -21,10 +21,13 @@ import com.dexesttp.hkxpack.tagreader.exceptions.InvalidTagXMLException;
  */
 public class Command_pack extends Command_IO {
 	@Override
-	protected void execution_core(String inputFileName, String outputFileName,
-			HKXEnumResolver enumResolver, HKXDescriptorFactory descriptorFactory)
-					throws ParserConfigurationException, SAXException, IOException,
-					InvalidTagXMLException, UnsupportedVersionError {
+	/**
+	 * {@inheritDoc}
+	 */
+	protected void executionCore(final String inputFileName, final String outputFileName,
+			final HKXEnumResolver enumResolver, final HKXDescriptorFactory descriptorFactory)
+		throws ParserConfigurationException, SAXException, IOException,
+			InvalidTagXMLException, UnsupportedVersionError {
 		// Read XML file
 		File inFile = new File(inputFileName);
 		TagXMLReader reader = new TagXMLReader(inFile, descriptorFactory);
@@ -38,11 +41,17 @@ public class Command_pack extends Command_IO {
 	}
 
 	@Override
-	protected String extractFileName(String ogName) {
-		return ogName.substring(0, ogName.lastIndexOf(".")) + ".hkx";
+	/**
+	 * {@inheritDoc}
+	 */
+	protected String extractFileName(final String ogName) {
+		return ogName.substring(0, ogName.lastIndexOf('.')) + ".hkx";
 	}
 
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	protected String[] getFileExtensions() {
 		return new String[] {".xml"};
 	}

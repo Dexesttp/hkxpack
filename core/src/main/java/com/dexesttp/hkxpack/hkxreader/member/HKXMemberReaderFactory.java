@@ -4,7 +4,7 @@ import com.dexesttp.hkxpack.descriptor.HKXDescriptor;
 import com.dexesttp.hkxpack.descriptor.HKXDescriptorFactory;
 import com.dexesttp.hkxpack.descriptor.HKXEnumResolver;
 import com.dexesttp.hkxpack.descriptor.enums.HKXType;
-import com.dexesttp.hkxpack.descriptor.exceptions.ClassFileReadError;
+import com.dexesttp.hkxpack.descriptor.exceptions.ClassFileReadException;
 import com.dexesttp.hkxpack.descriptor.members.HKXMemberTemplate;
 import com.dexesttp.hkxpack.hkxreader.HKXObjectReader;
 import com.dexesttp.hkxpack.hkxreader.HKXReaderConnector;
@@ -13,27 +13,53 @@ import com.dexesttp.hkxpack.hkxreader.member.arrays.HKXArrayContentsReader;
 import com.dexesttp.hkxpack.hkxreader.member.arrays.HKXArrayContentsReaderFactory;
 import com.dexesttp.hkxpack.l10n.SBundle;
 
+/**
+ * Creates the relevant {@link HKXMemberReader} from a given {@link HKXMemberTemplate}.
+ */
 public class HKXMemberReaderFactory {
-	private final HKXDescriptorFactory descriptorFactory;
-	private final HKXReaderConnector connector;
-	private final PointerNameGenerator generator;
-	private final HKXEnumResolver enumResolver;
-	private HKXObjectReader objectCreator;
-	private HKXArrayContentsReaderFactory acrFactory;
+	private final transient HKXDescriptorFactory descriptorFactory;
+	private final transient HKXReaderConnector connector;
+	private final transient PointerNameGenerator generator;
+	private final transient HKXEnumResolver enumResolver;
+	private transient HKXObjectReader objectCreator;
+	private transient HKXArrayContentsReaderFactory acrFactory;
 
-	public HKXMemberReaderFactory(HKXDescriptorFactory descriptorFactory, HKXReaderConnector connector, PointerNameGenerator generator, HKXEnumResolver enumResolver) {
+	/**
+	 * Creates a {@link HKXMemberReaderFactory}
+	 * @param descriptorFactory the {@link HKXDescriptorFactory} to use.
+	 * @param connector the {@link HKXReaderConnector} that links to the file.
+	 * @param generator the {@link PointerNameGenerator} to create pointer names with.
+	 * @param enumResolver the {@link HKXEnumResolver} to use, should be connected to the {@link HKXDescriptorFactory}.
+	 * @see HKXMemberReaderFactory#connectObjectCreator(HKXObjectReader)
+	 */
+	public HKXMemberReaderFactory(final HKXDescriptorFactory descriptorFactory,
+			final HKXReaderConnector connector, final PointerNameGenerator generator,
+			final HKXEnumResolver enumResolver) {
 		this.descriptorFactory = descriptorFactory;
 		this.connector = connector;
 		this.generator = generator;
 		this.enumResolver = enumResolver;
 	}
 
-	public void connectObjectCreator(HKXObjectReader objectCreator) {
+	/**
+	 * Connect an object creator to the {@link HKXMemberReaderFactory}.
+	 * <p>
+	 * This method is required after the {@link HKXMemberReaderFactory} is created.
+	 * However, as the connection between a {@link HKXObjectReader} and a {@link HKXMemberReaderFactory} is cyclic, this is a distinct method from the constructor.
+	 * @param objectCreator
+	 */
+	public void connectObjectCreator(final HKXObjectReader objectCreator) {
 		this.objectCreator = objectCreator;
 		this.acrFactory = new HKXArrayContentsReaderFactory(connector, descriptorFactory, objectCreator, generator);
 	}
 
-	public HKXMemberReader getMemberReader(HKXMemberTemplate template) throws ClassFileReadError {
+	/**
+	 * Retrieves the relevant {@link HKXMemberReader} from a {@link HKXMemberTemplate}.
+	 * @param template the {@link HKXMemberTemplate} to resolve. 
+	 * @return the relevant {@link HKXMemberReader}.
+	 * @throws ClassFileReadException if there was an error resolving the template.
+	 */
+	public HKXMemberReader getMemberReader(final HKXMemberTemplate template) throws ClassFileReadException {
 		switch(template.vtype.getFamily()) {
 			case DIRECT:
 			case COMPLEX:
@@ -43,10 +69,12 @@ public class HKXMemberReaderFactory {
 				
 			case ARRAY:
 				HKXArrayContentsReader arrayContentsReader = acrFactory.get(template);
-				if(template.vtype == HKXType.TYPE_RELARRAY)
+				if(template.vtype == HKXType.TYPE_RELARRAY) {
 					return new HKXRelArrayMemberReader(connector, template.name, template.vsubtype, arrayContentsReader, template.offset);
-				else
+				}
+				else {
 					return new HKXArrayMemberReader(connector, template.name, template.vsubtype, arrayContentsReader, template.offset);
+				}
 			case OBJECT:
 				HKXDescriptor descriptor = descriptorFactory.get(template.target);
 				return new HKXObjectMemberReader(objectCreator, template.name, template.offset, descriptor);

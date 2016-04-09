@@ -21,12 +21,12 @@ import com.dexesttp.hkxpack.hkxwriter.utils.PointerResolver;
  * This uses {@link HKXPointersHandler} and {@link HKXObjectHandler} as its main components.
  */
 class HKXDataHandler {
-	private final ByteBuffer outFile;
-	private final ClassnamesData cnameData;
-	private final HKXEnumResolver enumResolver;
-	private final List<DataInternal> data1queue;
-	private final List<PointerObject> data2queue;
-	private final List<DataExternal> data3queue;
+	private final transient ByteBuffer outFile;
+	private final transient ClassnamesData cnameData;
+	private final transient HKXEnumResolver enumResolver;
+	private final transient List<DataInternal> data1queue;
+	private final transient List<PointerObject> data2queue;
+	private final transient List<DataExternal> data3queue;
 
 	/**
 	 * Create a {@link HKXDataHandler} associated with the given output {@link ByteBuffer} as well as the given {@link HKXEnumResolver}.
@@ -34,7 +34,7 @@ class HKXDataHandler {
 	 * @param classnamesData the {@link ClassnamesData}.
 	 * @param enumResolver the {@link HKXEnumResolver} to resolve enums with.
 	 */
-	HKXDataHandler(ByteBuffer outFile, ClassnamesData classnamesData, HKXEnumResolver enumResolver) {
+	HKXDataHandler(final ByteBuffer outFile, final ClassnamesData classnamesData, final HKXEnumResolver enumResolver) {
 		this.outFile = outFile;
 		this.cnameData = classnamesData;
 		this.enumResolver = enumResolver;
@@ -50,10 +50,10 @@ class HKXDataHandler {
 	 * @param resolver the PointerResolver to resolve objects with.
 	 * @return the position of the byte just after the end of the Data section
 	 */
-	long fillFile(SectionData data, HKXFile file, PointerResolver resolver) {
+	long fillFile(final SectionData data, final HKXFile file, final PointerResolver resolver) {
 		long currentPos = data.offset;
 		HKXObjectHandler objectHandler = new HKXObjectHandler(outFile, cnameData, data, enumResolver, data1queue, data2queue, data3queue, resolver);
-		for(HKXObject object : file.content()) {
+		for(HKXObject object : file.getContentCollection()) {
 			currentPos = objectHandler.handle(object, currentPos);
 			currentPos = HKXUtils.snapLine(currentPos);
 		}
@@ -64,7 +64,7 @@ class HKXDataHandler {
 	 * Fill the file {@link ByteBuffer} with the intended Data pointers, and store the offsets in the given {@link SectionData}.
 	 * @param data the section data to store the offsets into.
 	 */
-	void fillPointers(SectionData data, PointerResolver resolver) {
+	void fillPointers(final SectionData data, final PointerResolver resolver) {
 		HKXPointersHandler handler = new HKXPointersHandler(outFile, data);
 		List<DataExternal> data2resolved = new ArrayList<>();
 		for(DataInternal internal : data1queue) {
@@ -72,12 +72,11 @@ class HKXDataHandler {
 			internal.to -= data.offset;
 		}
 		for(PointerObject ptr : data2queue) {
-			DataExternal resolved = resolver.resolve(ptr);
-			if(resolved != null) {
-				resolved.from -= data.offset;
-				resolved.to -= data.offset;
-				data2resolved.add(resolved);
-			}
+			resolver.resolve(ptr).ifPresent((pointerData) -> {
+				pointerData.from -= data.offset;
+				pointerData.to -= data.offset;
+				data2resolved.add(pointerData);
+			});
 		}
 		handler.write(data1queue, data2resolved, data3queue);
 	}

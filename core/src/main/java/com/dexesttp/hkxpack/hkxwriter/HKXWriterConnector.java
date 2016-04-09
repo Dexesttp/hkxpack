@@ -15,21 +15,22 @@ import com.dexesttp.hkxpack.hkxreader.HKXReaderConnector;
  * Handles all connections to the {@link ByteBuffer} for {@link HeaderData} and {@link SectionData} objects.
  */
 class HKXWriterConnector {
-	private ByteBuffer file;
+	private final transient ByteBuffer file;
 
 	/**
 	 * Creates a {@link HKXWriterConnector} linked to the given {@link ByteBuffer}.
 	 * @param outputFile the {@link ByteBuffer} to link this connector to.
 	 */
-	HKXWriterConnector(ByteBuffer outputFile) {
+	HKXWriterConnector(final ByteBuffer outputFile) {
 		this.file = outputFile;
 	}
 	
 	/**
 	 * Cleans the file.
-	 * @deprecated {@link ByteBuffer} usage no longer allows or requires this step
+	 * @deprecated {@link ByteBuffer} usage no longer allows nor requires this step
 	 */
 	void clean() {
+		// Deprecated
 	}
 
 	/**
@@ -37,7 +38,7 @@ class HKXWriterConnector {
 	 * @param data the {@link HeaderData} to write.
 	 * @throws UnsupportedVersionError if the given {@link HeaderData} have an unsupported version.
 	 */
-	void writeHeader(HeaderData data) throws  UnsupportedVersionError {
+	void writeHeader(final HeaderData data) throws  UnsupportedVersionError {
 		HeaderInterface headerConnector = new HeaderInterface();
 		headerConnector.connect(file);
 		headerConnector.compress(data);
@@ -49,7 +50,7 @@ class HKXWriterConnector {
 	 * @param sectionID the section position to write.
 	 * @param section the {@link SectionData} to write to the file.
 	 */
-	void writeSection(HeaderData header, int sectionID, SectionData section) {
+	void writeSection(final HeaderData header, final int sectionID, final SectionData section) {
 		SectionInterface sectionConnector = new SectionInterface();
 		sectionConnector.connect(file, header);
 		sectionConnector.compress(section, sectionID);
@@ -61,10 +62,9 @@ class HKXWriterConnector {
 	 * @param data the {@link ClassnamesData} to write.
 	 * @return the position of the byte just after the end of the ClassnamesData section.
 	 */
-	public long writeClassnames(SectionData classnames, ClassnamesData data) {
+	public long writeClassnames(final SectionData classnames, final ClassnamesData data) {
 		ClassnamesInterface classnamesConnector = new ClassnamesInterface();
 		classnamesConnector.connect(file, classnames);
-		long cnameEnd = classnamesConnector.compress(data);
-		return cnameEnd;
+		return classnamesConnector.compress(data);
 	}
 }

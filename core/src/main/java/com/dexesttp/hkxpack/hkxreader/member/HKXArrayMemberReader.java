@@ -14,14 +14,19 @@ import com.dexesttp.hkxpack.hkxreader.HKXReaderConnector;
 import com.dexesttp.hkxpack.hkxreader.member.arrays.HKXArrayContentsReader;
 import com.dexesttp.hkxpack.resources.byteutils.ByteUtils;
 
+/**
+ * Reads a classic (v8) array from a HKX file.
+ * @see HKXArrayContentsReader
+ */
 public class HKXArrayMemberReader implements HKXMemberReader {
-	private final HKXReaderConnector connector;
-	private final String name;
-	private final HKXType subtype;
-	private final HKXArrayContentsReader internals;
-	private final long memberOffset;
+	private final transient HKXReaderConnector connector;
+	private final transient String name;
+	private final transient HKXType subtype;
+	private final transient HKXArrayContentsReader internals;
+	private final transient long memberOffset;
 
-	HKXArrayMemberReader(HKXReaderConnector connector, String name, HKXType subtype, HKXArrayContentsReader internals, long offset) {
+	HKXArrayMemberReader(final HKXReaderConnector connector, final String name, final HKXType subtype,
+			final HKXArrayContentsReader internals, final long offset) {
 		this.connector = connector;
 		this.name = name;
 		this.subtype = subtype;
@@ -30,17 +35,20 @@ public class HKXArrayMemberReader implements HKXMemberReader {
 	}
 
 	@Override
-	public HKXMember read(long classOffset) throws InvalidPositionException {
+	/**
+	 * {@inheritDoc}
+	 */
+	public HKXMember read(final long classOffset) throws InvalidPositionException {
 		final int memberSize = (int) MemberSizeResolver.getSize(HKXType.TYPE_ARRAY);
 		ByteBuffer file = connector.data.setup(classOffset + memberOffset);
-		byte[] b = new byte[memberSize];
-		file.get(b);
+		byte[] baseArrayBytes = new byte[memberSize];
+		file.get(baseArrayBytes);
 		HKXArrayMember result = new HKXArrayMember(name, HKXType.TYPE_ARRAY, subtype);
-		int arrSize = getSizeComponent(b);
+		int arrSize = getSizeComponent(baseArrayBytes);
 		if(arrSize > 0) {
 			Data1Interface data1 = connector.data1;
 			DataInternal arrValue = data1.readNext();
-			assert(arrValue.from == classOffset + memberOffset);
+			assert arrValue.from == classOffset + memberOffset;
 			for(int i = 0; i < arrSize; i++ ) {
 				HKXData data = internals.getContents(arrValue.to, i);
 				result.add(data);
@@ -49,9 +57,9 @@ public class HKXArrayMemberReader implements HKXMemberReader {
 		return result;
 	}
 
-	private int getSizeComponent(byte[] b) {
-		byte[] newB = new byte[]{b[8], b[9], b[10], b[11]};
-		return ByteUtils.getUInt(newB);
+	private int getSizeComponent(final byte[] arrayBaseBytes) {
+		byte[] sizeSpecificBytes = new byte[]{arrayBaseBytes[8], arrayBaseBytes[9], arrayBaseBytes[10], arrayBaseBytes[11]};
+		return ByteUtils.getUInt(sizeSpecificBytes);
 	}
 }
 

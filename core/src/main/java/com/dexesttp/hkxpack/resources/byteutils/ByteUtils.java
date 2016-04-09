@@ -10,53 +10,95 @@ import java.nio.ByteBuffer;
  * @see StringByteUtils
  * @see FloatByteUtils
  */
-public class ByteUtils {
+public final class ByteUtils {
+	private ByteUtils() {
+		// NO OP
+	}
 	
 	// Get functions
-	public static int getSInt(byte[] list) {
+	/**
+	 * @see SLongByteUtils#getLong(byte[])
+	 */
+	public static int getSInt(final byte[] list) {
 		return (int) SLongByteUtils.getLong(list);
 	}
 
-	public static int getUInt(byte[] list) {
+	/**
+	 * @see ULongByteUtils#getLong(byte[])
+	 */
+	public static int getUInt(final byte[] list) {
 		return (int) ULongByteUtils.getLong(list);
 	}
 
-	public static long getULong(byte[] list) {
+	/**
+	 * @see SLongByteUtils#getLong(byte[])
+	 */
+	public static long getULong(final byte[] list) {
 		return ULongByteUtils.getLong(list);
 	}
 
-	public static float getFloat(byte[] value) {
+	/**
+	 * @see FloatByteUtils#getFloat(byte[])
+	 */
+	public static float getFloat(final byte[] value) {
 		return FloatByteUtils.getFloat(value);
 	}
 
 	// From functions
-	public static byte[] fromUInt(int value) {
+	/**
+	 * @see ULongByteUtils#fromLong(byte[])
+	 */
+	public static byte[] fromUInt(final int value) {
 		return ULongByteUtils.fromLong(value, 4);
 	}
 
-	public static byte[] fromSLong(long value, int numBytes) {
+	/**
+	 * @see SLongByteUtils#fromLong(byte[])
+	 */
+	public static byte[] fromSLong(final long value, final int numBytes) {
 		return SLongByteUtils.fromLong(value, numBytes);
 	}
 
-	public static byte[] fromULong(long value, int numBytes) {
+	/**
+	 * @see ULongByteUtils#fromLong(byte[])
+	 */
+	public static byte[] fromULong(final long value, final int numBytes) {
 		return ULongByteUtils.fromLong(value, numBytes);
 	}
 
-	public static byte[] fromFloat(double value, int numBytes) {
+	/**
+	 * @see FloatByteUtils#fromFloat(byte[])
+	 */
+	public static byte[] fromFloat(final double value, final int numBytes) {
 		return FloatByteUtils.fromFloat(value, numBytes);
 	}
 
 	// ToString functions.
-	public static String getSIntString(byte[] list) {
-		return ""+getSInt(list);
+	/**
+	 * Convert a {@link byte} array representing a signed {@link int} to a {@link String}.
+	 * @param list the {@link byte} array
+	 * @return the relevant {@link String}.
+	 */
+	public static String getSIntString(final byte[] list) {
+		return Integer.toString(getSInt(list));
 	}
 
-	public static String getUIntString(byte[] list) {
-		return ""+getUInt(list);
+	/**
+	 * Convert a {@link byte} array representing an unsigned {@link int} to a {@link String}.
+	 * @param list the {@link byte} array
+	 * @return the relevant {@link String}.
+	 */
+	public static String getUIntString(final byte[] list) {
+		return Integer.toString(getUInt(list));
 	}
 
-	public static String getULongString(byte[] list) {
-		return ""+getULong(list);
+	/**
+	 * Convert a {@link byte} array representing a Signed {@link long} to a {@link String}.
+	 * @param list the {@link byte} array
+	 * @return the relevant {@link String}.
+	 */
+	public static String getULongString(final byte[] list) {
+		return Long.toString(getULong(list));
 	}
 
 	/**
@@ -65,7 +107,7 @@ public class ByteUtils {
 	 * @return the read {@link String}
 	 * @see StringByteUtils#readString(ByteBuffer)
 	 */
-	public static String readString(ByteBuffer inputByteBuffer) {
+	public static String readString(final ByteBuffer inputByteBuffer) {
 		return StringByteUtils.readString(inputByteBuffer);
 	}
 }

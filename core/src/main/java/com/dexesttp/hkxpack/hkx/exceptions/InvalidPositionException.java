@@ -12,11 +12,20 @@ public class InvalidPositionException extends Exception {
 	private static final long serialVersionUID = 5256901069828621035L;
 	private final String section;
 	
-	public InvalidPositionException(String sectName, long pos) {
+	/**
+	 * Creates an {@link InvalidPositionException}.
+	 * @param sectName the section name where the exception happened
+	 * @param pos the invalid position
+	 */
+	public InvalidPositionException(final String sectName, final long pos) {
 		super("Invalid position in " + sectName + " : " + pos);
 		this.section = sectName;
 	}
 
+	/**
+	 * Get this invalid section's name.
+	 * @return the name
+	 */
 	public String getSection() {
 		return section;
 	}

@@ -11,13 +11,13 @@ import com.dexesttp.hkxpack.tagreader.TagXMLNodeHandler;
  * Allows creating {@link TagXMLContentsHandler}s.
  */
 public class TagXMLContentsHandlerFactory {
-	private final TagXMLNodeHandler nodeHandler;
+	private final transient TagXMLNodeHandler nodeHandler;
 
 	/**
 	 * Creates a {@link TagXMLContentsHandlerFactory}.
 	 * @param nodeHandler the {@link TagXMLNodeHandler} to use while resolving objects.
 	 */
-	public TagXMLContentsHandlerFactory(TagXMLNodeHandler nodeHandler) {
+	public TagXMLContentsHandlerFactory(final TagXMLNodeHandler nodeHandler) {
 		this.nodeHandler = nodeHandler;
 	}
 	
@@ -26,7 +26,7 @@ public class TagXMLContentsHandlerFactory {
 	 * @param type the {@link HKXType} to handle.
 	 * @return the {@link TagXMLContentsHandler} that can ahndle the given {@link HKXType}.
 	 */
-	public TagXMLContentsHandler getHandler(HKXType type) {
+	public TagXMLContentsHandler getHandler(final HKXType type) {
 		switch(type.getFamily()) {
 			case DIRECT:
 				return new TagXMLDirectHandler();

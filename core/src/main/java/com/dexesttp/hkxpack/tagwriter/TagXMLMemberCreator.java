@@ -17,18 +17,18 @@ import com.dexesttp.hkxpack.data.members.HKXStringMember;
  * Please use {@link TagXMLDataCreator} as the handled class.
  */
 class TagXMLMemberCreator {
-	private Document document;
-	private TagXMLDataCreator dataCreator;
-	private TagXMLArrayMemberHandler arrayMemberHandler;
+	private final transient Document document;
+	private final transient TagXMLDataCreator dataCreator;
+	private final transient TagXMLArrayMemberHandler arrayMemberHandler;
 
 	/**
 	 * Creates a new {@link TagXMLMemberCreator} from its parent {@link TagXMLDataCreator}.<br >
 	 * This shoud only be done by a {@link TagXMLDataCreator}.
 	 * @param tagXMLDataCreator
 	 */
-	TagXMLMemberCreator(TagXMLDataCreator tagXMLDataCreator) {
+	TagXMLMemberCreator(final TagXMLDataCreator tagXMLDataCreator) {
 		this.dataCreator = tagXMLDataCreator;
-		this.document = tagXMLDataCreator.document();
+		this.document = tagXMLDataCreator.getDocument();
 		this.arrayMemberHandler = new TagXMLArrayMemberHandler(dataCreator);
 	}
 
@@ -37,7 +37,7 @@ class TagXMLMemberCreator {
 	 * @param member
 	 * @return
 	 */
-	Node create(HKXMember member) {
+	Node create(final HKXMember member) {
 		if(member instanceof HKXFailedMember) {
 			HKXFailedMember failedMember = (HKXFailedMember) member;
 			return document.createComment(failedMember.getFailMessage());

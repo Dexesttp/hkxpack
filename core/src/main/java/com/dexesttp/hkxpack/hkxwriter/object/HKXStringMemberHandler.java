@@ -9,22 +9,36 @@ import com.dexesttp.hkxpack.hkx.HKXUtils;
 import com.dexesttp.hkxpack.hkx.data.DataInternal;
 import com.dexesttp.hkxpack.hkxwriter.object.callbacks.HKXMemberCallback;
 
+/**
+ * Handles a {@link HKXStringMember} for output to a HKX file.
+ * @see HKXMemberHandler
+ */
 public class HKXStringMemberHandler implements HKXMemberHandler {
-	private final ByteBuffer outFile;
-	private final long offset;
-	private final List<DataInternal> data1;
+	private final transient ByteBuffer outFile;
+	private final transient long offset;
+	private final transient List<DataInternal> data1;
 
-	public HKXStringMemberHandler(ByteBuffer outFile, long offset, List<DataInternal> data1List) {
+	/**
+	 * Creates a {@link HKXStringMemberHandler}.
+	 * @param outFile the file to output to
+	 * @param offset the member's offset in the object
+	 * @param data1List the list of internal pointers to put the {@link String}'s location reference in.
+	 */
+	public HKXStringMemberHandler(final ByteBuffer outFile, final long offset, final List<DataInternal> data1List) {
 		this.outFile = outFile;
 		this.offset = offset;
 		this.data1 = data1List;
 	}
 
 	@Override
-	public HKXMemberCallback write(HKXMember member, long currentPos) {
+	/**
+	 * {@inheritDoc}
+	 */
+	public HKXMemberCallback write(final HKXMember member, final long currentPos) {
 		final HKXStringMember strMember = (HKXStringMember) member;
-		if(strMember.get() == null || strMember.get().isEmpty())
+		if(strMember.get() == null || strMember.get().isEmpty()) {
 			return (callbacks, position) -> {return 0;};
+		}
 		final DataInternal stringData = new DataInternal();
 		stringData.from = currentPos + offset;
 		return (callbacks, position) -> { 

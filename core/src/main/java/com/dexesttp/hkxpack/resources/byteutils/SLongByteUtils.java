@@ -3,13 +3,18 @@ package com.dexesttp.hkxpack.resources.byteutils;
 /**
  * Handles converting signed {@link long} values from and to Little-Endian {@link byte} arrays
  */
-class SLongByteUtils {
+final class SLongByteUtils {
+	private static final long BYTE_MASK = 0xFF;
+	private SLongByteUtils() {
+		// NO OP
+	}
+	
 	/**
 	 * Get a signed long from a {@link byte} array.
 	 * @param list the Little-Endian {@link byte} array to convert
 	 * @return the converted signed {@link long} value.
 	 */
-	static long getLong(byte[] list) {
+	static long getLong(final byte[] list) {
 		final int len = list.length;
 		int accu = 1;
 		int res = 0;
@@ -26,12 +31,12 @@ class SLongByteUtils {
 	 * @param numBytes the number of bytes in the output {@link byte} array
 	 * @return a Little-Endian {@link byte} array.
 	 */
-	static byte[] fromLong(long value, int numBytes) {
-		long mask = 0xFF;
+	static byte[] fromLong(final long value, final int numBytes) {
+		long shiftedValue = value;
 		byte[] res = new byte[numBytes];
 		for(int i = 0; i < numBytes; i++) {
-			res[i] = (byte) (value & mask);
-			value = value >> 8;
+			res[i] = (byte) (shiftedValue & BYTE_MASK);
+			shiftedValue = shiftedValue >> 8;
 		}
 		return res;
 	}

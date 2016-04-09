@@ -1,5 +1,9 @@
 package com.dexesttp.hkxpack.cli.loggers;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import com.dexesttp.hkxpack.cli.ConsoleView;
 import com.dexesttp.hkxpack.cli.utils.CLIProperties;
 import com.dexesttp.hkxpack.resources.LoggerUtil;
 
@@ -7,27 +11,31 @@ import com.dexesttp.hkxpack.resources.LoggerUtil;
  * Creates a {@link DirectoryWalkerLogger} based on the relevant {@link CLIProperties}.
  */
 public class DirectoryWalkerLoggerFactory {
+	private static final Logger LOGGER = Logger.getLogger(ConsoleView.class.getName());
 
 	/**
 	 * Retrieves a suitable {@link DirectoryWalkerLogger}.
 	 * @param total the total number of files to walk through.
 	 * @return a suitable {@link DirectoryWalkerLogger}.
 	 */
-	public DirectoryWalkerLogger newLogger(int total) {
-		if(!CLIProperties.quiet)
-			System.out.println("Detected " + total + " files to handle.");
+	public DirectoryWalkerLogger newLogger(final int total) {
+		if(!CLIProperties.quiet && LOGGER.isLoggable(Level.INFO)) {
+			LOGGER.info("Detected " + total + " files to handle.");
+		}
 		else {
-			if(!CLIProperties.verbose)
+			if(!CLIProperties.verbose && LOGGER.isLoggable(Level.INFO)) {
 				return (done) -> {
-						System.out.println(
+						LOGGER.info(
 								"Handled " + done + " files ("
 								+ ((float)done / (float) total) + "%)");
 						handleErrors();
 					};
-			else
+			}
+			else {
 				return (done) -> {
 					handleErrors();
 				};
+			}
 		}
 		return (done) -> {};
 	}
@@ -38,10 +46,7 @@ public class DirectoryWalkerLoggerFactory {
 	private void handleErrors() {
 		while(!LoggerUtil.getList().isEmpty()) {
 			Throwable e = LoggerUtil.getList().remove(0);
-			if(CLIProperties.debug)
-				e.printStackTrace();
-			else
-				System.err.println(e.getMessage());
+			LOGGER.throwing(this.getClass().getName(), "handleErrors", e);
 		}
 	}
 	

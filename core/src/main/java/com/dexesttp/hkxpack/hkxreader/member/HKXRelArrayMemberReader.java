@@ -10,14 +10,19 @@ import com.dexesttp.hkxpack.hkxreader.HKXReaderConnector;
 import com.dexesttp.hkxpack.hkxreader.member.arrays.HKXArrayContentsReader;
 import com.dexesttp.hkxpack.resources.byteutils.ByteUtils;
 
+/**
+ * Reads a Relative-positionned Array as a {@link HKXArrayMember} from the HKX file.
+ * @see HKXArrayContentsReader
+ */
 public class HKXRelArrayMemberReader implements HKXMemberReader {
-	private final HKXReaderConnector connector;
-	private final String name;
-	private final HKXType subtype;
-	private final long offset;
-	private final HKXArrayContentsReader internals;
+	private final transient HKXReaderConnector connector;
+	private final transient String name;
+	private final transient HKXType subtype;
+	private final transient long offset;
+	private final transient HKXArrayContentsReader internals;
 
-	public HKXRelArrayMemberReader(HKXReaderConnector connector, String name, HKXType subtype, HKXArrayContentsReader arrayContentsReader, long offset) {
+	HKXRelArrayMemberReader(final HKXReaderConnector connector, final String name, final HKXType subtype,
+			final HKXArrayContentsReader arrayContentsReader, final long offset) {
 		this.connector = connector;
 		this.name = name;
 		this.subtype = subtype;
@@ -26,7 +31,10 @@ public class HKXRelArrayMemberReader implements HKXMemberReader {
 	}
 	
 	@Override
-	public HKXMember read(long classOffset) throws InvalidPositionException {
+	/**
+	 * {@inheritDoc}
+	 */
+	public HKXMember read(final long classOffset) throws InvalidPositionException {
 		ByteBuffer file = connector.data.setup(classOffset + offset);
 		byte[] bSize = new byte[2];
 		byte[] bOff = new byte[2];
@@ -35,8 +43,9 @@ public class HKXRelArrayMemberReader implements HKXMemberReader {
 		int size = ByteUtils.getUInt(bSize)-1;
 		int offset = ByteUtils.getUInt(bOff);
 		HKXArrayMember res = new HKXArrayMember(name, HKXType.TYPE_RELARRAY, subtype);
-		for(int i = 0; i < size; i++)
+		for(int i = 0; i < size; i++) {
 			res.add(internals.getContents(classOffset + offset, i));
+		}
 		return res;
 	}
 

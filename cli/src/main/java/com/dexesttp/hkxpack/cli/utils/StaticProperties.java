@@ -1,12 +1,33 @@
 package com.dexesttp.hkxpack.cli.utils;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
 /**
  * Contains a list of static final properties.
  */
-public class StaticProperties {
+public final class StaticProperties {
+	private static final String VERSION_NUMBER;
+
+	static {
+		Properties prop = new Properties();
+		String vNum = "";
+		try {
+			InputStream in = StaticProperties.class.getResourceAsStream("/META-INF/maven/com.dexesttp.hkxpack/cli/pom.properties");
+			prop.load(in);
+			in.close();
+			vNum = prop.getProperty("version");
+		} catch (IOException e) {
+			vNum = "error loading version number";
+		}
+		VERSION_NUMBER = vNum;
+	}
+
+	private StaticProperties() {
+		// NO OP
+	}
+
 	/**
 	 * <pre>
 	 * Versioning convention:
@@ -28,14 +49,6 @@ public class StaticProperties {
 	 * </pre>
 	 */
 	public static String getVersionNumber() {
-		Properties prop = new Properties();
-		try {
-			InputStream in = StaticProperties.class.getResourceAsStream("/META-INF/maven/com.dexesttp.hkxpack/cli/pom.properties");
-			prop.load(in);
-			in.close();
-			return prop.getProperty("version");
-		} catch (Exception e) {
-			return "error loading version number";
-		}
+		return VERSION_NUMBER;
 	}
 }

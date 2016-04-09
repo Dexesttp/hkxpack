@@ -22,15 +22,15 @@ import com.dexesttp.hkxpack.tagreader.exceptions.InvalidTagXMLException;
  * Use {@link TagXMLReader#read()} to process the file.
  */
 public class TagXMLReader {
-	private final File tagFile;
-	private final HKXDescriptorFactory descriptorFactory;
+	private final transient File tagFile;
+	private final transient HKXDescriptorFactory descriptorFactory;
 
 	/**
 	 * Creates a TagXML reader.
 	 * @param file the {@link File} to read from.
 	 * @param descriptorFactory the {@link HKXDescriptorFactory} to use while parsing the file.
 	 */
-	public TagXMLReader(File file, HKXDescriptorFactory descriptorFactory) {
+	public TagXMLReader(final File file, final HKXDescriptorFactory descriptorFactory) {
 		this.tagFile = file;
 		this.descriptorFactory = descriptorFactory;
 	}
@@ -49,14 +49,15 @@ public class TagXMLReader {
 		TagXMLFileHandler handler = new TagXMLFileHandler(tagFile);
 		Document document = handler.getDocument();
 		
+		// Retrieve the section node.
+		Node section = handler.getSectionNode(document, "__data__");
+		if(section == null) {
+			throw new InvalidTagXMLException(SBundle.getString("error.tag.read.section") + "__data__");
+		}
+		
 		// Get the relevant initialized HKXFile.
 		Node root = handler.getRootNode(document);
 		HKXFile hkxFile = handler.getHKXFile(root);
-		
-		// Retrieve the section node.
-		Node section = handler.getSectionNode(document, "__data__");
-		if(section == null)
-			throw new InvalidTagXMLException(SBundle.getString("error.tag.read.section") + "__data__");
 		
 		// Read the object nodes
 		TagXMLNodeHandler nodeHandler = new TagXMLNodeHandler(descriptorFactory);

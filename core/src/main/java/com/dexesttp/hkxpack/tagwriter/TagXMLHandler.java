@@ -26,12 +26,12 @@ class TagXMLHandler {
 	 * @return
 	 * @throws ParserConfigurationException if there was an error while handling the Document creation.
 	 */
-	Document createDOM(String verName, int version) throws ParserConfigurationException {
+	Document createDOM(final String verName, final int version) throws ParserConfigurationException {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder = factory.newDocumentBuilder();
 		Document doc = builder.newDocument();
 		Element root = doc.createElement("hkpackfile");
-		root.setAttribute("classversion", ""+version);
+		root.setAttribute("classversion", Integer.toString(version));
 		root.setAttribute("contentsversion", verName);
 		doc.appendChild(root);
 		return doc;
@@ -43,7 +43,7 @@ class TagXMLHandler {
 	 * @param name the name of the section.
 	 * @return the hksection's {@link Element}
 	 */
-	Element createSection(Document document, String name) {
+	Element createSection(final Document document, final String name) {
 		Element section = document.createElement("hksection");
 		section.setAttribute("name", name);
 		document.getChildNodes().item(0).appendChild(section);
@@ -53,10 +53,10 @@ class TagXMLHandler {
 	/**
 	 * Write a {@link Document} to a {@link File}.
 	 * @param document the {@link Document} to write.
-	 * @param outFile the {@link File} to write the {@link Document} into.
+	 * @param outputFile the {@link File} to write the {@link Document} into.
 	 * @throws TransformerException if there was an error while writing out the document.
 	 */
-	void writeToFile(Document document, File outFile) throws TransformerException {
+	void writeToFile(final Document document, final File outputFile) throws TransformerException {
 		// Create transformer
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
 		Transformer transformer = transformerFactory.newTransformer();
@@ -72,7 +72,7 @@ class TagXMLHandler {
 		StreamResult outResult;
 		
 		// Write DOM back to file
-		outResult = new StreamResult(outFile);
+		outResult = new StreamResult(outputFile);
 		transformer.transform(source, outResult);
 	}
 }

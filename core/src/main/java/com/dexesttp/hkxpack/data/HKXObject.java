@@ -13,36 +13,56 @@ import com.dexesttp.hkxpack.descriptor.enums.HKXType;
 public class HKXObject implements HKXMember {
 	private final String name;
 	private final HKXDescriptor descriptor;
-	private final List<HKXMember> members;
+	private final transient List<HKXMember> members;
 	
 	/**
-	 * Creates a HKXObject
+	 * Creates a {@link HKXObject}.
 	 * @param name the name of the object to create
 	 * @param template the template to create the object from.
 	 */
-	public HKXObject(String name, HKXDescriptor template) {
+	public HKXObject(final String name, final HKXDescriptor template) {
 		this(name, template, new ArrayList<HKXMember>());
 	}
 
-	public HKXObject(String name, HKXDescriptor descriptor, ArrayList<HKXMember> members) {
+	/**
+	 * Creates a {@link HKXObject}
+	 * @param name the name of the object to create
+	 * @param descriptor the descriptor to create the object from.
+	 * @param members the list of members to add to the object.
+	 */
+	public HKXObject(final String name, final HKXDescriptor descriptor, final List<HKXMember> members) {
 		this.name = name;
 		this.descriptor = descriptor;
 		this.members = members;
 	}
 	
+	/**
+	 * Get this object's name.
+	 */
 	public String getName() {
 		return name;
 	}
 	
+	/**
+	 * Get this object's descriptor.
+	 * @return the {@link HKXDescriptor} that represents this object.
+	 */
 	public HKXDescriptor getDescriptor() {
 		return descriptor;
 	}
 	
-	public List<HKXMember> members() {
+	/**
+	 * Get this {@link HKXObject}'s member list.
+	 * @return an ordered list of all the members of this object.
+	 */
+	public List<HKXMember> getMembersList() {
 		return members;
 	}
 
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public HKXType getType() {
 		return HKXType.TYPE_STRUCT;
 	}

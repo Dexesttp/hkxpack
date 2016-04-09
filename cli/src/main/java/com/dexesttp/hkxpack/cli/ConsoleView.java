@@ -7,13 +7,24 @@ import com.dexesttp.hkxpack.cli.commands.Command_help;
 /**
  * Entry point for the Command Line Interface.
  */
-public class ConsoleView {
-	public static void main(String[] args) {
+public final class ConsoleView {
+	private static final int MINIMUM_ARG_COUNT = 1;
+	private ConsoleView() {
+		// NO OP
+	}
+	
+	/**
+	 * Entry point for the console
+	 * @param args the console arguments.
+	 */
+	public static void main(final String... args) {
 		Command command;
-		if(args.length < 1)
+		if(args.length < MINIMUM_ARG_COUNT) {
 			command = new Command_help();
-		else
+		}
+		else {
 			command = new CommandFactory().newInstance(args[0]);
+		}
 		command.execute(args);
 	}
 }

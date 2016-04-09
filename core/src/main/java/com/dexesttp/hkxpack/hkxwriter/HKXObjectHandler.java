@@ -18,20 +18,33 @@ import com.dexesttp.hkxpack.hkxwriter.object.callbacks.HKXMemberCallback;
 import com.dexesttp.hkxpack.hkxwriter.utils.PointerObject;
 import com.dexesttp.hkxpack.hkxwriter.utils.PointerResolver;
 
+/**
+ * Handles writing an {@link HKXObject} and its contents to a {@link ByteBuffer}.
+ */
 public class HKXObjectHandler {
-	private final ClassnamesData cnameData;
-	private final SectionData section;
-	private final PointerResolver resolver;
-	private final ByteBuffer outFile;
-	private final HKXEnumResolver enumResolver;
-	private final List<DataInternal> data1List;
-	private final List<PointerObject> data2List;
-	private final List<DataExternal> data3List;
+	private final transient ClassnamesData cnameData;
+	private final transient SectionData section;
+	private final transient PointerResolver resolver;
+	private final transient ByteBuffer outFile;
+	private final transient HKXEnumResolver enumResolver;
+	private final transient List<DataInternal> data1List;
+	private final transient List<PointerObject> data2List;
+	private final transient List<DataExternal> data3List;
 
-	public HKXObjectHandler(ByteBuffer outFile, ClassnamesData classnamesData, SectionData dataSection,
-			HKXEnumResolver enumResolver, List<DataInternal> data1List,
-			List<PointerObject> data2List, List<DataExternal> data3List,
-			PointerResolver resolver) {
+	/**
+	 * Creates a general purpose {@link HKXObjectHandler}.
+	 * @param outFile the {@link ByteBuffer} to output in.
+	 * @param classnamesData the {@link ClassnamesData} to link classes positions to.
+	 * @param dataSection the data section header, to retrieve offsets from.
+	 * @param enumResolver the {@link HKXEnumResolver} to use.
+	 * @param data1List the data1 (internal) temporary values list.
+	 * @param data2List the data2 (external) temporary values list
+	 * @param data3List the data3 (root classes) temporary values list.
+	 * @param resolver the {@link PointerResolver} to use.
+	 */
+	public HKXObjectHandler(final ByteBuffer outFile, final ClassnamesData classnamesData, final SectionData dataSection,
+			final HKXEnumResolver enumResolver, final List<DataInternal> data1List, final List<PointerObject> data2List,
+			final List<DataExternal> data3List, final PointerResolver resolver) {
 		this.outFile = outFile;
 		this.enumResolver = enumResolver;
 		this.cnameData = classnamesData;
@@ -42,7 +55,13 @@ public class HKXObjectHandler {
 		this.resolver = resolver;
 	}
 
-	public long handle(HKXObject object, long currentPos) {
+	/**
+	 * Handle object writing for the given {@link HKXObject}, at the given position.
+	 * @param object the {@link HKXObject} to handle.
+	 * @param currentPos the position to write the object at.
+	 * @return the position at the end of the object.
+	 */
+	public long handle(final HKXObject object, final long currentPos) {
 		// Add the object into data3 and the resolver
 		DataExternal classEntry = new DataExternal();
 		classEntry.from = currentPos - section.offset;
@@ -58,11 +77,12 @@ public class HKXObjectHandler {
 		objectHandler.write(object, currentPos);
 		
 		// Resolve the member handlers.
-		currentPos += HKXUtils.snapLine(ObjectSizeResolver.getSize(object));
+		long nextPos = currentPos;
+		nextPos += HKXUtils.snapLine(ObjectSizeResolver.getSize(object));
 		while(!memberCallbacks.isEmpty()) {
 			HKXMemberCallback callback = memberCallbacks.remove(0);
-			currentPos += callback.process(memberCallbacks, currentPos);
+			nextPos += callback.process(memberCallbacks, nextPos);
 		}
-		return currentPos;
+		return nextPos;
 	}
 }

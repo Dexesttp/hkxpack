@@ -9,14 +9,18 @@ import com.dexesttp.hkxpack.hkx.types.MemberDataResolver;
 import com.dexesttp.hkxpack.hkx.types.MemberSizeResolver;
 import com.dexesttp.hkxpack.hkxreader.HKXReaderConnector;
 
+/**
+ * Reads a direct or complex member from a HKX file.
+ * @see MemberDataResolver
+ */
 class HKXDirectMemberReader implements HKXMemberReader {
-	
-	private final HKXReaderConnector connector;
-	private final String name;
-	private final HKXType vtype;
-	private final long memberOffset;
+	private final transient HKXReaderConnector connector;
+	private final transient String name;
+	private final transient HKXType vtype;
+	private final transient long memberOffset;
 
-	HKXDirectMemberReader(HKXReaderConnector connector, String name, HKXType contentType, long offset) {
+	HKXDirectMemberReader(final HKXReaderConnector connector, final String name,
+			final HKXType contentType, final long offset) {
 		this.connector = connector;
 		this.name = name;
 		this.vtype = contentType;
@@ -24,13 +28,15 @@ class HKXDirectMemberReader implements HKXMemberReader {
 	}
 
 	@Override
-	public HKXMember read(long classOffset) throws InvalidPositionException {
+	/**
+	 * {@inheritDoc}
+	 */
+	public HKXMember read(final long classOffset) throws InvalidPositionException {
 		final int memberSize = (int) MemberSizeResolver.getSize(vtype);
 		ByteBuffer file = connector.data.setup(classOffset + memberOffset);
-		byte[] b = new byte[memberSize];
-		file.get(b);
-		HKXMember result = MemberDataResolver.getMember(name, vtype, b);
-		return result;
+		byte[] bytesToRead = new byte[memberSize];
+		file.get(bytesToRead);
+		return MemberDataResolver.getMember(name, vtype, bytesToRead);
 	}
 
 }

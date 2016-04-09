@@ -10,17 +10,23 @@ import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
 import com.dexesttp.hkxpack.hkxreader.HKXReaderConnector;
 import com.dexesttp.hkxpack.resources.byteutils.ByteUtils;
 
+/**
+ * Reads a {@link HKXStringMember} from an array
+ */
 class HKXStringArrayContentsReader implements HKXArrayContentsReader {
-	private HKXReaderConnector connector;
-	private HKXType contentsType;
+	private final transient HKXReaderConnector connector;
+	private final transient HKXType contentsType;
 
-	HKXStringArrayContentsReader(HKXReaderConnector connector, HKXType contentsType) {
+	HKXStringArrayContentsReader(final HKXReaderConnector connector, final HKXType contentsType) {
 		this.connector = connector;
 		this.contentsType = contentsType;
 	}
 
 	@Override
-	public HKXData getContents(long arrayStart, int position) throws InvalidPositionException {
+	/**
+	 * {@inheritDoc}
+	 */
+	public HKXData getContents(final long arrayStart, final int position) throws InvalidPositionException {
 		long descriptorPosition = arrayStart + position * 0x08;
 		DataInternal data = connector.data1.readNext();
 		String contents = "";
