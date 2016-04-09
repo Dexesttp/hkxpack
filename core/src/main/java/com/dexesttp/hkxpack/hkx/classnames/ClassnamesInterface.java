@@ -29,7 +29,7 @@ public class ClassnamesInterface {
 	 * Compress the given classnames into the hkx file "__classname__" section.
 	 * Note that it will fill the data with all required classnames & positions.
 	 * Please use only negative position identifiers to fill the original dataset values. 
-	 * Otherwise, the function compartment will be indeterminate.
+	 * Otherwise, the method behaviour will be undefined.
 	 * @param data the data to find the classnames in.
 	 * @return The position of the end of the dataset (absolute position from the beginning of the file).
 	 */
@@ -48,7 +48,7 @@ public class ClassnamesInterface {
 		for(;toDo>0;toDo--) {
 			file.put((byte) -1);
 		}
-		return pos + toDo;
+		return pos;
 	}
 	
 	/**

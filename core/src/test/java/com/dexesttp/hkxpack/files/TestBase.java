@@ -13,7 +13,7 @@ import com.dexesttp.hkxpack.descriptor.enums.HKXType;
  * The content reading tests for all files based on the "base" file.
  * Will throw a {@link NullPointerException} if there is no extension nor initialization of {@link #file}.
  */
-public class TestBase {
+public abstract class TestBase {
 	protected final static String BASE_FILE_RESOURCE_NAME = "/test-base";
 	protected final transient HKXFile file;
 
@@ -38,7 +38,7 @@ public class TestBase {
 	 * Tests if the the read object's Type is the right one (a STRUCT)
 	 */
 	public void testIfTheRightObjectIsPresent() {
-		for(HKXObject object : file.getContentCollection()) {
+		for(final HKXObject object : file.getContentCollection()) {
 			assertEquals(HKXType.TYPE_STRUCT, object.getType());
 		}
 	}
@@ -48,7 +48,7 @@ public class TestBase {
 	 * Tests if the the read object's name is valid (not null)
 	 */
 	public void testTheObjectName() {
-		for(HKXObject object : file.getContentCollection()) {
+		for(final HKXObject object : file.getContentCollection()) {
 			assertNotNull(object.getName());
 		}
 	}
@@ -58,7 +58,7 @@ public class TestBase {
 	 * Tests if the the read object's class name is the right one (hkBaseObject)
 	 */
 	public void testTheObjectClassName() {
-		for(HKXObject object : file.getContentCollection()) {
+		for(final HKXObject object : file.getContentCollection()) {
 			assertEquals("hkBaseObject", object.getDescriptor().getName());
 		}
 	}
@@ -68,7 +68,7 @@ public class TestBase {
 	 * Tests if the the read object's content size is right (0)
 	 */
 	public void testTheObjectContentsSize() {
-		for(HKXObject object : file.getContentCollection()) {
+		for(final HKXObject object : file.getContentCollection()) {
 			assertEquals(0, object.getMembersList().size());
 		}
 	}

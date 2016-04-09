@@ -82,7 +82,7 @@ class TagXMLArrayHandler implements TagXMLContentsHandler {
 		for(int i = 0; i < children.getLength(); i++) {
 			Node child = children.item(i);
 			if(child.getNodeName().equals("hkcstring")) {
-				HKXStringMember string = new HKXStringMember("", root.getSubType());
+				HKXStringMember string = createStringMember(root);
 				string.set(child.getTextContent());
 				root.add(string);
 			}
@@ -92,7 +92,7 @@ class TagXMLArrayHandler implements TagXMLContentsHandler {
 	private void handlePointer(final HKXArrayMember root, final Node member, final HKXMemberTemplate memberTemplate) {
 		Matcher m = SIMPLE_PATTERN.matcher(member.getTextContent());
 		while(m.find()) {
-			HKXPointerMember contents = new HKXPointerMember("", memberTemplate.vsubtype, HKXType.TYPE_VOID, memberTemplate.target);
+			HKXPointerMember contents = createPointerMember(memberTemplate);
 			contents.set(m.group(1));
 			root.add(contents);
 		}
@@ -107,5 +107,13 @@ class TagXMLArrayHandler implements TagXMLContentsHandler {
 				root.add(subObject);
 			}
 		}
+	}
+
+	private HKXPointerMember createPointerMember(final HKXMemberTemplate memberTemplate) {
+		return new HKXPointerMember("", memberTemplate.vsubtype, HKXType.TYPE_VOID, memberTemplate.target);
+	}
+
+	private HKXStringMember createStringMember(final HKXArrayMember root) {
+		return new HKXStringMember("", root.getSubType());
 	}
 }

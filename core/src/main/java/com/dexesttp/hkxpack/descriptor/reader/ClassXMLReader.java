@@ -94,7 +94,7 @@ public class ClassXMLReader {
 		for(int i = 0; i < enumsObjects.getLength(); i++) {
 			Node enumObject = enumsObjects.item(i);
 			if(enumObject.getAttributes() != null) {
-				Map<Integer, String> enumContents = new HashMap<>();
+				Map<Integer, String> enumContents = createHashMap();
 				enumNameBuffer.setLength(0);
 				String enumName = enumNameBuffer
 						.append(classname)
@@ -159,15 +159,50 @@ public class ClassXMLReader {
 				memberSize = MemberSizeResolver.getSize(HKXType.valueOf(vtype));
 			}
 			long memberOffset = Integer.parseInt(offset);
+			HMTBuilder builder = new HMTBuilder(name, vtype, vsubtype, ctype, etype, arrsize, flags);
 			for(int i = 0; i < size; i++) {
-				res.add(
-						new HKXMemberTemplate(
-								name + (i+1),
-								Long.toString(memberOffset + i * memberSize),
-								vtype, vsubtype, ctype, etype, arrsize, flags)
-						);
+				res.add(builder.build(i, memberOffset, memberSize));
 			}
 		}
 		return res;
+	}
+	
+	/**
+	 * Builds a {@link HKXMemberTemplate} at each iteration
+	 */
+	private class HMTBuilder {
+		private final transient String name;
+		private final transient String vtype;
+		private final transient String vsubtype;
+		private final transient String ctype;
+		private final transient String etype;
+		private final transient String arrsize;
+		private final transient String flags;
+
+		HMTBuilder(final String name, final String vtype, final String vsubtype, final String ctype,
+				final String etype, final String arrsize, final String flags) {
+			this.name = name;
+			this.vtype = vtype;
+			this.vsubtype = vsubtype;
+			this.ctype = ctype;
+			this.etype = etype;
+			this.arrsize = arrsize;
+			this.flags = flags;
+		}
+		
+		HKXMemberTemplate build(final int i, final long memberOffset, final long memberSize) {
+			return new HKXMemberTemplate(
+							name + (i+1),
+							Long.toString(memberOffset + i * memberSize),
+							vtype, vsubtype, ctype, etype, arrsize, flags);
+		}
+	}
+
+	/**
+	 * That's a shame that PMD prefers this. I see the point though, as it allows to easily zero-in on object creation.
+	 * @return
+	 */
+	private Map<Integer, String> createHashMap() {
+		return new HashMap<>();
 	}
 }
