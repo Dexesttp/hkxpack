@@ -3,6 +3,7 @@ package com.dexesttp.hkxpack.files;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.dexesttp.hkxpack.data.HKXFile;
@@ -11,17 +12,17 @@ import com.dexesttp.hkxpack.descriptor.enums.HKXType;
 
 /**
  * The content reading tests for all files based on the "base" file.
- * JUnit will throw a {@link Exception} if there is no extension because of the TestBase constructor.
  */
-public abstract class TestBase {
+@Ignore
+public class TestBase {
 	protected final static String BASE_FILE_RESOURCE_NAME = "/test-base";
 	protected final transient HKXFile file;
-
+	
 	/**
 	 * Creates a {@link TestBase}.
 	 * @param file the {@link HXKFile} to test
 	 */
-	public TestBase(final HKXFile file) {
+	protected TestBase(final HKXFile file) {
 		this.file = file;
 	}
 	
