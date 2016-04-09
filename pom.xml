@@ -6,7 +6,7 @@
 	
 	<groupId>com.dexesttp</groupId>
 	<artifactId>hkxpack</artifactId>
-	<version>0.1.2-beta</version>
+	<version>0.1.4-beta</version>
 	<packaging>pom</packaging>
 	
 	<name>HKXPack</name>
