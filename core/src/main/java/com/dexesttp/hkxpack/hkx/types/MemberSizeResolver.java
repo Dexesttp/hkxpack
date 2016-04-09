@@ -2,6 +2,7 @@ package com.dexesttp.hkxpack.hkx.types;
 
 import com.dexesttp.hkxpack.descriptor.HKXDescriptor;
 import com.dexesttp.hkxpack.descriptor.enums.HKXType;
+import com.dexesttp.hkxpack.hkx.types.handlers.MemberHandlerFactory;
 
 /**
  * Intended to retrieve {@link HKXType}-specific data.
@@ -31,35 +32,26 @@ public final class MemberSizeResolver {
 				return 0X04;
 		// Base values
 			case TYPE_BOOL:
-				return 0X01;
 			case TYPE_CHAR:
-				return 0X01;
 			case TYPE_UINT8:
 			case TYPE_INT8:
-				return 0X01;
 			case TYPE_HALF:
 			case TYPE_UINT16:
 			case TYPE_INT16:
-				return 0X02;
 			case TYPE_ULONG:
 			case TYPE_UINT32:
 			case TYPE_INT32:
-				return 0X04;
 			case TYPE_UINT64:
 			case TYPE_INT64:
-				return 0X08;
 			case TYPE_REAL:
-				return 0X04;
 		// Complex values
 			case TYPE_VECTOR4:
 			case TYPE_QUATERNION:
-				return 0x10;
 			case TYPE_QSTRANSFORM:
 			case TYPE_MATRIX3:
-				return 0x30;
 			case TYPE_TRANSFORM:
 			case TYPE_MATRIX4:
-				return 0x40;
+				return MemberHandlerFactory.getMemberHandler(type).getSize();
 		// Strings and ptrs
 			case TYPE_CSTRING:
 			case TYPE_STRINGPTR:
