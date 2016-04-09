@@ -3,7 +3,7 @@ package com.dexesttp.hkxpack.l10n;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class SBundle {
+public final class SBundle {
 	private static String baseName = "l10n/locale";
 	private static ResourceBundle instance;
 

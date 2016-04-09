@@ -22,14 +22,24 @@ import com.dexesttp.hkxpack.hkxwriter.object.callbacks.HKXRelArrayMemberCallback
 import com.dexesttp.hkxpack.hkxwriter.object.callbacks.HKXStringArrayMemberCallback;
 import com.dexesttp.hkxpack.resources.byteutils.ByteUtils;
 
+/**
+ * Handles an {@link HKXArrayMember} writing to a HKX File based on its type and contents.
+ */
 public class HKXArrayMemberHandler implements HKXMemberHandler {
-	private final ByteBuffer outFile;
-	private final long offset;
-	private final List<DataInternal> data1;
-	private final HKXMemberHandlerFactory memberHandlerFactory;
+	private final transient ByteBuffer outFile;
+	private final transient long offset;
+	private final transient List<DataInternal> data1;
+	private final transient HKXMemberHandlerFactory memberHandlerFactory;
 
-	public HKXArrayMemberHandler(ByteBuffer outFile, long offset,
-			List<DataInternal> data1List, HKXMemberHandlerFactory hkxMemberHandlerFactory) {
+	/**
+	 * Creates a {@link HKXArrayMemberHandler}
+	 * @param outFile the {@link ByteBuffer} to write to
+	 * @param offset the offset of the {@link HKXArrayMember} in its class
+	 * @param data1List the {@link DataInternal} list to write the array reference to, if needed
+	 * @param hkxMemberHandlerFactory the {@link HKXMemberHandlerFactory} to use while solving the array's components.
+	 */
+	public HKXArrayMemberHandler(final ByteBuffer outFile, final long offset,
+			final List<DataInternal> data1List, final HKXMemberHandlerFactory hkxMemberHandlerFactory) {
 		this.outFile = outFile;
 		this.offset = offset;
 		this.data1 = data1List;
@@ -37,7 +47,10 @@ public class HKXArrayMemberHandler implements HKXMemberHandler {
 	}
 
 	@Override
-	public HKXMemberCallback write(HKXMember member, long currentPos) {
+	/**
+	 * {@inheritDoc}
+	 */
+	public HKXMemberCallback write(final HKXMember member, final long currentPos) {
 		final HKXArrayMember arrMember = (HKXArrayMember) member;
 		int size = arrMember.getContentsList().size();
 		
@@ -67,8 +80,9 @@ public class HKXArrayMemberHandler implements HKXMemberHandler {
 			};
 			outFile.position((int) (currentPos + offset));
 			outFile.put(arrayData);
-			if(size == 0)
+			if(size == 0) {
 				return (memberCallbacks, position) -> { return 0; };
+			}
 			
 			final DataInternal arrData = new DataInternal();
 			arrData.from = currentPos + offset;
@@ -82,6 +96,12 @@ public class HKXArrayMemberHandler implements HKXMemberHandler {
 		}
 	}
 
+	/**
+	 * Handles writing a {@link HKXPointerMember}'s array to the file properly, by deferring most of its definition
+	 * @param arrMember the {@link HKXArrayMember} that contains all values
+	 * @return the relevant {@link HKXArrayMemberCallback}.
+	 * @see HKXPointerArrayMemberCallback
+	 */
 	private HKXArrayMemberCallback handlePointer(final HKXArrayMember arrMember) {
 		final List<HKXArrayPointerMemberHandler> apmhList = new ArrayList<>(); 
 		for(HKXData data : arrMember.getContentsList()) {

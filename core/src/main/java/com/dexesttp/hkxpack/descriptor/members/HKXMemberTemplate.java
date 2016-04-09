@@ -73,12 +73,14 @@ public class HKXMemberTemplate {
 		this.offset = Long.parseLong(offset);
 		this.vtype = HKXType.valueOf(vtype);
 		this.vsubtype = HKXType.valueOf(vsubtype);
-		if(!ctype.isEmpty()) {
-			this.target = ctype;
-		} else if(!etype.isEmpty()) {
-			this.target = etype;
+		if(ctype.isEmpty()) {
+			if(etype.isEmpty()) {
+				this.target = "";
+			} else {
+				this.target = etype;
+			}
 		} else {
-			this.target = "";
+			this.target = ctype;
 		}
 		this.arrsize = Integer.parseInt(arrsize);
 		this.flag = Flag.valueOf(flag);

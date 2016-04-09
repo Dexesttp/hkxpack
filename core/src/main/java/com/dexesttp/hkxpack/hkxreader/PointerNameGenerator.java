@@ -43,8 +43,9 @@ public class PointerNameGenerator {
 	 * @return
 	 */
 	public String get(final long position) {
-		if(contents.containsKey(position))
+		if(contents.containsKey(position)) {
 			return contents.get(position);
+		}
 		String name = createName();
 		contents.put(position, name);
 		return name;

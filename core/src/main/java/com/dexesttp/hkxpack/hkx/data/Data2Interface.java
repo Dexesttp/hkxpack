@@ -33,8 +33,9 @@ public class Data2Interface {
 	 */
 	public DataExternal read(final int pos) throws InvalidPositionException {
 		long dataPos = header.data2 + pos * 0x0C;
-		if(pos < 0 || dataPos > header.data3)
+		if(pos < 0 || dataPos > header.data3) {
 			throw new InvalidPositionException("DATA_2", pos );
+		}
 		DataExternal data = new DataExternal();
 		file.position((int) (header.offset + dataPos));
 		byte[] dataLine = new byte[4];
@@ -42,8 +43,9 @@ public class Data2Interface {
 		data.from = ByteUtils.getULong(dataLine);
 		file.get(dataLine);
 		data.section = ByteUtils.getUInt(dataLine);
-		if(data.section > header.offset + header.data1)
+		if(data.section > header.offset + header.data1) {
 			throw new InvalidPositionException("DATA_2", pos );
+		}
 		file.get(dataLine);
 		data.to = ByteUtils.getULong(dataLine);
 		lastPos = pos;

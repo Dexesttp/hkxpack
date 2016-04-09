@@ -42,6 +42,7 @@ class HKXStringMemberReader implements HKXMemberReader {
 			}
 		} catch(InvalidPositionException e) {
 			// NO OP. Met when the last item of the HKX file is a String and is empty.
+			contents = "";
 		}
 		HKXStringMember result = new HKXStringMember(name, vtype);
 		result.set(contents);

@@ -13,12 +13,16 @@ import com.dexesttp.hkxpack.hkxwriter.object.array.HKXArrayPointerMemberHandler;
 import com.dexesttp.hkxpack.hkxwriter.object.callbacks.HKXMemberCallback;
 import com.dexesttp.hkxpack.hkxwriter.utils.PointerObject;
 
+/**
+ * Creates the relevant {@link HKXMemberHandler} from a {@link HKXType}.
+ * @see #create(HKXType, long)
+ */
 public class HKXMemberHandlerFactory {
-	private final ByteBuffer outFile;
-	private final HKXEnumResolver enumResolver;
-	private final List<DataInternal> data1List;
-	private final List<PointerObject> data2List;
-	private List<HKXMemberCallback> memberCallbacks;
+	private final transient ByteBuffer outFile;
+	private final transient HKXEnumResolver enumResolver;
+	private final transient List<DataInternal> data1List;
+	private final transient List<PointerObject> data2List;
+	private final transient List<HKXMemberCallback> memberCallbacks;
 
 	/**
 	 * Creates a {@link HKXMemberHandlerFactory}.
@@ -27,9 +31,9 @@ public class HKXMemberHandlerFactory {
 	 * @param data1List the list of {@link DataInternal} to fill while solving an array or a string.
 	 * @param data2List the list of {@link DataExternal} to fill while solving pointers.
 	 */
-	public HKXMemberHandlerFactory(ByteBuffer outFile, HKXEnumResolver enumResolver,
-			List<DataInternal> data1List, List<PointerObject> data2List,
-			List<HKXMemberCallback> memberCallbacks) {
+	public HKXMemberHandlerFactory(final ByteBuffer outFile, final HKXEnumResolver enumResolver,
+			final List<DataInternal> data1List, final List<PointerObject> data2List,
+			final List<HKXMemberCallback> memberCallbacks) {
 		this.outFile = outFile;
 		this.enumResolver = enumResolver;
 		this.data1List = data1List;
@@ -42,7 +46,7 @@ public class HKXMemberHandlerFactory {
 	 * @param memberCallbacks then new {@link HKXMemberCallback} list to use.
 	 * @return the cloned {@link HKXMemberHandlerFactory}.
 	 */
-	public HKXMemberHandlerFactory clone(List<HKXMemberCallback> memberCallbacks) {
+	public HKXMemberHandlerFactory clone(final List<HKXMemberCallback> memberCallbacks) {
 		return new HKXMemberHandlerFactory(outFile, enumResolver,
 				data1List, data2List,
 				memberCallbacks);
@@ -53,7 +57,7 @@ public class HKXMemberHandlerFactory {
 	 * @param memberTemplate the {@link HKXMemberTemplate} to base the {@link HKXMemberHandler} on.
 	 * @return the relevant {@link HKXMemberHandler}.
 	 */
-	public HKXMemberHandler create(HKXType vtype, long offset) {
+	public HKXMemberHandler create(final HKXType vtype, final long offset) {
 		switch(vtype.getFamily()) {
 			case DIRECT:
 			case COMPLEX:
@@ -82,8 +86,9 @@ public class HKXMemberHandlerFactory {
 	}
 	
 	/**
-	 * @deprecated {@link ByteBuffer} usage no longer allows or requires this step
+	 * @deprecated {@link ByteBuffer} usage no longer allows nor requires this step
 	 */
 	public void close() {
+		// Deprecated
 	}
 }

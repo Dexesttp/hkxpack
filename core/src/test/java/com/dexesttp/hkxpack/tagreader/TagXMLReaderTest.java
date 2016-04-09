@@ -8,6 +8,9 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
 	TagXMLReaderExceptionTest.class,
 	TagXMLTestBase.class})
+/**
+ * Launches the test suite for the {@link TagXMLReader}
+ */
 public class TagXMLReaderTest {
 	// NO CONTENT
 }

@@ -31,15 +31,15 @@ public class HeaderInterface {
 		if(data.version == HeaderDescriptor_v11.VERSION_11 ) {
 			HeaderDescriptor_v11 descriptor = new HeaderDescriptor_v11();
 			file.position(0);
-			file.put(descriptor.file_id);
+			file.put(descriptor.fileID);
 			file.put(descriptor.version);
 			file.put(descriptor.extras);
 			file.put(descriptor.constants);
 			file.put(descriptor.verName);
-			file.put(descriptor.constants_2);
-			file.put(descriptor.extras_v11);
-			if(data.padding_after == ONE_LINE_PADDING ) {
-				file.put(descriptor.padding_v11);
+			file.put(descriptor.constants2);
+			file.put(descriptor.extras11);
+			if(data.paddingAfter == ONE_LINE_PADDING ) {
+				file.put(descriptor.padding11);
 				file.put(descriptor.padding);	
 			} else {
 				file.put(new byte[] {0, 0});
@@ -57,20 +57,22 @@ public class HeaderInterface {
 		HeaderData data = new HeaderData();
 		HeaderDescriptor descriptor = new HeaderDescriptor();
 		file.position(0);
-		file.get(descriptor.file_id);
+		file.get(descriptor.fileID);
 		file.get(descriptor.version);
 		file.get(descriptor.extras);
 		file.get(descriptor.constants);
 		file.get(descriptor.verName);
-		file.get(descriptor.constants_2);
-		file.get(descriptor.extras_v11);
-		file.get(descriptor.padding_v11);
+		file.get(descriptor.constants2);
+		file.get(descriptor.extras11);
+		file.get(descriptor.padding11);
 		data.version = ByteUtils.getUInt(descriptor.version);
 		data.versionName = new String(descriptor.verName);
-		if(data.version == HeaderDescriptor_v11.VERSION_11)
-			data.padding_after = ByteUtils.getULong(descriptor.padding_v11);
-		else
-			data.padding_after = 0;
+		if(data.version == HeaderDescriptor_v11.VERSION_11) {
+			data.paddingAfter = ByteUtils.getULong(descriptor.padding11);
+		}
+		else {
+			data.paddingAfter = 0;
+		}
 		return data;
 	}
 

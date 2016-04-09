@@ -44,6 +44,7 @@ class TagXMLArrayHandler implements TagXMLContentsHandler {
 				break;
 			case POINTER:
 				handlePointer(result, member, memberTemplate);
+				break;
 			case OBJECT:
 				handleObject(result, member, memberTemplate.target);
 				break;

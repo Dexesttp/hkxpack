@@ -12,19 +12,31 @@ import com.dexesttp.hkxpack.hkx.HKXUtils;
 import com.dexesttp.hkxpack.hkx.data.DataInternal;
 import com.dexesttp.hkxpack.hkx.types.MemberSizeResolver;
 
+/**
+ * Handles a {@link HKXStringMember}'s callback while in an array
+ */
 public class HKXStringArrayMemberCallback implements HKXArrayMemberCallback {
-	private final List<DataInternal> data1;
-	private final HKXArrayMember arrMember;
-	private ByteBuffer outFile;
+	private final transient List<DataInternal> data1;
+	private final transient HKXArrayMember arrMember;
+	private final transient ByteBuffer outFile;
 
-	public HKXStringArrayMemberCallback(List<DataInternal> data1, HKXArrayMember arrMember, ByteBuffer outFile) {
+	/**
+	 * Creates a {@link HKXStringArrayMemberCallback}
+	 * @param data1 the {@link DataInternal} list to add String references to.
+	 * @param arrMember the parent {@link HKXArrayMember}
+	 * @param outFile the {@link ByteBuffer} to output data to.
+	 */
+	public HKXStringArrayMemberCallback(final List<DataInternal> data1, final HKXArrayMember arrMember, final ByteBuffer outFile) {
 		this.data1 = data1;
 		this.arrMember = arrMember;
 		this.outFile = outFile;
 	}
 
 	@Override
-	public long process(List<HKXMemberCallback> memberCallbacks, long position) {
+	/**
+	 * {@inheritDoc}
+	 */
+	public long process(final List<HKXMemberCallback> memberCallbacks, final long position) {
 		long newPos = position;
 		long memberSize = MemberSizeResolver.getSize(arrMember.getSubType());
 		List<HKXMemberCallback> internalCallbacks = new ArrayList<>();
@@ -40,7 +52,13 @@ public class HKXStringArrayMemberCallback implements HKXArrayMemberCallback {
 		return newPos - position;
 	}
 	
-	public HKXMemberCallback stringHandler(HKXStringMember internalMember, long pos) {
+	/**
+	 * Handles a {@link HKXStringMember} content's writing to a file.
+	 * @param internalMember the {@link HKXStringMember} to write
+	 * @param pos the position to write it at
+	 * @return the next valid position for a {@link HKXStringMember}.
+	 */
+	public HKXMemberCallback stringHandler(final HKXStringMember internalMember, final long pos) {
 		final DataInternal stringData = new DataInternal();
 		stringData.from = pos;
 		return (callbacks, position) -> { 

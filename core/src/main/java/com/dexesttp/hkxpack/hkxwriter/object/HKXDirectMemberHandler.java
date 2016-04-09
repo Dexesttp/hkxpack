@@ -2,21 +2,34 @@ package com.dexesttp.hkxpack.hkxwriter.object;
 
 import java.nio.ByteBuffer;
 
+import com.dexesttp.hkxpack.data.members.HKXDirectMember;
 import com.dexesttp.hkxpack.data.members.HKXMember;
 import com.dexesttp.hkxpack.hkx.types.MemberDataResolver;
 import com.dexesttp.hkxpack.hkxwriter.object.callbacks.HKXMemberCallback;
 
+/**
+ * Handles a {@link HKXDirectMember} for writing to a HKX File.
+ * @see MemberDataResolver#fromMember(HKXMember)
+ */
 public class HKXDirectMemberHandler implements HKXMemberHandler {
-	private final ByteBuffer outFile;
-	private final long memberOffset;
+	private final transient ByteBuffer outFile;
+	private final transient long memberOffset;
 
-	HKXDirectMemberHandler(ByteBuffer outFile, long memberOffset) {
+	/**
+	 * Creates a {@link HKXDirectMemberHandler}.
+	 * @param outFile the {@link ByteBuffer} to write to.
+	 * @param memberOffset the member offset in its class.
+	 */
+	HKXDirectMemberHandler(final ByteBuffer outFile, final long memberOffset) {
 		this.outFile = outFile;
 		this.memberOffset = memberOffset;
 	}
 
 	@Override
-	public HKXMemberCallback write(HKXMember member, long currentPos) {
+	/**
+	 * {@inheritDoc}
+	 */
+	public HKXMemberCallback write(final HKXMember member, final long currentPos) {
 		byte[] value = MemberDataResolver.fromMember(member);
 		outFile.position((int) (currentPos + memberOffset));
 		outFile.put(value);

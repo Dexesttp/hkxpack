@@ -13,7 +13,7 @@ import com.dexesttp.hkxpack.descriptor.exceptions.ClassListReadException;
  * List of all the available ClassXML resources.
  */
 class ClassXMLList {
-	private static final String classResourcesList = "/properties/classxmllist.txt";
+	private static final String CLASS_RESOURCES_LIST = "/properties/classxmllist.txt";
 	public final transient Map<String, String> filenameConverter = new HashMap<String, String>();
 	
 	ClassXMLList() throws ClassListReadException {
@@ -25,12 +25,13 @@ class ClassXMLList {
 	}
 	
 	private void readEntries() throws IOException {
-		URL paths = ClassXMLList.class.getResource(classResourcesList);
+		URL paths = ClassXMLList.class.getResource(CLASS_RESOURCES_LIST);
 		BufferedReader reader = new BufferedReader(new InputStreamReader(paths.openStream()));
-		String fileEntry;
-		while((fileEntry = reader.readLine()) != null) {
+		String fileEntry = reader.readLine();
+		while(fileEntry != null) {
 			String className = extractName(fileEntry);
 			filenameConverter.put(className, "/classxml/" + fileEntry);
+			fileEntry = reader.readLine();
 		}
 	}
 

@@ -52,7 +52,7 @@ class TagXMLFileHandler {
 	 * @return the relevant {@link Node}.
 	 * @throws InvalidTagXMLException if there is no root TagXML node in the file.
 	 */
-	Node getRootNode(Document document) throws InvalidTagXMLException {
+	Node getRootNode(final Document document) throws InvalidTagXMLException {
 		NodeList nodeList = document.getElementsByTagName("hkpackfile");
 		if(nodeList.getLength() != 1)
 			throw new InvalidTagXMLException(SBundle.getString("error.tag.read.hkpackfile") + nodeList.getLength());

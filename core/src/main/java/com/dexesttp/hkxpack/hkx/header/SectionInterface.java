@@ -35,11 +35,13 @@ public class SectionInterface {
 	 */
 	public void compress(final SectionData section, final int sectionID) {
 		long sectionsize;
-		if(header.version == HeaderDescriptor_v11.VERSION_11)
+		if(header.version == HeaderDescriptor_v11.VERSION_11) {
 			sectionsize = 0x40;
-		else
+		}
+		else {
 			sectionsize = 0x30;
-		file.position((int) (0x40 + header.padding_after + sectionsize * sectionID));
+		}
+		file.position((int) (0x40 + header.paddingAfter + sectionsize * sectionID));
 		SectionDescriptor descriptor = new SectionDescriptor();
 		file.put(section.name.getBytes());
 		file.position(file.position() + (0x10 - section.name.length()));
@@ -51,9 +53,11 @@ public class SectionInterface {
 		file.put(ByteUtils.fromULong(section.data4, 4));
 		file.put(ByteUtils.fromULong(section.data5, 4));
 		file.put(ByteUtils.fromULong(section.end, 4));
-		if(header.version == HeaderDescriptor_v11.VERSION_11)
-			for(int i = 0; i < 0x10; i++)
+		if(header.version == HeaderDescriptor_v11.VERSION_11) {
+			for(int i = 0; i < 0x10; i++) {
 				file.put((byte) 0xFF);
+			}
+		}
 	}
 
 	/**
@@ -65,12 +69,14 @@ public class SectionInterface {
 	 */
 	public SectionData extract(final int sectionID) {
 		long sectionsize;
-		if(header.version == HeaderDescriptor_v11.VERSION_11)
+		if(header.version == HeaderDescriptor_v11.VERSION_11) {
 			sectionsize = 0x40;
-		else
+		}
+		else {
 			sectionsize = 0x30;
+		}
 		SectionData data = new SectionData();
-		file.position((int) (0x40 + header.padding_after + sectionsize * sectionID));
+		file.position((int) (0x40 + header.paddingAfter + sectionsize * sectionID));
 		SectionDescriptor descriptor = new SectionDescriptor();
 		file.get(descriptor.secName);
 		file.get(descriptor.constant);

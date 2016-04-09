@@ -53,10 +53,10 @@ class TagXMLHandler {
 	/**
 	 * Write a {@link Document} to a {@link File}.
 	 * @param document the {@link Document} to write.
-	 * @param outFile the {@link File} to write the {@link Document} into.
+	 * @param outputFile the {@link File} to write the {@link Document} into.
 	 * @throws TransformerException if there was an error while writing out the document.
 	 */
-	void writeToFile(Document document, File outFile) throws TransformerException {
+	void writeToFile(final Document document, final File outputFile) throws TransformerException {
 		// Create transformer
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
 		Transformer transformer = transformerFactory.newTransformer();
@@ -72,7 +72,7 @@ class TagXMLHandler {
 		StreamResult outResult;
 		
 		// Write DOM back to file
-		outResult = new StreamResult(outFile);
+		outResult = new StreamResult(outputFile);
 		transformer.transform(source, outResult);
 	}
 }

@@ -8,6 +8,9 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
 	HKXReaderExceptionTest.class,
 	HKXTestBase.class})
+/**
+ * Launches the relevant test suite for the {@link HKXReader} class
+ */
 public class HKXReaderTest {
 	// NO CONTENT
 }

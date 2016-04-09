@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
+import java.util.Optional;
 
 import com.dexesttp.hkxpack.data.HKXFile;
 import com.dexesttp.hkxpack.descriptor.HKXEnumResolver;
@@ -32,16 +33,16 @@ public class HKXWriter
 	 */
 	public static final int DEFAULT_BUFFER_CAPACITY = 10000000;
 	
-	private final HKXEnumResolver enumResolver;
-	private final File outputFile;
-	private final ByteBuffer outputBB;
+	private final transient HKXEnumResolver enumResolver;
+	private final transient Optional<File> outputFile;
+	private final transient ByteBuffer outputBB;
 
 	/**
 	 * Creates a {@link HKXWriter}, with a default capacity of {@value #DEFAULT_BUFFER_CAPACITY}
 	 * @param outputFile the {@link File} to output data into.
 	 * @param enumResolver the {@link HKXEnumResolver} to use.
 	 */
-	public HKXWriter(File outputFile, HKXEnumResolver enumResolver)
+	public HKXWriter(final File outputFile, final HKXEnumResolver enumResolver)
 	{
 		this(outputFile, enumResolver, DEFAULT_BUFFER_CAPACITY);
 	}
@@ -52,10 +53,10 @@ public class HKXWriter
 	 * @param enumResolver the {@link HKXEnumResolver} to use.
 	 * @param bufferCapacity the capacity of the buffer to use, in bytes
 	 */
-	public HKXWriter(File outputFile, HKXEnumResolver enumResolver, int bufferCapacity)
+	public HKXWriter(final File outputFile, final HKXEnumResolver enumResolver, final int bufferCapacity)
 	{
 		this.enumResolver = enumResolver;
-		this.outputFile = outputFile;
+		this.outputFile = Optional.of(outputFile);
 		this.outputBB = ByteBuffer.allocateDirect(bufferCapacity);
 	}
 
@@ -64,10 +65,10 @@ public class HKXWriter
 	 * @param outputFile the {@link File} to output data into.
 	 * @param enumResolver the {@link HKXEnumResolver} to use.
 	 */
-	public HKXWriter(ByteBuffer outputBB, HKXEnumResolver enumResolver)
+	public HKXWriter(final ByteBuffer outputBB, final HKXEnumResolver enumResolver)
 	{
 		this.outputBB = outputBB;
-		this.outputFile = null;
+		this.outputFile = Optional.empty();
 		this.enumResolver = enumResolver;
 	}
 
@@ -78,7 +79,7 @@ public class HKXWriter
 	 * @throws IOException 
 	 * @throws UnsupportedVersionError 
 	 */
-	public void write(HKXFile file) throws IOException, UnsupportedVersionError
+	public void write(final HKXFile file) throws IOException, UnsupportedVersionError
 	{
 		// Connect to the file.
 		HKXWriterConnector connector = new HKXWriterConnector(outputBB);
@@ -132,9 +133,9 @@ public class HKXWriter
 		outputBB.position(0);
 		
 		// If needed, write the output ByteBuffer back to the file.
-		if (outputFile != null)
+		if (outputFile.isPresent())
 		{
-			try (RandomAccessFile out = new RandomAccessFile(outputFile, "rw"))
+			try (RandomAccessFile out = new RandomAccessFile(outputFile.get(), "rw"))
 			{
 				byte[] bytes = new byte[outputBB.limit()];
 				outputBB.get(bytes);

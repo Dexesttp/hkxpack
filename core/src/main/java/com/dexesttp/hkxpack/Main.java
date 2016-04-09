@@ -27,7 +27,7 @@ public class Main {
 	 * @param inputFileName
 	 * @param outputFileName 
 	 */
-	public void read(String inputFileName, String outputFileName) {
+	public void read(final String inputFileName, final String outputFileName) {
 		try {
 			
 			// Read file
@@ -51,7 +51,7 @@ public class Main {
 	 * @param inputFileName
 	 * @param outputFileName
 	 */
-	public void write(String inputFileName, String outputFileName) {
+	public void write(final String inputFileName, final String outputFileName) {
 		try {
 			// Read file
 			File inFile = new File(inputFileName);

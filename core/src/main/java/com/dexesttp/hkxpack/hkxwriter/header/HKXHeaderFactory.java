@@ -36,7 +36,7 @@ public class HKXHeaderFactory {
 		HeaderData header = new HeaderData();
 		header.version = file.getClassVersion();
 		header.versionName = file.getContentsVersion();
-		header.padding_after = isAnim ? 0x10 : 0x00;
+		header.paddingAfter = isAnim ? 0x10 : 0x00;
 		
 		return header;
 	}

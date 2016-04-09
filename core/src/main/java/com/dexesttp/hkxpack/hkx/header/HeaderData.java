@@ -17,5 +17,5 @@ public class HeaderData {
 	/**
 	 * The padding after the header. Supported paddings are 0x00 (for most files) and 0x10 (for animation files).
 	 */
-	public long padding_after;
+	public long paddingAfter;
 }

@@ -56,7 +56,7 @@ public class HKXSectionHandler {
 	
 	private void init_classname(SectionData data) {
 		data.name = "__classnames__";
-		data.offset = header_base_size + header.padding_after + 3 * section_size;
+		data.offset = header_base_size + header.paddingAfter + 3 * section_size;
 	}
 
 	private void init_types(SectionData data) {

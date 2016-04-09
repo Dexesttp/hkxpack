@@ -33,15 +33,17 @@ public class Data1Interface {
 	 */
 	public DataInternal read(final int pos) throws InvalidPositionException {
 		long dataPos = header.data1 + pos * 0x08;
-		if(pos < 0 || dataPos > header.data2)
+		if(pos < 0 || dataPos > header.data2) {
 			throw new InvalidPositionException("DATA_1", pos );
+		}
 		DataInternal data = new DataInternal();
 		file.position((int) (header.offset + dataPos));
 		byte[] dataLine = new byte[4];
 		file.get(dataLine);
 		data.from = ByteUtils.getULong(dataLine);
-		if(data.from > header.offset + header.data1)
+		if(data.from > header.offset + header.data1) {
 			throw new InvalidPositionException("DATA_1", pos );
+		}
 		file.get(dataLine);
 		data.to = ByteUtils.getULong(dataLine);
 		this.lastPos  = pos;

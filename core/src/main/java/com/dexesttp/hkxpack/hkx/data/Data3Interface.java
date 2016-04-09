@@ -31,15 +31,17 @@ public class Data3Interface {
 	 */
 	public DataExternal read(final int pos) throws InvalidPositionException {
 		long dataPos = header.data3 + pos * 0x0C;
-		if(pos < 0 || dataPos >= header.end)
+		if(pos < 0 || dataPos >= header.end) {
 			throw new InvalidPositionException("DATA_3", pos );
+		}
 		DataExternal data = new DataExternal();
 		file.position((int) (header.offset + dataPos));
 		byte[] dataLine = new byte[4];
 		file.get(dataLine);
 		data.from = ByteUtils.getULong(dataLine);
-		if(data.from > header.offset + header.data1)
+		if(data.from > header.offset + header.data1) {
 			throw new InvalidPositionException("DATA_3", pos );
+		}
 		file.get(dataLine);
 		data.section = ByteUtils.getUInt(dataLine);
 		file.get(dataLine);

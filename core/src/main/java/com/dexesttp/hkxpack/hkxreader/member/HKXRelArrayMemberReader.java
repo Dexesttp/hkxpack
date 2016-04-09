@@ -43,8 +43,9 @@ public class HKXRelArrayMemberReader implements HKXMemberReader {
 		int size = ByteUtils.getUInt(bSize)-1;
 		int offset = ByteUtils.getUInt(bOff);
 		HKXArrayMember res = new HKXArrayMember(name, HKXType.TYPE_RELARRAY, subtype);
-		for(int i = 0; i < size; i++)
+		for(int i = 0; i < size; i++) {
 			res.add(internals.getContents(classOffset + offset, i));
+		}
 		return res;
 	}
 

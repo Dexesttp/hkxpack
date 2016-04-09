@@ -17,8 +17,9 @@ public final class HKXUtils {
 	 * @return
 	 */
 	public static long snapObject(final long currentPos) {
-		if(currentPos % FULL_LINE == 0)
+		if(currentPos % FULL_LINE == 0) {
 			return currentPos;
+		}
 		return (1 + currentPos / FULL_LINE) * FULL_LINE;
 	}
 	
@@ -28,8 +29,9 @@ public final class HKXUtils {
 	 * @return
 	 */
 	public static long snapLine(final long currentPos) {
-		if(currentPos % FULL_LINE == 0)
+		if(currentPos % FULL_LINE == 0) {
 			return currentPos;
+		}
 		return (1 + currentPos / FULL_LINE) * FULL_LINE;
 	}
 
@@ -39,10 +41,12 @@ public final class HKXUtils {
 	 * @return the snapped size.
 	 */
 	public static long snapString(final long currentSize) {
-		if(currentSize < HALF_LINE )
+		if(currentSize < HALF_LINE ) {
 			return HALF_LINE;
-		if(currentSize % FULL_LINE == 0)
+		}
+		if(currentSize % FULL_LINE == 0) {
 			return currentSize;
+		}
 		return (1 + currentSize / FULL_LINE ) * FULL_LINE;
 	}
 
@@ -53,8 +57,9 @@ public final class HKXUtils {
 	 * @return
 	 */
 	public static long snapSize(final long offset, final long snap) {
-		if(offset % snap == 0)
+		if(offset % snap == 0) {
 			return offset;
+		}
 		return (1 + offset / snap) * snap;
 	}
 }

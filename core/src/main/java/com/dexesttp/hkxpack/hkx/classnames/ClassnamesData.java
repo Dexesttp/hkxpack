@@ -25,9 +25,11 @@ public class ClassnamesData extends LinkedHashMap<Long, Classname> {
 	 * @return the existence of the classname.
 	 */
 	public boolean containsClass(final String name) {
-		for(Classname classname : this.values())
-			if(classname.name.equals(name))
+		for(Classname classname : this.values()) {
+			if(classname.name.equals(name)) {
 				return true;
+			}
+		}
 		return false;
 	}
 
@@ -37,9 +39,11 @@ public class ClassnamesData extends LinkedHashMap<Long, Classname> {
 	 * @return the classname's position in the {@literal __classnames__} section
 	 */
 	public long getPosition(final String name) {
-		for(java.util.Map.Entry<Long, Classname> entries : this.entrySet())
-			if(entries.getValue().name.equals(name))
+		for(java.util.Map.Entry<Long, Classname> entries : this.entrySet()) {
+			if(entries.getValue().name.equals(name)) {
 				return entries.getKey();
+			}
+		}
 		return 0x05;
 	}
 }

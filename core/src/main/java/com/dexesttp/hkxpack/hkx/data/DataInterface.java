@@ -29,8 +29,9 @@ public class DataInterface {
 	 * @throws InvalidPositionException if the position is outside the file's Data definition.
 	 */
 	public ByteBuffer setup(final long position) throws InvalidPositionException {
-		if(position < 0 || position > header.data1)
+		if(position < 0 || position > header.data1) {
 			throw new InvalidPositionException("DATA", position);
+		}
 		file.position((int) (header.offset + position));
 		return file;
 	}

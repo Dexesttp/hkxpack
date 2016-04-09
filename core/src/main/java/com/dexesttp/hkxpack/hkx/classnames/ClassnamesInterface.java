@@ -45,8 +45,9 @@ public class ClassnamesInterface {
 		long pos = file.position();
 		long toDo = 0x10 - (pos % 0x10);
 		pos += toDo;
-		for(;toDo>0;toDo--)
+		for(;toDo>0;toDo--) {
 			file.put((byte) -1);
+		}
 		return pos + toDo;
 	}
 	
@@ -61,14 +62,17 @@ public class ClassnamesInterface {
 		file.position((int) section.offset);
 		while(file.position() < limit) {
 			file.get(idList);
-			if(file.get() != CLASSNAME_BREAKER)
+			if(file.get() != CLASSNAME_BREAKER) {
 				break;
+			}
 			long position = file.position();
-			if(position > limit)
+			if(position > limit) {
 				break;
+			}
 			String name = ByteUtils.readString(file);
-			if(!name.isEmpty())
+			if(!name.isEmpty()) {
 				data.put(position - section.offset, name, idList);
+			}
 		}
 		return data;
 	}

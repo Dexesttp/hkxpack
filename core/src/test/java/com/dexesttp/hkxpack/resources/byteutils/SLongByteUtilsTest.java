@@ -4,6 +4,9 @@ import static org.junit.Assert.assertArrayEquals;
 
 import org.junit.Test;
 
+/**
+ * Tests for the {@link SLongByteUtils} class
+ */
 public class SLongByteUtilsTest {
 	@Test
 	public void getSLongSize2WorksFor0() {

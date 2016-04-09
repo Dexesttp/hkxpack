@@ -86,8 +86,9 @@ public class HKXReader {
 				generator.get(currentClass.from);
 			}
 		} catch (InvalidPositionException e) {
-			if(!e.getSection().equals("DATA_3"))
+			if(!e.getSection().equals("DATA_3")) {
 				throw e;
+			}
 		}
 		// Reset position to the beginning of data3.
 		pos = 0;
@@ -122,8 +123,9 @@ public class HKXReader {
 				}
 			}
 		} catch (InvalidPositionException e) {
-			if(!e.getSection().equals("DATA_3"))
+			if(!e.getSection().equals("DATA_3")) {
 				throw e;
+			}
 		}
 		
 		return content;

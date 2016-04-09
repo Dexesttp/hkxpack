@@ -27,6 +27,7 @@ class TagXMLComplexSerializedHandler implements TagXMLSerializedHandler {
 			case TYPE_MATRIX4:
 			case TYPE_TRANSFORM:
 				member.set(new Double[]{0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.});
+				break;
 			default:
 				break;
 		}

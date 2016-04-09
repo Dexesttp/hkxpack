@@ -69,10 +69,12 @@ public class HKXMemberReaderFactory {
 				
 			case ARRAY:
 				HKXArrayContentsReader arrayContentsReader = acrFactory.get(template);
-				if(template.vtype == HKXType.TYPE_RELARRAY)
+				if(template.vtype == HKXType.TYPE_RELARRAY) {
 					return new HKXRelArrayMemberReader(connector, template.name, template.vsubtype, arrayContentsReader, template.offset);
-				else
+				}
+				else {
 					return new HKXArrayMemberReader(connector, template.name, template.vsubtype, arrayContentsReader, template.offset);
+				}
 			case OBJECT:
 				HKXDescriptor descriptor = descriptorFactory.get(template.target);
 				return new HKXObjectMemberReader(objectCreator, template.name, template.offset, descriptor);
