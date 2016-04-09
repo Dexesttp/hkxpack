@@ -1,6 +1,4 @@
 package com.dexesttp.hkxpack.tagreader;
-
-import org.junit.experimental.theories.Theories;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -30,7 +28,7 @@ class TagXMLMemberHandler {
 	/**
 	 * Creates a {@link TagXMLMemberHandler}.
 	 * @param tagXMLNodeHandler the node handler to use.
-	 * @param descriptorFactory {@link Theories} descriptor facory to use.
+	 * @param descriptorFactory the descriptor factory to use.
 	 */
 	public TagXMLMemberHandler(final TagXMLNodeHandler tagXMLNodeHandler, final HKXDescriptorFactory descriptorFactory) {
 		TagXMLNodeHandler nodeHandler = tagXMLNodeHandler;

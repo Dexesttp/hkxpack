@@ -41,6 +41,6 @@ class TagXMLDirectMemberHandler {
 		if(member.get() instanceof Character) {
 			return Integer.toString((int) ((char) ((HKXDirectMember<Character>) member).get()));
 		}
-		return Integer.toString((int) member.get());
+		return member.get().toString();
 	}
 }
