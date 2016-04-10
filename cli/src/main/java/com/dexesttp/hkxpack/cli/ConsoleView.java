@@ -18,6 +18,9 @@ public final class ConsoleView {
 	 * @param args the console arguments.
 	 */
 	public static void main(final String... args) {
+		// Set the logging properties
+		System.setProperty("java.util.logging.SimpleFormatter.format", 
+            "[%4$s] %5$s%n");
 		Command command;
 		if(args.length < MINIMUM_ARG_COUNT) {
 			command = new Command_help();
