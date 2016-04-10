@@ -2,6 +2,7 @@ package com.dexesttp.hkxpack.cli.commands;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Routes a command line interface into the relevant {@link Command}.
@@ -27,9 +28,9 @@ public class CommandFactory {
 	 */
 	public Command newInstance(final String commandName) {
 		@SuppressWarnings("rawtypes")
-		Class commandClass = commandParser.get(commandName);
+		Optional<Class> commandClass = Optional.ofNullable(commandParser.get(commandName));
 		try {
-			return (Command) commandClass.newInstance();
+			return (Command) commandClass.orElse(Command_quick.class).newInstance();
 		} catch (InstantiationException | IllegalAccessException e) {
 			return new Command_quick();
 		}
