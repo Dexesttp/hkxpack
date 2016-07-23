@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<!-- build:[href]:dist css/ -->
+	<link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="assets/css/bootstrap-theme.min.css" />
+	<!-- /build -->
+	<style>
+		html {
+			position: relative;
+			min-height: 100%;
+		}
+		body {
+			margin-bottom: 60px;
+		}
+		.footer {
+			position: absolute;
+			bottom: 0;
+			width: 100%;
+			height: 60px;
+			background-color: #f5f5f5;
+		}
+		.carousel-inner img {
+			margin: auto;
+		}
+	</style>
+	<title>HKXPack - HKX file converter</title>
+</head>
+<body>
+	<nav class="navbar navbar-default">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#">HKXPack</a>
+			</div>
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<!-- Nav tabs -->
+				<ul class="nav nav-tabs">
+					<li class="active"><a href="#home" data-toggle="tab">Home</a></li>
+					<li><a href="#about" data-toggle="tab">About</a></li>
+					<li><a href="#download" data-toggle="tab">Download</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<div class="container">
+		<div class="tab-content tabs">
+			<div class="tab-pane fade in active" id="home">
+<!-- build:include ../../build/main.html --><!-- /build -->
+			</div>
+			<div class="tab-pane fade" id="about">
+<!-- build:include ../../build/about.html --><!-- /build -->
+			</div>
+			<div class="tab-pane fade" id="download">
+<!-- build:include ../../build/download.html --><!-- /build -->
+			</div>
+		</div>
+	</div>
+	<footer class="footer">
+		<div class="container">
+			<!-- build:template
+				<p class="text-muted">HKXPack - copyright DexesTTP 2015-2016 - last updated <%= date %></p>
+			/build -->
+		</div>
+	</footer>
+	<!-- build:[src]:dist js/ -->
+	<script type="application/javascript" src="assets/js/jquery-2.2.4.min.js"></script>
+	<script type="application/javascript" src="assets/js/bootstrap.min.js"></script>
+	<!-- /build -->
+</body>
+</html>
