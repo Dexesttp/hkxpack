@@ -1,17 +1,26 @@
 # <NAME>
+
 ## Scope
+
 <Description of the Pull Request changes>
 
 ## Additions
- - <Added item>  
+
+- <Added item>
+
 <Eventual addition description>
- - <Added item>
- 
+
+- <Added item>
+
 ## Fixes
- - <Fixed item>  
+
+- <Fixed item>
+
 <Eventual fix description>
- - <Fixed item>
+
+- <Fixed item>
 
 ## Notes
- - <Note 1>
- - <Note 2>
+
+- <Note 1>
+- <Note 2>
