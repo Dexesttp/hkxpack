@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,7 +21,6 @@ import com.dexesttp.hkxpack.cli.ConsoleView;
 import com.dexesttp.hkxpack.cli.loggers.DirectoryWalkerLoggerFactory;
 import com.dexesttp.hkxpack.cli.loggers.DirectoryWalkerLoggerFactory.DirectoryWalkerLogger;
 import com.dexesttp.hkxpack.cli.utils.ArgsParser;
-import com.dexesttp.hkxpack.cli.utils.CLIProperties;
 import com.dexesttp.hkxpack.cli.utils.DirWalker;
 import com.dexesttp.hkxpack.cli.utils.DirWalker.Entry;
 import com.dexesttp.hkxpack.cli.utils.FileNameCreationException;
@@ -49,21 +50,51 @@ public abstract class Command_IO implements Command {
 	 * {@inheritDoc}
 	 */
 	public int execute(final String... args) {
+		// Initialize logger handler
+		// From http://stackoverflow.com/a/6315736/6335555
+		LOGGER.setUseParentHandlers(false);
+		Handler consoleHandler = new ConsoleHandler();
+		LOGGER.addHandler(consoleHandler);
+		
 		// Options handling
 		ArgsParser parser = new ArgsParser();
 		parser.addOption("-o", 1);
 		parser.addOption("-t", 1);
 		parser.addOption("-b", 1);
-		parser.addOption("-d", 0);
 		parser.addOption("-q", 0);
 		parser.addOption("-v", 0);
+		parser.addOption("-d", 0);
 		ArgsParser.Options result;
 		try {
 			result = parser.parse(args);
-		} catch (WrongSizeException e1) {
-			LOGGER.throwing(this.getClass().getName(), "ArgsParser", e1);
+		} catch (WrongSizeException e) {
+			consoleHandler.setLevel(Level.ALL);
+			LOGGER.setLevel(Level.ALL);
+			LOGGER.severe("Could not parse args properly.");
+			LOGGER.severe(e.getMessage());
+			LOGGER.throwing(this.getClass().getName(), "ArgsParser", e);
 			return 1;
 		}
+		
+		// Logging levels
+		if(result.exists("-d")) {
+			consoleHandler.setLevel(Level.ALL);
+			LOGGER.setLevel(Level.ALL);
+			LOGGER.finer("Debug mode selected.");
+		}
+		else if(result.exists("-v")) {
+			consoleHandler.setLevel(Level.FINE);
+			LOGGER.setLevel(Level.FINE);
+		}
+		else if(result.exists("-q")) {
+			consoleHandler.setLevel(Level.SEVERE);
+			LOGGER.setLevel(Level.SEVERE);
+		}
+		else {
+			consoleHandler.setLevel(Level.INFO);
+			LOGGER.setLevel(Level.INFO);
+		}
+		
 		String fileName = result.get("", 1);
 		String outName = result.get("-o", 0);
 		if(result.exists("-t")) {
@@ -72,10 +103,6 @@ public abstract class Command_IO implements Command {
 		if(result.exists("-b")) {
 			bufferSize = Integer.parseInt(result.get("-b", 0));
 		}
-		
-		CLIProperties.debug = result.exists("-d");
-		CLIProperties.quiet = result.exists("-q");
-		CLIProperties.verbose = result.exists("-v");
 		
 		// Routing
 		File fileIn = new File(fileName);
@@ -103,11 +130,17 @@ public abstract class Command_IO implements Command {
 			executionCore(fileName, actualOutputName, enumResolver, descriptorFactory);
 		} catch(BufferUnderflowException e) {
 			if(LOGGER.isLoggable(Level.SEVERE)) {
-				LOGGER.log(Level.SEVERE, "The file " + fileName + " ended before the processor had the needed data. The file might be corrupted or the parser might not be able to handle this kind of file.", e);
+				LOGGER.severe("There was an error handling the file.");
+				LOGGER.severe("The file " + fileName + " ended before the processor had the needed data. The file might be corrupted or the parser might not be able to handle this kind of file.");
 			}
+			LOGGER.log(Level.FINER, e.getMessage(), e);
 			return 1;
 		} catch(ParserConfigurationException | SAXException | IOException | InvalidTagXMLException | UnsupportedVersionError | InvalidPositionException | TransformerException | FileNameCreationException e) {
-			LOGGER.throwing(this.getClass().getName(), "execution_core", e);
+			if(LOGGER.isLoggable(Level.SEVERE)) {
+				LOGGER.severe("There was an error handling the file.");
+				LOGGER.severe(e.getMessage());
+			}
+			LOGGER.log(Level.FINER, e.getMessage(), e);
 			return 1;
 		}
 		return 0;
@@ -129,7 +162,7 @@ public abstract class Command_IO implements Command {
 		try {
 			descriptorFactory = new HKXDescriptorFactory(enumResolver);
 		} catch (ClassListReadException e) {
-			LOGGER.throwing(this.getClass().getName(), "executeMulti", e);
+			LOGGER.log(Level.FINER, e.getMessage(), e);
 			return 1;
 		}
 		
@@ -159,7 +192,7 @@ public abstract class Command_IO implements Command {
 					executionCatcher(inputFileName, outputFileName, enumResolver, descriptorFactory);
 				});
 			} catch (FileNameCreationException e) {
-				LOGGER.throwing(this.getClass().getName(), "executeMulti", e);
+				LOGGER.log(Level.FINER, e.getMessage(), e);
 			}
 		}
 		
@@ -199,18 +232,15 @@ public abstract class Command_IO implements Command {
 		} catch(BufferUnderflowException e) {
 			if(LOGGER.isLoggable(Level.SEVERE)) {
 				LOGGER.severe("Error reading file : " + inputFileName);
-				LOGGER.log(Level.SEVERE, "The file " + inputFileName + " ended before the processor had the needed data. The file might be corrupted or the parser might not be able to handle this kind of file.", e);
+				LOGGER.severe("The file " + inputFileName + " ended before the processor had the needed data. The file might be corrupted or the parser might not be able to handle this kind of file.");
 			}
+			LOGGER.log(Level.FINER, e.getMessage(), e);
 		}  catch (ParserConfigurationException | SAXException | IOException | InvalidTagXMLException | UnsupportedVersionError | InvalidPositionException | TransformerException e) {
 			if(LOGGER.isLoggable(Level.SEVERE)) {
 				LOGGER.severe("Error reading file : " + inputFileName);
-				if(CLIProperties.debug) {
-					LOGGER.throwing("Command_IO", "execution_core", e);
-				}
-				else if(!CLIProperties.quiet) {
-					LOGGER.severe("Error reading file : " + inputFileName);
-				}
+				LOGGER.severe(e.getMessage());
 			}
+			LOGGER.log(Level.FINER, e.getMessage(), e);
 		} finally {
 			if(LOGGER.isLoggable(Level.FINE)) {
 				LOGGER.fine(inputFileName + "\t=> " + outputFileName);

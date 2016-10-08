@@ -4,7 +4,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.dexesttp.hkxpack.cli.ConsoleView;
-import com.dexesttp.hkxpack.cli.utils.CLIProperties;
 import com.dexesttp.hkxpack.resources.LoggerUtil;
 
 /**
@@ -19,23 +18,19 @@ public class DirectoryWalkerLoggerFactory {
 	 * @return a suitable {@link DirectoryWalkerLogger}.
 	 */
 	public DirectoryWalkerLogger newLogger(final int total) {
-		if(!CLIProperties.quiet && LOGGER.isLoggable(Level.INFO)) {
+		if(LOGGER.isLoggable(Level.FINE)) {
 			LOGGER.info("Detected " + total + " files to handle.");
+			return (done) -> {
+				LOGGER.fine("Handled " + done + " files (" + ((float)done / (float) total) + "%)");
+				handleErrors();
+			};
 		}
-		else {
-			if(!CLIProperties.verbose && LOGGER.isLoggable(Level.INFO)) {
-				return (done) -> {
-						LOGGER.info(
-								"Handled " + done + " files ("
-								+ ((float)done / (float) total) + "%)");
-						handleErrors();
-					};
-			}
-			else {
-				return (done) -> {
-					handleErrors();
-				};
-			}
+		else if(LOGGER.isLoggable(Level.INFO)) {
+			LOGGER.info("Detected " + total + " files to handle.");
+			return (done) -> { handleErrors(); };
+		}
+		else if(LOGGER.isLoggable(Level.SEVERE)){
+			return (done) -> { handleErrors(); };
 		}
 		return (done) -> {};
 	}

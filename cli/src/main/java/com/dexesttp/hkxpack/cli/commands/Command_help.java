@@ -4,7 +4,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.dexesttp.hkxpack.cli.ConsoleView;
-import com.dexesttp.hkxpack.cli.utils.CLIProperties;
 import com.dexesttp.hkxpack.cli.utils.StaticProperties;
 
 /**
@@ -18,10 +17,12 @@ public class Command_help implements Command {
 	 */
 	// TODO prettify help.
 	public int execute(final String... parameters) {
+		boolean verbose = false;
 		if(parameters.length >= 2 && parameters[1].equals("-v")) {
-			CLIProperties.verbose = true;
+			verbose = true;
 		}
 		System.setProperty("java.util.logging.SimpleFormatter.format", "%5$s%n");
+		LOGGER.setLevel(Level.INFO);
 		
 		if(LOGGER.isLoggable(Level.INFO)) {
 			LOGGER.info("HKXPack version " + StaticProperties.getVersionNumber() );
@@ -35,7 +36,7 @@ public class Command_help implements Command {
 			LOGGER.info("\t" +"-v\t\t" + "Verbose output");
 			LOGGER.info("\t" +"-o <outputfile>\t" + "Set the output file");
 			LOGGER.info("Advanced options :");
-			if(CLIProperties.verbose) {
+			if(verbose) {
 				LOGGER.info("\t" +"-d\t\t" + "Debug output");
 				LOGGER.info("\t" +"-t <number>" + "\t" + "Set the maximum numbers of threads to use");
 				LOGGER.info("\t" +"-b <number>" + "\t" + "Set the buffer size");

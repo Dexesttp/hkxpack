@@ -42,7 +42,7 @@ public class Command_unpack extends Command_IO {
 			newName = ogName.substring(0, ogName.lastIndexOf('.')) + ".xml";
 		}
 		catch(StringIndexOutOfBoundsException e) {
-			throw new FileNameCreationException("The file : " + ogName + " has a name that cna't be converted.", e);
+			throw new FileNameCreationException("The file : " + ogName + " has a name that can't be converted.", e);
 		}
 		return newName;
 	}

@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 
@@ -35,6 +36,9 @@ public class DirWalker {
 	 */
 	public List<Entry> walk(final File directory) {
 		List<Entry> res = new ArrayList<>();
+		if(LOGGER.isLoggable(Level.FINER)) {
+			LOGGER.finer("Starting walking in " + directory.getName());
+		}
 		walk(directory, directory.getName(), res);
 		return res;
 	}

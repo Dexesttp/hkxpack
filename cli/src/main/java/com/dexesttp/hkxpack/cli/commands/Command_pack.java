@@ -7,6 +7,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import com.dexesttp.hkxpack.cli.utils.FileNameCreationException;
 import com.dexesttp.hkxpack.data.HKXFile;
 import com.dexesttp.hkxpack.descriptor.HKXDescriptorFactory;
 import com.dexesttp.hkxpack.descriptor.HKXEnumResolver;
@@ -44,8 +45,15 @@ public class Command_pack extends Command_IO {
 	/**
 	 * {@inheritDoc}
 	 */
-	protected String extractFileName(final String ogName) {
-		return ogName.substring(0, ogName.lastIndexOf('.')) + ".hkx";
+	protected String extractFileName(final String ogName) throws FileNameCreationException {
+		String newName = "";
+		try {
+			newName = ogName.substring(0, ogName.lastIndexOf('.')) + ".hkx";
+		}
+		catch(StringIndexOutOfBoundsException e) {
+			throw new FileNameCreationException("The file : " + ogName + " has a name that can't be converted.", e);
+		}
+		return newName;
 	}
 
 	@Override
