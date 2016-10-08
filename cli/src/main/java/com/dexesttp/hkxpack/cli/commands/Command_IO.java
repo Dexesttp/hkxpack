@@ -2,6 +2,7 @@ package com.dexesttp.hkxpack.cli.commands;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.BufferUnderflowException;
 import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -100,6 +101,11 @@ public abstract class Command_IO implements Command {
 			String actualOutputName = outputFileName.isEmpty() ? extractFileName(fileName) : outputFileName;
 			descriptorFactory = new HKXDescriptorFactory(enumResolver);
 			executionCore(fileName, actualOutputName, enumResolver, descriptorFactory);
+		} catch(BufferUnderflowException e) {
+			if(LOGGER.isLoggable(Level.SEVERE)) {
+				LOGGER.log(Level.SEVERE, "The file " + fileName + " ended before the processor had the needed data. The file might be corrupted or the parser might not be able to handle this kind of file.", e);
+			}
+			return 1;
 		} catch(ParserConfigurationException | SAXException | IOException | InvalidTagXMLException | UnsupportedVersionError | InvalidPositionException | TransformerException | FileNameCreationException e) {
 			LOGGER.throwing(this.getClass().getName(), "execution_core", e);
 			return 1;
@@ -190,7 +196,12 @@ public abstract class Command_IO implements Command {
 			final HKXEnumResolver enumResolver, final HKXDescriptorFactory descriptorFactory) {
 		try {
 			executionCore(inputFileName, outputFileName, enumResolver, descriptorFactory);
-		} catch (ParserConfigurationException | SAXException | IOException | InvalidTagXMLException | UnsupportedVersionError | InvalidPositionException | TransformerException e) {
+		} catch(BufferUnderflowException e) {
+			if(LOGGER.isLoggable(Level.SEVERE)) {
+				LOGGER.severe("Error reading file : " + inputFileName);
+				LOGGER.log(Level.SEVERE, "The file " + inputFileName + " ended before the processor had the needed data. The file might be corrupted or the parser might not be able to handle this kind of file.", e);
+			}
+		}  catch (ParserConfigurationException | SAXException | IOException | InvalidTagXMLException | UnsupportedVersionError | InvalidPositionException | TransformerException e) {
 			if(LOGGER.isLoggable(Level.SEVERE)) {
 				LOGGER.severe("Error reading file : " + inputFileName);
 				if(CLIProperties.debug) {
