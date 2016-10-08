@@ -21,6 +21,7 @@ import com.dexesttp.hkxpack.cli.utils.ArgsParser;
 import com.dexesttp.hkxpack.cli.utils.CLIProperties;
 import com.dexesttp.hkxpack.cli.utils.DirWalker;
 import com.dexesttp.hkxpack.cli.utils.DirWalker.Entry;
+import com.dexesttp.hkxpack.cli.utils.FileNameCreationException;
 import com.dexesttp.hkxpack.cli.utils.WrongSizeException;
 import com.dexesttp.hkxpack.descriptor.HKXDescriptorFactory;
 import com.dexesttp.hkxpack.descriptor.HKXEnumResolver;
@@ -90,15 +91,16 @@ public abstract class Command_IO implements Command {
 	 * @param fileName the input file name.
 	 * @param outputFileName the output file name.
 	 * @return the execution result value.
+	 * @throws FileNameCreationException 
 	 */
 	private int executeSingle(final String fileName, final String outputFileName) {
-		String actualOutputName = outputFileName.isEmpty() ? extractFileName(fileName) : outputFileName;
 		HKXEnumResolver enumResolver = new HKXEnumResolver();
 		HKXDescriptorFactory descriptorFactory;
 		try {
+			String actualOutputName = outputFileName.isEmpty() ? extractFileName(fileName) : outputFileName;
 			descriptorFactory = new HKXDescriptorFactory(enumResolver);
 			executionCore(fileName, actualOutputName, enumResolver, descriptorFactory);
-		} catch(ParserConfigurationException | SAXException | IOException | InvalidTagXMLException | UnsupportedVersionError | InvalidPositionException | TransformerException e) {
+		} catch(ParserConfigurationException | SAXException | IOException | InvalidTagXMLException | UnsupportedVersionError | InvalidPositionException | TransformerException | FileNameCreationException e) {
 			LOGGER.throwing(this.getClass().getName(), "execution_core", e);
 			return 1;
 		}
@@ -110,6 +112,7 @@ public abstract class Command_IO implements Command {
 	 * @param inputDir the input directory {@link File}.
 	 * @param outputDir the output directory name.
 	 * @return the execution result value.
+	 * @throws FileNameCreationException 
 	 * @see DirWalker
 	 */
 	private int executeMulti(final File inputDir, final String outputDir) {
@@ -143,10 +146,15 @@ public abstract class Command_IO implements Command {
 		for(DirWalker.Entry fileInDirectory : toConvert) {
 			makeDirs(fileInDirectory, actualOutputDirectory);
 			final String inputFileName = fileInDirectory.getFullName();
-			final String outputFileName = fileInDirectory.getPath(actualOutputDirectory) + "/" + extractFileName(fileInDirectory.getName());
-			pool.execute(() -> {
-				executionCatcher(inputFileName, outputFileName, enumResolver, descriptorFactory);
-			});
+			String outputFileName;
+			try {
+				outputFileName = fileInDirectory.getPath(actualOutputDirectory) + "/" + extractFileName(fileInDirectory.getName());
+				pool.execute(() -> {
+					executionCatcher(inputFileName, outputFileName, enumResolver, descriptorFactory);
+				});
+			} catch (FileNameCreationException e) {
+				LOGGER.throwing(this.getClass().getName(), "executeMulti", e);
+			}
 		}
 		
 		// Handle pool termination, as well as logging of pool execution progress (every 30 seconds)
@@ -216,8 +224,9 @@ public abstract class Command_IO implements Command {
 	 * Extracts a suitable output name from an input file name.
 	 * @param ogName the original input file name
 	 * @return a suitable output name.
+	 * @throws FileNameCreationException if the file name couldn't be converted
 	 */
-	protected abstract String extractFileName(String ogName);
+	protected abstract String extractFileName(String ogName) throws FileNameCreationException;
 
 	/**
 	 * Retrieves a list of file extensions to select while crawling through a directory.

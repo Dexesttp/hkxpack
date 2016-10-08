@@ -6,6 +6,7 @@ import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
+import com.dexesttp.hkxpack.cli.utils.FileNameCreationException;
 import com.dexesttp.hkxpack.data.HKXFile;
 import com.dexesttp.hkxpack.descriptor.HKXDescriptorFactory;
 import com.dexesttp.hkxpack.descriptor.HKXEnumResolver;
@@ -35,8 +36,15 @@ public class Command_unpack extends Command_IO {
 	}
 
 	@Override
-	protected String extractFileName(final String ogName) {
-		return ogName.substring(0, ogName.lastIndexOf('.')) + ".xml";
+	protected String extractFileName(final String ogName) throws FileNameCreationException {
+		String newName = "";
+		try {
+			newName = ogName.substring(0, ogName.lastIndexOf('.')) + ".xml";
+		}
+		catch(StringIndexOutOfBoundsException e) {
+			throw new FileNameCreationException("The file : " + ogName + " has a name that cna't be converted.", e);
+		}
+		return newName;
 	}
 
 	@Override
