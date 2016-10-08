@@ -6,6 +6,7 @@ import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
+import com.dexesttp.hkxpack.cli.utils.FileNameCreationException;
 import com.dexesttp.hkxpack.data.HKXFile;
 import com.dexesttp.hkxpack.descriptor.HKXDescriptorFactory;
 import com.dexesttp.hkxpack.descriptor.HKXEnumResolver;
@@ -19,8 +20,8 @@ import com.dexesttp.hkxpack.tagwriter.TagXMLWriter;
  */
 public class Command_unpack extends Command_IO {
 	@Override
-	protected void execution_core(String inputFileName, String outputFileName,
-			HKXEnumResolver enumResolver, HKXDescriptorFactory descriptorFactory)
+	protected void executionCore(final String inputFileName, final String outputFileName,
+			final HKXEnumResolver enumResolver, final HKXDescriptorFactory descriptorFactory)
 					throws IOException, InvalidPositionException,
 					TransformerException, ParserConfigurationException {
 		// Read HKX file
@@ -35,8 +36,15 @@ public class Command_unpack extends Command_IO {
 	}
 
 	@Override
-	protected String extractFileName(String ogName) {
-		return ogName.substring(0, ogName.lastIndexOf(".")) + ".xml";
+	protected String extractFileName(final String ogName) throws FileNameCreationException {
+		String newName = "";
+		try {
+			newName = ogName.substring(0, ogName.lastIndexOf('.')) + ".xml";
+		}
+		catch(StringIndexOutOfBoundsException e) {
+			throw new FileNameCreationException("The file : " + ogName + " has a name that can't be converted.", e);
+		}
+		return newName;
 	}
 
 	@Override

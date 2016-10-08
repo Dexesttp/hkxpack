@@ -1,7 +1,6 @@
 package com.dexesttp.hkxpack.hkxwriter.object.callbacks;
 
-import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,23 +12,35 @@ import com.dexesttp.hkxpack.hkx.HKXUtils;
 import com.dexesttp.hkxpack.hkx.data.DataInternal;
 import com.dexesttp.hkxpack.hkx.types.MemberSizeResolver;
 
+/**
+ * Handles a {@link HKXStringMember}'s callback while in an array
+ */
 public class HKXStringArrayMemberCallback implements HKXArrayMemberCallback {
-	private final List<DataInternal> data1;
-	private final HKXArrayMember arrMember;
-	private RandomAccessFile outFile;
+	private final transient List<DataInternal> data1;
+	private final transient HKXArrayMember arrMember;
+	private final transient ByteBuffer outFile;
 
-	public HKXStringArrayMemberCallback(List<DataInternal> data1, HKXArrayMember arrMember, RandomAccessFile outFile) {
+	/**
+	 * Creates a {@link HKXStringArrayMemberCallback}
+	 * @param data1 the {@link DataInternal} list to add String references to.
+	 * @param arrMember the parent {@link HKXArrayMember}
+	 * @param outFile the {@link ByteBuffer} to output data to.
+	 */
+	public HKXStringArrayMemberCallback(final List<DataInternal> data1, final HKXArrayMember arrMember, final ByteBuffer outFile) {
 		this.data1 = data1;
 		this.arrMember = arrMember;
 		this.outFile = outFile;
 	}
 
 	@Override
-	public long process(List<HKXMemberCallback> memberCallbacks, long position) throws IOException {
+	/**
+	 * {@inheritDoc}
+	 */
+	public long process(final List<HKXMemberCallback> memberCallbacks, final long position) {
 		long newPos = position;
 		long memberSize = MemberSizeResolver.getSize(arrMember.getSubType());
 		List<HKXMemberCallback> internalCallbacks = new ArrayList<>();
-		for(HKXData data : arrMember.contents()) {
+		for(HKXData data : arrMember.getContentsList()) {
 			if(data instanceof HKXMember) {
 				HKXMember internalMember = (HKXMember) data;
 				internalCallbacks.add(stringHandler((HKXStringMember) internalMember, newPos));
@@ -41,15 +52,21 @@ public class HKXStringArrayMemberCallback implements HKXArrayMemberCallback {
 		return newPos - position;
 	}
 	
-	public HKXMemberCallback stringHandler(HKXStringMember internalMember, long pos) {
+	/**
+	 * Handles a {@link HKXStringMember} content's writing to a file.
+	 * @param internalMember the {@link HKXStringMember} to write
+	 * @param pos the position to write it at
+	 * @return the next valid position for a {@link HKXStringMember}.
+	 */
+	public HKXMemberCallback stringHandler(final HKXStringMember internalMember, final long pos) {
 		final DataInternal stringData = new DataInternal();
 		stringData.from = pos;
 		return (callbacks, position) -> { 
 			stringData.to = position;
 			data1.add(stringData);
-			outFile.seek(position);
-			outFile.writeBytes(internalMember.get());
-			outFile.writeByte(0x00);
+			outFile.position((int) position);
+			outFile.put(internalMember.get().getBytes());
+			outFile.put((byte) 0x00);
 			long outSize = internalMember.get().length() + 1;
 			return outSize + ((position + outSize) % 2);
 		};

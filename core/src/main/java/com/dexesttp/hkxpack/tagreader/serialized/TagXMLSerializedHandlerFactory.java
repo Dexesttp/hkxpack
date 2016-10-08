@@ -13,13 +13,13 @@ import com.dexesttp.hkxpack.tagreader.members.TagXMLContentsHandler;
  * Creates a {@link TagXMLSerializedHandler} from a given {@link HKXType}.
  */
 public class TagXMLSerializedHandlerFactory {
-	private final HKXDescriptorFactory descriptorFactory;
+	private final transient HKXDescriptorFactory descriptorFactory;
 	
 	/**
 	 * Creates a {@link TagXMLSerializedHandlerFactory}.
 	 * @param descriptorFactory the {@link HKXDescriptorFactory} to use while solving classes.
 	 */
-	public TagXMLSerializedHandlerFactory(HKXDescriptorFactory descriptorFactory) {
+	public TagXMLSerializedHandlerFactory(final HKXDescriptorFactory descriptorFactory) {
 		this.descriptorFactory = descriptorFactory;
 	}
 
@@ -28,7 +28,7 @@ public class TagXMLSerializedHandlerFactory {
 	 * @param type the {@link HKXType} to handle.
 	 * @return the {@link TagXMLContentsHandler} that can ahndle the given {@link HKXType}.
 	 */
-	public TagXMLSerializedHandler getSerializedHandler(HKXType type) {
+	public TagXMLSerializedHandler getSerializedHandler(final HKXType type) {
 		switch(type.getFamily()) {
 			case DIRECT:
 				return new TagXMLDirectSerializedHandler();

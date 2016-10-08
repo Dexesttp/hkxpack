@@ -1,5 +1,8 @@
 package com.dexesttp.hkxpack.descriptor.enums;
 
+/**
+ * List of known flag values for ClassXML components. 
+ */
 public enum Flag {
 	UNKNOWN,
 	FLAGS_NONE,
@@ -8,10 +11,15 @@ public enum Flag {
 	ALIGN_16,
 	SERIALIZE_IGNORED;
 	
-	public static Flag fromString(String string) {
+	/**
+	 * Get the relevant {@link Flag} from its name as a {@link String}.
+	 * @param string the name of the {@link Flag}.
+	 * @return the {@link Flag} instance.
+	 */
+	public static Flag fromString(final String string) {
 		try {
 			return Flag.valueOf(string);
-		} catch(Exception e) {
+		} catch(IllegalArgumentException e) {
 			return Flag.UNKNOWN;
 		}
 	}

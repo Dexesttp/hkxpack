@@ -1,13 +1,23 @@
 package com.dexesttp.hkxpack;
 
 import java.io.File;
+import java.io.IOException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+
+import org.xml.sax.SAXException;
 
 import com.dexesttp.hkxpack.data.HKXFile;
 import com.dexesttp.hkxpack.descriptor.HKXDescriptorFactory;
 import com.dexesttp.hkxpack.descriptor.HKXEnumResolver;
+import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
+import com.dexesttp.hkxpack.hkx.exceptions.UnsupportedVersionError;
 import com.dexesttp.hkxpack.hkxreader.HKXReader;
 import com.dexesttp.hkxpack.hkxwriter.HKXWriter;
+import com.dexesttp.hkxpack.resources.LoggerUtil;
 import com.dexesttp.hkxpack.tagreader.TagXMLReader;
+import com.dexesttp.hkxpack.tagreader.exceptions.InvalidTagXMLException;
 import com.dexesttp.hkxpack.tagwriter.TagXMLWriter;
 
 /**
@@ -27,7 +37,7 @@ public class Main {
 	 * @param inputFileName
 	 * @param outputFileName 
 	 */
-	public void read(String inputFileName, String outputFileName) {
+	public void read(final String inputFileName, final String outputFileName) {
 		try {
 			
 			// Read file
@@ -41,8 +51,8 @@ public class Main {
 			File outFile = new File(outputFileName);
 			TagXMLWriter writer = new TagXMLWriter(outFile);
 			writer.write(hkxFile);
-		} catch (Exception e) {
-			// NO OP
+		} catch (IOException | TransformerException | ParserConfigurationException | InvalidPositionException e) {
+			LoggerUtil.add(e);
 		}
 	}
 	
@@ -51,7 +61,7 @@ public class Main {
 	 * @param inputFileName
 	 * @param outputFileName
 	 */
-	public void write(String inputFileName, String outputFileName) {
+	public void write(final String inputFileName, final String outputFileName) {
 		try {
 			// Read file
 			File inFile = new File(inputFileName);
@@ -63,8 +73,8 @@ public class Main {
 			File outFile = new File(outputFileName);
 			HKXWriter writer = new HKXWriter(outFile, enumResolver);
 			writer.write(file);
-		} catch (Exception e) {
-			// NO OP
+		} catch (IOException | UnsupportedVersionError | ParserConfigurationException | SAXException | InvalidTagXMLException e) {
+			LoggerUtil.add(e);
 		}
 	}
 }

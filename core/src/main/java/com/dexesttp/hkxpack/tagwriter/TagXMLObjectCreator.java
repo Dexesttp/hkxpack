@@ -17,18 +17,17 @@ import com.dexesttp.hkxpack.resources.DisplayProperties;
  * Please use {@link TagXMLDataCreator} as the handled class.
  */
 class TagXMLObjectCreator {
-	
-	private Document document;
-	private TagXMLMemberCreator memberCreator;
+	private final transient Document document;
+	private final transient TagXMLMemberCreator memberCreator;
 
 	/**
 	 * Creates a {@link TagXMLObjectCreator} as a {@link HKXObject} creator instance.<br >
 	 * This shoud only be done by a {@link TagXMLDataCreator}.
 	 * @param tagXMLDataCreator the multipurpose creator.
 	 */
-	TagXMLObjectCreator(TagXMLDataCreator tagXMLDataCreator) {
-		this.document = tagXMLDataCreator.document();
-		this.memberCreator = tagXMLDataCreator.memberCreator();
+	TagXMLObjectCreator(final TagXMLDataCreator tagXMLDataCreator) {
+		this.document = tagXMLDataCreator.getDocument();
+		this.memberCreator = tagXMLDataCreator.getMemberCreator();
 	}
 	
 	/**
@@ -37,7 +36,7 @@ class TagXMLObjectCreator {
 	 * @param object the object to retrieve data from.
 	 * @return the created node.
 	 */
-	Node create(HKXObject object) {
+	Node create(final HKXObject object) {
 		Element res = document.createElement("hkobject");
 		// Create base class node.
 		if(!object.getName().isEmpty()) {
@@ -45,7 +44,7 @@ class TagXMLObjectCreator {
 			res.setAttribute("name", object.getName());
 			res.setAttribute("signature","0x" + Long.toHexString(object.getDescriptor().getSignature()));
 		}
-		List<HKXMember> members = object.members();
+		List<HKXMember> members = object.getMembersList();
 		List<HKXMemberTemplate> memberTemplates = object.getDescriptor().getMemberTemplates();
 		for(int i = 0; i < members.size(); i++) {
 			HKXMember member = members.get(i);

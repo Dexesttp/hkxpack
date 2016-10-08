@@ -2,7 +2,7 @@ package com.dexesttp.hkxpack.descriptor.reader;
 
 import com.dexesttp.hkxpack.descriptor.HKXDescriptorFactory;
 import com.dexesttp.hkxpack.descriptor.HKXEnumResolver;
-import com.dexesttp.hkxpack.descriptor.exceptions.ClassListReadError;
+import com.dexesttp.hkxpack.descriptor.exceptions.ClassListReadException;
 
 /**
  * Creates a {@link ClassXMLReader}  from a {@link com.dexesttp.hkxpack.descriptor.HKXDescriptorFactory}.
@@ -11,14 +11,14 @@ import com.dexesttp.hkxpack.descriptor.exceptions.ClassListReadError;
  * That means you must be doing something very technical to have to use a ClassXMLReaderFactory yourself.
  */
 public class ClassXMLReaderFactory {
-	private HKXEnumResolver enumResolver;
+	private final transient HKXEnumResolver enumResolver;
 
 	/**
 	 * Create a new ClassXMLReaderFactory.
 	 * @param enumResolver
 	 * @see ClassXMLReaderFactory
 	 */
-	public ClassXMLReaderFactory(HKXEnumResolver enumResolver) {
+	public ClassXMLReaderFactory(final HKXEnumResolver enumResolver) {
 		this.enumResolver = enumResolver;
 	}
 	
@@ -26,11 +26,10 @@ public class ClassXMLReaderFactory {
 	 * Create a {@link ClassXMLReader}, linked to a {@link HKXDescriptorFactory}.
 	 * @param descriptor the {@link HKXDescriptorFactory} to use.
 	 * @return a new {@link ClassXMLReader}
-	 * @throws ClassListReadError
+	 * @throws ClassListReadException
 	 */
-	public ClassXMLReader create(HKXDescriptorFactory descriptor) throws ClassListReadError {
+	public ClassXMLReader create(final HKXDescriptorFactory descriptor) throws ClassListReadException {
 		ClassXMLList list = new ClassXMLList();
-		ClassXMLReader reader = new ClassXMLReader(descriptor, list, enumResolver);
-		return reader;
+		return new ClassXMLReader(descriptor, list, enumResolver);
 	}
 }

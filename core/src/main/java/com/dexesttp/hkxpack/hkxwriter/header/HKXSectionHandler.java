@@ -20,16 +20,16 @@ public class HKXSectionHandler {
 	 */
 	public static final int DATA = 2;
 
-	private final long header_base_size = 0x40;
-	private final int section_size = 0x40;
-	private final HeaderData header;
-	private Long classnamesEnd = null;
+	private static final long HEADER_BASE_SIZE = 0x40;
+	private static final int SECTION_SIZE = 0x40;
+	private final transient HeaderData header;
+	private transient Long classnamesEnd;
 
 	/**
 	 * Creates a HKXSectionHandler to handle creation of section data.
 	 * @param header
 	 */
-	public HKXSectionHandler(HeaderData header) {
+	public HKXSectionHandler(final HeaderData header) {
 		this.header = header;
 	}
 
@@ -38,35 +38,35 @@ public class HKXSectionHandler {
 	 * @param sectionID the sectionID, either one of {@link #CLASSNAME}, {@link #TYPES} and {@link #DATA}.
 	 * @param data the {@link SectionData} to initialize.
 	 */
-	public void init(int sectionID, SectionData data) {
+	public void init(final int sectionID, final SectionData data) {
 		switch(sectionID) {
 			case CLASSNAME:
-				init_classname(data);
+				initClassname(data);
 				break;
 			case TYPES:
-				init_types(data);
+				initTypes(data);
 				break;
 			case DATA:
-				init_data(data);
+				initData(data);
 				break;
 			default:
 				throw new IllegalArgumentException("SectionID isn't a knwon exception ID");
 		}
 	}
 	
-	private void init_classname(SectionData data) {
+	private void initClassname(final SectionData data) {
 		data.name = "__classnames__";
-		data.offset = header_base_size + header.padding_after + 3 * section_size;
+		data.offset = HEADER_BASE_SIZE + header.paddingAfter + 3 * SECTION_SIZE;
 	}
 
-	private void init_types(SectionData data) {
+	private void initTypes(final SectionData data) {
 		if(classnamesEnd != null) {
 			data.name = "__types__";
 			data.offset = classnamesEnd;
 		}
 	}
 
-	private void init_data(SectionData data) {
+	private void initData(final SectionData data) {
 		if(classnamesEnd != null) {
 			data.name = "__data__";
 			data.offset = classnamesEnd;
@@ -81,7 +81,7 @@ public class HKXSectionHandler {
 	 * @param data the {@link SectionData} to fill.
 	 * @param cnameEnd the end position of the ClassNames section, from the beginning of the file.
 	 */
-	public void fillCName(SectionData classnames, long cnameEnd) {
+	public void fillCName(final SectionData classnames, final long cnameEnd) {
 		long cnameData = cnameEnd - classnames.offset;
 		classnames.data1 = cnameData;
 		classnames.data2 = cnameData;

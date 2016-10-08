@@ -7,27 +7,31 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.dexesttp.hkxpack.descriptor.exceptions.ClassListReadError;
+import com.dexesttp.hkxpack.descriptor.exceptions.ClassListReadException;
 
+/**
+ * List of all the available ClassXML resources.
+ */
 class ClassXMLList {
-	private static final String classResourcesList = "/properties/classxmllist.txt";
-	public final Map<String, String> filenameConverter = new HashMap<String, String>();
+	private static final String CLASS_RESOURCES_LIST = "/properties/classxmllist.txt";
+	public final transient Map<String, String> filenameConverter = new HashMap<String, String>();
 	
-	ClassXMLList() throws ClassListReadError {
+	ClassXMLList() throws ClassListReadException {
 		try {
 			readEntries();
 		} catch(IOException e) {
-			throw new ClassListReadError(e);
+			throw new ClassListReadException(e);
 		}
 	}
 	
 	private void readEntries() throws IOException {
-		URL paths = ClassXMLList.class.getResource(classResourcesList);
+		URL paths = ClassXMLList.class.getResource(CLASS_RESOURCES_LIST);
 		BufferedReader reader = new BufferedReader(new InputStreamReader(paths.openStream()));
-		String fileEntry;
-		while((fileEntry = reader.readLine()) != null) {
+		String fileEntry = reader.readLine();
+		while(fileEntry != null) {
 			String className = extractName(fileEntry);
 			filenameConverter.put(className, "/classxml/" + fileEntry);
+			fileEntry = reader.readLine();
 		}
 	}
 
@@ -36,11 +40,11 @@ class ClassXMLList {
 	 * @param classname the class name
 	 * @return the file name to retrieve data from
 	 */
-	String getFileName(String classname) {
+	String getFileName(final String classname) {
 		return filenameConverter.get(classname);
 	}
 	
-	private String extractName(String fullName) {
-		return fullName.substring(0, fullName.indexOf("_"));
+	private String extractName(final String fullName) {
+		return fullName.substring(0, fullName.indexOf('_'));
 	}
 }

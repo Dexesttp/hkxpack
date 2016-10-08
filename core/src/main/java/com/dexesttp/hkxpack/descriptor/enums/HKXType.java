@@ -59,20 +59,30 @@ public enum HKXType {
 	
 	private final HKXTypeFamily family;
 
-	private HKXType(HKXTypeFamily family) {
+	private HKXType(final HKXTypeFamily family) {
 		this.family = family;
 	}
 	
-	public static HKXType fromString(String string) {
-		if(string.equals(""))
+	/**
+	 * Get a {@link HKXType} from its name
+	 * @param string the name of the {@link HKXType} to retrieve.
+	 * @return the {@link HKXType} instance.
+	 */
+	public static HKXType fromString(final String string) {
+		if(string.isEmpty()) {
 			return HKXType.TYPE_NONE;
+		}
 		try {
 			return HKXType.valueOf(string);
-		} catch(Exception e) {
+		} catch(IllegalArgumentException e) {
 			return HKXType.UNKNOWN;
 		}
 	}
 	
+	/**
+	 * Get the {@link HKXTypeFamily} of this {@link HKXType}.
+	 * @return the {@link HKXTypeFamily} of this {@link HKXType}.
+	 */
 	public HKXTypeFamily getFamily() {
 		return this.family;
 	}

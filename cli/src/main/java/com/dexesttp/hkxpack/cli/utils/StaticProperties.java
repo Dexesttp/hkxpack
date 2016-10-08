@@ -1,9 +1,33 @@
 package com.dexesttp.hkxpack.cli.utils;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
 /**
  * Contains a list of static final properties.
  */
-public class StaticProperties {
+public final class StaticProperties {
+	private static final String VERSION_NUMBER;
+
+	static {
+		Properties prop = new Properties();
+		String vNum = "";
+		try {
+			InputStream in = StaticProperties.class.getResourceAsStream("/META-INF/maven/com.dexesttp.hkxpack/cli/pom.properties");
+			prop.load(in);
+			in.close();
+			vNum = prop.getProperty("version");
+		} catch (IOException e) {
+			vNum = "error loading version number";
+		}
+		VERSION_NUMBER = vNum;
+	}
+
+	private StaticProperties() {
+		// NO OP
+	}
+
 	/**
 	 * <pre>
 	 * Versioning convention:
@@ -20,9 +44,11 @@ public class StaticProperties {
 	 * 
 	 * Hyphen : state identifier
 	 * * Either alpha|beta|theta|gamma or any state identifier (unstable, snapshot, etc.. works)
-	 * * Linguistic representation of the 1st, second and 3rd digit.
+	 * * Linguistic representation of the 1st, 2nd and 3rd digit.
 	 * * Doesn't exist with stable releases (no -HOTFIX or similar, this goes into the merge data or changelog !)
 	 * </pre>
 	 */
-	public static String version_number = "0.1.2-beta";
+	public static String getVersionNumber() {
+		return VERSION_NUMBER;
+	}
 }

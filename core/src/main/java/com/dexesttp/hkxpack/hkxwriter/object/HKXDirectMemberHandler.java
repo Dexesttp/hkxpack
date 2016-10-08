@@ -1,26 +1,38 @@
 package com.dexesttp.hkxpack.hkxwriter.object;
 
-import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
 
+import com.dexesttp.hkxpack.data.members.HKXDirectMember;
 import com.dexesttp.hkxpack.data.members.HKXMember;
 import com.dexesttp.hkxpack.hkx.types.MemberDataResolver;
 import com.dexesttp.hkxpack.hkxwriter.object.callbacks.HKXMemberCallback;
 
+/**
+ * Handles a {@link HKXDirectMember} for writing to a HKX File.
+ * @see MemberDataResolver#fromMember(HKXMember)
+ */
 public class HKXDirectMemberHandler implements HKXMemberHandler {
-	private final RandomAccessFile outFile;
-	private final long memberOffset;
+	private final transient ByteBuffer outFile;
+	private final transient long memberOffset;
 
-	HKXDirectMemberHandler(RandomAccessFile outFile, long memberOffset) {
+	/**
+	 * Creates a {@link HKXDirectMemberHandler}.
+	 * @param outFile the {@link ByteBuffer} to write to.
+	 * @param memberOffset the member offset in its class.
+	 */
+	HKXDirectMemberHandler(final ByteBuffer outFile, final long memberOffset) {
 		this.outFile = outFile;
 		this.memberOffset = memberOffset;
 	}
 
 	@Override
-	public HKXMemberCallback write(HKXMember member, long currentPos) throws IOException {
+	/**
+	 * {@inheritDoc}
+	 */
+	public HKXMemberCallback write(final HKXMember member, final long currentPos) {
 		byte[] value = MemberDataResolver.fromMember(member);
-		outFile.seek(currentPos + memberOffset);
-		outFile.write(value);
+		outFile.position((int) (currentPos + memberOffset));
+		outFile.put(value);
 		return (memberCallbacks, position) -> { return 0; };
 	}
 }

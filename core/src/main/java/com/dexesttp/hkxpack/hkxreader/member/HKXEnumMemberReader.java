@@ -1,7 +1,6 @@
 package com.dexesttp.hkxpack.hkxreader.member;
 
-import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
 
 import com.dexesttp.hkxpack.data.members.HKXEnumMember;
 import com.dexesttp.hkxpack.data.members.HKXMember;
@@ -10,18 +9,23 @@ import com.dexesttp.hkxpack.descriptor.enums.HKXType;
 import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
 import com.dexesttp.hkxpack.hkx.types.MemberSizeResolver;
 import com.dexesttp.hkxpack.hkxreader.HKXReaderConnector;
-import com.dexesttp.hkxpack.resources.ByteUtils;
+import com.dexesttp.hkxpack.resources.byteutils.ByteUtils;
 
+/**
+ * Reads an enumeration as a {@link HKXEnumMember} from a HKX file.
+ */
 public class HKXEnumMemberReader implements HKXMemberReader {
-	private final HKXReaderConnector connector;
-	private final HKXEnumResolver enumResolver;
-	private final String name;
-	private final HKXType vtype;
-	private final HKXType vsubtype;
-	private final String etype;
-	private final long memberOffset;
+	private final transient HKXReaderConnector connector;
+	private final transient HKXEnumResolver enumResolver;
+	private final transient String name;
+	private final transient HKXType vtype;
+	private final transient HKXType vsubtype;
+	private final transient String etype;
+	private final transient long memberOffset;
 
-	HKXEnumMemberReader(HKXReaderConnector connector, HKXEnumResolver enumResolver, String name, HKXType vtype, HKXType vsubtype, String target, long offset) {
+	HKXEnumMemberReader(final HKXReaderConnector connector, final HKXEnumResolver enumResolver,
+			final String name, final HKXType vtype, final HKXType vsubtype, final String target,
+			final long offset) {
 		this.connector = connector;
 		this.enumResolver = enumResolver;
 		this.name = name;
@@ -32,12 +36,15 @@ public class HKXEnumMemberReader implements HKXMemberReader {
 	}
 
 	@Override
-	public HKXMember read(long classOffset) throws IOException, InvalidPositionException {
+	/**
+	 * {@inheritDoc}
+	 */
+	public HKXMember read(final long classOffset) throws InvalidPositionException {
 		final int memberSize = (int) MemberSizeResolver.getSize(vsubtype);
-		RandomAccessFile file = connector.data.setup(classOffset + memberOffset);
-		byte[] b = new byte[memberSize];
-		file.read(b);
-		int contents = ByteUtils.getInt(b);
+		ByteBuffer file = connector.data.setup(classOffset + memberOffset);
+		byte[] bytesToRead = new byte[memberSize];
+		file.get(bytesToRead);
+		int contents = ByteUtils.getUInt(bytesToRead);
 		HKXEnumMember result = new HKXEnumMember(name, vtype, vsubtype, etype);
 		result.set(enumResolver.resolve(etype, contents));
 		return result;

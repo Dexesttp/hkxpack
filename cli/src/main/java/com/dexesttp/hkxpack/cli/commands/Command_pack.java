@@ -7,6 +7,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import com.dexesttp.hkxpack.cli.utils.FileNameCreationException;
 import com.dexesttp.hkxpack.data.HKXFile;
 import com.dexesttp.hkxpack.descriptor.HKXDescriptorFactory;
 import com.dexesttp.hkxpack.descriptor.HKXEnumResolver;
@@ -21,10 +22,13 @@ import com.dexesttp.hkxpack.tagreader.exceptions.InvalidTagXMLException;
  */
 public class Command_pack extends Command_IO {
 	@Override
-	protected void execution_core(String inputFileName, String outputFileName,
-			HKXEnumResolver enumResolver, HKXDescriptorFactory descriptorFactory)
-					throws ParserConfigurationException, SAXException, IOException,
-					InvalidTagXMLException, UnsupportedVersionError {
+	/**
+	 * {@inheritDoc}
+	 */
+	protected void executionCore(final String inputFileName, final String outputFileName,
+			final HKXEnumResolver enumResolver, final HKXDescriptorFactory descriptorFactory)
+		throws ParserConfigurationException, SAXException, IOException,
+			InvalidTagXMLException, UnsupportedVersionError {
 		// Read XML file
 		File inFile = new File(inputFileName);
 		TagXMLReader reader = new TagXMLReader(inFile, descriptorFactory);
@@ -33,16 +37,29 @@ public class Command_pack extends Command_IO {
 		// Write HKX file
 		File outFile = new File(outputFileName);
 		outFile.createNewFile();
-		HKXWriter writer = new HKXWriter(outFile, enumResolver);
+		HKXWriter writer = new HKXWriter(outFile, enumResolver, bufferSize);
 		writer.write(file);
 	}
 
 	@Override
-	protected String extractFileName(String ogName) {
-		return ogName.substring(0, ogName.lastIndexOf(".")) + ".hkx";
+	/**
+	 * {@inheritDoc}
+	 */
+	protected String extractFileName(final String ogName) throws FileNameCreationException {
+		String newName = "";
+		try {
+			newName = ogName.substring(0, ogName.lastIndexOf('.')) + ".hkx";
+		}
+		catch(StringIndexOutOfBoundsException e) {
+			throw new FileNameCreationException("The file : " + ogName + " has a name that can't be converted.", e);
+		}
+		return newName;
 	}
 
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	protected String[] getFileExtensions() {
 		return new String[] {".xml"};
 	}

@@ -17,13 +17,13 @@ import com.dexesttp.hkxpack.data.HKXObject;
  * Handles writing {@link HKXFile} data into a {@link File} using the TagXML notation.
  */
 public class TagXMLWriter {
-	private final File outFile;
+	private final transient File outFile;
 
 	/**
 	 * Creates a {@link TagXMLWriter}.
 	 * @param outputFile the file to output the data into.
 	 */
-	public TagXMLWriter(File outputFile) {
+	public TagXMLWriter(final File outputFile) {
 		this.outFile = outputFile;
 	}
 
@@ -34,7 +34,7 @@ public class TagXMLWriter {
 	 * @throws TransformerException if there was a problem handling the {@link HKXFile}'s content.
 	 * @throws ParserConfigurationException if there was a problem creating the XML {@link Document}.
 	 */
-	public void write(HKXFile hkxFile) throws IOException, TransformerException, ParserConfigurationException {
+	public void write(final HKXFile hkxFile) throws IOException, TransformerException, ParserConfigurationException {
 		TagXMLHandler handler = new TagXMLHandler();
 		// Create the new Document
 		Document document = handler.createDOM(hkxFile.getContentsVersion(), hkxFile.getClassVersion());
@@ -44,7 +44,7 @@ public class TagXMLWriter {
 		
 		TagXMLDataCreator creator = new TagXMLDataCreator(document);
 		
-		for(HKXObject content : hkxFile.content()) {
+		for(HKXObject content : hkxFile.getContentCollection()) {
 			Node contentXML = creator.create(content);
 			root.appendChild(contentXML);
 		}

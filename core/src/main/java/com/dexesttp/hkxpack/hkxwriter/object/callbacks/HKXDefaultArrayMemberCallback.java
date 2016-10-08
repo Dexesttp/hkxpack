@@ -1,6 +1,5 @@
 package com.dexesttp.hkxpack.hkxwriter.object.callbacks;
 
-import java.io.IOException;
 import java.util.List;
 
 import com.dexesttp.hkxpack.data.HKXData;
@@ -11,20 +10,31 @@ import com.dexesttp.hkxpack.hkx.types.MemberSizeResolver;
 import com.dexesttp.hkxpack.hkxwriter.object.HKXMemberHandler;
 import com.dexesttp.hkxpack.hkxwriter.object.HKXMemberHandlerFactory;
 
+/**
+ * Handles callbacks for most members.
+ */
 public class HKXDefaultArrayMemberCallback implements HKXArrayMemberCallback {
-	private final HKXArrayMember arrMember;
-	private final HKXMemberHandlerFactory memberHandlerFactory;
+	private final transient HKXArrayMember arrMember;
+	private final transient HKXMemberHandlerFactory memberHandlerFactory;
 
-	public HKXDefaultArrayMemberCallback(HKXArrayMember arrMember, HKXMemberHandlerFactory memberHandlerFactory) {
+	/**
+	 * Creates a {@link HKXDefaultArrayMemberCallback}
+	 * @param arrMember the {@link HKXArrayMember} this callback handles
+	 * @param memberHandlerFactory the {@link HKXMemberHandlerFactory} to use while creating the array component's handlers.
+	 */
+	public HKXDefaultArrayMemberCallback(final HKXArrayMember arrMember, final HKXMemberHandlerFactory memberHandlerFactory) {
 		this.arrMember = arrMember;
 		this.memberHandlerFactory = memberHandlerFactory;
 	}
 
 	@Override
-	public long process(List<HKXMemberCallback> memberCallbacks, long position) throws IOException {
+	/**
+	 * {@inheritDoc}
+	 */
+	public long process(final List<HKXMemberCallback> memberCallbacks, final long position) {
 		long newPos = position;
 		long memberSize = MemberSizeResolver.getSize(arrMember.getSubType());
-		for(HKXData data : arrMember.contents()) {
+		for(HKXData data : arrMember.getContentsList()) {
 			if(data instanceof HKXMember) {
 				HKXMember internalMember = (HKXMember) data;
 				HKXMemberHandler memberHandler = memberHandlerFactory.create(internalMember.getType(), 0);

@@ -1,44 +1,47 @@
 package com.dexesttp.hkxpack.cli.loggers;
 
-import com.dexesttp.hkxpack.cli.utils.CLIProperties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import com.dexesttp.hkxpack.cli.ConsoleView;
 import com.dexesttp.hkxpack.resources.LoggerUtil;
 
 /**
  * Creates a {@link DirectoryWalkerLogger} based on the relevant {@link CLIProperties}.
  */
 public class DirectoryWalkerLoggerFactory {
+	private static final Logger LOGGER = Logger.getLogger(ConsoleView.class.getName());
 
 	/**
 	 * Retrieves a suitable {@link DirectoryWalkerLogger}.
 	 * @param total the total number of files to walk through.
 	 * @return a suitable {@link DirectoryWalkerLogger}.
 	 */
-	public DirectoryWalkerLogger newLogger(int total) {
-		if(!CLIProperties.quiet)
-			System.out.println("Detected " + total + " files to handle.");
-		else {
-			if(!CLIProperties.verbose)
-				return (done) -> {
-						System.out.println(
-								"Handled " + done + " files ("
-								+ ((float)done / (float) total) + "%)");
-						handleErrors();
-					};
-			else
-				return (done) -> {
-					handleErrors();
-				};
+	public DirectoryWalkerLogger newLogger(final int total) {
+		if(LOGGER.isLoggable(Level.FINE)) {
+			LOGGER.info("Detected " + total + " files to handle.");
+			return (done) -> {
+				LOGGER.fine("Handled " + done + " files (" + ((float)done / (float) total) + "%)");
+				handleErrors();
+			};
+		}
+		else if(LOGGER.isLoggable(Level.INFO)) {
+			LOGGER.info("Detected " + total + " files to handle.");
+			return (done) -> { handleErrors(); };
+		}
+		else if(LOGGER.isLoggable(Level.SEVERE)){
+			return (done) -> { handleErrors(); };
 		}
 		return (done) -> {};
 	}
 
+	/**
+	 * Handles the {@link LoggerUtil} logging.
+	 */
 	private void handleErrors() {
 		while(!LoggerUtil.getList().isEmpty()) {
 			Throwable e = LoggerUtil.getList().remove(0);
-			if(CLIProperties.debug)
-				e.printStackTrace();
-			else
-				System.err.println(e.getMessage());
+			LOGGER.throwing(this.getClass().getName(), "handleErrors", e);
 		}
 	}
 	

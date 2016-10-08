@@ -1,7 +1,5 @@
 package com.dexesttp.hkxpack.hkxreader.member;
 
-import java.io.IOException;
-
 import com.dexesttp.hkxpack.data.members.HKXMember;
 import com.dexesttp.hkxpack.data.members.HKXPointerMember;
 import com.dexesttp.hkxpack.descriptor.enums.HKXType;
@@ -10,14 +8,18 @@ import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
 import com.dexesttp.hkxpack.hkxreader.HKXReaderConnector;
 import com.dexesttp.hkxpack.hkxreader.PointerNameGenerator;
 
+/**
+ * Reads a {@link HKXPointerMember} from a HKX file.
+ */
 class HKXPointerMemberReader implements HKXMemberReader {
-	private final HKXReaderConnector connector;
-	private final PointerNameGenerator generator;
-	private final String name;
-	private final HKXType vtype;
-	private final long memberOffset;
+	private final transient HKXReaderConnector connector;
+	private final transient PointerNameGenerator generator;
+	private final transient String name;
+	private final transient HKXType vtype;
+	private final transient long memberOffset;
 
-	HKXPointerMemberReader(HKXReaderConnector connector, PointerNameGenerator generator, String name, HKXType contentType, long offset) {
+	HKXPointerMemberReader(final HKXReaderConnector connector, final PointerNameGenerator generator,
+			final String name, final HKXType contentType, final long offset) {
 		this.connector = connector;
 		this.generator = generator;
 		this.name = name;
@@ -26,7 +28,10 @@ class HKXPointerMemberReader implements HKXMemberReader {
 	}
 
 	@Override
-	public HKXMember read(long classOffset) throws IOException, InvalidPositionException {
+	/**
+	 * {@inheritDoc}
+	 */
+	public HKXMember read(final long classOffset) throws InvalidPositionException {
 		DataExternal data = connector.data2.readNext();
 		String target = "null";
 		if(data.from == memberOffset + classOffset) {
@@ -34,7 +39,6 @@ class HKXPointerMemberReader implements HKXMemberReader {
 		} else {
 			connector.data2.backtrack();
 		}
-		HKXMember result = new HKXPointerMember(name, HKXType.TYPE_POINTER, vtype, target);
-		return result;
+		return new HKXPointerMember(name, HKXType.TYPE_POINTER, vtype, target);
 	}
 }

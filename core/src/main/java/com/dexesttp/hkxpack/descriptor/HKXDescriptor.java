@@ -10,7 +10,7 @@ import com.dexesttp.hkxpack.descriptor.members.HKXMemberTemplate;
 public class HKXDescriptor {
 	private final String name;
 	private final long signature;
-	private final List<HKXMemberTemplate> members;
+	private final transient List<HKXMemberTemplate> members;
 	
 	/**
 	 * Creates a HKXDescriptor

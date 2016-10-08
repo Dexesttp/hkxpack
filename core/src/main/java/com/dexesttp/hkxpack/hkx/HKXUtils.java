@@ -3,17 +3,24 @@ package com.dexesttp.hkxpack.hkx;
 /**
  * Contain utils for the HKX classes.
  */
-public class HKXUtils {
+public final class HKXUtils {
+	private static final long HALF_LINE = 0x08;
+	private static final long FULL_LINE = 0x10;
+	
+	private HKXUtils() {
+		// NO OP
+	}
 	
 	/**
 	 * Snap the object's position to the relevant byte.
 	 * @param currentPos
 	 * @return
 	 */
-	public static long snapObject(long currentPos) {
-		if(currentPos % 0x10 == 0)
+	public static long snapObject(final long currentPos) {
+		if(currentPos % FULL_LINE == 0) {
 			return currentPos;
-		return (1 + currentPos / 0x10) * 0x10;
+		}
+		return (1 + currentPos / FULL_LINE) * FULL_LINE;
 	}
 	
 	/**
@@ -21,23 +28,26 @@ public class HKXUtils {
 	 * @param currentPos
 	 * @return
 	 */
-	public static long snapLine(long currentPos) {
-		if(currentPos % 0x10 == 0)
+	public static long snapLine(final long currentPos) {
+		if(currentPos % FULL_LINE == 0) {
 			return currentPos;
-		return (1 + currentPos / 0x10) * 0x10;
+		}
+		return (1 + currentPos / FULL_LINE) * FULL_LINE;
 	}
 
 	/**
 	 * Snap the string's size to the relevant size.
-	 * @param currentSize the stirng size.
+	 * @param currentSize the string size.
 	 * @return the snapped size.
 	 */
-	public static long snapString(long currentSize) {
-		if(currentSize < 0x08)
-			return 0x08;
-		if(currentSize % 0x10 == 0)
+	public static long snapString(final long currentSize) {
+		if(currentSize < HALF_LINE ) {
+			return HALF_LINE;
+		}
+		if(currentSize % FULL_LINE == 0) {
 			return currentSize;
-		return (1 + currentSize / 0x10) * 0x10;
+		}
+		return (1 + currentSize / FULL_LINE ) * FULL_LINE;
 	}
 
 	/**
@@ -46,9 +56,10 @@ public class HKXUtils {
 	 * @param snap the snap.
 	 * @return
 	 */
-	public static long snapSize(long offset, long snap) {
-		if(offset % snap == 0)
+	public static long snapSize(final long offset, final long snap) {
+		if(offset % snap == 0) {
 			return offset;
+		}
 		return (1 + offset / snap) * snap;
 	}
 }

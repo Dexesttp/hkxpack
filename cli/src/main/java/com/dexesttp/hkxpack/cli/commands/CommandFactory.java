@@ -2,14 +2,18 @@ package com.dexesttp.hkxpack.cli.commands;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Routes a command line interface into the relevant {@link Command}.
  */
 public class CommandFactory {
+	/**
+	 * List of commands associated with the class to execute on read
+	 */
 	@SuppressWarnings("rawtypes")
-	private Map<String, Class> commandParser = new HashMap<>();
-	{
+	public static Map<String, Class> commandParser = new HashMap<>();
+	static {
 		commandParser.put("extract", Command_unpack.class);
 		commandParser.put("unpack", Command_unpack.class);
 		commandParser.put("compress", Command_pack.class);
@@ -22,12 +26,12 @@ public class CommandFactory {
 	 * @param commandName the first argument passed to main.
 	 * @return the relevant {@link Command}.
 	 */
-	public Command newInstance(String commandName) {
+	public Command newInstance(final String commandName) {
 		@SuppressWarnings("rawtypes")
-		Class commandClass = commandParser.get(commandName);
+		Optional<Class> commandClass = Optional.ofNullable(commandParser.get(commandName));
 		try {
-			return (Command) commandClass.newInstance();
-		} catch (Exception e) {
+			return (Command) commandClass.orElse(Command_quick.class).newInstance();
+		} catch (InstantiationException | IllegalAccessException e) {
 			return new Command_quick();
 		}
 	}

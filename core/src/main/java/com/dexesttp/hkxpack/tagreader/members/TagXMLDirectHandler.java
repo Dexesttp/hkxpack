@@ -5,7 +5,6 @@ import org.w3c.dom.Node;
 import com.dexesttp.hkxpack.data.members.HKXDirectMember;
 import com.dexesttp.hkxpack.data.members.HKXMember;
 import com.dexesttp.hkxpack.descriptor.enums.HKXType;
-import com.dexesttp.hkxpack.descriptor.enums.HKXTypeFamily;
 import com.dexesttp.hkxpack.descriptor.members.HKXMemberTemplate;
 import com.dexesttp.hkxpack.tagreader.exceptions.InvalidTagXMLException;
 
@@ -14,7 +13,10 @@ import com.dexesttp.hkxpack.tagreader.exceptions.InvalidTagXMLException;
  */
 class TagXMLDirectHandler implements TagXMLContentsHandler {
 	@Override
-	public HKXMember handleNode(Node member, HKXMemberTemplate memberTemplate) throws InvalidTagXMLException {
+	/**
+	 * {@inheritDoc}
+	 */
+	public HKXMember handleNode(final Node member, final HKXMemberTemplate memberTemplate) throws InvalidTagXMLException {
 		return handleString(member.getTextContent(), memberTemplate.name, memberTemplate.vtype);
 	}
 
@@ -25,7 +27,7 @@ class TagXMLDirectHandler implements TagXMLContentsHandler {
 	 * @param memberType the {@link HKXTypeFamily#DIRECT} {@link HKXType}
 	 * @return the resuting {@link HKXMember}
 	 */
-	HKXMember handleString(String content, String memberName, HKXType memberType) {
+	HKXMember handleString(final String content, final String memberName, final HKXType memberType) {
 		HKXMember result = null;
 		switch(memberType) {
 			case TYPE_BOOL:
@@ -56,28 +58,30 @@ class TagXMLDirectHandler implements TagXMLContentsHandler {
 		return result;
 	}
 
-	private HKXMember handleBoolean(String content, String memberName, HKXType memberType) {
+	private HKXMember handleBoolean(final String content, final String memberName, final HKXType memberType) {
 		HKXDirectMember<Boolean> result = new HKXDirectMember<>(memberName, memberType);
-		if(content.toUpperCase().equals("TRUE"))
+		if(content.equalsIgnoreCase("TRUE")) {
 			result.set(true);
-		else
+		}
+		else {
 			result.set(false);
+		}
 		return result;
 	}
 
-	private HKXMember handleChar(String content, String memberName, HKXType memberType) {
+	private HKXMember handleChar(final String content, final String memberName, final HKXType memberType) {
 		HKXDirectMember<Character> result = new HKXDirectMember<>(memberName, memberType);
 		result.set((char) Integer.parseInt(content));
 		return result;
 	}
 
-	private HKXMember handleInt(String content, String memberName, HKXType memberType) {
+	private HKXMember handleInt(final String content, final String memberName, final HKXType memberType) {
 		HKXDirectMember<Integer> result = new HKXDirectMember<>(memberName, memberType);
 		result.set(Integer.parseInt(content));
 		return result;
 	}
 
-	private HKXMember handleDouble(String content, String memberName, HKXType memberType) {
+	private HKXMember handleDouble(final String content, final String memberName, final HKXType memberType) {
 		HKXDirectMember<Double> result = new HKXDirectMember<>(memberName, memberType);
 		result.set((double) Float.parseFloat(content));
 		return result;
