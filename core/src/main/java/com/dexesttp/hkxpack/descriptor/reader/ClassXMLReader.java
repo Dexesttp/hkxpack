@@ -51,6 +51,9 @@ public class ClassXMLReader {
 	public HKXDescriptor get(final String classname) throws ClassFileReadException {
 		// Retrieve the document.
 		Document document = openFile(classname);
+		if(document == null) {
+			throw new ClassFileReadException("Could not find file for " + classname + ".");
+		}
 		
 		// Read class
 		Node classNode = document.getFirstChild();
