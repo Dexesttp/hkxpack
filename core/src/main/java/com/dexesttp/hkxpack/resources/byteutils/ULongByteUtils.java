@@ -22,7 +22,7 @@ final class ULongByteUtils {
 		long accu = 1;
 		long res = 0;
 		for (int i = 0; i < len; i++) {
-			res += ((int) (list[i] & 0xFF)) * accu;
+			res += ((long) (list[i] & 0xFF)) * accu;
 			accu *= 256;
 		}
 		return res;

@@ -42,13 +42,15 @@ class TagXMLDirectHandler implements TagXMLContentsHandler {
 			result = handleChar(content, memberName, memberType);
 			break;
 		case TYPE_UINT16:
-		case TYPE_ULONG:
 		case TYPE_UINT32:
-		case TYPE_UINT64:
 		case TYPE_INT16:
 		case TYPE_INT32:
-		case TYPE_INT64:
 			result = handleInt(content, memberName, memberType);
+			break;
+		case TYPE_ULONG:
+		case TYPE_UINT64:
+		case TYPE_INT64:
+			result = handleLong(content, memberName, memberType);
 			break;
 		case TYPE_HALF:
 		case TYPE_REAL:
@@ -80,6 +82,12 @@ class TagXMLDirectHandler implements TagXMLContentsHandler {
 	private HKXMember handleInt(final String content, final String memberName, final HKXType memberType) {
 		HKXDirectMember<Integer> result = new HKXDirectMember<>(memberName, memberType);
 		result.set(Integer.parseInt(content));
+		return result;
+	}
+
+	private HKXMember handleLong(final String content, final String memberName, final HKXType memberType) {
+		HKXDirectMember<Long> result = new HKXDirectMember<>(memberName, memberType);
+		result.set(Long.parseLong(content));
 		return result;
 	}
 
