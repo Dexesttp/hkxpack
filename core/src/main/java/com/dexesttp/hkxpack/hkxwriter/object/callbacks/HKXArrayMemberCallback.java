@@ -8,8 +8,9 @@ import java.util.List;
 public interface HKXArrayMemberCallback {
 	/**
 	 * Proces an array component callback list to its end.
+	 * 
 	 * @param memberCallbacks the {@link HKXMemberCallback} to process
-	 * @param position the start position of the array values
+	 * @param position        the start position of the array values
 	 * @return the first valid position after the array
 	 */
 	long process(List<HKXMemberCallback> memberCallbacks, long position);

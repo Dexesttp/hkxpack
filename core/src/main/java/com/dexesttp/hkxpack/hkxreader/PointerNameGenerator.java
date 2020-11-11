@@ -13,14 +13,17 @@ public class PointerNameGenerator {
 	private final transient Map<Long, String> contents = new HashMap<>();
 
 	/**
-	 * Create a new {@link PointerNameGenerator}, starting at the {@value #START_VALUE} value.
+	 * Create a new {@link PointerNameGenerator}, starting at the
+	 * {@value #START_VALUE} value.
 	 */
 	PointerNameGenerator() {
 		this(START_VALUE);
 	}
 
 	/**
-	 * Create a new {@link PointerNameGenerator}, with names starting at the given value.
+	 * Create a new {@link PointerNameGenerator}, with names starting at the given
+	 * value.
+	 * 
 	 * @param startValue the starting values for names.
 	 */
 	public PointerNameGenerator(final int startValue) {
@@ -29,6 +32,7 @@ public class PointerNameGenerator {
 
 	/**
 	 * Creates the next name
+	 * 
 	 * @return
 	 */
 	private String createName() {
@@ -39,11 +43,12 @@ public class PointerNameGenerator {
 
 	/**
 	 * Get the name associated with a file position
+	 * 
 	 * @param position
 	 * @return
 	 */
 	public String get(final long position) {
-		if(contents.containsKey(position)) {
+		if (contents.containsKey(position)) {
 			return contents.get(position);
 		}
 		String name = createName();

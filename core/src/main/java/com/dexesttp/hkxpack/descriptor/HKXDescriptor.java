@@ -11,11 +11,13 @@ public class HKXDescriptor {
 	private final String name;
 	private final long signature;
 	private final transient List<HKXMemberTemplate> members;
-	
+
 	/**
 	 * Creates a HKXDescriptor
 	 * <p>
-	 * Note : you should use {@link HKXDescriptorFactory#get(String)} to get a HKXDescriptor, unless you're doing something very technical.
+	 * Note : you should use {@link HKXDescriptorFactory#get(String)} to get a
+	 * HKXDescriptor, unless you're doing something very technical.
+	 * 
 	 * @param name
 	 * @param signature
 	 * @param members
@@ -25,9 +27,10 @@ public class HKXDescriptor {
 		this.signature = signature;
 		this.members = members;
 	}
-	
+
 	/**
 	 * Get the descriptor's name.
+	 * 
 	 * @return the name, as a {@link String}
 	 */
 	public String getName() {
@@ -36,14 +39,17 @@ public class HKXDescriptor {
 
 	/**
 	 * Get the descriptor's signature.
+	 * 
 	 * @return the signature, as a {@link long}
 	 */
 	public long getSignature() {
 		return signature;
 	}
-	
+
 	/**
-	 * Get a {@link List} of all the member's templates, as {@link HKXMemberTemplate}.
+	 * Get a {@link List} of all the member's templates, as
+	 * {@link HKXMemberTemplate}.
+	 * 
 	 * @return the list of members.
 	 */
 	public List<HKXMemberTemplate> getMemberTemplates() {

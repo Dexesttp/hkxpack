@@ -13,22 +13,24 @@ public final class SBundle {
 	private SBundle() {
 		// NO OP
 	}
-	
+
 	/**
 	 * Get a localized string.
+	 * 
 	 * @param stringName the string name
 	 * @return the localized string
 	 */
 	public static String getString(final String stringName) {
 		return getInstance().getString(stringName);
 	}
-	
+
 	/**
 	 * Get the localized ResourceBundle.
+	 * 
 	 * @return the localized {@link ResourceBundle}.
 	 */
 	public static ResourceBundle getInstance() {
-		if(instance == null) {
+		if (instance == null) {
 			initInstance();
 		}
 		return instance;

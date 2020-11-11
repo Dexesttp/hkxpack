@@ -28,12 +28,19 @@ public class TagXMLReader {
 
 	/**
 	 * Creates a TagXML reader.
-	 * @param file the {@link File} to read from.
-	 * @param descriptorFactory the {@link HKXDescriptorFactory} to use while parsing the file.
-	 * @throws IOException if there was an error accessing the {@link File}.
-	 * @throws SAXException if there was an error parsing the XML file.
-	 * @throws ParserConfigurationException should never happen, please report this error if it happens : <br >
-	 * <a href="https://github.com/Dexesttp/hkxpack/issues">The HKXPack's issue tracker</a>
+	 * 
+	 * @param file              the {@link File} to read from.
+	 * @param descriptorFactory the {@link HKXDescriptorFactory} to use while
+	 *                          parsing the file.
+	 * @throws IOException                  if there was an error accessing the
+	 *                                      {@link File}.
+	 * @throws SAXException                 if there was an error parsing the XML
+	 *                                      file.
+	 * @throws ParserConfigurationException should never happen, please report this
+	 *                                      error if it happens : <br >
+	 *                                      <a href=
+	 *                                      "https://github.com/Dexesttp/hkxpack/issues">The
+	 *                                      HKXPack's issue tracker</a>
 	 */
 	public TagXMLReader(final File file, final HKXDescriptorFactory descriptorFactory)
 			throws ParserConfigurationException, SAXException, IOException {
@@ -44,8 +51,10 @@ public class TagXMLReader {
 
 	/**
 	 * Creates a TagXML reader from an existing {@link Document}
-	 * @param file the {@link Document} to read from.
-	 * @param descriptorFactory the {@link HKXDescriptorFactory} to use while parsing the file.
+	 * 
+	 * @param file              the {@link Document} to read from.
+	 * @param descriptorFactory the {@link HKXDescriptorFactory} to use while
+	 *                          parsing the file.
 	 */
 	public TagXMLReader(final Document document, final HKXDescriptorFactory descriptorFactory) {
 		this.handler = new TagXMLFileHandler(null);
@@ -55,32 +64,34 @@ public class TagXMLReader {
 
 	/**
 	 * Read the data from the file.
+	 * 
 	 * @return the read {@link HKXFile}
-	 * @throws IOException if there was an error accessing a descriptor.
-	 * @throws InvalidTagXMLException if there was an error retrieving relevant TagXML elements.
+	 * @throws IOException            if there was an error accessing a descriptor.
+	 * @throws InvalidTagXMLException if there was an error retrieving relevant
+	 *                                TagXML elements.
 	 */
 	public HKXFile read() throws IOException, InvalidTagXMLException {
 		// Retrieve the section node.
 		Node section = handler.getSectionNode(document, "__data__");
-		if(section == null) {
+		if (section == null) {
 			throw new InvalidTagXMLException(SBundle.getString("error.tag.read.section") + "__data__");
 		}
-		
+
 		// Get the relevant initialized HKXFile.
 		Node root = handler.getRootNode(document);
 		HKXFile hkxFile = handler.getHKXFile(root);
-		
+
 		// Read the object nodes
 		TagXMLNodeHandler nodeHandler = new TagXMLNodeHandler(descriptorFactory);
 		NodeList objectNodes = section.getChildNodes();
-		for(int i = 0; i < objectNodes.getLength(); i++) {
+		for (int i = 0; i < objectNodes.getLength(); i++) {
 			Node rootNode = objectNodes.item(i);
-			if(rootNode.getNodeName().equals("hkobject")) {
+			if (rootNode.getNodeName().equals("hkobject")) {
 				HKXObject object = nodeHandler.handleObject(rootNode);
 				hkxFile.add(object);
 			}
 		}
-		
+
 		return hkxFile;
 	}
 }

@@ -64,11 +64,9 @@ public class HKXReaderExceptionTest {
 		try {
 			reader.read();
 			// fail("Method did not throw exception.");
-		}
-		catch (ClassFileReadException e) {
+		} catch (ClassFileReadException e) {
 			return;
-		}
-		catch (Throwable t) {
+		} catch (Throwable t) {
 			fail("Expected ClassFileRead exception, got " + t.getMessage());
 		}
 	}

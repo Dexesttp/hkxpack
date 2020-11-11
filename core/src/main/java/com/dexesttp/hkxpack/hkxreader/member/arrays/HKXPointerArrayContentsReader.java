@@ -28,7 +28,7 @@ public class HKXPointerArrayContentsReader implements HKXArrayContentsReader {
 		long contentsPosition = arrayStart + position * 0x08;
 		DataExternal data = connector.data2.readNext();
 		String target = "null";
-		if(data.from == contentsPosition) {
+		if (data.from == contentsPosition) {
 			target = generator.get(data.to);
 		} else {
 			connector.data2.backtrack();

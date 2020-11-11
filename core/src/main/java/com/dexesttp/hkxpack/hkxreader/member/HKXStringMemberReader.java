@@ -19,7 +19,8 @@ class HKXStringMemberReader implements HKXMemberReader {
 	private final transient long memberOffset;
 	private final transient HKXType vtype;
 
-	HKXStringMemberReader(final HKXReaderConnector connector, final String name, final HKXType vtype, final long offset) {
+	HKXStringMemberReader(final HKXReaderConnector connector, final String name, final HKXType vtype,
+			final long offset) {
 		this.connector = connector;
 		this.name = name;
 		this.memberOffset = offset;
@@ -34,13 +35,13 @@ class HKXStringMemberReader implements HKXMemberReader {
 		String contents = "";
 		try {
 			DataInternal data = connector.data1.readNext();
-			if(data.from == memberOffset + classOffset) {
+			if (data.from == memberOffset + classOffset) {
 				ByteBuffer file = connector.data.setup(data.to);
 				contents = ByteUtils.readString(file);
 			} else {
 				connector.data1.backtrack();
 			}
-		} catch(InvalidPositionException e) {
+		} catch (InvalidPositionException e) {
 			// NO OP. Met when the last item of the HKX file is a String and is empty.
 			contents = "";
 		}

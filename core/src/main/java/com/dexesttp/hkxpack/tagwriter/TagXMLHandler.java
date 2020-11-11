@@ -21,10 +21,12 @@ import org.w3c.dom.Element;
 class TagXMLHandler {
 	/**
 	 * Creates a {@link Document} containing the HKX's version and version name.
+	 * 
 	 * @param verName
 	 * @param version
 	 * @return
-	 * @throws ParserConfigurationException if there was an error while handling the Document creation.
+	 * @throws ParserConfigurationException if there was an error while handling the
+	 *                                      Document creation.
 	 */
 	Document createDOM(final String verName, final int version) throws ParserConfigurationException {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -38,9 +40,11 @@ class TagXMLHandler {
 	}
 
 	/**
-	 * Create a hksection in a {@link Document}, and returns it as an {@link Element}.
+	 * Create a hksection in a {@link Document}, and returns it as an
+	 * {@link Element}.
+	 * 
 	 * @param document the {@link Document} to create the section into.
-	 * @param name the name of the section.
+	 * @param name     the name of the section.
 	 * @return the hksection's {@link Element}
 	 */
 	Element createSection(final Document document, final String name) {
@@ -52,25 +56,27 @@ class TagXMLHandler {
 
 	/**
 	 * Write a {@link Document} to a {@link File}.
-	 * @param document the {@link Document} to write.
+	 * 
+	 * @param document   the {@link Document} to write.
 	 * @param outputFile the {@link File} to write the {@link Document} into.
-	 * @throws TransformerException if there was an error while writing out the document.
+	 * @throws TransformerException if there was an error while writing out the
+	 *                              document.
 	 */
 	void writeToFile(final Document document, final File outputFile) throws TransformerException {
 		// Create transformer
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
 		Transformer transformer = transformerFactory.newTransformer();
-		
+
 		// Apply options to transformer
 		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 		transformer.setOutputProperty(OutputKeys.METHOD, "xml");
 		transformer.setOutputProperty(OutputKeys.ENCODING, "ascii");
 		transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
-		
+
 		// Retrieve DOM
 		DOMSource source = new DOMSource(document);
 		StreamResult outResult;
-		
+
 		// Write DOM back to file
 		outResult = new StreamResult(outputFile);
 		transformer.transform(source, outResult);

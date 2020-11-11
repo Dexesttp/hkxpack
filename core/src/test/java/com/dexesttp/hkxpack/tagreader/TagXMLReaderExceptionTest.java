@@ -33,9 +33,11 @@ public class TagXMLReaderExceptionTest {
 	@Test
 	/**
 	 * Test reading the file.
+	 * 
 	 * @throws Exception
 	 */
-	public void baseFileReadingUsingFileDoesntThrowAnException() throws IOException, ParserConfigurationException, SAXException, InvalidTagXMLException {
+	public void baseFileReadingUsingFileDoesntThrowAnException()
+			throws IOException, ParserConfigurationException, SAXException, InvalidTagXMLException {
 		File toRead = FileUtils.resourceToTemporaryFile(TEST_BASE_RESOURCE);
 		TagXMLReader reader = new TagXMLReader(toRead, descriptorFactory);
 		reader.read();

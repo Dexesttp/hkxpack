@@ -20,25 +20,26 @@ public class HKXHeaderFactory {
 		animClassesList.add("hkaAnimationContainer");
 		animClassesList.add("hclClothData");
 	}
-	
+
 	/**
 	 * Creates a {@link HeaderData} from a {@link HKXFile}.
+	 * 
 	 * @param file the {@link HKXFile} to get the header from.
 	 * @return the relevant {@link HeaderData}.
 	 */
 	public HeaderData create(final HKXFile file) {
 		boolean isAnim = false;
-		for(HKXObject object : file.getContentCollection()) {
-			if(animClassesList.contains(object.getDescriptor().getName())) {
+		for (HKXObject object : file.getContentCollection()) {
+			if (animClassesList.contains(object.getDescriptor().getName())) {
 				isAnim = true;
 			}
 		}
-		
+
 		HeaderData header = new HeaderData();
 		header.version = file.getClassVersion();
 		header.versionName = file.getContentsVersion();
 		header.paddingAfter = isAnim ? 0x10 : 0x00;
-		
+
 		return header;
 	}
 }

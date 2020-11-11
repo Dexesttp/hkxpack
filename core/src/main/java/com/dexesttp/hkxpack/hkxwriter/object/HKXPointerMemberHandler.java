@@ -16,8 +16,10 @@ public class HKXPointerMemberHandler implements HKXMemberHandler {
 
 	/**
 	 * Creates a {@link HKXPointerMemberHandler}.
-	 * @param offset the offset of the mmember in the class.
-	 * @param data2List the list of external pointers to put the pointer resolver into.
+	 * 
+	 * @param offset    the offset of the mmember in the class.
+	 * @param data2List the list of external pointers to put the pointer resolver
+	 *                  into.
 	 */
 	HKXPointerMemberHandler(final long offset, final List<PointerObject> data2List) {
 		this.offset = offset;
@@ -34,7 +36,9 @@ public class HKXPointerMemberHandler implements HKXMemberHandler {
 		ptrObject.from = currentPos + offset;
 		ptrObject.to = ptrMember.get();
 		data2.add(ptrObject);
-		return (callbacks, position) -> { return 0; };
+		return (callbacks, position) -> {
+			return 0;
+		};
 	}
 
 }

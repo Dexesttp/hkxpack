@@ -8,6 +8,7 @@ import com.dexesttp.hkxpack.descriptor.enums.HKXType;
 public interface HKXData {
 	/**
 	 * Get this object's type.
+	 * 
 	 * @return this object's {@link HKXType}.
 	 */
 	HKXType getType();

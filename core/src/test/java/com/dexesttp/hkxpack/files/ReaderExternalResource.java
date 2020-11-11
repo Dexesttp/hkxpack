@@ -19,11 +19,13 @@ public abstract class ReaderExternalResource extends ExternalResource {
 	 * The loaded {@link HKXFile}.
 	 */
 	public HKXFile file;
-	
+
 	/**
 	 * Override by the loader for {@link #file}
-	 * @throws InvalidPositionException 
+	 * 
+	 * @throws InvalidPositionException
 	 */
 	@Override
-	public abstract void before() throws IOException, ParserConfigurationException, SAXException, InvalidTagXMLException, InvalidPositionException;
+	public abstract void before() throws IOException, ParserConfigurationException, SAXException,
+			InvalidTagXMLException, InvalidPositionException;
 }

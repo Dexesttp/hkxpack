@@ -14,7 +14,8 @@ public final class StaticProperties {
 		Properties prop = new Properties();
 		String vNum = "";
 		try {
-			InputStream in = StaticProperties.class.getResourceAsStream("/META-INF/maven/com.dexesttp.hkxpack/cli/pom.properties");
+			InputStream in = StaticProperties.class
+					.getResourceAsStream("/META-INF/maven/com.dexesttp.hkxpack/cli/pom.properties");
 			prop.load(in);
 			in.close();
 			vNum = prop.getProperty("version");

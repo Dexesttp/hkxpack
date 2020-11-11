@@ -16,6 +16,7 @@ public class HKXClassnamesHandler {
 
 	/**
 	 * Creates a {@link ClassnamesData} instance from the given {@link HKXFile}.
+	 * 
 	 * @param file the {@link HKXFile} to extract data from.
 	 * @return the relevant {@link ClassnamesData}.
 	 */
@@ -26,10 +27,9 @@ public class HKXClassnamesHandler {
 		data.put(37, "hkClassEnum", ByteUtils.fromULong(HK_CLASS_ENUM_ID, 4));
 		data.put(54, "hkClassEnumItem", ByteUtils.fromULong(HK_CLASS_ENUM_ITEM_ID, 4));
 		int i = 75;
-		for(HKXObject object : file.getContentCollection()) {
-			if(!data.containsClass(object.getDescriptor().getName())) {
-				data.put(i,
-						object.getDescriptor().getName(),
+		for (HKXObject object : file.getContentCollection()) {
+			if (!data.containsClass(object.getDescriptor().getName())) {
+				data.put(i, object.getDescriptor().getName(),
 						ByteUtils.fromULong(object.getDescriptor().getSignature(), 4));
 				i += object.getDescriptor().getName().length() + 0x06;
 			}

@@ -11,8 +11,7 @@ public class SectionDescriptor {
 	/**
 	 * Constant value
 	 */
-	public byte[] constant = new byte[]
-			{0, 0, 0, -1};
+	public byte[] constant = new byte[] { 0, 0, 0, -1 };
 	/**
 	 * Offset of the section (from the beginning of the file)
 	 */

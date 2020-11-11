@@ -19,24 +19,25 @@ class TagXMLEmbeddedObjectSerializedHandler implements TagXMLSerializedHandler {
 			final HKXDescriptorFactory descriptorFactory) {
 		this.serializedHandlerFactory = tagXMLSerializedHandlerFactory;
 		this.descriptorFactory = descriptorFactory;
-		
+
 	}
 
 	@Override
 	/**
 	 * {@inheritDoc}
 	 */
-	public HKXMember handleMember(final HKXMemberTemplate objectTemplate) throws ClassFileReadException, InvalidTagXMLException {
+	public HKXMember handleMember(final HKXMemberTemplate objectTemplate)
+			throws ClassFileReadException, InvalidTagXMLException {
 		HKXDescriptor classDescriptor = descriptorFactory.get(objectTemplate.target);
-		// Create object 
-		HKXObject result = new HKXObject("", classDescriptor);	
-		
+		// Create object
+		HKXObject result = new HKXObject("", classDescriptor);
+
 		// Fill object
-		for(HKXMemberTemplate memberTemplate : classDescriptor.getMemberTemplates()) {
+		for (HKXMemberTemplate memberTemplate : classDescriptor.getMemberTemplates()) {
 			TagXMLSerializedHandler memberHandler = serializedHandlerFactory.getSerializedHandler(memberTemplate.vtype);
 			result.getMembersList().add(memberHandler.handleMember(memberTemplate));
 		}
-		
+
 		return result;
 	}
 

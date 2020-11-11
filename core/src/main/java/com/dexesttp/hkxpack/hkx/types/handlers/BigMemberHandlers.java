@@ -14,14 +14,14 @@ final class BigMemberHandlers {
 	}
 
 	static MemberHandler createMemberHandler(final HKXType type) {
-		switch(type) {
-			case TYPE_UINT64:
-			case TYPE_ULONG:
-				return new UInt64Handler();
-			case TYPE_INT64:
-				return new SInt64Handler();
-			default:
-				return null;
+		switch (type) {
+		case TYPE_UINT64:
+		case TYPE_ULONG:
+			return new UInt64Handler();
+		case TYPE_INT64:
+			return new SInt64Handler();
+		default:
+			return null;
 		}
 	}
 
@@ -36,6 +36,7 @@ final class BigMemberHandlers {
 		public long getSize() {
 			return 0x08;
 		}
+
 		@Override
 		/**
 		 * {@inheritDoc}
@@ -45,6 +46,7 @@ final class BigMemberHandlers {
 			member3.set((int) ByteUtils.getUInt(byteArray));
 			return member3;
 		}
+
 		@SuppressWarnings("unchecked")
 		@Override
 		/**
@@ -67,6 +69,7 @@ final class BigMemberHandlers {
 		public long getSize() {
 			return 0x08;
 		}
+
 		@Override
 		/**
 		 * {@inheritDoc}
@@ -76,6 +79,7 @@ final class BigMemberHandlers {
 			member4.set((int) ByteUtils.getSInt(byteArray));
 			return member4;
 		}
+
 		@SuppressWarnings("unchecked")
 		@Override
 		/**

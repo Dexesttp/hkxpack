@@ -22,7 +22,8 @@ public class CommandFactory {
 	}
 
 	/**
-	 * Retrieves the relevant {@link Command}. 
+	 * Retrieves the relevant {@link Command}.
+	 * 
 	 * @param commandName the first argument passed to main.
 	 * @return the relevant {@link Command}.
 	 */

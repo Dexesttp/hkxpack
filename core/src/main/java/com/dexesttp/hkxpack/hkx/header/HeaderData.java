@@ -10,12 +10,14 @@ public class HeaderData {
 	public int version;
 
 	/**
-	 * The version name and identifier, contains additionnal information about the file's version.
+	 * The version name and identifier, contains additionnal information about the
+	 * file's version.
 	 */
 	public String versionName;
 
 	/**
-	 * The padding after the header. Supported paddings are 0x00 (for most files) and 0x10 (for animation files).
+	 * The padding after the header. Supported paddings are 0x00 (for most files)
+	 * and 0x10 (for animation files).
 	 */
 	public long paddingAfter;
 }

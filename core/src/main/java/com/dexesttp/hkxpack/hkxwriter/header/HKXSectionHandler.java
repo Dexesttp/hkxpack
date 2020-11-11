@@ -4,7 +4,8 @@ import com.dexesttp.hkxpack.hkx.header.HeaderData;
 import com.dexesttp.hkxpack.hkx.header.SectionData;
 
 /**
- * Handles filling {@link SectionData} from a {@link HeaderData} and needed values
+ * Handles filling {@link SectionData} from a {@link HeaderData} and needed
+ * values
  */
 public class HKXSectionHandler {
 	/**
@@ -27,6 +28,7 @@ public class HKXSectionHandler {
 
 	/**
 	 * Creates a HKXSectionHandler to handle creation of section data.
+	 * 
 	 * @param header
 	 */
 	public HKXSectionHandler(final HeaderData header) {
@@ -35,51 +37,56 @@ public class HKXSectionHandler {
 
 	/**
 	 * Initialize the given {@link SectionData} as the given SectionID section.
-	 * @param sectionID the sectionID, either one of {@link #CLASSNAME}, {@link #TYPES} and {@link #DATA}.
-	 * @param data the {@link SectionData} to initialize.
+	 * 
+	 * @param sectionID the sectionID, either one of {@link #CLASSNAME},
+	 *                  {@link #TYPES} and {@link #DATA}.
+	 * @param data      the {@link SectionData} to initialize.
 	 */
 	public void init(final int sectionID, final SectionData data) {
-		switch(sectionID) {
-			case CLASSNAME:
-				initClassname(data);
-				break;
-			case TYPES:
-				initTypes(data);
-				break;
-			case DATA:
-				initData(data);
-				break;
-			default:
-				throw new IllegalArgumentException("SectionID isn't a knwon exception ID");
+		switch (sectionID) {
+		case CLASSNAME:
+			initClassname(data);
+			break;
+		case TYPES:
+			initTypes(data);
+			break;
+		case DATA:
+			initData(data);
+			break;
+		default:
+			throw new IllegalArgumentException("SectionID isn't a knwon exception ID");
 		}
 	}
-	
+
 	private void initClassname(final SectionData data) {
 		data.name = "__classnames__";
 		data.offset = HEADER_BASE_SIZE + header.paddingAfter + 3 * SECTION_SIZE;
 	}
 
 	private void initTypes(final SectionData data) {
-		if(classnamesEnd != null) {
+		if (classnamesEnd != null) {
 			data.name = "__types__";
 			data.offset = classnamesEnd;
 		}
 	}
 
 	private void initData(final SectionData data) {
-		if(classnamesEnd != null) {
+		if (classnamesEnd != null) {
 			data.name = "__data__";
 			data.offset = classnamesEnd;
 		}
 	}
 
-
 	/**
-	 * Fills the given {@link SectionData} as the ClassName data, with the given cnameEnd data as its offset.
+	 * Fills the given {@link SectionData} as the ClassName data, with the given
+	 * cnameEnd data as its offset.
 	 * <p>
-	 * The {@link SectionData} has to be initialized frst using {@link #init(int, SectionData)}.
-	 * @param data the {@link SectionData} to fill.
-	 * @param cnameEnd the end position of the ClassNames section, from the beginning of the file.
+	 * The {@link SectionData} has to be initialized frst using
+	 * {@link #init(int, SectionData)}.
+	 * 
+	 * @param data     the {@link SectionData} to fill.
+	 * @param cnameEnd the end position of the ClassNames section, from the
+	 *                 beginning of the file.
 	 */
 	public void fillCName(final SectionData classnames, final long cnameEnd) {
 		long cnameData = cnameEnd - classnames.offset;

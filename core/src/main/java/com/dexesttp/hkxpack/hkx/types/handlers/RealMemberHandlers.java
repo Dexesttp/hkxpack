@@ -14,16 +14,16 @@ final class RealMemberHandlers {
 	}
 
 	static MemberHandler createMemberHandler(final HKXType type) {
-		switch(type) {
-			case TYPE_HALF:
-				return new HalfMemberHandler();
-			case TYPE_REAL:
-				return new RealMemberHandler();
-			default:
-				return null;
+		switch (type) {
+		case TYPE_HALF:
+			return new HalfMemberHandler();
+		case TYPE_REAL:
+			return new RealMemberHandler();
+		default:
+			return null;
 		}
 	}
-	
+
 	/**
 	 * Half handler
 	 */
@@ -35,6 +35,7 @@ final class RealMemberHandlers {
 		public long getSize() {
 			return 0x02;
 		}
+
 		@Override
 		@SuppressWarnings("unchecked")
 		/**
@@ -44,7 +45,7 @@ final class RealMemberHandlers {
 			HKXDirectMember<Double> memberHalf = (HKXDirectMember<Double>) member;
 			return ByteUtils.fromFloat(memberHalf.get(), 2);
 		}
-		
+
 		@Override
 		/**
 		 * {@inheritDoc}
@@ -53,7 +54,7 @@ final class RealMemberHandlers {
 			return createReal(name, type, byteArray);
 		}
 	};
-	
+
 	/**
 	 * Real handler
 	 */
@@ -65,6 +66,7 @@ final class RealMemberHandlers {
 		public long getSize() {
 			return 0x04;
 		}
+
 		@SuppressWarnings("unchecked")
 		@Override
 		/**
@@ -74,7 +76,7 @@ final class RealMemberHandlers {
 			HKXDirectMember<Double> memberReal = (HKXDirectMember<Double>) member;
 			return ByteUtils.fromFloat(memberReal.get(), 4);
 		}
-		
+
 		@Override
 		/**
 		 * {@inheritDoc}

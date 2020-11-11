@@ -15,27 +15,28 @@ class TagXMLComplexSerializedHandler implements TagXMLSerializedHandler {
 	/**
 	 * {@inheritDoc}
 	 */
-	public HKXMember handleMember(final HKXMemberTemplate memberTemplate) throws ClassFileReadException, InvalidTagXMLException {
+	public HKXMember handleMember(final HKXMemberTemplate memberTemplate)
+			throws ClassFileReadException, InvalidTagXMLException {
 		return emptyMember(memberTemplate);
 	}
 
 	private HKXMember emptyMember(final HKXMemberTemplate memberTemplate) {
 		HKXDirectMember<Double[]> member = new HKXDirectMember<>(memberTemplate.name, memberTemplate.vtype);
-		switch(memberTemplate.vtype) {
-			case TYPE_VECTOR4:
-			case TYPE_QUATERNION:
-				member.set(new Double[]{0., 0., 0., 0.});
-				break;
-			case TYPE_MATRIX3:
-			case TYPE_QSTRANSFORM:
-				member.set(new Double[]{0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.});
-				break;
-			case TYPE_MATRIX4:
-			case TYPE_TRANSFORM:
-				member.set(new Double[]{0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.});
-				break;
-			default:
-				break;
+		switch (memberTemplate.vtype) {
+		case TYPE_VECTOR4:
+		case TYPE_QUATERNION:
+			member.set(new Double[] { 0., 0., 0., 0. });
+			break;
+		case TYPE_MATRIX3:
+		case TYPE_QSTRANSFORM:
+			member.set(new Double[] { 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0. });
+			break;
+		case TYPE_MATRIX4:
+		case TYPE_TRANSFORM:
+			member.set(new Double[] { 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0. });
+			break;
+		default:
+			break;
 		}
 		return member;
 	}

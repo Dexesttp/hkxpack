@@ -16,19 +16,19 @@ import com.dexesttp.hkxpack.tagwriter.TagXMLWriter;
 
 /**
  * Unpacks a HKX file into a XML file.
+ * 
  * @see Command_IO
  */
 public class Command_unpack extends Command_IO {
 	@Override
 	protected void executionCore(final String inputFileName, final String outputFileName,
 			final HKXEnumResolver enumResolver, final HKXDescriptorFactory descriptorFactory)
-					throws IOException, InvalidPositionException,
-					TransformerException, ParserConfigurationException {
+			throws IOException, InvalidPositionException, TransformerException, ParserConfigurationException {
 		// Read HKX file
 		File inFile = new File(inputFileName);
 		HKXReader reader = new HKXReader(inFile, descriptorFactory, enumResolver);
 		HKXFile hkxFile = reader.read();
-		
+
 		// Write XML file
 		File outFile = new File(outputFileName);
 		TagXMLWriter writer = new TagXMLWriter(outFile);
@@ -40,8 +40,7 @@ public class Command_unpack extends Command_IO {
 		String newName = "";
 		try {
 			newName = ogName.substring(0, ogName.lastIndexOf('.')) + ".xml";
-		}
-		catch(StringIndexOutOfBoundsException e) {
+		} catch (StringIndexOutOfBoundsException e) {
 			throw new FileNameCreationException("The file : " + ogName + " has a name that can't be converted.", e);
 		}
 		return newName;
@@ -49,6 +48,6 @@ public class Command_unpack extends Command_IO {
 
 	@Override
 	protected String[] getFileExtensions() {
-		return new String[] {".hkx"};
+		return new String[] { ".hkx" };
 	}
 }

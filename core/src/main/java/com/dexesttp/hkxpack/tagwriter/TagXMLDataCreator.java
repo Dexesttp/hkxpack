@@ -17,7 +17,9 @@ class TagXMLDataCreator {
 	private final transient TagXMLObjectCreator objectCreator;
 
 	/**
-	 * Initialize the {@link TagXMLDataCreator}, linking it definitely to a {@link Document}.
+	 * Initialize the {@link TagXMLDataCreator}, linking it definitely to a
+	 * {@link Document}.
+	 * 
 	 * @param document
 	 */
 	TagXMLDataCreator(final Document document) {
@@ -28,14 +30,15 @@ class TagXMLDataCreator {
 
 	/**
 	 * Creates a {@link Node} from a {@link HKXData} component.
+	 * 
 	 * @param content the {@link HKXData} to convert.
 	 * @return a {@link Node} containing the data.
 	 */
 	Node create(final HKXData content) {
-		if(content instanceof HKXObject) {
+		if (content instanceof HKXObject) {
 			return objectCreator.create((HKXObject) content);
 		}
-		if(content instanceof HKXMember) {
+		if (content instanceof HKXMember) {
 			return memberCreator.create((HKXMember) content);
 		}
 		throw new IllegalArgumentException(SBundle.getString("error.tag.create.type.unknown") + "[#060]");
@@ -43,6 +46,7 @@ class TagXMLDataCreator {
 
 	/**
 	 * Retrieves the specialized {@link TagXMLMemberCreator}.
+	 * 
 	 * @return the embedded {@link TagXMLMemberCreator}.
 	 */
 	TagXMLMemberCreator getMemberCreator() {
@@ -51,6 +55,7 @@ class TagXMLDataCreator {
 
 	/**
 	 * Retrieves the linked {@link Document}
+	 * 
 	 * @return the linked {@link Document}
 	 */
 	Document getDocument() {

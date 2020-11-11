@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * A HKXFile contains all data carried by a HKX File in the form of a list of {@link HKXObject}, in a DOM format.
+ * A HKXFile contains all data carried by a HKX File in the form of a list of
+ * {@link HKXObject}, in a DOM format.
  * <p>
- * Main methods :
- * {@link #getClassVersion()} / {@link #getContentsVersion()} retrieves the version of the file, used as a description parameter for the contents.
- * {@link #add(HKXObject)} / {@link #addAll(HKXObject...)} adds a single or a collection of {@link HKXObject} to the file.
+ * Main methods : {@link #getClassVersion()} / {@link #getContentsVersion()}
+ * retrieves the version of the file, used as a description parameter for the
+ * contents. {@link #add(HKXObject)} / {@link #addAll(HKXObject...)} adds a
+ * single or a collection of {@link HKXObject} to the file.
  * {@link #getContentCollection()} retrieves all linked {@link HKXObject}.
  */
 public class HKXFile {
@@ -18,8 +20,9 @@ public class HKXFile {
 
 	/**
 	 * Creates a new {@link HKXFile}.
+	 * 
 	 * @param contentsversion the contents version of this {@link HKXFile}.
-	 * @param classversion the class version of this {@link HKXFile}.
+	 * @param classversion    the class version of this {@link HKXFile}.
 	 */
 	// TODO add ways to select between content/class version with a specific class.
 	public HKXFile(final String contentsversion, final int classversion) {
@@ -30,6 +33,7 @@ public class HKXFile {
 
 	/**
 	 * Get this {@link HKXFile}'s contents version.
+	 * 
 	 * @return the contents version, as a {@link String}.
 	 */
 	public String getContentsVersion() {
@@ -38,6 +42,7 @@ public class HKXFile {
 
 	/**
 	 * Get this {@link HKXFile}'s class version.
+	 * 
 	 * @return the class version, as {@link int}.
 	 */
 	public int getClassVersion() {
@@ -46,6 +51,7 @@ public class HKXFile {
 
 	/**
 	 * Retrieves all base {@link HKXObject}
+	 * 
 	 * @return
 	 */
 	public Collection<HKXObject> getContentCollection() {
@@ -54,6 +60,7 @@ public class HKXFile {
 
 	/**
 	 * Add a {@link HKXObject} as a base element of the file.
+	 * 
 	 * @param object the {@link HKXObject} to add to the {@link HKXFile}.
 	 */
 	public void add(final HKXObject object) {
@@ -62,10 +69,11 @@ public class HKXFile {
 
 	/**
 	 * Add a collection of {@link HKXObject} as a base element of the file.
+	 * 
 	 * @param hkxObjects the collection of {@link HKXObject} to add.
 	 */
 	public void addAll(final HKXObject... hkxObjects) {
-		for(final HKXObject object : hkxObjects) {
+		for (final HKXObject object : hkxObjects) {
 			this.add(object);
 		}
 	}

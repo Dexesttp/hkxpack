@@ -24,10 +24,10 @@ public class ArgsParserComplexTest {
 		argsParser.addOption("-a");
 		argsParser.addOption("-b", 0);
 		argsParser.addOption("-c", 1);
-		result = argsParser.parse(ArgsParserTest.TEST, "-a", ArgsParserTest.TEST2, "-b", "-c", ArgsParserTest.TEST3, ArgsParserTest.TEST4);
+		result = argsParser.parse(ArgsParserTest.TEST, "-a", ArgsParserTest.TEST2, "-b", "-c", ArgsParserTest.TEST3,
+				ArgsParserTest.TEST4);
 	}
 
-	
 	@Test
 	/**
 	 * {@inheritDoc}
@@ -38,7 +38,7 @@ public class ArgsParserComplexTest {
 		assertTrue(result.exists("-b"));
 		assertTrue(result.exists("-c"));
 	}
-	
+
 	@Test
 	/**
 	 * {@inheritDoc}
@@ -47,7 +47,7 @@ public class ArgsParserComplexTest {
 		// Existence
 		assertFalse(result.exists("-d"));
 	}
-	
+
 	@Test
 	/**
 	 * {@inheritDoc}
@@ -56,7 +56,7 @@ public class ArgsParserComplexTest {
 		// Sizes
 		assertEquals(2, result.get("").size());
 	}
-	
+
 	@Test
 	/**
 	 * {@inheritDoc}
@@ -65,7 +65,7 @@ public class ArgsParserComplexTest {
 		// Sizes
 		assertEquals(1, result.get("-a").size());
 	}
-	
+
 	@Test
 	/**
 	 * {@inheritDoc}
@@ -74,7 +74,7 @@ public class ArgsParserComplexTest {
 		// Sizes
 		assertEquals(0, result.get("-b").size());
 	}
-	
+
 	@Test
 	/**
 	 * {@inheritDoc}
@@ -83,7 +83,7 @@ public class ArgsParserComplexTest {
 		// Sizes
 		assertEquals(1, result.get("-c").size());
 	}
-	
+
 	@Test
 	/**
 	 * {@inheritDoc}
@@ -92,7 +92,7 @@ public class ArgsParserComplexTest {
 		// Values
 		assertEquals(ArgsParserTest.TEST2, result.get("-a", 0));
 	}
-	
+
 	@Test
 	/**
 	 * {@inheritDoc}
@@ -101,7 +101,7 @@ public class ArgsParserComplexTest {
 		// Values
 		assertEquals(ArgsParserTest.TEST3, result.get("-c", 0));
 	}
-	
+
 	@Test
 	/**
 	 * {@inheritDoc}

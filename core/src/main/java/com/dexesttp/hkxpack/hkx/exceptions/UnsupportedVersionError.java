@@ -8,6 +8,7 @@ public class UnsupportedVersionError extends Exception {
 
 	/**
 	 * Creates an {@link UnsupportedVersionError}.
+	 * 
 	 * @param versionName the illegal version name
 	 */
 	public UnsupportedVersionError(final String versionName) {

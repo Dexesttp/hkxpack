@@ -23,9 +23,8 @@ public class HKXEnumMemberReader implements HKXMemberReader {
 	private final transient String etype;
 	private final transient long memberOffset;
 
-	HKXEnumMemberReader(final HKXReaderConnector connector, final HKXEnumResolver enumResolver,
-			final String name, final HKXType vtype, final HKXType vsubtype, final String target,
-			final long offset) {
+	HKXEnumMemberReader(final HKXReaderConnector connector, final HKXEnumResolver enumResolver, final String name,
+			final HKXType vtype, final HKXType vsubtype, final String target, final long offset) {
 		this.connector = connector;
 		this.enumResolver = enumResolver;
 		this.name = name;

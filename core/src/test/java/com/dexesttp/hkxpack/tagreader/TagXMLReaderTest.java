@@ -5,9 +5,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({
-	TagXMLReaderExceptionTest.class,
-	TagXMLTestBase.class})
+@SuiteClasses({ TagXMLReaderExceptionTest.class, TagXMLTestBase.class })
 /**
  * Launches the test suite for the {@link TagXMLReader}
  */

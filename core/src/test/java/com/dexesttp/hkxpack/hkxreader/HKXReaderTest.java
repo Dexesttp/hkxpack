@@ -5,9 +5,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({
-	HKXReaderExceptionTest.class,
-	HKXTestBase.class})
+@SuiteClasses({ HKXReaderExceptionTest.class, HKXTestBase.class })
 /**
  * Launches the relevant test suite for the {@link HKXReader} class
  */

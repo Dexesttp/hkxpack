@@ -21,14 +21,18 @@ public class HKXObjectArrayMemberCallback implements HKXArrayMemberCallback {
 
 	/**
 	 * Creates a {@link HKXObjectArrayMemberCallback}
-	 * @param arrMember the {@link HKXArrayMember} to base the callbak on.
-	 * @param memberHandlerFactory the {@link HKXMemberHandlerFactory} to generate the obejct's member handlers from.
+	 * 
+	 * @param arrMember            the {@link HKXArrayMember} to base the callbak
+	 *                             on.
+	 * @param memberHandlerFactory the {@link HKXMemberHandlerFactory} to generate
+	 *                             the obejct's member handlers from.
 	 */
-	public HKXObjectArrayMemberCallback(final HKXArrayMember arrMember, final HKXMemberHandlerFactory memberHandlerFactory) {
+	public HKXObjectArrayMemberCallback(final HKXArrayMember arrMember,
+			final HKXMemberHandlerFactory memberHandlerFactory) {
 		this.arrMember = arrMember;
 		this.memberHandlerFactory = memberHandlerFactory;
 	}
-	
+
 	@Override
 	/**
 	 * {@inheritDoc}
@@ -36,8 +40,8 @@ public class HKXObjectArrayMemberCallback implements HKXArrayMemberCallback {
 	public long process(final List<HKXMemberCallback> memberCallbacks, final long position) {
 		long newPos = position;
 		List<HKXMemberCallback> internalCallbacks = new ArrayList<>();
-		for(HKXData data : arrMember.getContentsList()) {
-			if(data instanceof HKXObject) {
+		for (HKXData data : arrMember.getContentsList()) {
+			if (data instanceof HKXObject) {
 				HKXObject internalObject = (HKXObject) data;
 				long objectSize = ObjectSizeResolver.getSize(internalObject);
 				HKXMemberHandler memberHandler = createObjectHandler(internalCallbacks);
@@ -45,7 +49,9 @@ public class HKXObjectArrayMemberCallback implements HKXArrayMemberCallback {
 				newPos += objectSize;
 			}
 		}
-		internalCallbacks.add((callbacks, newPosition) -> {return HKXUtils.snapLine(newPosition) - newPosition;});
+		internalCallbacks.add((callbacks, newPosition) -> {
+			return HKXUtils.snapLine(newPosition) - newPosition;
+		});
 		memberCallbacks.addAll(0, internalCallbacks);
 		return newPos - position;
 	}

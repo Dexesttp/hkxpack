@@ -14,13 +14,18 @@ public class HKXEnumMember implements HKXMember {
 	private transient String value;
 
 	/**
-	 * Creates a new {@link HKXEnumMember}.
-	 * It should be done via {@link HKXEnumResolver#resolve(String, int)} or {@link HKXEnumResolver#resolve(String, String)}.
-	 * @param name the name of the enumeration to create.
-	 * @param type the type of the enumeration to create.
-	 * Note that {@link HKXType#getFamily()} should return {@link HKXTypeFamily#ENUM}, although this is't checked.
-	 * @param subtype the internal type of the enumeration to create.
-	 * @param enumerationName the name of the enumeration instantiated by this {@link HKXEnumMember}.
+	 * Creates a new {@link HKXEnumMember}. It should be done via
+	 * {@link HKXEnumResolver#resolve(String, int)} or
+	 * {@link HKXEnumResolver#resolve(String, String)}.
+	 * 
+	 * @param name            the name of the enumeration to create.
+	 * @param type            the type of the enumeration to create. Note that
+	 *                        {@link HKXType#getFamily()} should return
+	 *                        {@link HKXTypeFamily#ENUM}, although this is't
+	 *                        checked.
+	 * @param subtype         the internal type of the enumeration to create.
+	 * @param enumerationName the name of the enumeration instantiated by this
+	 *                        {@link HKXEnumMember}.
 	 */
 	public HKXEnumMember(final String name, final HKXType type, final HKXType subtype, final String enumerationName) {
 		this.name = name;
@@ -28,25 +33,29 @@ public class HKXEnumMember implements HKXMember {
 		this.subtype = subtype;
 		this.enumerationName = enumerationName;
 	}
-	
+
 	/**
-	 * Sets this instance's value. This should be used witht he help of {@link HKXEnumResolver}.
+	 * Sets this instance's value. This should be used witht he help of
+	 * {@link HKXEnumResolver}.
+	 * 
 	 * @param value the new enumeration's value.
 	 */
 	public void set(final String value) {
 		this.value = value;
 	}
-	
+
 	/**
 	 * Get this instance's value.
+	 * 
 	 * @return
 	 */
 	public String get() {
 		return value;
 	}
-	
+
 	/**
 	 * Get this {@link HKXEnumMember}'s internal storage type.
+	 * 
 	 * @return the relevant {@link HKXType}.
 	 */
 	public HKXType getSubtype() {
@@ -55,6 +64,7 @@ public class HKXEnumMember implements HKXMember {
 
 	/**
 	 * Get this {@link HKXEnumMember}'s enumeration name.
+	 * 
 	 * @return
 	 */
 	public String getEnumerationName() {

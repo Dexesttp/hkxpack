@@ -16,9 +16,13 @@ public class HKXObjectMemberHandler implements HKXMemberHandler {
 
 	/**
 	 * Creates a {@link HKXObjectMemberHandler}.
-	 * @param offset the offset of the {@link HKXObject} member in the class.
-	 * @param memberHandlerFactory the {@link HKXMemberHandlerFactory} to use while resolving the object.
-	 * @param memberCallbacks the list of callbacks to add this object's members to.
+	 * 
+	 * @param offset               the offset of the {@link HKXObject} member in the
+	 *                             class.
+	 * @param memberHandlerFactory the {@link HKXMemberHandlerFactory} to use while
+	 *                             resolving the object.
+	 * @param memberCallbacks      the list of callbacks to add this object's
+	 *                             members to.
 	 */
 	public HKXObjectMemberHandler(final long offset, final HKXMemberHandlerFactory memberHandlerFactory,
 			final List<HKXMemberCallback> memberCallbacks) {
@@ -33,9 +37,12 @@ public class HKXObjectMemberHandler implements HKXMemberHandler {
 	 */
 	public HKXMemberCallback write(final HKXMember member, final long currentPos) {
 		final HKXObject object = (HKXObject) member;
-		HKXInternalObjectHandler internalObjectHandler = new HKXInternalObjectHandler(memberHandlerFactory, memberCallbacks);
+		HKXInternalObjectHandler internalObjectHandler = new HKXInternalObjectHandler(memberHandlerFactory,
+				memberCallbacks);
 		internalObjectHandler.write(object, currentPos + offset);
-		return (memberCallbacks, position) ->{ return 0; };
+		return (memberCallbacks, position) -> {
+			return 0;
+		};
 	}
 
 }

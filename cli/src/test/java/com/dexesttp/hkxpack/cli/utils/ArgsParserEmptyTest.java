@@ -51,7 +51,6 @@ public class ArgsParserEmptyTest {
 		assertEquals("", result.get("-a", 0));
 	}
 
-
 	@Test
 	/**
 	 * {@inheritDoc}

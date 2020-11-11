@@ -8,6 +8,7 @@ public class WrongInputCastException extends Exception {
 
 	/**
 	 * Creates a {@link WrongInputCastException}.
+	 * 
 	 * @param message the error message
 	 */
 	public WrongInputCastException(final String message) {
@@ -16,7 +17,9 @@ public class WrongInputCastException extends Exception {
 
 	/**
 	 * Creates a {@link WrongInputCastException}.
-	 * @param previousException the exception that caused the {@link WrongInputCastException}.
+	 * 
+	 * @param previousException the exception that caused the
+	 *                          {@link WrongInputCastException}.
 	 */
 
 	public WrongInputCastException(final Throwable previousException) {
@@ -25,8 +28,10 @@ public class WrongInputCastException extends Exception {
 
 	/**
 	 * Creates a {@link WrongInputCastException}.
-	 * @param message the error message
-	 * @param previousException the exception that caused the {@link WrongInputCastException}.
+	 * 
+	 * @param message           the error message
+	 * @param previousException the exception that caused the
+	 *                          {@link WrongInputCastException}.
 	 */
 	public WrongInputCastException(final String message, final Throwable previousException) {
 		super(message, previousException);

@@ -28,6 +28,7 @@ import com.dexesttp.hkxpack.hkx.types.ObjectSizeResolver;
 import com.dexesttp.hkxpack.resources.DOMUtils;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+
 /**
  * Reads ClassXML and produces HKXDescriptorTemplates from it.
  */
@@ -36,14 +37,16 @@ public class ClassXMLReader {
 	private final transient HKXDescriptorFactory descriptorFactory;
 	private final transient HKXEnumResolver enumResolver;
 
-	ClassXMLReader(final HKXDescriptorFactory descriptorFactory, final ClassXMLList classList, final HKXEnumResolver enumResolver) throws ClassListReadException {
-		this.descriptorFactory  = descriptorFactory;
+	ClassXMLReader(final HKXDescriptorFactory descriptorFactory, final ClassXMLList classList,
+			final HKXEnumResolver enumResolver) throws ClassListReadException {
+		this.descriptorFactory = descriptorFactory;
 		this.classList = classList;
 		this.enumResolver = enumResolver;
 	}
-	
+
 	/**
 	 * Retrieves a HKXDescriptor from the classXML files.
+	 * 
 	 * @param classname
 	 * @return
 	 * @throws ClassFileReadException
@@ -51,62 +54,62 @@ public class ClassXMLReader {
 	public HKXDescriptor get(final String classname) throws ClassFileReadException {
 		// Retrieve the document.
 		Document document = openFile(classname);
-		if(document == null) {
+		if (document == null) {
 			throw new ClassFileReadException("Could not find file for " + classname + ".");
 		}
-		
+
 		// Read class
 		Node classNode = document.getFirstChild();
 		List<HKXMemberTemplate> memberList = new ArrayList<>();
-		
+
 		// Read signature
 		String signatureString = DOMUtils.getNodeAttr("signature", classNode);
 		long signature = Long.parseLong(signatureString.substring(2), 16);
-		
+
 		// Read enums
 		NodeList enums = document.getElementsByTagName("enums");
-		if(enums.getLength() > 0) {
+		if (enums.getLength() > 0) {
 			retrieveEnums(classname, enums);
 		}
-		
+
 		// Handle eventual parent
 		String parentName = DOMUtils.getNodeAttr("parent", classNode);
-		if(!parentName.isEmpty()) {
+		if (!parentName.isEmpty()) {
 			HKXDescriptor parent = descriptorFactory.get(parentName);
 			memberList.addAll(parent.getMemberTemplates());
 		}
 		// Handle direct members.
 		NodeList members = document.getElementsByTagName("member");
-		for(int i = 0; i < members.getLength(); i++) {
+		for (int i = 0; i < members.getLength(); i++) {
 			Node memberNode = members.item(i);
 			memberList.addAll(resolveMember(memberNode, classname));
 		}
-		
+
 		// Return the descriptor
 		return new HKXDescriptor(classname, signature, memberList);
 	}
 
 	/**
-	 * Retrieve all the enumerations described as {@link Node} in the given {@link NodeList}, and store them in this {@link ClassXMLReader}'s {@link HKXEnumResolver}.
+	 * Retrieve all the enumerations described as {@link Node} in the given
+	 * {@link NodeList}, and store them in this {@link ClassXMLReader}'s
+	 * {@link HKXEnumResolver}.
+	 * 
 	 * @param classname the classname currently read.
-	 * @param enums the enumeration node list.
+	 * @param enums     the enumeration node list.
 	 */
 	private void retrieveEnums(final String classname, final NodeList enums) {
 		StringBuffer enumNameBuffer = new StringBuffer();
 		NodeList enumsObjects = enums.item(0).getChildNodes();
-		for(int i = 0; i < enumsObjects.getLength(); i++) {
+		for (int i = 0; i < enumsObjects.getLength(); i++) {
 			Node enumObject = enumsObjects.item(i);
-			if(enumObject.getAttributes() != null) {
+			if (enumObject.getAttributes() != null) {
 				Map<Integer, String> enumContents = createHashMap();
 				enumNameBuffer.setLength(0);
-				String enumName = enumNameBuffer
-						.append(classname)
-						.append(".")
-						.append(DOMUtils.getNodeAttr("name", enumObject))
-						.toString();
-				for(int j = 0; j < enumObject.getChildNodes().getLength(); j++) {
+				String enumName = enumNameBuffer.append(classname).append(".")
+						.append(DOMUtils.getNodeAttr("name", enumObject)).toString();
+				for (int j = 0; j < enumObject.getChildNodes().getLength(); j++) {
 					Node enumObjectContent = enumObject.getChildNodes().item(j);
-					if(enumObjectContent.getAttributes() != null) {
+					if (enumObjectContent.getAttributes() != null) {
 						String enumObjectName = DOMUtils.getNodeAttr("name", enumObjectContent);
 						int enumObjectContents = Integer.parseInt(DOMUtils.getNodeAttr("value", enumObjectContent));
 						enumContents.put(enumObjectContents, enumObjectName);
@@ -122,7 +125,7 @@ public class ClassXMLReader {
 		Document document;
 		try {
 			String classUri = classList.getFileName(classname);
-			if(classUri == null) {
+			if (classUri == null) {
 				return null;
 			}
 			URL source = ClassXMLReader.class.getResource(classUri);
@@ -136,40 +139,42 @@ public class ClassXMLReader {
 		return document;
 	}
 
-	private List<HKXMemberTemplate> resolveMember(final Node memberNode, final String classname) throws ClassFileReadException {
+	private List<HKXMemberTemplate> resolveMember(final Node memberNode, final String classname)
+			throws ClassFileReadException {
 		String name = DOMUtils.getNodeAttr("name", memberNode);
 		String offset = DOMUtils.getNodeAttr("offset", memberNode);
 		String vtype = DOMUtils.getNodeAttr("vtype", memberNode);
 		String vsubtype = DOMUtils.getNodeAttr("vsubtype", memberNode);
 		String ctype = DOMUtils.getNodeAttr("ctype", memberNode);
 		StringBuilder etypeBuilder = new StringBuilder(DOMUtils.getNodeAttr("etype", memberNode));
-		if(etypeBuilder.length() > 0) {
+		if (etypeBuilder.length() > 0) {
 			etypeBuilder.insert(0, classname + ".");
 		}
 		String etype = etypeBuilder.toString();
 		String arrsize = DOMUtils.getNodeAttr("arrsize", memberNode);
 		String flags = DOMUtils.getNodeAttr("flags", memberNode);
 		List<HKXMemberTemplate> res = new ArrayList<HKXMemberTemplate>();
-		if(arrsize.equals("0")) {
-			HKXMemberTemplate template = new HKXMemberTemplate(name, offset, vtype, vsubtype, ctype, etype, arrsize, flags);
+		if (arrsize.equals("0")) {
+			HKXMemberTemplate template = new HKXMemberTemplate(name, offset, vtype, vsubtype, ctype, etype, arrsize,
+					flags);
 			res.add(template);
 		} else {
 			int size = Integer.parseInt(arrsize);
 			long memberSize = 0;
-			if(vtype.equals("TYPE_STRUCT")) {
+			if (vtype.equals("TYPE_STRUCT")) {
 				memberSize = ObjectSizeResolver.getSize(descriptorFactory.get(ctype), descriptorFactory);
 			} else {
 				memberSize = MemberSizeResolver.getSize(HKXType.valueOf(vtype));
 			}
 			long memberOffset = Integer.parseInt(offset);
 			HMTBuilder builder = new HMTBuilder(name, vtype, vsubtype, ctype, etype, arrsize, flags);
-			for(int i = 0; i < size; i++) {
+			for (int i = 0; i < size; i++) {
 				res.add(builder.build(i, memberOffset, memberSize));
 			}
 		}
 		return res;
 	}
-	
+
 	/**
 	 * Builds a {@link HKXMemberTemplate} at each iteration
 	 */
@@ -182,8 +187,8 @@ public class ClassXMLReader {
 		private final transient String arrsize;
 		private final transient String flags;
 
-		HMTBuilder(final String name, final String vtype, final String vsubtype, final String ctype,
-				final String etype, final String arrsize, final String flags) {
+		HMTBuilder(final String name, final String vtype, final String vsubtype, final String ctype, final String etype,
+				final String arrsize, final String flags) {
 			this.name = name;
 			this.vtype = vtype;
 			this.vsubtype = vsubtype;
@@ -192,17 +197,17 @@ public class ClassXMLReader {
 			this.arrsize = arrsize;
 			this.flags = flags;
 		}
-		
+
 		HKXMemberTemplate build(final int i, final long memberOffset, final long memberSize) {
-			return new HKXMemberTemplate(
-							name + (i+1),
-							Long.toString(memberOffset + i * memberSize),
-							vtype, vsubtype, ctype, etype, arrsize, flags);
+			return new HKXMemberTemplate(name + (i + 1), Long.toString(memberOffset + i * memberSize), vtype, vsubtype,
+					ctype, etype, arrsize, flags);
 		}
 	}
 
 	/**
-	 * That's a shame that PMD prefers this. I see the point though, as it allows to easily zero-in on object creation.
+	 * That's a shame that PMD prefers this. I see the point though, as it allows to
+	 * easily zero-in on object creation.
+	 * 
 	 * @return
 	 */
 	private Map<Integer, String> createHashMap() {

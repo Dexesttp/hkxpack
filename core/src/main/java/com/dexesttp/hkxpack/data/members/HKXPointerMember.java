@@ -14,13 +14,19 @@ public class HKXPointerMember implements HKXMember {
 
 	/**
 	 * Create a {@link HKXPointerMember}, a link to a given {@link HKXObject}.
-	 * @param name the name of the {@link HKXPointerMember}.
-	 * @param type the type of the {@link HKXPointerMember}.
-	 * Note that the {@link HKXType#getFamily()} function should be {@link HKXTypeFamily#POINTER}, although this isn't checked.
-	 * @param subtype the type of the target of the {@link HKXPointerMember}, if described in the classXML.
+	 * 
+	 * @param name             the name of the {@link HKXPointerMember}.
+	 * @param type             the type of the {@link HKXPointerMember}. Note that
+	 *                         the {@link HKXType#getFamily()} function should be
+	 *                         {@link HKXTypeFamily#POINTER}, although this isn't
+	 *                         checked.
+	 * @param subtype          the type of the target of the
+	 *                         {@link HKXPointerMember}, if described in the
+	 *                         classXML.
 	 * @param targetObjectName the target object's name.
 	 */
-	public HKXPointerMember(final String name, final HKXType type, final HKXType subtype, final String targetObjectName) {
+	public HKXPointerMember(final String name, final HKXType type, final HKXType subtype,
+			final String targetObjectName) {
 		this.name = name;
 		this.type = type;
 		this.subtype = subtype;
@@ -29,6 +35,7 @@ public class HKXPointerMember implements HKXMember {
 
 	/**
 	 * Set this {@link HKXPointerMember}'s target name.
+	 * 
 	 * @param targetObjectName the name of the target object
 	 */
 	public void set(final String targetObjectName) {
@@ -37,6 +44,7 @@ public class HKXPointerMember implements HKXMember {
 
 	/**
 	 * Get this {@link HKXPointerMember}'s target name.
+	 * 
 	 * @return the name of the target object.
 	 */
 	public String get() {
@@ -45,6 +53,7 @@ public class HKXPointerMember implements HKXMember {
 
 	/**
 	 * get this {@link HKXPointerMember}'s subtype, if renseigned by the classXML.
+	 * 
 	 * @return
 	 */
 	public HKXType getSubtype() {

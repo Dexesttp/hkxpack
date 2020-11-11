@@ -14,19 +14,19 @@ final class SmallMemberHandlers {
 	}
 
 	static MemberHandler createMemberHandler(final HKXType type) {
-		switch(type) {
-			case TYPE_BOOL:
-				return new BoolMemberHandler();
-			case TYPE_CHAR:
-			case TYPE_UINT8:
-				return new CharMemberHandler();
-			case TYPE_INT8:
-				return new SCharMemberHandler();
-			default:
-				return null;
+		switch (type) {
+		case TYPE_BOOL:
+			return new BoolMemberHandler();
+		case TYPE_CHAR:
+		case TYPE_UINT8:
+			return new CharMemberHandler();
+		case TYPE_INT8:
+			return new SCharMemberHandler();
+		default:
+			return null;
 		}
 	}
-	
+
 	/**
 	 * Bool handler
 	 */
@@ -38,6 +38,7 @@ final class SmallMemberHandlers {
 		public long getSize() {
 			return 0x01;
 		}
+
 		@Override
 		/**
 		 * {@inheritDoc}
@@ -47,6 +48,7 @@ final class SmallMemberHandlers {
 			member1.set(ByteUtils.getUInt(byteArray) > 0);
 			return member1;
 		}
+
 		@SuppressWarnings("unchecked")
 		@Override
 		/**
@@ -54,10 +56,10 @@ final class SmallMemberHandlers {
 		 */
 		public byte[] readMember(final HKXMember member) {
 			HKXDirectMember<Boolean> memberBool = (HKXDirectMember<Boolean>) member;
-			return new byte[]{(byte) (memberBool.get() ? 0x01 : 0x00)};
+			return new byte[] { (byte) (memberBool.get() ? 0x01 : 0x00) };
 		}
 	}
-	
+
 	/**
 	 * Char/UInt8 handler
 	 */
@@ -69,6 +71,7 @@ final class SmallMemberHandlers {
 		public long getSize() {
 			return 0x01;
 		}
+
 		@Override
 		/**
 		 * {@inheritDoc}
@@ -76,6 +79,7 @@ final class SmallMemberHandlers {
 		public HKXMember createMember(final String name, final HKXType type, final byte[] byteArray) {
 			return createChar(name, type, byteArray);
 		}
+
 		@SuppressWarnings("unchecked")
 		@Override
 		/**
@@ -86,7 +90,7 @@ final class SmallMemberHandlers {
 			return ByteUtils.fromULong(memberUInt8.get(), 1);
 		}
 	}
-	
+
 	/**
 	 * Int8 handler
 	 */
@@ -98,6 +102,7 @@ final class SmallMemberHandlers {
 		public long getSize() {
 			return 0x01;
 		}
+
 		@Override
 		/**
 		 * {@inheritDoc}
@@ -105,6 +110,7 @@ final class SmallMemberHandlers {
 		public HKXMember createMember(final String name, final HKXType type, final byte[] byteArray) {
 			return createChar(name, type, byteArray);
 		}
+
 		@SuppressWarnings("unchecked")
 		@Override
 		/**
