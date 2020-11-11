@@ -14,14 +14,14 @@ final class BigMemberHandlers {
 	}
 
 	static MemberHandler createMemberHandler(final HKXType type) {
-		switch(type) {
-			case TYPE_UINT64:
-			case TYPE_ULONG:
-				return new UInt64Handler();
-			case TYPE_INT64:
-				return new SInt64Handler();
-			default:
-				return null;
+		switch (type) {
+		case TYPE_UINT64:
+		case TYPE_ULONG:
+			return new UInt64Handler();
+		case TYPE_INT64:
+			return new SInt64Handler();
+		default:
+			return null;
 		}
 	}
 
@@ -36,22 +36,24 @@ final class BigMemberHandlers {
 		public long getSize() {
 			return 0x08;
 		}
+
 		@Override
 		/**
 		 * {@inheritDoc}
 		 */
 		public HKXMember createMember(final String name, final HKXType type, final byte[] byteArray) {
-			HKXDirectMember<Integer> member3 = new HKXDirectMember<>(name, type);
-			member3.set((int) ByteUtils.getUInt(byteArray));
+			HKXDirectMember<Long> member3 = new HKXDirectMember<>(name, type);
+			member3.set((long) ByteUtils.getULong(byteArray));
 			return member3;
 		}
+
 		@SuppressWarnings("unchecked")
 		@Override
 		/**
 		 * {@inheritDoc}
 		 */
 		public byte[] readMember(final HKXMember member) {
-			HKXDirectMember<Integer> memberUInt64 = (HKXDirectMember<Integer>) member;
+			HKXDirectMember<Long> memberUInt64 = (HKXDirectMember<Long>) member;
 			return ByteUtils.fromULong(memberUInt64.get(), 8);
 		}
 	}
@@ -67,22 +69,24 @@ final class BigMemberHandlers {
 		public long getSize() {
 			return 0x08;
 		}
+
 		@Override
 		/**
 		 * {@inheritDoc}
 		 */
 		public HKXMember createMember(final String name, final HKXType type, final byte[] byteArray) {
-			HKXDirectMember<Integer> member4 = new HKXDirectMember<>(name, type);
-			member4.set((int) ByteUtils.getSInt(byteArray));
+			HKXDirectMember<Long> member4 = new HKXDirectMember<>(name, type);
+			member4.set((long) ByteUtils.getSInt(byteArray));
 			return member4;
 		}
+
 		@SuppressWarnings("unchecked")
 		@Override
 		/**
 		 * {@inheritDoc}
 		 */
 		public byte[] readMember(final HKXMember member) {
-			HKXDirectMember<Integer> memberInt64 = (HKXDirectMember<Integer>) member;
+			HKXDirectMember<Long> memberInt64 = (HKXDirectMember<Long>) member;
 			return ByteUtils.fromULong(memberInt64.get(), 8);
 		}
 	}

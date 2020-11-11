@@ -21,13 +21,14 @@ public class TagXMLReaderExternalResource extends ReaderExternalResource {
 
 	/**
 	 * Creates a {@link TagXMLReaderExternalResource}
+	 * 
 	 * @param baseFileResourceName the resource file's name, without its extension
 	 */
 	public TagXMLReaderExternalResource(final String baseFileResourceName) {
 		super();
 		this.baseFileResourceName = baseFileResourceName;
 	}
-	
+
 	/**
 	 * Set up the resource as the {@link #file} member
 	 */

@@ -15,20 +15,20 @@ import com.dexesttp.hkxpack.descriptor.exceptions.ClassListReadException;
 class ClassXMLList {
 	private static final String CLASS_RESOURCES_LIST = "/properties/classxmllist.txt";
 	public final transient Map<String, String> filenameConverter = new HashMap<String, String>();
-	
+
 	ClassXMLList() throws ClassListReadException {
 		try {
 			readEntries();
-		} catch(IOException e) {
+		} catch (IOException e) {
 			throw new ClassListReadException(e);
 		}
 	}
-	
+
 	private void readEntries() throws IOException {
 		URL paths = ClassXMLList.class.getResource(CLASS_RESOURCES_LIST);
 		BufferedReader reader = new BufferedReader(new InputStreamReader(paths.openStream()));
 		String fileEntry = reader.readLine();
-		while(fileEntry != null) {
+		while (fileEntry != null) {
 			String className = extractName(fileEntry);
 			filenameConverter.put(className, "/classxml/" + fileEntry);
 			fileEntry = reader.readLine();
@@ -37,13 +37,14 @@ class ClassXMLList {
 
 	/**
 	 * Retrieve a filename from the class name
+	 * 
 	 * @param classname the class name
 	 * @return the file name to retrieve data from
 	 */
 	String getFileName(final String classname) {
 		return filenameConverter.get(classname);
 	}
-	
+
 	private String extractName(final String fullName) {
 		return fullName.substring(0, fullName.indexOf('_'));
 	}

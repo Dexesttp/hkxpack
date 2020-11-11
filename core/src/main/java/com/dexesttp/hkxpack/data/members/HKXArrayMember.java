@@ -17,12 +17,15 @@ public class HKXArrayMember implements HKXMember {
 
 	/**
 	 * Creates a new {@link HKXArrayMember}.
-	 * @param name the name of the member.
-	 * @param type the type of the member. the {@link HKXType#getFamily()} method of this type should return {@link HKXTypeFamily#ARRAY}, but this isn't required.
+	 * 
+	 * @param name    the name of the member.
+	 * @param type    the type of the member. the {@link HKXType#getFamily()} method
+	 *                of this type should return {@link HKXTypeFamily#ARRAY}, but
+	 *                this isn't required.
 	 * @param subtype the type of this array's content.
 	 */
 	public HKXArrayMember(final String name, final HKXType type, final HKXType subtype) {
-		this.name = name;		
+		this.name = name;
 		this.type = type;
 		this.subtype = subtype;
 		this.contents = new ArrayList<>();
@@ -30,35 +33,40 @@ public class HKXArrayMember implements HKXMember {
 
 	/**
 	 * Retrieves this array's intended content type.
+	 * 
 	 * @return this array's content type, as a {@link HKXType}.
 	 */
 	public HKXType getSubType() {
 		return subtype;
 	}
-	
+
 	/**
 	 * Add a HKXData at the end of this array.
+	 * 
 	 * @param data the {@link HKXData} to add.
 	 * @throws IllegalArgumentException if the given data isn't of the right type.
 	 */
 	public void add(final HKXData data) {
-		if(subtype != HKXType.TYPE_NONE && data.getType() != subtype) {
-			throw new IllegalArgumentException("Array data type is defined as : " + subtype + " while the given argument is " + data.getType());
+		if (subtype != HKXType.TYPE_NONE && data.getType() != subtype) {
+			throw new IllegalArgumentException(
+					"Array data type is defined as : " + subtype + " while the given argument is " + data.getType());
 		}
 		this.contents.add(data);
 	}
-	
+
 	/**
 	 * Get the n-th HKXData of this array.
+	 * 
 	 * @param position the position of the data to retrieve.
 	 * @return the relevant {@link HKXData}.
 	 */
 	public HKXData get(final int position) {
 		return contents.get(position);
 	}
-	
+
 	/**
 	 * Retrieve the contents of the array, as a list of {@link HKXData}.
+	 * 
 	 * @return the array's contents.
 	 */
 	public List<HKXData> getContentsList() {

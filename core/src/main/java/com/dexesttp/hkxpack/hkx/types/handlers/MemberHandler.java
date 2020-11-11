@@ -9,6 +9,7 @@ import com.dexesttp.hkxpack.descriptor.enums.HKXType;
 public interface MemberHandler {
 	/**
 	 * Creates a member from the given arguments.
+	 * 
 	 * @param name
 	 * @param type
 	 * @param byteArray
@@ -18,6 +19,7 @@ public interface MemberHandler {
 
 	/**
 	 * Reads a member into a byteArray
+	 * 
 	 * @param member the member to read
 	 * @return the read byteArray
 	 */
@@ -25,6 +27,7 @@ public interface MemberHandler {
 
 	/**
 	 * Retrieves the size of this member
+	 * 
 	 * @return the member size
 	 */
 	long getSize();

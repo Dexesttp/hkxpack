@@ -1,5 +1,6 @@
 package com.dexesttp.hkxpack.hkxwriter.object;
 
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 
 import com.dexesttp.hkxpack.data.members.HKXEnumMember;
@@ -19,9 +20,11 @@ public class HKXEnumMemberHandler implements HKXMemberHandler {
 
 	/**
 	 * Creates a {@link HKXEnumMemberHandler}.
-	 * @param outFile the output {@link ByteBuffer} to write to.
-	 * @param offset the offset of the memebr in the class.
-	 * @param enumResolver the {@link HKXEnumResolver} to use to resolve the enumeration into a value.
+	 * 
+	 * @param outFile      the output {@link ByteBuffer} to write to.
+	 * @param offset       the offset of the memebr in the class.
+	 * @param enumResolver the {@link HKXEnumResolver} to use to resolve the
+	 *                     enumeration into a value.
 	 */
 	public HKXEnumMemberHandler(final ByteBuffer outFile, final long offset, final HKXEnumResolver enumResolver) {
 		this.outFile = outFile;
@@ -35,13 +38,15 @@ public class HKXEnumMemberHandler implements HKXMemberHandler {
 	 */
 	public HKXMemberCallback write(final HKXMember member, final long currentPos) {
 		HKXEnumMember enumMember = (HKXEnumMember) member;
-		if(!enumMember.getEnumerationName().isEmpty()) {
-			outFile.position((int) (currentPos + offset));
+		if (!enumMember.getEnumerationName().isEmpty()) {
+			((Buffer) outFile).position((int) (currentPos + offset));
 			long enumVal = enumResolver.resolve(enumMember.getEnumerationName(), enumMember.get());
 			byte[] res = ByteUtils.fromULong(enumVal, (int) MemberSizeResolver.getSize(enumMember.getSubtype()));
 			outFile.put(res);
 		}
-		return (memberCallbacks, position) -> { return 0; };
+		return (memberCallbacks, position) -> {
+			return 0;
+		};
 	}
 
 }

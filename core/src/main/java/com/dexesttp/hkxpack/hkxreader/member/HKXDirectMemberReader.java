@@ -11,6 +11,7 @@ import com.dexesttp.hkxpack.hkxreader.HKXReaderConnector;
 
 /**
  * Reads a direct or complex member from a HKX file.
+ * 
  * @see MemberDataResolver
  */
 class HKXDirectMemberReader implements HKXMemberReader {
@@ -19,8 +20,8 @@ class HKXDirectMemberReader implements HKXMemberReader {
 	private final transient HKXType vtype;
 	private final transient long memberOffset;
 
-	HKXDirectMemberReader(final HKXReaderConnector connector, final String name,
-			final HKXType contentType, final long offset) {
+	HKXDirectMemberReader(final HKXReaderConnector connector, final String name, final HKXType contentType,
+			final long offset) {
 		this.connector = connector;
 		this.name = name;
 		this.vtype = contentType;

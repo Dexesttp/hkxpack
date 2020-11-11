@@ -14,16 +14,16 @@ class MediumMemberHandlers {
 	}
 
 	static MemberHandler createMemberHandler(final HKXType type) {
-		switch(type) {
-			case TYPE_UINT16:
-				return new UInt16MemberHandler();
-			case TYPE_INT16:
-				return new SInt16MemberHandler();
-			default:
-				return null;
+		switch (type) {
+		case TYPE_UINT16:
+			return new UInt16MemberHandler();
+		case TYPE_INT16:
+			return new SInt16MemberHandler();
+		default:
+			return null;
 		}
 	}
-	
+
 	/**
 	 * Handles UInt16
 	 */
@@ -35,6 +35,7 @@ class MediumMemberHandlers {
 		public long getSize() {
 			return 0x02;
 		}
+
 		@Override
 		/**
 		 * {@inheritDoc}
@@ -44,6 +45,7 @@ class MediumMemberHandlers {
 			member3.set((int) ByteUtils.getUInt(byteArray));
 			return member3;
 		}
+
 		@SuppressWarnings("unchecked")
 		@Override
 		/**
@@ -54,7 +56,7 @@ class MediumMemberHandlers {
 			return ByteUtils.fromULong(memberUInt16.get(), 2);
 		}
 	}
-	
+
 	/**
 	 * Handles Int16
 	 */
@@ -66,6 +68,7 @@ class MediumMemberHandlers {
 		public long getSize() {
 			return 0x02;
 		}
+
 		@Override
 		/**
 		 * {@inheritDoc}
@@ -75,6 +78,7 @@ class MediumMemberHandlers {
 			member4.set((int) ByteUtils.getSInt(byteArray));
 			return member4;
 		}
+
 		@SuppressWarnings("unchecked")
 		@Override
 		/**

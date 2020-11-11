@@ -12,7 +12,9 @@ class HKXDescriptorReader {
 
 	/**
 	 * Create a new HKXDescriptorReader
-	 * @param creator the {@link HKXObjectReader} to use while creating the {@link HKXObject}.
+	 * 
+	 * @param creator   the {@link HKXObjectReader} to use while creating the
+	 *                  {@link HKXObject}.
 	 * @param generator the {@link PointerNameGenerator} to generate names from.
 	 */
 	HKXDescriptorReader(final HKXObjectReader creator, final PointerNameGenerator generator) {
@@ -22,8 +24,10 @@ class HKXDescriptorReader {
 
 	/**
 	 * Read an HKXObject from the file.
-	 * @param position the position the {@link HKXObject} shoud be read from.
-	 * @param descriptor the {@link HKXDescriptor} describing the {@link HKXObject} to read.
+	 * 
+	 * @param position   the position the {@link HKXObject} shoud be read from.
+	 * @param descriptor the {@link HKXDescriptor} describing the {@link HKXObject}
+	 *                   to read.
 	 * @return an {@link HKXObject} containing all the read contents.
 	 */
 	HKXObject read(final long position, final HKXDescriptor descriptor) {

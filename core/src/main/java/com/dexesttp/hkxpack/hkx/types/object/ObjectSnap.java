@@ -18,20 +18,19 @@ final class ObjectSnap {
 		// NO OP
 	}
 
-	static long getSnap(final HKXDescriptor descriptor, final HKXDescriptorFactory descriptorFactory) throws ClassFileReadException {
+	static long getSnap(final HKXDescriptor descriptor, final HKXDescriptorFactory descriptorFactory)
+			throws ClassFileReadException {
 		long bestSnap = 0;
 		List<HKXMemberTemplate> list = descriptor.getMemberTemplates();
-		for(int i = 0; i < list.size(); i++) {
+		for (int i = 0; i < list.size(); i++) {
 			HKXMemberTemplate template = list.get(i);
 			long currSnap = 0;
-			if(template.vtype.getFamily() == HKXTypeFamily.ENUM) {
+			if (template.vtype.getFamily() == HKXTypeFamily.ENUM) {
 				currSnap = PrimitiveSnap.primitiveSnap(template.vsubtype);
-			}
-			else if(template.vtype == HKXType.TYPE_STRUCT) {
+			} else if (template.vtype == HKXType.TYPE_STRUCT) {
 				HKXDescriptor internalDescriptor = descriptorFactory.get(template.target);
 				currSnap = getSnap(internalDescriptor, descriptorFactory);
-			}
-			else {
+			} else {
 				currSnap = PrimitiveSnap.primitiveSnap(template.vtype);
 			}
 			bestSnap = currSnap > bestSnap ? currSnap : bestSnap;
@@ -42,17 +41,15 @@ final class ObjectSnap {
 	static long getSnap(final HKXObject object) {
 		long bestSnap = 0;
 		List<HKXMemberTemplate> list = object.getDescriptor().getMemberTemplates();
-		for(int i = 0; i < list.size(); i++) {
+		for (int i = 0; i < list.size(); i++) {
 			HKXMemberTemplate template = list.get(i);
 			long currSnap = 0;
-			if(template.vtype.getFamily() == HKXTypeFamily.ENUM) {
+			if (template.vtype.getFamily() == HKXTypeFamily.ENUM) {
 				currSnap = PrimitiveSnap.primitiveSnap(template.vsubtype);
-			}
-			else if(template.vtype == HKXType.TYPE_STRUCT) {
+			} else if (template.vtype == HKXType.TYPE_STRUCT) {
 				HKXObject internalObject = (HKXObject) object.getMembersList().get(i);
 				currSnap = getSnap(internalObject);
-			}
-			else {
+			} else {
 				currSnap = PrimitiveSnap.primitiveSnap(template.vtype);
 			}
 			bestSnap = currSnap > bestSnap ? currSnap : bestSnap;

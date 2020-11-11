@@ -30,7 +30,7 @@ class HKXStringArrayContentsReader implements HKXArrayContentsReader {
 		long descriptorPosition = arrayStart + position * 0x08;
 		DataInternal data = connector.data1.readNext();
 		String contents = "";
-		if(data.from == descriptorPosition) {
+		if (data.from == descriptorPosition) {
 			ByteBuffer file = connector.data.setup(data.to);
 			contents = ByteUtils.readString(file);
 		} else {

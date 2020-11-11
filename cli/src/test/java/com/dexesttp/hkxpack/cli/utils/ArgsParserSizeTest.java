@@ -42,7 +42,6 @@ public class ArgsParserSizeTest {
 		assertEquals(2, result.size());
 	}
 
-
 	@Test
 	/**
 	 * {@inheritDoc}

@@ -35,34 +35,35 @@ class TagXMLArrayHandler implements TagXMLContentsHandler {
 	/**
 	 * {@inheritDoc}
 	 */
-	public HKXMember handleNode(final Node member, final HKXMemberTemplate memberTemplate) throws ClassFileReadException, InvalidTagXMLException {
+	public HKXMember handleNode(final Node member, final HKXMemberTemplate memberTemplate)
+			throws ClassFileReadException, InvalidTagXMLException {
 		HKXArrayMember result = new HKXArrayMember(memberTemplate.name, memberTemplate.vtype, memberTemplate.vsubtype);
 		// Change behavior based on internal content type's family
 		switch (memberTemplate.vsubtype.getFamily()) {
-			case DIRECT:
-				handleDirect(result, member, memberTemplate.vsubtype);
-				break;
-			case COMPLEX:
-				handleComplex(result, member, memberTemplate.vsubtype);
-				break;
-			case STRING:
-				handleString(result, member);
-				break;
-			case POINTER:
-				handlePointer(result, member, memberTemplate);
-				break;
-			case OBJECT:
-				handleObject(result, member, memberTemplate.target);
-				break;
-			default:
-				break;
+		case DIRECT:
+			handleDirect(result, member, memberTemplate.vsubtype);
+			break;
+		case COMPLEX:
+			handleComplex(result, member, memberTemplate.vsubtype);
+			break;
+		case STRING:
+			handleString(result, member);
+			break;
+		case POINTER:
+			handlePointer(result, member, memberTemplate);
+			break;
+		case OBJECT:
+			handleObject(result, member, memberTemplate.target);
+			break;
+		default:
+			break;
 		}
 		return result;
 	}
 
 	private void handleDirect(final HKXArrayMember root, final Node member, final HKXType subtype) {
 		Matcher m = SIMPLE_PATTERN.matcher(member.getTextContent());
-		while(m.find()) {
+		while (m.find()) {
 			HKXMember contents = directHandler.handleString(m.group(1), "", subtype);
 			root.add(contents);
 		}
@@ -71,7 +72,7 @@ class TagXMLArrayHandler implements TagXMLContentsHandler {
 	private void handleComplex(final HKXArrayMember root, final Node member, final HKXType subtype) {
 		Pattern pattern = complexHandler.getPattern(subtype);
 		Matcher m = pattern.matcher(member.getTextContent());
-		while(m.find()) {
+		while (m.find()) {
 			HKXMember contents = complexHandler.handleMatcher(m, "", subtype);
 			root.add(contents);
 		}
@@ -79,9 +80,9 @@ class TagXMLArrayHandler implements TagXMLContentsHandler {
 
 	private void handleString(final HKXArrayMember root, final Node member) {
 		NodeList children = member.getChildNodes();
-		for(int i = 0; i < children.getLength(); i++) {
+		for (int i = 0; i < children.getLength(); i++) {
 			Node child = children.item(i);
-			if(child.getNodeName().equals("hkcstring")) {
+			if (child.getNodeName().equals("hkcstring")) {
 				HKXStringMember string = createStringMember(root);
 				string.set(child.getTextContent());
 				root.add(string);
@@ -91,18 +92,19 @@ class TagXMLArrayHandler implements TagXMLContentsHandler {
 
 	private void handlePointer(final HKXArrayMember root, final Node member, final HKXMemberTemplate memberTemplate) {
 		Matcher m = SIMPLE_PATTERN.matcher(member.getTextContent());
-		while(m.find()) {
+		while (m.find()) {
 			HKXPointerMember contents = createPointerMember(memberTemplate);
 			contents.set(m.group(1));
 			root.add(contents);
 		}
 	}
 
-	private void handleObject(final HKXArrayMember root, final Node member, final String target) throws ClassFileReadException, InvalidTagXMLException {
+	private void handleObject(final HKXArrayMember root, final Node member, final String target)
+			throws ClassFileReadException, InvalidTagXMLException {
 		NodeList children = member.getChildNodes();
-		for(int i = 0; i < children.getLength(); i++) {
+		for (int i = 0; i < children.getLength(); i++) {
 			Node child = children.item(i);
-			if(child.getNodeName().equals("hkobject")) {
+			if (child.getNodeName().equals("hkobject")) {
 				HKXMember subObject = objectHandler.handleNode(child, target);
 				root.add(subObject);
 			}

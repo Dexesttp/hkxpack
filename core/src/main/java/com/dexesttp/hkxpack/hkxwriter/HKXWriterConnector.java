@@ -12,21 +12,24 @@ import com.dexesttp.hkxpack.hkx.header.SectionInterface;
 import com.dexesttp.hkxpack.hkxreader.HKXReaderConnector;
 
 /**
- * Handles all connections to the {@link ByteBuffer} for {@link HeaderData} and {@link SectionData} objects.
+ * Handles all connections to the {@link ByteBuffer} for {@link HeaderData} and
+ * {@link SectionData} objects.
  */
 class HKXWriterConnector {
 	private final transient ByteBuffer file;
 
 	/**
 	 * Creates a {@link HKXWriterConnector} linked to the given {@link ByteBuffer}.
+	 * 
 	 * @param outputFile the {@link ByteBuffer} to link this connector to.
 	 */
 	HKXWriterConnector(final ByteBuffer outputFile) {
 		this.file = outputFile;
 	}
-	
+
 	/**
 	 * Cleans the file.
+	 * 
 	 * @deprecated {@link ByteBuffer} usage no longer allows nor requires this step
 	 */
 	void clean() {
@@ -34,21 +37,26 @@ class HKXWriterConnector {
 	}
 
 	/**
-	 * Writes the given {@link HeaderData} to this {@link HKXWriterConnector}'s {@link ByteBuffer}
+	 * Writes the given {@link HeaderData} to this {@link HKXWriterConnector}'s
+	 * {@link ByteBuffer}
+	 * 
 	 * @param data the {@link HeaderData} to write.
-	 * @throws UnsupportedVersionError if the given {@link HeaderData} have an unsupported version.
+	 * @throws UnsupportedVersionError if the given {@link HeaderData} have an
+	 *                                 unsupported version.
 	 */
-	void writeHeader(final HeaderData data) throws  UnsupportedVersionError {
+	void writeHeader(final HeaderData data) throws UnsupportedVersionError {
 		HeaderInterface headerConnector = new HeaderInterface();
 		headerConnector.connect(file);
 		headerConnector.compress(data);
 	}
 
 	/**
-	 * Writes the given {@link SectionData} as the sectionID's section header of this {@link HKXWriterConnector}'s {@link ByteBuffer}.
-	 * @param header the {@link HeaderData} to seek offsets from.
+	 * Writes the given {@link SectionData} as the sectionID's section header of
+	 * this {@link HKXWriterConnector}'s {@link ByteBuffer}.
+	 * 
+	 * @param header    the {@link HeaderData} to seek offsets from.
 	 * @param sectionID the section position to write.
-	 * @param section the {@link SectionData} to write to the file.
+	 * @param section   the {@link SectionData} to write to the file.
 	 */
 	void writeSection(final HeaderData header, final int sectionID, final SectionData section) {
 		SectionInterface sectionConnector = new SectionInterface();
@@ -57,10 +65,15 @@ class HKXWriterConnector {
 	}
 
 	/**
-	 * Writes the given {@link ClassnamesData} object to this {@link HKXReaderConnector}'s {@link ByteBuffer}.
-	 * @param classnames the {@link SectionData} related to the {@link ClassnamesData}. It must be initialized at least for its offset.
-	 * @param data the {@link ClassnamesData} to write.
-	 * @return the position of the byte just after the end of the ClassnamesData section.
+	 * Writes the given {@link ClassnamesData} object to this
+	 * {@link HKXReaderConnector}'s {@link ByteBuffer}.
+	 * 
+	 * @param classnames the {@link SectionData} related to the
+	 *                   {@link ClassnamesData}. It must be initialized at least for
+	 *                   its offset.
+	 * @param data       the {@link ClassnamesData} to write.
+	 * @return the position of the byte just after the end of the ClassnamesData
+	 *         section.
 	 */
 	public long writeClassnames(final SectionData classnames, final ClassnamesData data) {
 		ClassnamesInterface classnamesConnector = new ClassnamesInterface();

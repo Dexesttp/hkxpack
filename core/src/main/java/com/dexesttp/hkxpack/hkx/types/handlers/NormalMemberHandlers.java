@@ -14,16 +14,16 @@ final class NormalMemberHandlers {
 	}
 
 	static MemberHandler createMemberHandler(final HKXType type) {
-		switch(type) {
-			case TYPE_UINT32:
-				return new UInt32MemberHandler();
-			case TYPE_INT32:
-				return new SInt32MemberHandler();
-			default:
-				return null;
+		switch (type) {
+		case TYPE_UINT32:
+			return new UInt32MemberHandler();
+		case TYPE_INT32:
+			return new SInt32MemberHandler();
+		default:
+			return null;
 		}
 	}
-	
+
 	/**
 	 * Handles UInt32
 	 */
@@ -35,6 +35,7 @@ final class NormalMemberHandlers {
 		public long getSize() {
 			return 0x04;
 		}
+
 		@Override
 		/**
 		 * {@inheritDoc}
@@ -44,6 +45,7 @@ final class NormalMemberHandlers {
 			member3.set((int) ByteUtils.getUInt(byteArray));
 			return member3;
 		}
+
 		@SuppressWarnings("unchecked")
 		@Override
 		/**
@@ -54,7 +56,7 @@ final class NormalMemberHandlers {
 			return ByteUtils.fromULong(memberUInt32.get(), 4);
 		}
 	}
-	
+
 	/**
 	 * Handles Int32
 	 */
@@ -66,6 +68,7 @@ final class NormalMemberHandlers {
 		public long getSize() {
 			return 0x04;
 		}
+
 		@Override
 		/**
 		 * {@inheritDoc}
@@ -75,6 +78,7 @@ final class NormalMemberHandlers {
 			member4.set((int) ByteUtils.getSInt(byteArray));
 			return member4;
 		}
+
 		@SuppressWarnings("unchecked")
 		@Override
 		/**

@@ -17,15 +17,16 @@ import com.dexesttp.hkxpack.descriptor.enums.HKXType;
 public class TestBase {
 	protected final static String BASE_FILE_RESOURCE_NAME = "/test-base";
 	protected final transient HKXFile file;
-	
+
 	/**
 	 * Creates a {@link TestBase}.
+	 * 
 	 * @param file the {@link HXKFile} to test
 	 */
 	protected TestBase(final HKXFile file) {
 		this.file = file;
 	}
-	
+
 	@Test
 	/**
 	 * Tests if there is the right number of objects in the base file (1)
@@ -39,7 +40,7 @@ public class TestBase {
 	 * Tests if the the read object's Type is the right one (a STRUCT)
 	 */
 	public void testIfTheRightObjectIsPresent() {
-		for(final HKXObject object : file.getContentCollection()) {
+		for (final HKXObject object : file.getContentCollection()) {
 			assertEquals(HKXType.TYPE_STRUCT, object.getType());
 		}
 	}
@@ -49,7 +50,7 @@ public class TestBase {
 	 * Tests if the the read object's name is valid (not null)
 	 */
 	public void testTheObjectName() {
-		for(final HKXObject object : file.getContentCollection()) {
+		for (final HKXObject object : file.getContentCollection()) {
 			assertNotNull(object.getName());
 		}
 	}
@@ -59,7 +60,7 @@ public class TestBase {
 	 * Tests if the the read object's class name is the right one (hkBaseObject)
 	 */
 	public void testTheObjectClassName() {
-		for(final HKXObject object : file.getContentCollection()) {
+		for (final HKXObject object : file.getContentCollection()) {
 			assertEquals("hkBaseObject", object.getDescriptor().getName());
 		}
 	}
@@ -69,7 +70,7 @@ public class TestBase {
 	 * Tests if the the read object's content size is right (0)
 	 */
 	public void testTheObjectContentsSize() {
-		for(final HKXObject object : file.getContentCollection()) {
+		for (final HKXObject object : file.getContentCollection()) {
 			assertEquals(0, object.getMembersList().size());
 		}
 	}

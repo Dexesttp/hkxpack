@@ -24,7 +24,8 @@ public class ArgsParserExceptionTest {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void itShouldThrowAnExceptionIfThereWasNotEnoughArgumentForASizedOptionWithoutAnythingAfter() throws WrongSizeException {
+	public void itShouldThrowAnExceptionIfThereWasNotEnoughArgumentForASizedOptionWithoutAnythingAfter()
+			throws WrongSizeException {
 		argsParser.parse(ArgsParserTest.TEST, "-c");
 	}
 
@@ -32,7 +33,8 @@ public class ArgsParserExceptionTest {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void itShouldThrowAnExceptionIfThereWasNotEnoughArgumentForASizedOptionWithThingsAfter() throws WrongSizeException {
+	public void itShouldThrowAnExceptionIfThereWasNotEnoughArgumentForASizedOptionWithThingsAfter()
+			throws WrongSizeException {
 		argsParser.parse(ArgsParserTest.TEST, "-c", "-b", ArgsParserTest.TEST2);
 	}
 
@@ -43,12 +45,13 @@ public class ArgsParserExceptionTest {
 	public void itShouldThrowAnExceptionIfThereWasAnOtherAppearanceOfASizedOption() throws WrongSizeException {
 		argsParser.parse(ArgsParserTest.TEST, "-c", ArgsParserTest.TEST2, "-c", ArgsParserTest.TEST3);
 	}
-	
+
 	@Test(expected = WrongSizeException.class)
 	/**
 	 * {@inheritDoc}
 	 */
 	public void itShouldHandleAComplexIncorrectCommandLine() throws WrongSizeException {
-		argsParser.parse(ArgsParserTest.TEST, "-a", ArgsParserTest.TEST2, "-b", ArgsParserTest.TEST3, ArgsParserTest.TEST4, "-c");
+		argsParser.parse(ArgsParserTest.TEST, "-a", ArgsParserTest.TEST2, "-b", ArgsParserTest.TEST3,
+				ArgsParserTest.TEST4, "-c");
 	}
 }

@@ -22,31 +22,35 @@ import com.dexesttp.hkxpack.tagwriter.TagXMLWriter;
 
 /**
  * Easy entry point for the HKXPack core.
+ * 
  * @since 0.0.1-alpha
  * @deprecated
- * <p>
- * These methods use the following classes :<br>
- * {@link HKXReader} to read a HKX file into a {@link HKXFile} DOM-like component.<br>
- * {@link TagXMLReader} to read a XML file inot a {@link HKXFile} DOM-like component.<br>
- * {@link HKXWriter} to write a {@link HKXFile} into a hkx File.<br>
- * {@link TagXMLWriter} to write a {@link HKXFile} into a xml File.
+ *             <p>
+ *             These methods use the following classes :<br>
+ *             {@link HKXReader} to read a HKX file into a {@link HKXFile}
+ *             DOM-like component.<br>
+ *             {@link TagXMLReader} to read a XML file inot a {@link HKXFile}
+ *             DOM-like component.<br>
+ *             {@link HKXWriter} to write a {@link HKXFile} into a hkx File.<br>
+ *             {@link TagXMLWriter} to write a {@link HKXFile} into a xml File.
  */
 public class Main {
 	/**
 	 * Convert a HKXFile to a XML file.
+	 * 
 	 * @param inputFileName
-	 * @param outputFileName 
+	 * @param outputFileName
 	 */
 	public void read(final String inputFileName, final String outputFileName) {
 		try {
-			
+
 			// Read file
 			File inFile = new File(inputFileName);
 			HKXEnumResolver enumResolver = new HKXEnumResolver();
 			HKXDescriptorFactory descriptorFactory = new HKXDescriptorFactory(enumResolver);
 			HKXReader reader = new HKXReader(inFile, descriptorFactory, enumResolver);
 			HKXFile hkxFile = reader.read();
-			
+
 			// Write file
 			File outFile = new File(outputFileName);
 			TagXMLWriter writer = new TagXMLWriter(outFile);
@@ -55,9 +59,10 @@ public class Main {
 			LoggerUtil.add(e);
 		}
 	}
-	
+
 	/**
 	 * Convert a XML file to an HKX file.
+	 * 
 	 * @param inputFileName
 	 * @param outputFileName
 	 */
@@ -69,11 +74,12 @@ public class Main {
 			HKXDescriptorFactory descriptorFactory = new HKXDescriptorFactory(enumResolver);
 			TagXMLReader reader = new TagXMLReader(inFile, descriptorFactory);
 			HKXFile file = reader.read();
-			
+
 			File outFile = new File(outputFileName);
 			HKXWriter writer = new HKXWriter(outFile, enumResolver);
 			writer.write(file);
-		} catch (IOException | UnsupportedVersionError | ParserConfigurationException | SAXException | InvalidTagXMLException e) {
+		} catch (IOException | UnsupportedVersionError | ParserConfigurationException | SAXException
+				| InvalidTagXMLException e) {
 			LoggerUtil.add(e);
 		}
 	}

@@ -9,7 +9,7 @@ public class PointerObject {
 	 */
 	public long from;
 	/**
-	 *  The name of the target object.
+	 * The name of the target object.
 	 */
 	public String to;
 }

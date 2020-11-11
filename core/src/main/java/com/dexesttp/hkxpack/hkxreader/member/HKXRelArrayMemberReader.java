@@ -11,7 +11,9 @@ import com.dexesttp.hkxpack.hkxreader.member.arrays.HKXArrayContentsReader;
 import com.dexesttp.hkxpack.resources.byteutils.ByteUtils;
 
 /**
- * Reads a Relative-positionned Array as a {@link HKXArrayMember} from the HKX file.
+ * Reads a Relative-positionned Array as a {@link HKXArrayMember} from the HKX
+ * file.
+ * 
  * @see HKXArrayContentsReader
  */
 public class HKXRelArrayMemberReader implements HKXMemberReader {
@@ -29,7 +31,7 @@ public class HKXRelArrayMemberReader implements HKXMemberReader {
 		this.internals = arrayContentsReader;
 		this.offset = offset;
 	}
-	
+
 	@Override
 	/**
 	 * {@inheritDoc}
@@ -40,10 +42,10 @@ public class HKXRelArrayMemberReader implements HKXMemberReader {
 		byte[] bOff = new byte[2];
 		file.get(bSize);
 		file.get(bOff);
-		int size = ByteUtils.getUInt(bSize)-1;
+		int size = ByteUtils.getUInt(bSize) - 1;
 		int offset = ByteUtils.getUInt(bOff);
 		HKXArrayMember res = new HKXArrayMember(name, HKXType.TYPE_RELARRAY, subtype);
-		for(int i = 0; i < size; i++) {
+		for (int i = 0; i < size; i++) {
 			res.add(internals.getContents(classOffset + offset, i));
 		}
 		return res;

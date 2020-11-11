@@ -33,13 +33,13 @@ public class HKXReaderConnector {
 		HeaderInterface headInt = new HeaderInterface();
 		headInt.connect(file);
 		header = headInt.extract();
-		
+
 		// Extract the section interfaces
 		SectionInterface sectInt = new SectionInterface();
 		sectInt.connect(file, header);
 		classnamesHead = sectInt.extract(0);
 		dataHead = sectInt.extract(2);
-		
+
 		// Extract the classnames
 		ClassnamesInterface cnamesInt = new ClassnamesInterface();
 		cnamesInt.connect(file, classnamesHead);

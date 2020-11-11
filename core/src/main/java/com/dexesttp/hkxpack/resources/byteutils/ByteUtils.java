@@ -1,10 +1,12 @@
 package com.dexesttp.hkxpack.resources.byteutils;
 
 import java.nio.ByteBuffer;
- 
+
 /**
- * Entry point for all things byte relevant. These are merely convenience functiosn to access all classes inside 
+ * Entry point for all things byte relevant. These are merely convenience
+ * functiosn to access all classes inside
  * <p>
+ * 
  * @see SLongByteUtils
  * @see ULongByteUtils
  * @see StringByteUtils
@@ -14,7 +16,7 @@ public final class ByteUtils {
 	private ByteUtils() {
 		// NO OP
 	}
-	
+
 	// Get functions
 	/**
 	 * @see SLongByteUtils#getLong(byte[])
@@ -75,7 +77,9 @@ public final class ByteUtils {
 
 	// ToString functions.
 	/**
-	 * Convert a {@link byte} array representing a signed {@link int} to a {@link String}.
+	 * Convert a {@link byte} array representing a signed {@link int} to a
+	 * {@link String}.
+	 * 
 	 * @param list the {@link byte} array
 	 * @return the relevant {@link String}.
 	 */
@@ -84,7 +88,9 @@ public final class ByteUtils {
 	}
 
 	/**
-	 * Convert a {@link byte} array representing an unsigned {@link int} to a {@link String}.
+	 * Convert a {@link byte} array representing an unsigned {@link int} to a
+	 * {@link String}.
+	 * 
 	 * @param list the {@link byte} array
 	 * @return the relevant {@link String}.
 	 */
@@ -93,7 +99,9 @@ public final class ByteUtils {
 	}
 
 	/**
-	 * Convert a {@link byte} array representing a Signed {@link long} to a {@link String}.
+	 * Convert a {@link byte} array representing a Signed {@link long} to a
+	 * {@link String}.
+	 * 
 	 * @param list the {@link byte} array
 	 * @return the relevant {@link String}.
 	 */
@@ -103,6 +111,7 @@ public final class ByteUtils {
 
 	/**
 	 * Read a null-terminated string from a {@link ByteBuffer}
+	 * 
 	 * @param inputByteBuffer the {@link ByteBuffer} to read from
 	 * @return the read {@link String}
 	 * @see StringByteUtils#readString(ByteBuffer)

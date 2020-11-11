@@ -10,7 +10,7 @@ import org.junit.Test;
 import com.dexesttp.hkxpack.cli.utils.ArgsParser.Options;
 
 /**
- *  Tests the behavior of {@link ArgsParser.Options#exists(String)}
+ * Tests the behavior of {@link ArgsParser.Options#exists(String)}
  */
 public class ArgsParserExistTest {
 	private transient ArgsParser argsParser;

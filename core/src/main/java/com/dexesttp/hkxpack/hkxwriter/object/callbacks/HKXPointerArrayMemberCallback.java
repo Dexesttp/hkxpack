@@ -14,13 +14,16 @@ import com.dexesttp.hkxpack.hkxwriter.object.array.HKXArrayPointerMemberHandler;
 public class HKXPointerArrayMemberCallback implements HKXArrayMemberCallback {
 	private final transient HKXArrayMember arrMember;
 	private final transient List<HKXArrayPointerMemberHandler> apmhList;
-	
+
 	/**
 	 * Creates a {@link HKXPointerArrayMemberCallback}
+	 * 
 	 * @param arrMember the {@link HKXArrayMember} the callback is for
-	 * @param apmhList the {@link HKXArrayPointerMemberHandler} to base the callback on.
+	 * @param apmhList  the {@link HKXArrayPointerMemberHandler} to base the
+	 *                  callback on.
 	 */
-	public HKXPointerArrayMemberCallback(final HKXArrayMember arrMember, final List<HKXArrayPointerMemberHandler> apmhList) {
+	public HKXPointerArrayMemberCallback(final HKXArrayMember arrMember,
+			final List<HKXArrayPointerMemberHandler> apmhList) {
 		this.arrMember = arrMember;
 		this.apmhList = apmhList;
 	}
@@ -31,7 +34,7 @@ public class HKXPointerArrayMemberCallback implements HKXArrayMemberCallback {
 	 */
 	public long process(final List<HKXMemberCallback> memberCallbacks, final long position) {
 		long newPos = position;
-		for(HKXArrayPointerMemberHandler apmh : apmhList) {
+		for (HKXArrayPointerMemberHandler apmh : apmhList) {
 			long objectSize = MemberSizeResolver.getSize(arrMember.getSubType());
 			apmh.resolve(newPos);
 			newPos += objectSize;

@@ -16,6 +16,7 @@ import com.dexesttp.hkxpack.resources.byteutils.ByteUtils;
 
 /**
  * Reads a classic (v8) array from a HKX file.
+ * 
  * @see HKXArrayContentsReader
  */
 public class HKXArrayMemberReader implements HKXMemberReader {
@@ -45,11 +46,11 @@ public class HKXArrayMemberReader implements HKXMemberReader {
 		file.get(baseArrayBytes);
 		HKXArrayMember result = new HKXArrayMember(name, HKXType.TYPE_ARRAY, subtype);
 		int arrSize = getSizeComponent(baseArrayBytes);
-		if(arrSize > 0) {
+		if (arrSize > 0) {
 			Data1Interface data1 = connector.data1;
 			DataInternal arrValue = data1.readNext();
 			assert arrValue.from == classOffset + memberOffset;
-			for(int i = 0; i < arrSize; i++ ) {
+			for (int i = 0; i < arrSize; i++) {
 				HKXData data = internals.getContents(arrValue.to, i);
 				result.add(data);
 			}
@@ -58,8 +59,8 @@ public class HKXArrayMemberReader implements HKXMemberReader {
 	}
 
 	private int getSizeComponent(final byte[] arrayBaseBytes) {
-		byte[] sizeSpecificBytes = new byte[]{arrayBaseBytes[8], arrayBaseBytes[9], arrayBaseBytes[10], arrayBaseBytes[11]};
+		byte[] sizeSpecificBytes = new byte[] { arrayBaseBytes[8], arrayBaseBytes[9], arrayBaseBytes[10],
+				arrayBaseBytes[11] };
 		return ByteUtils.getUInt(sizeSpecificBytes);
 	}
 }
-

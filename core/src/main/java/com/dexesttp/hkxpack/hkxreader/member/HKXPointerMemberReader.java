@@ -18,8 +18,8 @@ class HKXPointerMemberReader implements HKXMemberReader {
 	private final transient HKXType vtype;
 	private final transient long memberOffset;
 
-	HKXPointerMemberReader(final HKXReaderConnector connector, final PointerNameGenerator generator,
-			final String name, final HKXType contentType, final long offset) {
+	HKXPointerMemberReader(final HKXReaderConnector connector, final PointerNameGenerator generator, final String name,
+			final HKXType contentType, final long offset) {
 		this.connector = connector;
 		this.generator = generator;
 		this.name = name;
@@ -34,7 +34,7 @@ class HKXPointerMemberReader implements HKXMemberReader {
 	public HKXMember read(final long classOffset) throws InvalidPositionException {
 		DataExternal data = connector.data2.readNext();
 		String target = "null";
-		if(data.from == memberOffset + classOffset) {
+		if (data.from == memberOffset + classOffset) {
 			target = generator.get(data.to);
 		} else {
 			connector.data2.backtrack();

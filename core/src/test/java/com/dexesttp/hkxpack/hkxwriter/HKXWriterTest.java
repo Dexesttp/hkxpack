@@ -25,7 +25,7 @@ public class HKXWriterTest {
 	public static final String TEST_BASE_REXOURCE_TARGET = "/test-base.hkx";
 	private static HKXEnumResolver enumResolver;
 	private static HKXFile file;
-	
+
 	@BeforeClass
 	/**
 	 * Set up the {@link HKXWriter} test
@@ -36,7 +36,7 @@ public class HKXWriterTest {
 		file = new HKXFile("hk-2014.1.0-r1", 11);
 		file.getContentCollection().add(new HKXObject("#test", descriptorFactory.get("hkBaseObject")));
 	}
-	
+
 	@Test
 	/**
 	 * Writes a default file to a test file, and compare its contents to the target.
@@ -45,14 +45,13 @@ public class HKXWriterTest {
 		File outputFile = File.createTempFile(TEST_BASE_OUTPUT_NAME, "");
 		HKXWriter writer = new HKXWriter(outputFile, enumResolver);
 		writer.write(file);
-		assertArrayEquals(
-				Files.toByteArray(outputFile),
-				FileUtils.resourceToByteArray(TEST_BASE_REXOURCE_TARGET));
+		assertArrayEquals(Files.toByteArray(outputFile), FileUtils.resourceToByteArray(TEST_BASE_REXOURCE_TARGET));
 	}
 
 	@Test
 	/**
-	 * Writes a default file to a test ByteBuffer, and compare its contents to the target.
+	 * Writes a default file to a test ByteBuffer, and compare its contents to the
+	 * target.
 	 */
 	public void testWriteDefaultFileToByteBuffer() throws Exception {
 		ByteBuffer outputBuffer = ByteBuffer.allocate(10000);
@@ -60,8 +59,6 @@ public class HKXWriterTest {
 		writer.write(file);
 		byte[] outArray = new byte[outputBuffer.limit()];
 		outputBuffer.get(outArray);
-		assertArrayEquals(
-				outArray,
-				FileUtils.resourceToByteArray(TEST_BASE_REXOURCE_TARGET));
+		assertArrayEquals(outArray, FileUtils.resourceToByteArray(TEST_BASE_REXOURCE_TARGET));
 	}
 }

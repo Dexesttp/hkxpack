@@ -18,6 +18,7 @@ import com.dexesttp.hkxpack.tagreader.exceptions.InvalidTagXMLException;
 
 /**
  * Packs a XML file into a HKX file.
+ * 
  * @see Command_IO
  */
 public class Command_pack extends Command_IO {
@@ -27,13 +28,13 @@ public class Command_pack extends Command_IO {
 	 */
 	protected void executionCore(final String inputFileName, final String outputFileName,
 			final HKXEnumResolver enumResolver, final HKXDescriptorFactory descriptorFactory)
-		throws ParserConfigurationException, SAXException, IOException,
-			InvalidTagXMLException, UnsupportedVersionError {
+			throws ParserConfigurationException, SAXException, IOException, InvalidTagXMLException,
+			UnsupportedVersionError {
 		// Read XML file
 		File inFile = new File(inputFileName);
 		TagXMLReader reader = new TagXMLReader(inFile, descriptorFactory);
 		HKXFile file = reader.read();
-		
+
 		// Write HKX file
 		File outFile = new File(outputFileName);
 		outFile.createNewFile();
@@ -49,8 +50,7 @@ public class Command_pack extends Command_IO {
 		String newName = "";
 		try {
 			newName = ogName.substring(0, ogName.lastIndexOf('.')) + ".hkx";
-		}
-		catch(StringIndexOutOfBoundsException e) {
+		} catch (StringIndexOutOfBoundsException e) {
 			throw new FileNameCreationException("The file : " + ogName + " has a name that can't be converted.", e);
 		}
 		return newName;
@@ -61,6 +61,6 @@ public class Command_pack extends Command_IO {
 	 * {@inheritDoc}
 	 */
 	protected String[] getFileExtensions() {
-		return new String[] {".xml"};
+		return new String[] { ".xml" };
 	}
 }

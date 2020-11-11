@@ -8,7 +8,8 @@ public class FileNameCreationException extends Exception {
 
 	/**
 	 * Create a {@link FileNameCreationException}
-	 * @param message the message of the exception
+	 * 
+	 * @param message        the message of the exception
 	 * @param innerException the exception that causes this exception to be thrown
 	 */
 	public FileNameCreationException(final String message, final Exception innerException) {

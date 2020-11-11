@@ -12,8 +12,9 @@ public class HKXFailedMember implements HKXMember {
 
 	/**
 	 * Creates a {@link HKXFailedMember}.
-	 * @param name the name of the failed member.
-	 * @param type the intended type of the failed member.
+	 * 
+	 * @param name        the name of the failed member.
+	 * @param type        the intended type of the failed member.
 	 * @param failMessage why the member failed to be imported.
 	 */
 	public HKXFailedMember(final String name, final HKXType type, final String failMessage) {
@@ -21,9 +22,10 @@ public class HKXFailedMember implements HKXMember {
 		this.type = type;
 		this.failMessage = failMessage;
 	}
-	
+
 	/**
 	 * Returns a sensible message, in english, about the import fail.
+	 * 
 	 * @return
 	 */
 	public String getFailMessage() {

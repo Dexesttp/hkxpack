@@ -19,7 +19,9 @@ public class TagXMLEmbeddedObjectHandler implements TagXMLContentsHandler {
 
 	/**
 	 * Create a {@link TagXMLEmbeddedObjectHandler}.
-	 * @param nodeHandler the {@link TagXMLNodeHandler} to use while reading this object's members.
+	 * 
+	 * @param nodeHandler the {@link TagXMLNodeHandler} to use while reading this
+	 *                    object's members.
 	 */
 	public TagXMLEmbeddedObjectHandler(final TagXMLNodeHandler nodeHandler) {
 		this.nodeHandler = nodeHandler;
@@ -29,12 +31,13 @@ public class TagXMLEmbeddedObjectHandler implements TagXMLContentsHandler {
 	/**
 	 * {@inheritDoc}
 	 */
-	public HKXMember handleNode(final Node member, final HKXMemberTemplate memberTemplate) throws ClassFileReadException, InvalidTagXMLException {
+	public HKXMember handleNode(final Node member, final HKXMemberTemplate memberTemplate)
+			throws ClassFileReadException, InvalidTagXMLException {
 		String target = memberTemplate.target;
 		NodeList children = member.getChildNodes();
-		for(int i = 0; i < children.getLength(); i++) {
+		for (int i = 0; i < children.getLength(); i++) {
 			Node objectNode = children.item(i);
-			if(objectNode.getNodeName().equals("hkobject")) {
+			if (objectNode.getNodeName().equals("hkobject")) {
 				return handleNode(objectNode, target);
 			}
 		}

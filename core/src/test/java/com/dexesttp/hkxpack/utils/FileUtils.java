@@ -17,9 +17,10 @@ public final class FileUtils {
 	private FileUtils() {
 		// NO OP
 	}
-	
+
 	/**
 	 * Convert a given resource to a temporary {@link File}.
+	 * 
 	 * @param resourceName the resource to convert
 	 * @return the {@link File} object pointing to the temporary File.
 	 * @throws Exception
@@ -27,13 +28,14 @@ public final class FileUtils {
 	public static File resourceToTemporaryFile(final String resourceName) throws IOException {
 		InputStream inputStream = FileUtils.class.getResourceAsStream(resourceName);
 		File tempFile = File.createTempFile(resourceName, ".tmp");
-	    Files.copy(inputStream, tempFile.toPath(), new CopyOption[]{StandardCopyOption.REPLACE_EXISTING});
-	    inputStream.close();
-	    return tempFile;
+		Files.copy(inputStream, tempFile.toPath(), new CopyOption[] { StandardCopyOption.REPLACE_EXISTING });
+		inputStream.close();
+		return tempFile;
 	}
 
 	/**
 	 * Convert a given resource to a {@link ByteBuffer}.
+	 * 
 	 * @param resourceName the resource to convert
 	 * @return the ByteBuffer filled with the resource's data.
 	 * @throws Exception
@@ -43,7 +45,7 @@ public final class FileUtils {
 		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 		byte[] tmp = new byte[1000];
 		int length = inputStream.read(tmp);
-		while(length != -1) {
+		while (length != -1) {
 			byteArrayOutputStream.write(tmp, 0, length);
 			length = inputStream.read(tmp);
 		}
@@ -54,6 +56,7 @@ public final class FileUtils {
 
 	/**
 	 * Convert a given resource to a {@link byte} array.
+	 * 
 	 * @param resourceName the resource to convert
 	 * @return a {@link byte} array
 	 * @throws Exception
@@ -62,9 +65,9 @@ public final class FileUtils {
 		InputStream inputStream = FileUtils.class.getResourceAsStream(resourceName);
 		byte[] byteArray = new byte[inputStream.available()];
 		DataInputStream dataIS = new DataInputStream(inputStream);
-	    dataIS.readFully(byteArray);
-	    dataIS.close();
-	    inputStream.close();
-	    return byteArray;
+		dataIS.readFully(byteArray);
+		dataIS.close();
+		inputStream.close();
+		return byteArray;
 	}
 }

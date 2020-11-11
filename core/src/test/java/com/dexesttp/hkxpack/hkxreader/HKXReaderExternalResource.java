@@ -17,13 +17,14 @@ public class HKXReaderExternalResource extends ReaderExternalResource {
 
 	/**
 	 * Creates the HKXReader external resource
+	 * 
 	 * @param baseFileResourceName
 	 */
 	public HKXReaderExternalResource(final String baseFileResourceName) {
 		super();
 		this.baseFileResourceName = baseFileResourceName;
 	}
-	
+
 	@Override
 	/**
 	 * {@inheritDoc}

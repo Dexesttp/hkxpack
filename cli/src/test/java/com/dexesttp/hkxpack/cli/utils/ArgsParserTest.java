@@ -5,13 +5,8 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({
-	ArgsParserEmptyTest.class,
-	ArgsParserExistTest.class,
-	ArgsParserSizeTest.class,
-	ArgsParserValuesTest.class,
-	ArgsParserExceptionTest.class,
-	ArgsParserComplexTest.class,})
+@SuiteClasses({ ArgsParserEmptyTest.class, ArgsParserExistTest.class, ArgsParserSizeTest.class,
+		ArgsParserValuesTest.class, ArgsParserExceptionTest.class, ArgsParserComplexTest.class, })
 /**
  * {@inheritDoc}
  */

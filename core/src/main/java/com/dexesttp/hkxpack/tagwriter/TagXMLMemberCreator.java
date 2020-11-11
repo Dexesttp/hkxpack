@@ -22,8 +22,10 @@ class TagXMLMemberCreator {
 	private final transient TagXMLArrayMemberHandler arrayMemberHandler;
 
 	/**
-	 * Creates a new {@link TagXMLMemberCreator} from its parent {@link TagXMLDataCreator}.<br >
+	 * Creates a new {@link TagXMLMemberCreator} from its parent
+	 * {@link TagXMLDataCreator}.<br >
 	 * This shoud only be done by a {@link TagXMLDataCreator}.
+	 * 
 	 * @param tagXMLDataCreator
 	 */
 	TagXMLMemberCreator(final TagXMLDataCreator tagXMLDataCreator) {
@@ -34,44 +36,45 @@ class TagXMLMemberCreator {
 
 	/**
 	 * Creates a {@link Node} from a {@link HKXMember}.<br >
+	 * 
 	 * @param member
 	 * @return
 	 */
 	Node create(final HKXMember member) {
-		if(member instanceof HKXFailedMember) {
+		if (member instanceof HKXFailedMember) {
 			HKXFailedMember failedMember = (HKXFailedMember) member;
 			return document.createComment(failedMember.getFailMessage());
 		}
 		Element memberNode = document.createElement("hkparam");
 		memberNode.setAttribute("name", member.getName());
-		switch(member.getType().getFamily()) {
-			case DIRECT:
-			case COMPLEX:
-				TagXMLDirectMemberHandler directMemberHandler = new TagXMLDirectMemberHandler();
-				String newDirectChild = directMemberHandler.getStringValue((HKXDirectMember<?>) member);
-				memberNode.setTextContent(newDirectChild);
-				break;
-			case ENUM:
-				String newEnumChildContent = ((HKXEnumMember) member).get();
-				memberNode.setTextContent(newEnumChildContent);
-				break;
-			case STRING:
-				String newStringChildContent = ((HKXStringMember) member).get();
-				memberNode.setTextContent(newStringChildContent);
-				break;
-			case POINTER:
-				String newPointerChildContent = ((HKXPointerMember) member).get();
-				memberNode.setTextContent(newPointerChildContent);
-				break;
-			case ARRAY:
-				arrayMemberHandler.fillArray(memberNode, (HKXArrayMember) member);
-				break;
-			case OBJECT:
-				Node newObjectNode = dataCreator.create(member);
-				memberNode.appendChild(newObjectNode);
-				break;
-			default:
-				break;
+		switch (member.getType().getFamily()) {
+		case DIRECT:
+		case COMPLEX:
+			TagXMLDirectMemberHandler directMemberHandler = new TagXMLDirectMemberHandler();
+			String newDirectChild = directMemberHandler.getStringValue((HKXDirectMember<?>) member);
+			memberNode.setTextContent(newDirectChild);
+			break;
+		case ENUM:
+			String newEnumChildContent = ((HKXEnumMember) member).get();
+			memberNode.setTextContent(newEnumChildContent);
+			break;
+		case STRING:
+			String newStringChildContent = ((HKXStringMember) member).get();
+			memberNode.setTextContent(newStringChildContent);
+			break;
+		case POINTER:
+			String newPointerChildContent = ((HKXPointerMember) member).get();
+			memberNode.setTextContent(newPointerChildContent);
+			break;
+		case ARRAY:
+			arrayMemberHandler.fillArray(memberNode, (HKXArrayMember) member);
+			break;
+		case OBJECT:
+			Node newObjectNode = dataCreator.create(member);
+			memberNode.appendChild(newObjectNode);
+			break;
+		default:
+			break;
 		}
 		return memberNode;
 	}

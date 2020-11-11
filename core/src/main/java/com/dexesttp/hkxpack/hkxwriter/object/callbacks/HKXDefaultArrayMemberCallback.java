@@ -19,10 +19,13 @@ public class HKXDefaultArrayMemberCallback implements HKXArrayMemberCallback {
 
 	/**
 	 * Creates a {@link HKXDefaultArrayMemberCallback}
-	 * @param arrMember the {@link HKXArrayMember} this callback handles
-	 * @param memberHandlerFactory the {@link HKXMemberHandlerFactory} to use while creating the array component's handlers.
+	 * 
+	 * @param arrMember            the {@link HKXArrayMember} this callback handles
+	 * @param memberHandlerFactory the {@link HKXMemberHandlerFactory} to use while
+	 *                             creating the array component's handlers.
 	 */
-	public HKXDefaultArrayMemberCallback(final HKXArrayMember arrMember, final HKXMemberHandlerFactory memberHandlerFactory) {
+	public HKXDefaultArrayMemberCallback(final HKXArrayMember arrMember,
+			final HKXMemberHandlerFactory memberHandlerFactory) {
 		this.arrMember = arrMember;
 		this.memberHandlerFactory = memberHandlerFactory;
 	}
@@ -34,8 +37,8 @@ public class HKXDefaultArrayMemberCallback implements HKXArrayMemberCallback {
 	public long process(final List<HKXMemberCallback> memberCallbacks, final long position) {
 		long newPos = position;
 		long memberSize = MemberSizeResolver.getSize(arrMember.getSubType());
-		for(HKXData data : arrMember.getContentsList()) {
-			if(data instanceof HKXMember) {
+		for (HKXData data : arrMember.getContentsList()) {
+			if (data instanceof HKXMember) {
 				HKXMember internalMember = (HKXMember) data;
 				HKXMemberHandler memberHandler = memberHandlerFactory.create(internalMember.getType(), 0);
 				memberCallbacks.add(memberHandler.write(internalMember, newPos));

@@ -18,12 +18,15 @@ import com.dexesttp.hkxpack.resources.DOMUtils;
 import com.dexesttp.hkxpack.tagreader.exceptions.InvalidTagXMLException;
 
 /**
- * Handles the TagXML file parsing (xml-wise) and retrieval of soem base elements.
+ * Handles the TagXML file parsing (xml-wise) and retrieval of soem base
+ * elements.
  * <p>
- * {@link TagXMLFileHandler#getDocument()} retrieves the DOM document of the TagXML file.
- * {@link TagXMLFileHandler#getRootNode(Document)} retrieves the TagXML's hkxpackfile node.
- * {@link TagXMLFileHandler#getHKXFile(Node)} returns an empty HKXFile based on the TagXML version.
- * {@link TagXMLFileHandler#getSectionNode(Document, String)} returns the asked section node.
+ * {@link TagXMLFileHandler#getDocument()} retrieves the DOM document of the
+ * TagXML file. {@link TagXMLFileHandler#getRootNode(Document)} retrieves the
+ * TagXML's hkxpackfile node. {@link TagXMLFileHandler#getHKXFile(Node)} returns
+ * an empty HKXFile based on the TagXML version.
+ * {@link TagXMLFileHandler#getSectionNode(Document, String)} returns the asked
+ * section node.
  */
 class TagXMLFileHandler {
 	private static final int MAX_ROOT_NODE_COUNT = 1;
@@ -35,26 +38,29 @@ class TagXMLFileHandler {
 
 	/**
 	 * Returns the {@link Document} from this TagXML file.
+	 * 
 	 * @return a DOM {@link Document}.
 	 * @throws ParserConfigurationException should never happen.
-	 * @throws SAXException If there was a problem parsing the File.
-	 * @throws IOException if there was a problem accessing the File.
+	 * @throws SAXException                 If there was a problem parsing the File.
+	 * @throws IOException                  if there was a problem accessing the
+	 *                                      File.
 	 */
 	Document getDocument() throws ParserConfigurationException, SAXException, IOException {
 		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder = builderFactory.newDocumentBuilder();
 		return builder.parse(tagFile);
 	}
-	
+
 	/**
 	 * Retrieves the root node of the TagXML file.
+	 * 
 	 * @param document the {@link Document} to retrieve the node from.
 	 * @return the relevant {@link Node}.
 	 * @throws InvalidTagXMLException if there is no root TagXML node in the file.
 	 */
 	Node getRootNode(final Document document) throws InvalidTagXMLException {
 		NodeList nodeList = document.getElementsByTagName("hkpackfile");
-		if(nodeList.getLength() != MAX_ROOT_NODE_COUNT) {
+		if (nodeList.getLength() != MAX_ROOT_NODE_COUNT) {
 			throw new InvalidTagXMLException(SBundle.getString("error.tag.read.hkpackfile") + nodeList.getLength());
 		}
 		return nodeList.item(0);
@@ -62,7 +68,9 @@ class TagXMLFileHandler {
 
 	/**
 	 * Retrieves the HKXFile based on a given Root node.
-	 * @param root the Root node, may be obtained with {@link TagXMLFileHandler#getRootNode(Document)}.
+	 * 
+	 * @param root the Root node, may be obtained with
+	 *             {@link TagXMLFileHandler#getRootNode(Document)}.
 	 * @return the empty {@link HKXFile}, properly initialized.
 	 */
 	HKXFile getHKXFile(final Node root) {
@@ -73,15 +81,16 @@ class TagXMLFileHandler {
 
 	/**
 	 * Retrieves a given Section node.
+	 * 
 	 * @param document the {@link Document} to retrieve the node from.
-	 * @param name the name of the Section node to retrieve.
+	 * @param name     the name of the Section node to retrieve.
 	 * @return the section {@link Node}, or null if no section node could be found.
 	 */
 	Node getSectionNode(final Document document, final String name) {
 		NodeList sectionList = document.getElementsByTagName("hksection");
-		for(int i = 0; i < sectionList.getLength(); i++) {
+		for (int i = 0; i < sectionList.getLength(); i++) {
 			Node section = sectionList.item(i);
-			if(DOMUtils.getNodeAttr("name", section).equals(name)) {
+			if (DOMUtils.getNodeAttr("name", section).equals(name)) {
 				return section;
 			}
 		}
