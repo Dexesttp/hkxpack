@@ -1,5 +1,6 @@
 package com.dexesttp.hkxpack.hkxwriter.object;
 
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 
 import com.dexesttp.hkxpack.data.members.HKXDirectMember;
@@ -31,7 +32,7 @@ public class HKXDirectMemberHandler implements HKXMemberHandler {
 	 */
 	public HKXMemberCallback write(final HKXMember member, final long currentPos) {
 		byte[] value = MemberDataResolver.fromMember(member);
-		outFile.position((int) (currentPos + memberOffset));
+		((Buffer)outFile).position((int) (currentPos + memberOffset));
 		outFile.put(value);
 		return (memberCallbacks, position) -> { return 0; };
 	}

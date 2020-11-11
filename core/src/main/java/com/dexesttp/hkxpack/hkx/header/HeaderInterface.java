@@ -1,5 +1,6 @@
 package com.dexesttp.hkxpack.hkx.header;
 
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 
 import com.dexesttp.hkxpack.hkx.exceptions.UnsupportedVersionError;
@@ -30,7 +31,7 @@ public class HeaderInterface {
 	public void compress(final HeaderData data) throws UnsupportedVersionError {
 		if(data.version == HeaderDescriptor_v11.VERSION_11 ) {
 			HeaderDescriptor_v11 descriptor = new HeaderDescriptor_v11();
-			file.position(0);
+			((Buffer)file).position(0);
 			file.put(descriptor.fileID);
 			file.put(descriptor.version);
 			file.put(descriptor.extras);
@@ -56,7 +57,7 @@ public class HeaderInterface {
 	public HeaderData extract() {
 		HeaderData data = new HeaderData();
 		HeaderDescriptor descriptor = new HeaderDescriptor();
-		file.position(0);
+		((Buffer)file).position(0);
 		file.get(descriptor.fileID);
 		file.get(descriptor.version);
 		file.get(descriptor.extras);

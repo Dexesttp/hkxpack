@@ -1,5 +1,6 @@
 package com.dexesttp.hkxpack.hkxwriter.object.callbacks;
 
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
@@ -64,7 +65,7 @@ public class HKXStringArrayMemberCallback implements HKXArrayMemberCallback {
 		return (callbacks, position) -> { 
 			stringData.to = position;
 			data1.add(stringData);
-			outFile.position((int) position);
+			((Buffer)outFile).position((int) position);
 			outFile.put(internalMember.get().getBytes());
 			outFile.put((byte) 0x00);
 			long outSize = internalMember.get().length() + 1;

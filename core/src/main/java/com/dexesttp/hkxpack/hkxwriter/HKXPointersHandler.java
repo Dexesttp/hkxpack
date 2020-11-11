@@ -1,5 +1,6 @@
 package com.dexesttp.hkxpack.hkxwriter;
 
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.util.List;
 
@@ -76,7 +77,7 @@ class HKXPointersHandler {
 		}
 		long incrementedEndPos = endPos;
 		long newEndPos = (1 + endPos / 0x10) * 0x10;
-		outFile.position((int) endPos);
+		((Buffer)outFile).position((int) endPos);
 		for(; incrementedEndPos < newEndPos; incrementedEndPos++ ) {
 			outFile.put((byte) 0xFF);
 		}

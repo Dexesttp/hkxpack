@@ -3,6 +3,7 @@ package com.dexesttp.hkxpack.hkxwriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.util.Optional;
 
@@ -119,7 +120,7 @@ public class HKXWriter
 			dataHandler.fillPointers(data, resolver);
 			
 			// Flips the ByteBuffer now, to set its limit to the end of the file.
-			outputBB.flip();
+			((Buffer)outputBB).flip();
 			
 			// Write the data section to the file.
 			connector.writeSection(header, HKXSectionHandler.DATA, data);
@@ -130,7 +131,7 @@ public class HKXWriter
 		}
 		
 		// Prepare the output ByteBuffer for use.
-		outputBB.position(0);
+		((Buffer)outputBB).position(0);
 		
 		// If needed, write the output ByteBuffer back to the file.
 		if (outputFile.isPresent())

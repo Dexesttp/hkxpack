@@ -1,5 +1,6 @@
 package com.dexesttp.hkxpack.hkxwriter.object;
 
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.util.List;
 
@@ -44,7 +45,7 @@ public class HKXStringMemberHandler implements HKXMemberHandler {
 		return (callbacks, position) -> { 
 			stringData.to = position;
 			data1.add(stringData);
-			outFile.position((int) position);
+			((Buffer)outFile).position((int) position);
 			outFile.put(strMember.get().getBytes());
 			outFile.put((byte) 0x00);
 			return HKXUtils.snapString(position + strMember.get().length() + 1) - position;

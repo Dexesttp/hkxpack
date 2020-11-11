@@ -1,5 +1,6 @@
 package com.dexesttp.hkxpack.hkxwriter.object.callbacks;
 
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class HKXRelArrayMemberCallback implements HKXMemberCallback {
 	 */
 	public long process(final List<HKXMemberCallback> memberCallbacks, final long position) {
 		byte[] offset = ByteUtils.fromULong(position - classPos, 2);
-		outFile.position((int) (classPos + argPos + 2));
+		((Buffer)outFile).position((int) (classPos + argPos + 2));
 		outFile.put(offset);
 		return callbackProcessor.process(memberCallbacks, position);
 	}

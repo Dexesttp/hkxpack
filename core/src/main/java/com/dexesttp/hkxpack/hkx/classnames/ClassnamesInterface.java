@@ -1,5 +1,6 @@
 package com.dexesttp.hkxpack.hkx.classnames;
 
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.util.Map.Entry;
 
@@ -34,7 +35,7 @@ public class ClassnamesInterface {
 	 * @return The position of the end of the dataset (absolute position from the beginning of the file).
 	 */
 	public long compress(final ClassnamesData data) {
-		file.position((int) section.offset);
+		((Buffer)file).position((int) section.offset);
 		for(Entry<Long, Classname> classData : data.entrySet()) {
 			file.put(classData.getValue().uuid);
 			file.put((byte) 0x09);
@@ -42,7 +43,7 @@ public class ClassnamesInterface {
 			file.put((byte) 0x0);
 		}
 		// Fill the end with FFs and then return the pos.
-		long pos = file.position();
+		long pos = ((Buffer)file).position();
 		long toDo = 0x10 - (pos % 0x10);
 		pos += toDo;
 		for(;toDo>0;toDo--) {
@@ -59,13 +60,13 @@ public class ClassnamesInterface {
 		final long limit = section.offset + section.data1;
 		ClassnamesData data = new ClassnamesData();
 		byte[] idList = new byte[4];
-		file.position((int) section.offset);
-		while(file.position() < limit) {
+		((Buffer)file).position((int) section.offset);
+		while(((Buffer)file).position() < limit) {
 			file.get(idList);
 			if(file.get() != CLASSNAME_BREAKER) {
 				break;
 			}
-			long position = file.position();
+			long position = ((Buffer)file).position();
 			if(position > limit) {
 				break;
 			}

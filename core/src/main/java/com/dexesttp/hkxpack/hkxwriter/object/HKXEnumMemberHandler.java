@@ -1,5 +1,6 @@
 package com.dexesttp.hkxpack.hkxwriter.object;
 
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 
 import com.dexesttp.hkxpack.data.members.HKXEnumMember;
@@ -36,7 +37,7 @@ public class HKXEnumMemberHandler implements HKXMemberHandler {
 	public HKXMemberCallback write(final HKXMember member, final long currentPos) {
 		HKXEnumMember enumMember = (HKXEnumMember) member;
 		if(!enumMember.getEnumerationName().isEmpty()) {
-			outFile.position((int) (currentPos + offset));
+			((Buffer)outFile).position((int) (currentPos + offset));
 			long enumVal = enumResolver.resolve(enumMember.getEnumerationName(), enumMember.get());
 			byte[] res = ByteUtils.fromULong(enumVal, (int) MemberSizeResolver.getSize(enumMember.getSubtype()));
 			outFile.put(res);

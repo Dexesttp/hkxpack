@@ -1,5 +1,6 @@
 package com.dexesttp.hkxpack.hkxwriter.object.array;
 
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
@@ -78,7 +79,7 @@ public class HKXArrayMemberHandler implements HKXMemberHandler {
 					sizeVals[0], sizeVals[1], sizeVals[2], sizeVals[3],
 					sizeVals[0], sizeVals[1], sizeVals[2], (byte) 0x80
 			};
-			outFile.position((int) (currentPos + offset));
+			((Buffer)outFile).position((int) (currentPos + offset));
 			outFile.put(arrayData);
 			if(size == 0) {
 				return (memberCallbacks, position) -> { return 0; };
@@ -90,7 +91,7 @@ public class HKXArrayMemberHandler implements HKXMemberHandler {
 		}
 		else {
 			byte[] sizeVals = ByteUtils.fromULong(size + 1, 2);
-			outFile.position((int) (currentPos + offset));
+			((Buffer)outFile).position((int) (currentPos + offset));
 			outFile.put(sizeVals);
 			return new HKXRelArrayMemberCallback(arrCallback, outFile, currentPos, offset);
 		}

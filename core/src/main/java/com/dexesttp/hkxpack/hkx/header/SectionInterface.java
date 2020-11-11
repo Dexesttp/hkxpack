@@ -1,5 +1,6 @@
 package com.dexesttp.hkxpack.hkx.header;
 
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
@@ -41,10 +42,10 @@ public class SectionInterface {
 		else {
 			sectionsize = 0x30;
 		}
-		file.position((int) (0x40 + header.paddingAfter + sectionsize * sectionID));
+		((Buffer)file).position((int) (0x40 + header.paddingAfter + sectionsize * sectionID));
 		SectionDescriptor descriptor = new SectionDescriptor();
 		file.put(section.name.getBytes());
-		file.position(file.position() + (0x10 - section.name.length()));
+		((Buffer)file).position(((Buffer)file).position() + (0x10 - section.name.length()));
 		file.put(descriptor.constant);
 		file.put(ByteUtils.fromULong(section.offset, 4));
 		file.put(ByteUtils.fromULong(section.data1, 4));
@@ -76,7 +77,7 @@ public class SectionInterface {
 			sectionsize = 0x30;
 		}
 		SectionData data = new SectionData();
-		file.position((int) (0x40 + header.paddingAfter + sectionsize * sectionID));
+		((Buffer)file).position((int) (0x40 + header.paddingAfter + sectionsize * sectionID));
 		SectionDescriptor descriptor = new SectionDescriptor();
 		file.get(descriptor.secName);
 		file.get(descriptor.constant);

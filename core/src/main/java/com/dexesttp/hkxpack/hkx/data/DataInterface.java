@@ -1,6 +1,7 @@
 package com.dexesttp.hkxpack.hkx.data;
 
 import java.nio.ByteBuffer;
+import java.nio.Buffer;
 
 import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
 import com.dexesttp.hkxpack.hkx.header.SectionData;
@@ -32,7 +33,7 @@ public class DataInterface {
 		if(position < 0 || position > header.data1) {
 			throw new InvalidPositionException("DATA", position);
 		}
-		file.position((int) (header.offset + position));
+		((Buffer)file).position((int) (header.offset + position));
 		return file;
 	}
 }

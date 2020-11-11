@@ -1,6 +1,7 @@
 package com.dexesttp.hkxpack.hkx.data;
 
 import java.io.IOException;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 
 import com.dexesttp.hkxpack.hkx.exceptions.InvalidPositionException;
@@ -37,7 +38,7 @@ public class Data2Interface {
 			throw new InvalidPositionException("DATA_2", pos );
 		}
 		DataExternal data = new DataExternal();
-		file.position((int) (header.offset + dataPos));
+		((Buffer)file).position((int) (header.offset + dataPos));
 		byte[] dataLine = new byte[4];
 		file.get(dataLine);
 		data.from = ByteUtils.getULong(dataLine);
@@ -61,7 +62,7 @@ public class Data2Interface {
 	 */
 	public long write(final int pos, final DataExternal data) {
 		long dataPos = header.data2 + pos * 0x0C;
-		file.position((int) (header.offset + dataPos));
+		((Buffer)file).position((int) (header.offset + dataPos));
 		file.put(ByteUtils.fromULong(data.from, 4));
 		file.put(ByteUtils.fromULong(data.section, 4));
 		file.put(ByteUtils.fromULong(data.to, 4));
